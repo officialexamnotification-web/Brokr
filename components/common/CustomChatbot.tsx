@@ -78,9 +78,9 @@ export default function CustomChatbot() {
 
       {/* Chat Window */}
       {isOpen && (
-        <div className="fixed bottom-6 left-6 z-50 w-96 max-w-[calc(100vw-3rem)] bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-700 overflow-hidden transition-all duration-300">
+        <div className="fixed bottom-6 left-6 z-50 w-80 max-w-[calc(100vw-3rem)] bg-white/95 dark:bg-slate-900/95 backdrop-blur-sm rounded-2xl shadow-2xl border border-primary-200 dark:border-primary-800 overflow-hidden transition-all duration-300">
           {/* Header */}
-          <div className="bg-gradient-to-r from-primary-600 to-primary-700 text-white p-4">
+          <div className="bg-primary-600 text-white p-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
@@ -110,10 +110,10 @@ export default function CustomChatbot() {
             </div>
           </div>
 
-          {/* Messages */}
-          {!isMinimized && (
-            <>
-              <div className="h-96 overflow-y-auto p-4 space-y-4 bg-slate-50 dark:bg-slate-800/50">
+              {/* Messages */}
+              {!isMinimized && (
+                <>
+                  <div className="h-80 overflow-y-auto p-4 space-y-4 bg-slate-50/80 dark:bg-slate-800/50 backdrop-blur-sm">
                 {messages.map((message) => (
                   <div
                     key={message.id}
@@ -161,7 +161,7 @@ export default function CustomChatbot() {
               </div>
 
               {/* Input */}
-              <div className="p-4 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-700">
+              <div className="p-4 bg-white/95 dark:bg-slate-900/95 backdrop-blur-sm border-t border-primary-200 dark:border-primary-800">
                 <div className="flex gap-2">
                   <input
                     type="text"
