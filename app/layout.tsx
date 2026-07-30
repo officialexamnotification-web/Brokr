@@ -3,7 +3,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
-import Chatbot from "@/components/common/Chatbot";
+import CustomChatbot from "@/components/common/CustomChatbot";
 
 export const metadata: Metadata = {
   title: "Brokr - Compare Best Trading Tools & Brokers",
@@ -26,7 +26,7 @@ export default function RootLayout({
             <main className="flex-1">{children}</main>
             <Footer />
           </div>
-          <Chatbot />
+          <CustomChatbot />
         </ThemeProvider>
       </body>
     </html>
