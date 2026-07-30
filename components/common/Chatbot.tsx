@@ -20,7 +20,7 @@ export default function Chatbot() {
       
       const script = document.createElement("script");
       script.async = true;
-      script.src = "https://embed.tawk.to/679a8f3d834e8d5ad3b3e8f1/1ijhkqj9o";
+      script.src = "https://embed.tawk.to/6a6bda9931d0d81d4b5d479a/1juqkrqhj";
       script.charset = "UTF-8";
       script.setAttribute("crossorigin", "*");
       document.body.appendChild(script);
