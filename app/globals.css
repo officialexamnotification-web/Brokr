@@ -346,29 +346,3 @@ body {
 .dark .btn-outline:hover {
   @apply border-primary-600 text-primary-400 bg-primary-950/30;
 }
-
-/* Tawk.to Chatbot Left Position */
-#tawkto-chat-widget-container {
-  left: 20px !important;
-  right: auto !important;
-}
-
-.tawk-maximize {
-  left: 20px !important;
-  right: auto !important;
-}
-
-/* Adjust for mobile */
-@media (max-width: 768px) {
-  #tawkto-chat-widget-container,
-  .tawk-maximize {
-    left: 10px !important;
-    bottom: 10px !important;
-  }
-}
-
-/* Fix z-index conflicts */
-.tawk-widget,
-.tawk-widget-container {
-  z-index: 9999 !important;
-}
