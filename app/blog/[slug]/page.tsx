@@ -3,6 +3,35 @@ import Link from "next/link";
 import { ChevronLeft, Clock, ArrowLeft, Share2 } from "lucide-react";
 import { getBlogPostBySlug, getBlogPosts } from "@/lib/data";
 import Badge from "@/components/common/Badge";
+import type { Metadata } from "next";
+
+export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+  const post = getBlogPostBySlug(params.slug);
+  
+  if (!post) {
+    return {
+      title: "Blog Post Not Found | Brokr",
+      description: "The blog post you are looking for could not be found.",
+    };
+  }
+
+  return {
+    title: `${post.title} | ${post.category} Guide | Brokr`,
+    description: post.excerpt,
+    keywords: `${post.tags.join(", ")}, ${post.category}, trading guide, ${post.title}`,
+    openGraph: {
+      title: post.title,
+      description: post.excerpt,
+      type: "article",
+      locale: "en_US",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: post.title,
+      description: post.excerpt,
+    },
+  };
+}
 
 export default function BlogPostPage({ params }: { params: { slug: string } }) {
   const post = getBlogPostBySlug(params.slug);

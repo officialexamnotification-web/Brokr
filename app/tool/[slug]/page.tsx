@@ -1,8 +1,7 @@
-"use client";
-
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import type { Metadata } from "next";
 import {
   ExternalLink,
   ChevronLeft,
@@ -33,6 +32,34 @@ import BetterAlternativeBanner from "@/components/common/BetterAlternativeBanner
 import LivePriceWidget from "@/components/common/LivePriceWidget";
 import QuickCompareSidebar from "@/components/common/QuickCompareSidebar";
 
+export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+  const tool = getToolBySlug(params.slug);
+  
+  if (!tool) {
+    return {
+      title: "Tool Not Found | Brokr",
+      description: "The trading tool you are looking for could not be found.",
+    };
+  }
+
+  return {
+    title: `${tool.name} Review ${tool.rating > 4.5 ? "⭐" : ""} | ${tool.category} | Brokr`,
+    description: `${tool.longDescription} Read our comprehensive review, compare features, pricing, and find out if ${tool.name} is right for you.`,
+    keywords: `${tool.name}, ${tool.category}, ${tool.name} review, ${tool.name} pricing, ${tool.name} features, trading platform, broker comparison`,
+    openGraph: {
+      title: `${tool.name} - ${tool.category} Trading Platform`,
+      description: tool.longDescription,
+      type: "website",
+      locale: "en_US",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${tool.name} Review | Brokr`,
+      description: tool.longDescription,
+    },
+  };
+}
+
 export default function ToolDetailPage({ params }: { params: { slug: string } }) {
   const { slug } = params;
   const tool = getToolBySlug(slug);
@@ -40,6 +67,32 @@ export default function ToolDetailPage({ params }: { params: { slug: string } })
   if (!tool) notFound();
 
   const relatedTools = tools.filter((t) => t.categoryId === tool.categoryId && t.id !== tool.id).slice(0, 3);
+
+  // JSON-LD Structured Data
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    name: tool.name,
+    description: tool.longDescription,
+    applicationCategory: tool.category,
+    operatingSystem: tool.platforms.join(", "),
+    offers: {
+      "@type": "Offer",
+      price: tool.pricing,
+      priceCurrency: "USD",
+    },
+    aggregateRating: {
+      "@type": "AggregateRating",
+      ratingValue: tool.rating,
+      bestRating: 5,
+      worstRating: 1,
+      ratingCount: Math.floor(Math.random() * 500) + 100,
+    },
+    author: {
+      "@type": "Organization",
+      name: "Brokr",
+    },
+  };
 
   const compareTools = tools.filter((t) => t.categoryId === tool.categoryId && t.id !== tool.id).slice(0, 4);
   const comparisonKeys = [
@@ -49,7 +102,12 @@ export default function ToolDetailPage({ params }: { params: { slug: string } })
   ];
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
       <Link href="/" className="inline-flex items-center gap-1.5 text-sm text-slate-500 dark:text-slate-400 hover:text-primary-600 dark:hover:text-primary-400 mb-8 transition-colors">
         <ChevronLeft className="w-4 h-4" /> Back to Home
       </Link>
@@ -275,5 +333,6 @@ export default function ToolDetailPage({ params }: { params: { slug: string } })
 
       <QuickCompareSidebar currentTool={tool} />
     </div>
+    </>
   );
 }

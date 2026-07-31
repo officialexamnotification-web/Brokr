@@ -1,5 +1,3 @@
-"use client";
-
 import React, { useState, useMemo, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
@@ -21,6 +19,24 @@ import {
 import { tools, Tool } from "@/lib/data";
 import Rating from "@/components/common/Rating";
 import Badge from "@/components/common/Badge";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Compare Trading Tools & Brokers Side-by-Side | Brokr",
+  description: "Compare trading tools, brokers, and platforms side-by-side. Analyze features, pricing, regulation, and more to make informed trading decisions.",
+  keywords: "trading tools comparison, broker comparison, compare trading platforms, side-by-side comparison, trading platform analysis",
+  openGraph: {
+    title: "Compare Trading Tools | Brokr",
+    description: "Compare trading tools and platforms side-by-side to find the best option for your trading needs.",
+    type: "website",
+    locale: "en_US",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Compare Trading Tools | Brokr",
+    description: "Make informed decisions with our comprehensive trading tools comparison feature.",
+  },
+};
 
 function CompareContent() {
   const searchParams = useSearchParams();

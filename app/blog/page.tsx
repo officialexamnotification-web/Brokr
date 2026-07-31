@@ -2,6 +2,24 @@ import Link from "next/link";
 import { ChevronLeft, Clock, ArrowRight, BookOpen, TrendingUp, DollarSign, Shield } from "lucide-react";
 import { getBlogPosts, getBlogPostBySlug, blogPosts } from "@/lib/data";
 import Badge from "@/components/common/Badge";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Trading Guides & Educational Articles | Brokr",
+  description: "Expert trading guides, educational articles, and insights to help you become a better trader. Learn forex trading, crypto strategies, stock market analysis, and more.",
+  keywords: "trading guides, forex education, crypto tutorials, stock market analysis, trading strategies, trading blog",
+  openGraph: {
+    title: "Trading Guides & Insights | Brokr",
+    description: "Expert articles to help you become a better trader with comprehensive guides and market insights.",
+    type: "website",
+    locale: "en_US",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Trading Guides | Brokr",
+    description: "Learn trading strategies and market analysis from expert articles and guides.",
+  },
+};
 
 export function generateStaticParams() {
   return blogPosts.map((p) => ({ slug: p.slug }));

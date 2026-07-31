@@ -1,11 +1,41 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ChevronLeft, TrendingUp } from "lucide-react";
+import type { Metadata } from "next";
 import { getCategoryById, getToolsByCategory, categories } from "@/lib/data";
 import ToolCard from "@/components/common/ToolCard";
 
 export function generateStaticParams() {
   return categories.map((cat) => ({ id: String(cat.id) }));
+}
+
+export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
+  const categoryId = parseInt(params.id);
+  const category = getCategoryById(categoryId);
+
+  if (!category) {
+    return {
+      title: "Category Not Found | Brokr",
+      description: "The category you are looking for could not be found.",
+    };
+  }
+
+  return {
+    title: `${category.name} Trading Tools & Platforms | Brokr`,
+    description: `Compare the best ${category.name.toLowerCase()} trading tools. ${category.description} Find the perfect platform for your trading needs.`,
+    keywords: `${category.name}, ${category.name} trading tools, ${category.name} platforms, ${category.name} brokers, trading comparison`,
+    openGraph: {
+      title: `${category.name} Trading Tools | Brokr`,
+      description: category.description,
+      type: "website",
+      locale: "en_US",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${category.name} Trading Tools | Brokr`,
+      description: category.description,
+    },
+  };
 }
 
 export default function CategoryPage({

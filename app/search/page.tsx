@@ -1,5 +1,3 @@
-"use client";
-
 import React, { useState, useMemo, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
@@ -8,6 +6,24 @@ import { Search as SearchIcon, X, Filter, SlidersHorizontal, Star, Globe, Smartp
 import { tools, categories, searchTools, getAvailableCountries } from "@/lib/data";
 import ToolCard from "@/components/common/ToolCard";
 import Badge from "@/components/common/Badge";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Search & Compare Trading Tools | Brokr",
+  description: "Search and compare 275+ trading tools, brokers, and platforms. Filter by category, rating, country, regulation, and more to find the perfect trading platform.",
+  keywords: "trading tools search, broker comparison, find trading platform, compare brokers, trading platform finder",
+  openGraph: {
+    title: "Search Trading Tools | Brokr",
+    description: "Search and compare 275+ trading tools, brokers, and platforms to find the perfect match for your trading needs.",
+    type: "website",
+    locale: "en_US",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Search Trading Tools | Brokr",
+    description: "Find and compare the best trading tools and platforms with our advanced search filters.",
+  },
+};
 
 type SortOption = "rating" | "trending" | "name";
 type ExperienceLevel = "all" | "beginner" | "intermediate" | "advanced";
