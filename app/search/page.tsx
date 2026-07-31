@@ -5,11 +5,11 @@ import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { Search as SearchIcon, X, Filter, SlidersHorizontal, Star, Globe, Smartphone, DollarSign } from "lucide-react";
-import { tools, categories, searchTools } from "@/lib/data";
+import { tools, categories, searchTools, getAvailableCountries } from "@/lib/data";
 import ToolCard from "@/components/common/ToolCard";
 import Badge from "@/components/common/Badge";
 
-type SortOption = "rating" | "trending" | "reviews" | "name";
+type SortOption = "rating" | "trending" | "name";
 type ExperienceLevel = "all" | "beginner" | "intermediate" | "advanced";
 
 const platforms = ["Web", "iOS", "Android", "Desktop", "API"];
@@ -32,6 +32,7 @@ function SearchContent() {
   const [minRating, setMinRating] = useState<number>(0);
   const [selectedPlatform, setSelectedPlatform] = useState<string>("");
   const [selectedRegulation, setSelectedRegulation] = useState<string>("");
+  const [selectedCountry, setSelectedCountry] = useState<string>("");
   const [experience, setExperience] = useState<ExperienceLevel>("all");
   const [showFilters, setShowFilters] = useState(false);
 
@@ -47,25 +48,44 @@ function SearchContent() {
       results = results.filter((t) => t.bestFor?.some((b) => experienceMap[experience].includes(b)));
     }
 
+    if (selectedCountry) {
+      results = results.filter((t) => {
+        const countryLower = selectedCountry.toLowerCase();
+        return t.supportedCountries.some((supportedCountry) => {
+          const supportedLower = supportedCountry.toLowerCase();
+          return (
+            supportedLower.includes(countryLower) ||
+            supportedLower === "global" ||
+            supportedLower.includes("global") ||
+            (countryLower === "india" && supportedLower.includes("india")) ||
+            (countryLower === "uk" && (supportedLower.includes("uk") || supportedLower.includes("united kingdom"))) ||
+            (countryLower === "usa" && (supportedLower.includes("usa") || supportedLower.includes("united states"))) ||
+            (countryLower === "europe" && (supportedLower.includes("europe") || supportedLower.includes("eu") || supportedLower.includes("eea"))) ||
+            (countryLower === "eu" && (supportedLower.includes("europe") || supportedLower.includes("eu") || supportedLower.includes("eea")))
+          );
+        });
+      });
+    }
+
     results.sort((a, b) => {
       switch (sortBy) {
         case "rating": return b.rating - a.rating;
         case "trending": return Number(b.trending) - Number(a.trending);
-        case "reviews": return b.reviews - a.reviews;
         case "name": return a.name.localeCompare(b.name);
         default: return 0;
       }
     });
     return results;
-  }, [query, sortBy, selectedCategory, minRating, selectedPlatform, selectedRegulation, experience]);
+  }, [query, sortBy, selectedCategory, minRating, selectedPlatform, selectedRegulation, experience, selectedCountry]);
 
-  const hasFilters = query || selectedCategory || minRating > 0 || selectedPlatform || selectedRegulation || experience !== "all";
+  const hasFilters = query || selectedCategory || minRating > 0 || selectedPlatform || selectedRegulation || experience !== "all" || selectedCountry;
   const clearFilters = () => {
     setQuery("");
     setSelectedCategory(null);
     setMinRating(0);
     setSelectedPlatform("");
     setSelectedRegulation("");
+    setSelectedCountry("");
     setExperience("all");
     setSortBy("rating");
   };
@@ -128,6 +148,34 @@ function SearchContent() {
                   <option value="advanced">Advanced</option>
                 </select>
               </div>
+              <div>
+                <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-2">Country/Region</label>
+                <select value={selectedCountry} onChange={(e) => setSelectedCountry(e.target.value)} className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm text-slate-700 dark:text-slate-300 focus:outline-none focus:ring-2 focus:ring-primary-500/30">
+                  <option value="">All Countries</option>
+                  <option value="Global">Global (Worldwide)</option>
+                  <option value="India">India</option>
+                  <option value="USA">USA</option>
+                  <option value="UK">UK</option>
+                  <option value="Europe">Europe</option>
+                  <option value="Australia">Australia</option>
+                  <option value="Japan">Japan</option>
+                  <option value="Brazil">Brazil</option>
+                  <option value="Mexico">Mexico</option>
+                  <option value="South Korea">South Korea</option>
+                  <option value="Singapore">Singapore</option>
+                  <option value="Canada">Canada</option>
+                  <option value="Germany">Germany</option>
+                  <option value="France">France</option>
+                  <option value="Italy">Italy</option>
+                  <option value="Spain">Spain</option>
+                  <option value="Sweden">Sweden</option>
+                  <option value="Norway">Norway</option>
+                  <option value="Denmark">Denmark</option>
+                  <option value="Finland">Finland</option>
+                  <option value="South Africa">South Africa</option>
+                  <option value="Malaysia">Malaysia</option>
+                </select>
+              </div>
               <div className="flex items-end">
                 <button onClick={clearFilters} className="w-full py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 text-sm font-medium text-slate-500 hover:text-rose-500 hover:border-rose-200 transition-colors">Clear All Filters</button>
               </div>
@@ -149,7 +197,6 @@ function SearchContent() {
             <select value={sortBy} onChange={(e) => setSortBy(e.target.value as SortOption)} className="text-sm py-2 pl-3 pr-8 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 focus:outline-none focus:ring-2 focus:ring-primary-500/30 appearance-none cursor-pointer">
               <option value="rating">Highest Rated</option>
               <option value="trending">Trending</option>
-              <option value="reviews">Most Reviewed</option>
               <option value="name">Alphabetical</option>
             </select>
           </div>

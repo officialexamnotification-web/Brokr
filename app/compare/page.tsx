@@ -76,7 +76,6 @@ function CompareContent() {
 
   const compareRows = [
     { label: "Rating", key: "rating", render: (t: Tool) => <Rating value={t.rating} size="md" /> },
-    { label: "Reviews", key: "reviews", render: (t: Tool) => t.reviews.toLocaleString() },
     { label: "Category", key: "category", render: (t: Tool) => <Badge variant="info">{t.category}</Badge> },
     { label: "Pricing", key: "pricing", render: (t: Tool) => t.pricing },
     { label: "Min Deposit", key: "minDeposit", render: (t: Tool) => t.minDeposit },

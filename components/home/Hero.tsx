@@ -9,10 +9,10 @@ export default function Hero() {
   const [searchQuery, setSearchQuery] = useState("");
 
   const stats = [
-    { label: "Tools Listed", value: "275+", desc: "Curated & verified" },
-    { label: "Reviews", value: "180K+", desc: "From real traders" },
+    { label: "Verified Tools", value: "275+", desc: "Regulation checked" },
     { label: "Categories", value: "8", desc: "Covering all markets" },
-    { label: "Traders", value: "500K+", desc: "Trust our platform" },
+    { label: "Countries", value: "4", desc: "Region-specific pages" },
+    { label: "Expert Articles", value: "50+", desc: "In-depth analysis" },
   ];
 
   return (

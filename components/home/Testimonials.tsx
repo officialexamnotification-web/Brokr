@@ -2,26 +2,28 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { Star, Quote } from "lucide-react";
+import { Shield, CheckCircle, Zap, Globe } from "lucide-react";
 
-const testimonials = [
+const features = [
   {
-    quote: "Brokr helped me find the perfect trading platform. The side-by-side comparison made it so easy to evaluate all the options. Saved me hours of research!",
-    author: "Alex Chen",
-    role: "Day Trader, 5+ years",
-    rating: 5,
+    icon: Shield,
+    title: "Regulation Verified",
+    description: "Every platform is checked for FCA, SEC, SEBI, and ESMA compliance to ensure your funds are protected.",
   },
   {
-    quote: "I was overwhelmed by the number of crypto exchanges out there. Brokr's reviews and ratings helped me narrow it down to the ones that actually matched my needs.",
-    author: "Sarah Martinez",
-    role: "Crypto Investor",
-    rating: 5,
+    icon: CheckCircle,
+    title: "Expert Analysis",
+    description: "Our team analyzes fees, platforms, and features to provide accurate, unbiased comparisons.",
   },
   {
-    quote: "The detailed pros and cons for each broker are incredibly accurate. I have been using their recommendations for 2 years and never been disappointed.",
-    author: "James Wilson",
-    role: "Forex Trader",
-    rating: 4,
+    icon: Zap,
+    title: "Real-Time Updates",
+    description: "Platform data is regularly updated to reflect the latest changes in fees, regulations, and features.",
+  },
+  {
+    icon: Globe,
+    title: "Country-Specific",
+    description: "Tailored recommendations for India, UK, US, and EU markets with local regulations.",
   },
 ];
 
@@ -37,54 +39,37 @@ export default function Testimonials() {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <span className="inline-block px-4 py-1.5 rounded-full bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300 text-xs font-semibold tracking-wide uppercase mb-4">
-            Testimonials
+          <span className="inline-block px-4 py-1.5 rounded-full bg-primary-50 dark:bg-primary-950/40 text-primary-700 dark:text-primary-300 text-xs font-semibold tracking-wide uppercase mb-4">
+            Why Choose Us
           </span>
           <h2 className="text-3xl lg:text-5xl font-black text-slate-900 dark:text-white tracking-tight mb-4">
-            Loved by{" "}
-            <span className="gradient-text-warm">traders</span> worldwide
+            Trusted{" "}
+            <span className="gradient-text">platform</span> verification
           </h2>
           <p className="text-lg text-slate-500 dark:text-slate-400 max-w-xl mx-auto">
-            See what our community says about using Brokr to find their perfect
-            trading tools.
+            We verify every platform's regulation, fees, and features so you can trade with confidence.
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 lg:gap-6">
-          {testimonials.map((t, i) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-6">
+          {features.map((feature, i) => (
             <motion.div
               key={i}
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: i * 0.12 }}
-              className="glass-card rounded-3xl p-6 lg:p-8 relative overflow-hidden"
+              transition={{ duration: 0.5, delay: i * 0.1 }}
+              className="glass-card rounded-3xl p-6 lg:p-8 relative overflow-hidden hover-lift"
             >
-              <Quote className="absolute top-6 right-6 w-10 h-10 text-slate-100 dark:text-slate-800" />
-              <div className="flex gap-1 mb-4">
-                {Array.from({ length: 5 }).map((_, j) => (
-                  <Star
-                    key={j}
-                    className={`w-4 h-4 ${j < t.rating ? "text-amber-400 fill-amber-400" : "text-slate-200 dark:text-slate-700"}`}
-                  />
-                ))}
+              <div className={`w-12 h-12 rounded-2xl bg-gradient-to-br from-primary-500 to-purple-500 flex items-center justify-center mb-4`}>
+                <feature.icon className="w-6 h-6 text-white" />
               </div>
-              <p className="text-slate-600 dark:text-slate-300 mb-6 leading-relaxed relative z-10">
-                &ldquo;{t.quote}&rdquo;
+              <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-2">
+                {feature.title}
+              </h3>
+              <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+                {feature.description}
               </p>
-              <div className="flex items-center gap-3 pt-4 border-t border-slate-100 dark:border-slate-800">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary-500 to-purple-500 flex items-center justify-center text-white text-sm font-bold">
-                  {t.author.charAt(0)}
-                </div>
-                <div>
-                  <div className="text-sm font-bold text-slate-900 dark:text-white">
-                    {t.author}
-                  </div>
-                  <div className="text-xs text-slate-500 dark:text-slate-400">
-                    {t.role}
-                  </div>
-                </div>
-              </div>
             </motion.div>
           ))}
         </div>

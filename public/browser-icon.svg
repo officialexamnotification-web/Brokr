@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <defs>
+    <linearGradient id="mainGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#7c3aed;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#8b5cf6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#06b6d4;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="screenGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#7c3aed;stop-opacity:0.15" />
+      <stop offset="100%" style="stop-color:#06b6d4;stop-opacity:0.08" />
+    </linearGradient>
+    <linearGradient id="textGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#c7d2fe;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="globeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#a78bfa;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#22d3ee;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#7c3aed" flood-opacity="0.3"/>
+    </filter>
+    <filter id="innerGlow">
+      <feGaussianBlur stdDeviation="1" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+    <filter id="textGlow">
+      <feGaussianBlur stdDeviation="0.6" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Browser Frame -->
+  <rect x="4" y="6" width="56" height="52" rx="11" 
+        fill="url(#mainGrad)" 
+        filter="url(#shadow)"/>
+  
+  <!-- Screen Area -->
+  <rect x="8" y="16" width="48" height="38" rx="7" 
+        fill="url(#screenGrad)"/>
+  
+  <!-- Top Bar -->
+  <rect x="8" y="10" width="48" height="12" rx="5" 
+        fill="rgba(255,255,255,0.15)"/>
+  
+  <!-- Window Controls -->
+  <circle cx="13" cy="16" r="1.5" fill="#f87171"/>
+  <circle cx="17.5" cy="16" r="1.5" fill="#fbbf24"/>
+  <circle cx="22" cy="16" r="1.5" fill="#4ade80"/>
+  
+  <!-- URL Bar -->
+  <rect x="28" y="13" width="26" height="6" rx="3" 
+        fill="rgba(255,255,255,0.25)"/>
+  
+  <!-- Search Icon in URL Bar -->
+  <circle cx="30" cy="16" r="1.2" stroke="rgba(255,255,255,0.5)" stroke-width="0.8" fill="none"/>
+  <line x1="31" y1="17" x2="32" y2="18" stroke="rgba(255,255,255,0.5)" stroke-width="0.8" stroke-linecap="round"/>
+  
+  <!-- Globe Circle -->
+  <circle cx="32" cy="35" r="11" 
+          fill="none" 
+          stroke="url(#globeGrad)" 
+          stroke-width="2.2"
+          filter="url(#innerGlow)"/>
+  
+  <!-- Globe Grid Lines -->
+  <ellipse cx="32" cy="35" rx="11" ry="4.5" 
+           fill="none" 
+           stroke="url(#globeGrad)" 
+           stroke-width="1.5"
+           opacity="0.5"/>
+  <ellipse cx="32" cy="35" rx="4.5" ry="11" 
+           fill="none" 
+           stroke="url(#globeGrad)" 
+           stroke-width="1.5"
+           opacity="0.5"/>
+  <line x1="32" y1="24" x2="32" y2="46" 
+        stroke="url(#globeGrad)" 
+        stroke-width="1.5"
+        opacity="0.5"/>
+  
+  <!-- Glass Reflection -->
+  <ellipse cx="18" cy="18" rx="8" ry="4" 
+           fill="rgba(255,255,255,0.12)"/>
+  
+  <!-- Subtle Border Glow -->
+  <rect x="4" y="6" width="56" height="52" rx="11" 
+        fill="none" 
+        stroke="rgba(255,255,255,0.2)" 
+        stroke-width="1"/>
+</svg>

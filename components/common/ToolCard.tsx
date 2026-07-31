@@ -26,7 +26,7 @@ export default function ToolCard({ tool, variant = "default", index = 0 }: ToolC
         </div>
         <div className="min-w-0 flex-1">
           <h3 className="text-sm font-semibold text-slate-900 dark:text-white truncate group-hover:text-primary-600 transition-colors">{tool.name}</h3>
-          <Rating value={tool.rating} reviews={tool.reviews} size="sm" />
+          <Rating value={tool.rating} size="sm" />
         </div>
         <ArrowUpRight className="w-4 h-4 text-slate-300 dark:text-slate-600 group-hover:text-primary-500 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
       </Link>
@@ -75,7 +75,7 @@ export default function ToolCard({ tool, variant = "default", index = 0 }: ToolC
             </div>
 
             <div className="flex items-center justify-between pt-4 border-t border-slate-100 dark:border-slate-800/50">
-              <Rating value={tool.rating} reviews={tool.reviews} size="md" />
+              <Rating value={tool.rating} size="md" />
               <span className="flex items-center gap-1.5 text-sm font-semibold text-primary-600 dark:text-primary-400">
                 Details <ArrowUpRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
               </span>
@@ -125,7 +125,7 @@ export default function ToolCard({ tool, variant = "default", index = 0 }: ToolC
         </div>
 
         <div className="flex items-center justify-between pt-4 border-t border-slate-100 dark:border-slate-800/50">
-          <Rating value={tool.rating} reviews={tool.reviews} size="sm" />
+          <Rating value={tool.rating} size="sm" />
           <div className="flex items-center gap-1 text-xs text-slate-400 dark:text-slate-500">
             <Shield className="w-3 h-3" /> {tool.regulation[0]}
           </div>

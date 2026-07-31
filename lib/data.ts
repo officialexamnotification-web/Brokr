@@ -4,7 +4,6 @@ export interface Tool {
   slug: string;
   logo: string;
   rating: number;
-  reviews: number;
   description: string;
   longDescription: string;
   category: string;
@@ -85,7 +84,7 @@ export const categories: Category[] = [
   { id: 5, name: "Options Trading", slug: "options-trading", icon: "GanttChart", count: 5, description: "Advanced options trading platforms with strategy builders" },
   { id: 6, name: "Payment Systems", slug: "payment-systems", icon: "Wallet", count: 12, description: "Digital payment solutions and e-wallets for online transactions" },
   { id: 7, name: "Trading Tools", slug: "trading-tools", icon: "Wrench", count: 15, description: "Essential trading tools, screeners and analysis software" },
-  { id: 8, name: "Education", slug: "education", icon: "GraduationCap", count: 15, description: "Trading courses, webinars and educational resources" },
+  { id: 8, name: "Education", slug: "education", icon: "GraduationCap", count: 53, description: "Trading courses, webinars and educational resources" },
 ];
 
 export const regions: Region[] = [
@@ -422,27 +421,1476 @@ Key factors to consider:
 
 CFDs are suitable for experienced traders who understand leverage and risk management. If you are a beginner, start with a demo account and only trade with money you can afford to lose.`,
   },
-];
+  {
+    id: 6, slug: "trading-psychology-mastery", title: "Trading Psychology: How to Control Emotions and Build Discipline",
+    excerpt: "Fear, greed, and hope are the biggest enemies of successful trading. Learn proven techniques to master your emotions and develop the discipline of professional traders.",
+    category: "Education", author: "Dr. Michael Chen", date: "2026-06-25", readTime: "15 min",
+    image: "TP", tags: ["psychology", "discipline", "mindset"],
+    content: `# Trading Psychology: Master Your Mind, Master Your Trading
 
-export const userReviews: UserReview[] = [
-  { id: 1, toolSlug: "etoro", userName: "Rahul M.", rating: 5, title: "Best for beginners like me", comment: "Started trading 6 months ago with zero knowledge. eToro's CopyTrader feature helped me learn by copying experienced traders. The interface is super intuitive and I love the social feed. Made my first profitable month last month!", date: "2026-07-20", verified: true, helpful: 34 },
-  { id: 2, toolSlug: "etoro", userName: "Priya K.", rating: 4, title: "Good but spreads could be better", comment: "Great platform overall. Love the CopyTrader and the educational content. However, spreads on some forex pairs are higher than competitors. Customer support response time could also improve.", date: "2026-07-18", verified: true, helpful: 18 },
-  { id: 3, toolSlug: "etoro", userName: "Vikram S.", rating: 5, title: "Perfect social trading experience", comment: "The social aspect is unmatched. Being able to see what other traders are doing, their success rates, and risk scores is invaluable. I've learned more from eToro in 3 months than from any course.", date: "2026-07-15", verified: true, helpful: 27 },
-  { id: 4, toolSlug: "binance", userName: "Arjun D.", rating: 5, title: "Lowest fees in the game", comment: "Binance has the most competitive fee structure. With BNB discounts, my fees are practically zero. The P2P marketplace is also excellent for Indian users to buy crypto with INR.", date: "2026-07-22", verified: true, helpful: 42 },
-  { id: 5, toolSlug: "binance", userName: "Sarah L.", rating: 4, title: "Feature-rich but complex", comment: "Binance offers everything a trader could want - spot, futures, margin, staking, launchpad. But for beginners, the interface can be overwhelming. Advanced traders will love it though.", date: "2026-07-19", verified: true, helpful: 31 },
-  { id: 6, toolSlug: "binance", userName: "Mike T.", rating: 5, title: "Earn passive income with staking", comment: "I've been staking on Binance for over a year. The yields are competitive and the process is simple. Flexible staking lets me withdraw anytime. Great for passive income.", date: "2026-07-16", verified: false, helpful: 15 },
-  { id: 7, toolSlug: "interactive-brokers", userName: "David W.", rating: 5, title: "Professional grade platform", comment: "IBKR is the gold standard for serious traders. The order execution is unmatched, margin rates are the lowest in the industry, and I can access markets worldwide from one account.", date: "2026-07-21", verified: true, helpful: 23 },
-  { id: 8, toolSlug: "interactive-brokers", userName: "Lisa C.", rating: 4, title: "Great for global diversification", comment: "I use IBKR to invest in international markets. Being able to trade stocks in 30+ countries from one account is incredible. The learning curve is steep but worth it.", date: "2026-07-17", verified: true, helpful: 19 },
-  { id: 9, toolSlug: "coinbase", userName: "Tom H.", rating: 5, title: "Perfect for crypto beginners", comment: "If you're new to crypto, Coinbase is the best place to start. The interface is clean, buying is simple, and the Learn & Earn program actually pays you to learn about crypto!", date: "2026-07-23", verified: true, helpful: 45 },
-  { id: 10, toolSlug: "coinbase", userName: "Neha G.", rating: 3, title: "Too expensive for active trading", comment: "Good for casual buying, but the fees are way too high for regular trading. I moved my active trading to Coinbase Pro (now Advanced Trade) where fees are much lower.", date: "2026-07-14", verified: false, helpful: 28 },
-  { id: 11, toolSlug: "tradingview", userName: "Carlos R.", rating: 5, title: "Best charts in the business", comment: "TradingView charts are simply the best. The Pine Script language lets me code custom indicators, and the community scripts are incredible. I pay for Premium and it's worth every penny.", date: "2026-07-24", verified: true, helpful: 56 },
-  { id: 12, toolSlug: "tradingview", userName: "Emma J.", rating: 5, title: "Made me a better trader", comment: "The social features on TradingView have completely transformed my trading. I follow top analysts, learn from their ideas, and have improved my win rate significantly.", date: "2026-07-12", verified: true, helpful: 38 },
+## The Psychology Problem
+
+90% of traders fail not because they lack technical knowledge, but because they cannot control their emotions. The market is designed to trigger your psychological weaknesses.
+
+## The Three Enemies
+
+### Fear
+Fear causes you to:
+- Exit winning trades too early
+- Avoid entering valid setups
+- Move stop losses further away
+
+**Solution**: Pre-define your exit points before entering any trade. Never change them during the trade.
+
+### Greed
+Greed causes you to:
+- Overtrade and overleverage
+- Hold losing positions hoping for reversal
+- Risk more than you should
+
+**Solution**: Set maximum daily loss limits. Never increase position size after a win.
+
+### Hope
+Hope causes you to:
+- Add to losing positions
+- Ignore clear exit signals
+- Trade without a plan
+
+**Solution**: Accept that hope is not a trading strategy. Every trade must have a predetermined exit plan.
+
+## Building Discipline
+
+### 1. Create a Trading Plan
+Your plan should include:
+- Entry criteria
+- Exit criteria (stop loss and take profit)
+- Maximum risk per trade
+- Maximum number of trades per day
+- Markets and timeframes you trade
+
+### 2. Keep a Trading Journal
+Document:
+- Why you entered the trade
+- Your emotional state during the trade
+- What you did right and wrong
+- Lessons learned
+
+### 3. Practice Mindfulness
+Before trading:
+- Take 5 deep breaths
+- Visualize potential outcomes
+- Accept that losses are part of the process
+- Focus on process, not results
+
+### 4. Set Realistic Expectations
+- Accept that 50-60% win rate is normal
+- Understand that drawdowns are inevitable
+- Focus on long-term consistency, not daily profits
+
+## Professional Mindset Shifts
+
+### From "I Must Win" to "I Must Follow My Plan"
+Professional traders don't focus on winning individual trades. They focus on executing their plan consistently.
+
+### From "The Market Is Against Me" to "The Market Is Neutral"
+The market doesn't know you exist. It simply reacts to supply and demand. Take nothing personally.
+
+### From "I Need to Recover Losses" to "I Need to Protect Capital"
+Revenge trading is the fastest way to blow up your account. Focus on protecting what you have, not recovering what you lost.
+
+## Daily Routine for Mental Clarity
+
+**Pre-Market (15 minutes):**
+- Review your trading plan
+- Check economic calendar
+- Identify key levels
+- Set emotional intention
+
+**During Trading:**
+- Take breaks every hour
+- Step away after 3 consecutive losses
+- Review your journal weekly
+- Celebrate following your plan, not just profits
+
+**Post-Market (15 minutes):**
+- Review all trades
+- Note emotional patterns
+- Plan tomorrow's trades
+- Disconnect from screens
+
+## Conclusion
+
+Trading psychology is not about eliminating emotions - it's about managing them. The most profitable traders are not the smartest, but the most disciplined.`,
+  },
+  {
+    id: 7, slug: "technical-analysis-basics", title: "Technical Analysis for Beginners: Chart Patterns and Indicators",
+    excerpt: "Learn to read charts like a pro. This comprehensive guide covers support/resistance, trend lines, candlestick patterns, and essential indicators for successful trading.",
+    category: "Education", author: "Sarah Williams", date: "2026-06-20", readTime: "18 min",
+    image: "TA", tags: ["technical-analysis", "charts", "indicators"],
+    content: `# Technical Analysis for Beginners: Complete Guide
+
+## What is Technical Analysis?
+
+Technical analysis is the study of historical price action to predict future price movements. Unlike fundamental analysis, which looks at company financials, technical analysis focuses solely on price charts and patterns.
+
+## Core Concepts
+
+### Support and Resistance
+**Support**: A price level where buying pressure is strong enough to prevent further decline.
+**Resistance**: A price level where selling pressure is strong enough to prevent further advance.
+
+**Key Points:**
+- The more times a level is tested, the stronger it becomes
+- Broken resistance becomes support (and vice versa)
+- Round numbers often act as psychological levels
+
+### Trend Lines
+**Uptrend Line**: Drawn by connecting higher lows
+**Downtrend Line**: Drawn by connecting lower highs
+
+**Rules:**
+- A trend line needs at least 2 points to be drawn, 3 to be confirmed
+- The more times a trend line is tested, the more significant it becomes
+- A break of the trend line signals potential trend reversal
+
+## Candlestick Patterns
+
+### Bullish Patterns
+**Hammer**: Small body with long lower wick - signals potential reversal after downtrend
+**Bullish Engulfing**: Large green candle completely engulfing previous red candle
+**Morning Star**: Three-candle pattern signaling trend reversal
+**Doji**: Small body indicates indecision - potential reversal signal
+
+### Bearish Patterns  
+**Shooting Star**: Small body with long upper wick - signals potential reversal after uptrend
+**Bearish Engulfing**: Large red candle completely engulfing previous green candle
+**Evening Star**: Three-candle pattern signaling trend reversal
+
+## Essential Indicators
+
+### Moving Averages
+**Simple Moving Average (SMA)**: Average price over specified period
+**Exponential Moving Average (EMA)**: Gives more weight to recent prices
+
+**Common Settings:**
+- 20 EMA: Short-term trend
+- 50 EMA: Medium-term trend
+- 200 EMA: Long-term trend
+
+**Golden Cross**: 50 EMA crosses above 200 EMA (bullish signal)
+**Death Cross**: 50 EMA crosses below 200 EMA (bearish signal)
+
+### RSI (Relative Strength Index)
+Measures momentum on a scale of 0-100
+- Above 70: Overbought (potential sell signal)
+- Below 30: Oversold (potential buy signal)
+- Divergence: Price makes new high but RSI doesn't (reversal signal)
+
+### MACD (Moving Average Convergence Divergence)
+**Components:**
+- MACD line (fast EMA - slow EMA)
+- Signal line (EMA of MACD)
+- Histogram (MACD - Signal line)
+
+**Signals:**
+- MACD crosses above signal = Buy
+- MACD crosses below signal = Sell
+- Histogram shows momentum strength
+
+### Volume
+Volume confirms price movements:
+- Price up + Volume up = Strong uptrend
+- Price up + Volume down = Weak uptrend (potential reversal)
+- Price down + Volume up = Strong downtrend
+- Price down + Volume down = Weak downtrend (potential reversal)
+
+## Putting It Together
+
+### Step 1: Identify the Trend
+Use moving averages and trend lines to determine overall direction
+
+### Step 2: Find Key Levels
+Mark support/resistance zones where price might reverse
+
+### Step 3: Wait for Confirmation
+Look for candlestick patterns or indicator signals at key levels
+
+### Step 4: Manage Risk
+Always use stop losses just beyond support/resistance levels
+
+## Common Mistakes
+
+1. **Over-reliance on indicators**: No indicator is perfect. Use multiple confirmations
+2. **Ignoring the trend**: "The trend is your friend" for a reason
+3. **Trading every signal**: Not every pattern or signal is worth trading
+4. **Forgetting volume**: Volume is the fuel that drives price movements
+
+## Conclusion
+
+Technical analysis is both art and science. Master the basics first, then develop your own style. Remember: price action is king - indicators are just tools to help interpret it.`,
+  },
+  {
+    id: 8, slug: "day-trading-vs-swing-trading", title: "Day Trading vs Swing Trading: Which Style Suits You?",
+    excerpt: "Different trading styles suit different personalities and lifestyles. Compare day trading and swing trading to find which approach matches your goals and schedule.",
+    category: "Education", author: "James Miller", date: "2026-06-15", readTime: "12 min",
+    image: "DT", tags: ["trading-styles", "day-trading", "swing-trading"],
+    content: `# Day Trading vs Swing Trading: Find Your Style
+
+## The Fundamental Difference
+
+**Day Trading**: Opening and closing positions within the same trading day
+**Swing Trading**: Holding positions for several days to weeks
+
+## Day Trading
+
+### Characteristics
+- Multiple trades per day
+- Positions closed before market close
+- Focus on intraday price movements
+- Requires constant market monitoring
+- Smaller profit targets, more frequent trades
+
+### Pros
+- No overnight risk
+- Quick feedback on results
+- Can compound gains faster
+- No overnight financing costs
+- Capital is freed up daily
+
+### Cons
+- High stress and time commitment
+- Transaction costs add up
+- Requires intense focus
+- Difficult to scale with larger capital
+- Susceptible to market noise
+
+### Best For
+- People who can dedicate 6-8 hours daily to trading
+- Those who thrive on fast-paced environments
+- Traders with smaller starting capital
+- Individuals who don't hold overnight positions
+
+### Required Skills
+- Quick decision making
+- Ability to handle high pressure
+- Discipline to follow strict rules
+- Strong technical analysis skills
+- Emotional control
+
+## Swing Trading
+
+### Characteristics
+- Fewer trades (1-5 per week)
+- Positions held for days to weeks
+- Focus on larger price movements
+- Less time-intensive monitoring
+- Larger profit targets, fewer trades
+
+### Pros
+- Less time commitment
+- Lower transaction costs
+- Can be done alongside a full-time job
+- Less stressful than day trading
+- Captures larger market moves
+
+### Cons
+- Overnight risk exposure
+- Requires patience
+- Capital tied up for longer periods
+- Overnight financing costs
+- Can miss intraday opportunities
+
+### Best For
+- People with full-time jobs
+- Those who prefer less stress
+- Traders with larger starting capital
+- Individuals who are patient
+- Those who can handle overnight risk
+
+### Required Skills
+- Patience to wait for setups
+- Strong trend analysis
+- Risk management for overnight holds
+- Ability to ignore daily noise
+- Longer-term market perspective
+
+## Key Comparison
+
+| Factor | Day Trading | Swing Trading |
+|--------|-------------|---------------|
+| Time Required | 6-8 hours daily | 1-2 hours daily |
+| Trades Per Day | 5-20 | 0-2 |
+| Holding Period | Minutes to hours | Days to weeks |
+| Stress Level | High | Moderate |
+| Capital Needed | Lower | Higher |
+| Transaction Costs | Higher | Lower |
+| Overnight Risk | None | Yes |
+| Learning Curve | Steep | Moderate |
+
+## Making Your Choice
+
+### Choose Day Trading If:
+- You have time to monitor markets throughout the day
+- You enjoy fast-paced decision making
+- You have limited starting capital
+- You prefer not holding positions overnight
+- You can handle high stress environments
+
+### Choose Swing Trading If:
+- You have a full-time job
+- You prefer a more relaxed approach
+- You have sufficient starting capital
+- You're comfortable with overnight risk
+- You prefer larger, less frequent wins
+
+## Hybrid Approach
+
+Many successful traders combine both styles:
+- Day trade during high-volatility periods
+- Swing trade during trending markets
+- Adapt style based on market conditions
+- Scale position sizes based on time commitment
+
+## Conclusion
+
+There is no "better" style - only the style that fits your personality, lifestyle, and goals. Start with paper trading both approaches to see which feels more natural. Remember: the best trading style is the one you can execute consistently.`,
+  },
+  {
+    id: 9, slug: "choosing-first-broker", title: "How to Choose Your First Trading Broker: Complete Checklist",
+    excerpt: "Your broker choice can make or break your trading journey. This comprehensive checklist covers regulation, fees, platforms, and what to look for in your first broker.",
+    category: "Education", author: "Alex Thompson", date: "2026-06-10", readTime: "13 min",
+    image: "CB", tags: ["brokers", "beginners", "checklist"],
+    content: `# How to Choose Your First Trading Broker: Complete Checklist
+
+## Why Broker Choice Matters
+
+Your broker is your gateway to the markets. A good broker provides fair execution, reliable platforms, and proper protection. A bad broker can cost you money through hidden fees, poor execution, or even fraud.
+
+## Non-Negotiable Requirements
+
+### 1. Regulation
+Your broker MUST be regulated by reputable authorities:
+- **FCA** (UK) - Gold standard for investor protection
+- **CySEC** (Cyprus) - EU regulation with €20k protection
+- **ASIC** (Australia) - Strong regulatory framework
+- **SEC/FINRA** (USA) - Strict oversight but limited to US residents
+- **SEBI** (India) - Required for Indian residents
+
+**Avoid**: Unregulated brokers or those regulated in offshore jurisdictions
+
+### 2. Segregated Funds
+Client funds must be kept in separate bank accounts from the broker's operating funds. This protects your money if the broker goes bankrupt.
+
+### 3. Negative Balance Protection
+Ensures you cannot lose more than your account balance, even with leverage.
+
+## Fee Structure Analysis
+
+### Trading Fees
+- **Commission**: Fixed fee per trade (common for stocks)
+- **Spread**: Difference between bid/ask (common for forex/CFDs)
+- **Swap/Overnight Fee**: Cost of holding positions overnight
+- **Inactivity Fee**: Charged if you don't trade for extended periods
+
+**Tip**: Calculate your expected trading volume to compare total costs
+
+### Non-Trading Fees
+- **Deposit/Withdrawal Fees**: Some brokers charge for transactions
+- **Currency Conversion Fees**: Hidden costs when converting currencies
+- **Account Maintenance Fees**: Monthly charges for inactive accounts
+
+## Platform and Tools
+
+### Trading Platform
+- **User Interface**: Should be intuitive and easy to navigate
+- **Reliability**: Must be stable during high volatility
+- **Mobile App**: Essential for monitoring on the go
+- **Charting Tools**: Built-in technical analysis capabilities
+
+**Popular Platforms**:
+- MetaTrader 4/5: Industry standard for forex/CFDs
+- TradingView: Best charting platform
+- Proprietary Platforms: Vary by broker
+
+### Research and Education
+- **Market Analysis**: Daily market commentary
+- **Economic Calendar**: Key events that affect markets
+- **Educational Resources**: Tutorials, webinars, guides
+- **Trading Signals**: Some brokers provide trade ideas
+
+## Account Types
+
+### Demo Account
+**Essential for beginners** - practice with virtual money before risking real capital.
+
+### Live Account Types
+- **Standard**: Basic account with standard conditions
+- **Pro/VIP**: Lower spreads, higher minimum deposit
+- **Islamic**: Swap-free for Sharia-compliant trading
+- **ECN**: Direct market access with commission-based pricing
+
+## Customer Support
+
+**Test Before You Deposit**:
+- Response time (should be under 5 minutes for live chat)
+- Available channels (live chat, phone, email)
+- Quality of responses (knowledgeable and helpful)
+- Availability (24/7 is ideal for global markets)
+
+## Deposit and Withdrawal
+
+### Payment Methods
+- **Bank Transfer**: Secure but slow (3-5 days)
+- **Credit/Debit Card**: Fast but may have fees
+- **E-wallets** (Skrill, Neteller): Fast and convenient
+- **Crypto**: Instant but volatile
+
+### Withdrawal Process
+- Processing time (should be 1-3 business days)
+- Withdrawal fees
+- Minimum withdrawal amount
+- Withdrawal limits
+
+## Red Flags to Avoid
+
+### Warning Signs
+- Promises of guaranteed profits
+- Aggressive sales tactics
+- Poor online reviews
+- Unclear fee structure
+- Difficulty withdrawing funds
+- Unregulated or offshore regulation
+- Pressure to deposit more money
+
+## Due Diligence Checklist
+
+Before depositing:
+- [ ] Verify regulation on regulator's official website
+- [ ] Read terms and conditions thoroughly
+- [ ] Test demo account for at least 1 week
+- [ ] Contact customer support with questions
+- [ ] Check online reviews (multiple sources)
+- [ ] Verify withdrawal process and fees
+- [ ] Start with minimum deposit
+
+## Recommended Starting Point
+
+For beginners, we recommend:
+1. Start with a well-regulated broker
+2. Open a demo account first
+3. Deposit minimum amount initially
+4. Withdraw small amount to test process
+5. Only increase deposit after successful experience
+
+## Conclusion
+
+Take your time choosing a broker. The right choice sets the foundation for successful trading. The wrong choice can lead to frustration, losses, or worse. Use our comparison tool to find brokers that meet your specific needs.`,
+  },
+  {
+    id: 10, slug: "support-resistance-trading", title: "Support and Resistance Trading: The Foundation of Technical Analysis",
+    excerpt: "Support and resistance levels are the building blocks of technical analysis. Master these concepts to identify high-probability trade setups and improve your entry and exit timing.",
+    category: "Education", author: "Sarah Williams", date: "2026-06-05", readTime: "11 min",
+    image: "SR", tags: ["support-resistance", "technical-analysis", "trading-strategy"],
+    content: `# Support and Resistance Trading: Complete Guide
+
+## The Core Concept
+
+**Support**: A price level where buying pressure is strong enough to prevent further price decline
+**Resistance**: A price level where selling pressure is strong enough to prevent further price advance
+
+These levels represent psychological barriers where market participants make decisions.
+
+## Why Support and Resistance Work
+
+### Psychology Behind Levels
+- **Support**: Buyers believe the asset is undervalued and step in to buy
+- **Resistance**: Sellers believe the asset is overvalued and step in to sell
+- **Memory**: Markets remember previous levels and react to them
+
+### Supply and Demand
+- Support zones represent areas of high demand
+- Resistance zones represent areas of high supply
+- Price tends to bounce between these zones
+
+## Types of Support and Resistance
+
+### 1. Horizontal Levels
+Price levels that have previously acted as turning points
+
+**Draw them by:**
+- Connecting swing lows (support)
+- Connecting swing highs (resistance)
+- Looking for areas where price has reversed multiple times
+
+### 2. Trend Lines
+Diagonal support and resistance that follow the trend
+
+**Uptrend Line**: Connects higher lows
+**Downtrend Line**: Connects lower highs
+
+### 3. Moving Averages
+Dynamic support and resistance that change with price
+
+**Common MAs for S/R:**
+- 20 EMA: Short-term support/resistance
+- 50 EMA: Medium-term support/resistance
+- 200 EMA: Long-term support/resistance
+
+### 4. Psychological Levels
+Round numbers and key price points
+- 100, 50, 00 levels in stocks
+- 1.0000, 1.1000 in forex
+- Previous all-time highs/lows
+
+## How to Identify Strong Levels
+
+### Strength Indicators
+- **Multiple touches**: The more times a level is tested, the stronger it becomes
+- **Timeframe**: Levels on higher timeframes (daily, weekly) are stronger
+- **Volume**: High volume at a level indicates strong participation
+- **Age**: Older levels that continue to work are significant
+
+### Drawing Rules
+- Use at least 2 points to draw a line
+- 3 points confirm the level
+- Don't force levels - let the market show you
+- Focus on obvious levels that stand out
+
+## Trading Strategies
+
+### Strategy 1: Bounce Trading
+**Setup**: Price approaches support/resistance
+**Entry**: When price shows rejection (candlestick pattern)
+**Stop Loss**: Just beyond the level
+**Take Profit**: Next support/resistance level
+
+### Strategy 2: Breakout Trading
+**Setup**: Price breaks through strong level with volume
+**Entry**: On retest of broken level (now becomes opposite)
+**Stop Loss**: Beyond the breakout candle
+**Take Profit**: Measured move or next level
+
+### Strategy 3: Range Trading
+**Setup**: Price bouncing between support and resistance
+**Entry**: Buy at support, sell at resistance
+**Stop Loss**: Beyond the level
+**Take Profit**: Opposite level
+
+## Advanced Concepts
+
+### Role Reversal
+When support is broken, it often becomes resistance (and vice versa). This happens because traders who bought at support are now trapped and look to sell at break-even.
+
+### Confluence
+Look for areas where multiple types of support/resistance align:
+- Horizontal level + trend line
+- Horizontal level + moving average
+- Psychological level + previous high/low
+
+**Confluence areas provide the highest probability setups.**
+
+### False Breakouts
+Price briefly breaks a level but quickly reverses. These can be powerful signals:
+- Trapped traders on wrong side
+- Stop losses get triggered
+- Reversal often follows
+
+## Common Mistakes
+
+1. **Drawing too many levels**: Focus only on the most significant ones
+2. **Ignoring timeframes**: Check levels on multiple timeframes
+3. **Trading every touch**: Not every level is worth trading
+4. **Forgetting context**: Consider trend, momentum, and volume
+5. **Not adjusting levels**: Markets evolve, update your levels regularly
+
+## Risk Management
+
+### Stop Loss Placement
+- For bounce trades: Place stop just beyond the level
+- For breakout trades: Place stop beyond the breakout candle
+- Give the level "room to breathe" - don't place stops exactly at the level
+
+### Position Sizing
+- Risk less at levels that are less certain
+- Risk more at confluence areas
+- Adjust size based on distance to stop loss
+
+## Practical Tips
+
+1. **Start with higher timeframes**: Identify key levels on daily/weekly charts first
+2. **Mark key levels**: Draw horizontal lines at obvious turning points
+3. **Watch price reaction**: Note how price behaves at these levels
+4. **Wait for confirmation**: Don't anticipate - wait for price to show rejection
+5. **Be patient**: The best setups come at the strongest levels
+
+## Conclusion
+
+Support and resistance are the foundation of technical analysis. Master these concepts first before moving to more complex indicators. The best traders can identify key levels at a glance and understand the psychology behind them.
+
+Remember: Support and resistance are zones, not exact lines. Think in terms of areas where price is likely to react, not precise price points.`,
+  },
+  {
+    id: 11, slug: "candlestick-patterns-guide", title: "10 Essential Candlestick Patterns Every Trader Should Know",
+    excerpt: "Master the art of reading candlestick patterns. From basic single candles to complex multi-candle formations, learn the patterns that signal potential reversals and continuations.",
+    category: "Education", author: "Sarah Williams", date: "2026-05-30", readTime: "16 min",
+    image: "CP", tags: ["candlesticks", "patterns", "technical-analysis"],
+    content: `# 10 Essential Candlestick Patterns Every Trader Should Know
+
+## What Are Candlestick Patterns?
+
+Candlestick patterns are visual representations of price action that show the struggle between buyers and sellers. Each candle tells a story about market sentiment and potential future direction.
+
+## Single Candle Patterns
+
+### 1. Doji
+**Appearance**: Small body with wicks of similar length on both sides
+**Meaning**: Market indecision - neither buyers nor sellers are in control
+**Signal**: Potential reversal, especially after strong trends
+**Trading**: Wait for confirmation from next candle
+
+### 2. Hammer
+**Appearance**: Small body at top with long lower wick (2-3x body)
+**Meaning**: Sellers pushed price down but buyers pushed it back up
+**Signal**: Bullish reversal after downtrend
+**Trading**: Enter long on next candle, stop loss below hammer's low
+
+### 3. Shooting Star
+**Appearance**: Small body at bottom with long upper wick (2-3x body)
+**Meaning**: Buyers pushed price up but sellers pushed it back down
+**Signal**: Bearish reversal after uptrend
+**Trading**: Enter short on next candle, stop loss above shooting star's high
+
+### 4. Spinning Top
+**Appearance**: Small body with wicks on both sides
+**Meaning**: Market consolidation, uncertainty
+**Signal**: No clear direction - wait for confirmation
+**Trading**: Avoid trading, wait for stronger signal
+
+## Two-Candle Patterns
+
+### 5. Bullish Engulfing
+**Appearance**: Large green candle completely engulfs previous red candle
+**Meaning**: Buyers have overwhelmed sellers
+**Signal**: Strong bullish reversal
+**Trading**: Enter long on close or next candle, stop loss below pattern
+
+### 6. Bearish Engulfing
+**Appearance**: Large red candle completely engulfs previous green candle
+**Meaning**: Sellers have overwhelmed buyers
+**Signal**: Strong bearish reversal
+**Trading**: Enter short on close or next candle, stop loss above pattern
+
+### 7. Piercing Line
+**Appearance**: Green candle opens below previous red's close but closes above its midpoint
+**Meaning**: Buyers are stepping in after decline
+**Signal**: Moderate bullish reversal
+**Trading**: Enter long if confirmed with volume
+
+### 8. Dark Cloud Cover
+**Appearance**: Red candle opens above previous green's close but closes below its midpoint
+**Meaning**: Sellers are stepping in after advance
+**Signal**: Moderate bearish reversal
+**Trading**: Enter short if confirmed with volume
+
+## Three-Candle Patterns
+
+### 9. Morning Star
+**Appearance**: Large red candle, small gap-down candle, large green candle
+**Meaning**: Trend reversal from bearish to bullish
+**Signal**: Strong bullish reversal
+**Trading**: Enter long on third candle's close, stop loss below pattern
+
+### 10. Evening Star
+**Appearance**: Large green candle, small gap-up candle, large red candle
+**Meaning**: Trend reversal from bullish to bearish
+**Signal**: Strong bearish reversal
+**Trading**: Enter short on third candle's close, stop loss above pattern
+
+## Advanced Multi-Candle Patterns
+
+### Three White Soldiers
+Three consecutive large green candles with higher closes
+**Signal**: Strong bullish continuation
+**Trading**: Enter long, trail stop loss below lowest low
+
+### Three Black Crows
+Three consecutive large red candles with lower closes
+**Signal**: Strong bearish continuation
+**Trading**: Enter short, trail stop loss above highest high
+
+## Trading Rules for Candlestick Patterns
+
+### 1. Context Matters
+- Patterns are more reliable at key support/resistance levels
+- Consider the overall trend
+- Higher timeframe patterns are more significant
+
+### 2. Volume Confirmation
+- Bullish patterns should have increasing volume
+- Bearish patterns should have increasing volume
+- Low volume reduces pattern reliability
+
+### 3. Wait for Confirmation
+- Don't enter on the pattern candle alone
+- Wait for the next candle to confirm direction
+- The stronger the confirmation, the better the setup
+
+### 4. Risk Management
+- Always use stop losses
+- Place stops beyond the pattern's extreme
+- Risk-reward ratio should be at least 1:2
+
+## Common Mistakes
+
+1. **Trading every pattern**: Not all patterns are worth trading
+2. **Ignoring context**: A pattern in the middle of a range is less reliable
+3. **No confirmation**: Entering before the pattern completes
+4. **Forgetting volume**: Patterns without volume are weaker
+5. **Over-trading**: Too many pattern signals lead to overtrading
+
+## Best Practices
+
+- Focus on the 5-10 most reliable patterns
+- Master a few patterns rather than knowing many poorly
+- Always combine with other analysis (support/resistance, indicators)
+- Keep a journal of pattern performance
+- Practice on demo account first
+
+## Conclusion
+
+Candlestick patterns are powerful tools when used correctly. They provide insight into market psychology and potential reversals. However, they should never be used in isolation. Always combine candlestick analysis with other forms of technical analysis and proper risk management.
+
+Remember: The market doesn't always follow patterns. Use them as probability enhancers, not guarantees.`,
+  },
+  {
+    id: 12, slug: "position-sizing-guide", title: "Position Sizing: The Secret to Consistent Trading Profits",
+    excerpt: "Most traders focus on entry signals but ignore position sizing. Learn how to calculate the perfect position size for every trade to protect your capital and maximize returns.",
+    category: "Education", author: "Dr. Michael Chen", date: "2026-05-25", readTime: "14 min",
+    image: "PS", tags: ["position-sizing", "risk-management", "money-management"],
+    content: `# Position Sizing: The Secret to Consistent Trading Profits
+
+## The Position Sizing Problem
+
+Most traders spend 90% of their time finding the perfect entry and only 10% on position sizing. Professional traders do the opposite. Position sizing is the single most important factor in trading success.
+
+## What is Position Sizing?
+
+Position sizing determines how much of your account to risk on each trade. It's not about how many shares or lots to buy - it's about how much money to risk.
+
+## The Golden Rule
+
+**Never risk more than 1-2% of your account on any single trade.**
+
+This means:
+- $10,000 account → Maximum $100-200 risk per trade
+- $50,000 account → Maximum $500-1,000 risk per trade
+- $100,000 account → Maximum $1,000-2,000 risk per trade
+
+## Calculating Position Size
+
+### Step 1: Determine Your Risk Amount
+Account Balance * Risk Percentage = Risk Amount
+Example: $10,000 * 1% = $100 risk
+
+### Step 2: Determine Your Stop Loss Distance
+Entry Price - Stop Loss Price = Stop Loss Distance
+Example: $50 - $48 = $2 per share
+
+### Step 3: Calculate Position Size
+Risk Amount / Stop Loss Distance = Position Size
+Example: $100 / $2 = 50 shares
+
+### Step 4: Verify Total Cost
+Position Size * Entry Price = Total Position Value
+Example: 50 * $50 = $2,500 total position
+
+## Position Sizing Strategies
+
+### 1. Fixed Percentage Method
+Risk the same percentage on every trade
+- Pros: Consistent risk, easy to implement
+- Cons: Doesn't account for varying market conditions
+
+### 2. Volatility-Adjusted Sizing
+Adjust position size based on market volatility
+- Higher volatility → Smaller position size
+- Lower volatility → Larger position size
+- Pros: Adapts to market conditions
+- Cons: More complex to calculate
+
+### 3. Kelly Criterion
+Mathematical formula for optimal position sizing
+- Considers win rate and risk-reward ratio
+- Pros: Mathematically optimal
+- Cons: Can be too aggressive for most traders
+
+### 4. Fixed Dollar Amount
+Risk the same dollar amount on every trade
+- Pros: Simple, consistent
+- Cons: Doesn't scale with account growth
+
+## Advanced Position Sizing
+
+### Scaling In
+Enter positions in multiple parts:
+- Initial entry: 50% of planned position
+- Confirmation: Add 25% if trade moves in favor
+- Final addition: Add remaining 25% on strong confirmation
+
+### Scaling Out
+Exit positions in multiple parts:
+- First exit: 50% at first target
+- Second exit: 25% at second target
+- Final exit: 25% at final target or trailing stop
+
+### Pyramiding
+Add to winning positions:
+- Only add to profitable trades
+- Each addition smaller than previous
+- Move stop loss to breakeven after first addition
+
+## Position Sizing for Different Markets
+
+### Forex
+- Calculate based on pip value
+- Consider lot sizes (standard, mini, micro)
+- Account for leverage
+
+### Stocks
+- Calculate based on share price
+- Consider round lots (100 shares)
+- Account for commission costs
+
+### Crypto
+- Calculate based on coin units
+- Consider high volatility
+- Account for exchange fees
+
+### Options
+- Calculate based on contract size
+- Consider time decay
+- Account for implied volatility
+
+## Common Mistakes
+
+1. **Risking too much**: More than 2% per trade
+2. **Ignoring stop loss**: Trading without defined risk
+3. **Inconsistent sizing**: Varying risk randomly
+4. **Overleveraging**: Using maximum leverage
+5. **Revenge trading**: Increasing size after losses
+
+## Position Sizing Calculator
+
+### Formula:
+Position Size = (Account Balance * Risk %) / (Entry Price - Stop Loss)
+
+### Example:
+- Account: $10,000
+- Risk: 1%
+- Entry: $100
+- Stop Loss: $95
+
+Calculation:
+- Risk Amount: $10,000 * 1% = $100
+- Stop Distance: $100 - $95 = $5
+- Position Size: $100 / $5 = 20 shares
+
+## Risk Management Rules
+
+1. **Maximum Daily Loss**: Stop trading if you lose 3% in a day
+2. **Maximum Weekly Loss**: Stop trading if you lose 6% in a week
+3. **Maximum Open Risk**: Never have more than 5% total risk at once
+4. **Correlation Limits**: Don't overexpose to correlated positions
+
+## Psychological Benefits
+
+Proper position sizing:
+- Reduces emotional stress
+- Prevents catastrophic losses
+- Allows objective decision making
+- Enables consistent trading
+- Builds confidence over time
+
+## Conclusion
+
+Position sizing is not exciting - it's mathematical and disciplined. But it's the difference between professional traders who survive and amateurs who blow up their accounts.
+
+Focus less on finding the perfect entry and more on managing your risk. The best entry with poor position sizing can still lose money. The worst entry with perfect position sizing can still preserve your capital.
+
+Remember: Protect your capital first. Profits will follow.`,
+  },
+  {
+    id: 13, slug: "trading-mistakes-avoid", title: "Top 10 Trading Mistakes Beginners Make (And How to Avoid Them)",
+    excerpt: "Learn from the mistakes of others. These 10 common trading errors account for 90% of beginner failures. Understand them and avoid them to accelerate your trading success.",
+    category: "Education", author: "Alex Thompson", date: "2026-05-20", readTime: "13 min",
+    image: "TM", tags: ["mistakes", "beginners", "trading-tips"],
+    content: `# Top 10 Trading Mistakes Beginners Make (And How to Avoid Them)
+
+## The 90/90/90 Rule
+
+90% of traders lose 90% of their money in 90 days. Don't be part of this statistic. Understanding and avoiding these mistakes will put you ahead of 90% of traders.
+
+## Mistake 1: No Trading Plan
+
+### The Problem
+Entering trades without a predefined plan is gambling, not trading.
+
+### The Solution
+Create a written trading plan that includes:
+- Entry criteria
+- Exit criteria (stop loss and take profit)
+- Maximum risk per trade
+- Maximum trades per day
+- Markets and timeframes you trade
+
+### Action Step
+Write down your trading plan and review it before every trading session.
+
+## Mistake 2: Overleveraging
+
+### The Problem
+Using maximum leverage amplifies both gains AND losses. One bad trade can wipe out your account.
+
+### The Solution
+- Never use more than 10:1 leverage
+- Start with 1:1 or 2:1 as a beginner
+- Calculate position size based on risk, not leverage
+
+### Action Step
+Set maximum leverage limits in your trading plan and never exceed them.
+
+## Mistake 3: No Stop Loss
+
+### The Problem
+Trading without a stop loss is like driving without a seatbelt. You might be fine until you're not.
+
+### The Solution
+- Always set a stop loss before entering a trade
+- Place stops beyond logical support/resistance levels
+- Never move stops further away during a trade
+
+### Action Step
+Make stop loss placement a non-negotiable part of your entry criteria.
+
+## Mistake 4: Revenge Trading
+
+### The Problem
+Trying to "make back" losses by trading bigger or more frequently. This almost always leads to bigger losses.
+
+### The Solution
+- Accept losses as part of trading
+- Take a break after 3 consecutive losses
+- Reduce position size after a losing streak
+
+### Action Step
+Implement a "cool-off" rule: stop trading for the day after 3 losses.
+
+## Mistake 5: Overtrading
+
+### The Problem
+Trading too frequently leads to poor decisions and high transaction costs.
+
+### The Solution
+- Set maximum number of trades per day
+- Focus on quality setups, not quantity
+- Wait for your specific criteria to be met
+
+### Action Step
+Limit yourself to 3-5 high-quality trades per day maximum.
+
+## Mistake 6: Ignoring Risk Management
+
+### The Problem
+Focusing only on potential profits while ignoring potential losses.
+
+### The Solution
+- Risk 1-2% maximum per trade
+- Maintain 1:2 minimum risk-reward ratio
+- Never risk more than 5% total at once
+
+### Action Step
+Calculate risk before every trade. If it doesn't fit your parameters, skip the trade.
+
+## Mistake 7: Trading Without Education
+
+### The Problem
+Jumping into real trading without learning the basics first.
+
+### The Solution
+- Spend at least 3 months learning before trading real money
+- Start with demo accounts
+- Read books and take courses
+
+### Action Step
+Create a learning curriculum and complete it before risking real capital.
+
+## Mistake 8: Emotional Trading
+
+### The Problem
+Making trading decisions based on fear, greed, or hope rather than analysis.
+
+### The Solution
+- Predefine all decisions before market opens
+- Take breaks when feeling emotional
+- Keep a trading journal to identify emotional patterns
+
+### Action Step
+Implement a "cooling off" period: wait 10 minutes before any impulsive trade.
+
+## Mistake 9: Following Tips and Signals Blindly
+
+### The Problem
+Trading based on others' recommendations without understanding the reasoning.
+
+### The Solution
+- Never trade a signal you don't understand
+- Learn the analysis behind recommendations
+- Verify signals with your own analysis
+
+### Action Step
+Only trade signals that you can explain and justify to yourself.
+
+## Mistake 10: No Trading Journal
+
+### The Problem
+Not tracking your trades means you can't learn from your mistakes or successes.
+
+### The Solution
+- Document every trade with entry, exit, and reasoning
+- Review your journal weekly
+- Identify patterns in your winning and losing trades
+
+### Action Step
+Start a trading journal today and commit to updating it after every trade.
+
+## The Learning Curve
+
+### Month 1-3: Education Phase
+- Learn basics
+- Practice on demo
+- Develop your strategy
+- Build your trading plan
+
+### Month 4-6: Small Live Trading
+- Trade with minimum capital
+- Focus on execution
+- Refine your strategy
+- Build discipline
+
+### Month 7-12: Scaling Up
+- Increase position sizes gradually
+- Add more markets
+- Refine risk management
+- Build consistency
+
+## Red Flags You're Making Mistakes
+
+- You're trading more than your plan allows
+- You're moving stop losses further away
+- You're increasing size after losses
+- You're trading without a clear reason
+- You're feeling stressed or anxious about trading
+
+## Getting Back on Track
+
+If you recognize these mistakes in your trading:
+
+1. **Stop trading immediately** if you're emotional or losing
+2. **Review your trading plan** and update if needed
+3. **Analyze your recent trades** in your journal
+4. **Reduce position sizes** temporarily
+5. **Focus on education** before returning to trading
+
+## Conclusion
+
+Every trader makes mistakes. The difference between successful and unsuccessful traders is that successful traders learn from their mistakes and don't repeat them.
+
+The fastest way to success is to learn from others' mistakes. Study this list, identify which mistakes you're making, and commit to fixing them today.
+
+Remember: The market will always be there. Protect your capital first, then focus on profits.`,
+  },
+  {
+    id: 14, slug: "moving-averages-strategy", title: "Moving Averages Trading Strategy: Complete Guide",
+    excerpt: "Moving averages are the most versatile technical indicator. Learn how to use single, dual, and triple moving averages for trend identification, entry signals, and dynamic support/resistance.",
+    category: "Education", author: "Sarah Williams", date: "2026-05-15", readTime: "15 min",
+    image: "MA", tags: ["moving-averages", "indicators", "trading-strategy"],
+    content: `# Moving Averages Trading Strategy: Complete Guide
+
+## What Are Moving Averages?
+
+Moving averages smooth out price data to create a single flowing line, making it easier to identify the direction of the trend. They're the foundation of many trading strategies and indicators.
+
+## Types of Moving Averages
+
+### Simple Moving Average (SMA)
+Calculates the average price over a specified period.
+- **Formula**: Sum of prices ÷ Number of periods
+- **Pros**: Simple, widely used
+- **Cons**: Equal weight to all data (including old data)
+
+### Exponential Moving Average (EMA)
+Gives more weight to recent prices, making it more responsive to new information.
+- **Formula**: Complex calculation with weighting multiplier
+- **Pros**: Reacts faster to price changes
+- **Cons**: Can be more volatile
+
+### Weighted Moving Average (WMA)
+Gives more weight to recent data using a linear weighting scheme.
+- **Formula**: Linearly weighted average
+- **Pros**: Customizable weighting
+- **Cons**: Less commonly used
+
+## Common Moving Average Periods
+
+### Short-Term (5-20 periods)
+- 5 EMA: Very short-term trend
+- 10 EMA: Short-term momentum
+- 20 EMA: Short-term trend, commonly used
+
+### Medium-Term (50 periods)
+- 50 EMA/SMA: Medium-term trend
+- Important swing level
+- Used by many institutions
+
+### Long-Term (100-200 periods)
+- 100 EMA/SMA: Long-term trend
+- 200 EMA/SMA: Major trend indicator
+- Golden/Death Cross signals
+
+## Single Moving Average Strategy
+
+### Trend Identification
+Price above MA = Uptrend
+Price below MA = Downtrend
+
+### Dynamic Support/Resistance
+Moving averages act as:
+- Support in uptrends (price bounces off MA)
+- Resistance in downtrends (price rejects at MA)
+
+### Entry Signals
+- Buy when price bounces off MA in uptrend
+- Sell when price rejects at MA in downtrend
+
+## Dual Moving Average Strategy
+
+### Crossover System
+**Golden Cross**: Short MA crosses above Long MA (bullish)
+**Death Cross**: Short MA crosses below Long MA (bearish)
+
+### Popular Combinations
+- 9 EMA + 21 EMA: Short-term signals
+- 20 EMA + 50 EMA: Swing trading
+- 50 EMA + 200 EMA: Long-term trend
+
+### Trading Rules
+- Enter long when short MA crosses above long MA
+- Enter short when short MA crosses below long MA
+- Exit when crossover reverses
+
+## Triple Moving Average Strategy
+
+### Trend Filter
+- Price above all MAs = Strong uptrend
+- Price between MAs = Consolidation
+- Price below all MAs = Strong downtrend
+
+### Entry Signals
+- Buy when short MA crosses above medium MA, both above long MA
+- Sell when short MA crosses below medium MA, both below long MA
+
+### Popular Combinations
+- 5 EMA + 13 EMA + 21 EMA: Scalping
+- 9 EMA + 21 EMA + 50 EMA: Day trading
+- 20 EMA + 50 EMA + 200 EMA: Swing trading
+
+## Advanced Strategies
+
+### Moving Average Ribbon
+Multiple MAs with different periods create a "ribbon"
+- Ribbon expanding = Strong trend
+- Ribbon contracting = Trend weakening
+- Ribbon flat = Sideways market
+
+### Moving Average Envelope
+MA with upper and lower bands (usually ±2-3%)
+- Price hits upper band = Overbought
+- Price hits lower band = Oversold
+- Mean reversion strategy
+
+### Moving Average Convergence Divergence (MACD)
+Built on moving averages
+- MACD line = Fast EMA - Slow EMA
+- Signal line = EMA of MACD
+- Histogram = MACD - Signal
+
+## Practical Application
+
+### Step 1: Identify the Trend
+Use 200 EMA to determine long-term trend
+- Price above 200 EMA = Look for long setups
+- Price below 200 EMA = Look for short setups
+
+### Step 2: Time Your Entry
+Use 20 EMA and 50 EMA crossovers
+- 20 EMA crosses above 50 EMA = Enter long
+- 20 EMA crosses below 50 EMA = Enter short
+
+### Step 3: Manage Risk
+Place stop loss beyond the moving average
+- Long: Stop below recent swing low
+- Short: Stop above recent swing high
+
+### Step 4: Take Profits
+Use next MA as profit target or trail stop
+- Long: Target next resistance or trail with 20 EMA
+- Short: Target next support or trail with 20 EMA
+
+## Common Mistakes
+
+1. **Using too many MAs**: Analysis paralysis
+2. **Ignoring price action**: MAs are lagging indicators
+3. **Trading every crossover**: False signals in ranging markets
+4. **Wrong timeframe**: Using short MAs for long-term trading
+5. **No confirmation**: Trading MA signals alone
+
+## Best Practices
+
+- Use multiple timeframes for confirmation
+- Combine with other indicators (RSI, volume)
+- Focus on the slope of the MA (angle = strength)
+- Adjust periods based on your trading style
+- Backtest your strategy before live trading
+
+## Moving Average Settings by Trading Style
+
+### Scalping (1-5 minute charts)
+- 5 EMA + 13 EMA
+- Fast signals, quick trades
+- High sensitivity to price changes
+
+### Day Trading (15-60 minute charts)
+- 9 EMA + 21 EMA + 50 EMA
+- Balance of speed and reliability
+- Intraday trend following
+
+### Swing Trading (Daily charts)
+- 20 EMA + 50 EMA + 200 EMA
+- Captures multi-day swings
+- Lower noise, clearer signals
+
+### Position Trading (Weekly charts)
+- 50 SMA + 200 SMA
+- Long-term trend following
+- Major trend identification
+
+## Conclusion
+
+Moving averages are versatile tools that can be used for trend identification, entry signals, and dynamic support/resistance. The key is finding the right combination for your trading style and timeframe.
+
+Remember: Moving averages are lagging indicators. They tell you what has happened, not what will happen. Always use them in conjunction with other forms of analysis and proper risk management.
+
+The best moving average strategy is the one you can execute consistently with discipline.`,
+  },
+  {
+    id: 15, slug: "portfolio-diversification", title: "Portfolio Diversification: Protect Your Trading Capital",
+    excerpt: "Don't put all your eggs in one basket. Learn the art of portfolio diversification to reduce risk, smooth returns, and protect your trading capital from market volatility.",
+    category: "Education", author: "Dr. Michael Chen", date: "2026-05-10", readTime: "12 min",
+    image: "PD", tags: ["diversification", "portfolio", "risk-management"],
+    content: `# Portfolio Diversification: Protect Your Trading Capital
+
+## The Diversification Principle
+
+"Diversification is the only free lunch in investing." - Harry Markowitz
+
+Diversification reduces risk without necessarily reducing returns. It's the most important concept in portfolio management.
+
+## Why Diversify?
+
+### Risk Reduction
+- Spreading capital across different assets reduces single-asset risk
+- One bad position won't destroy your portfolio
+- Smooths out equity curve
+
+### Return Smoothing
+- Reduces portfolio volatility
+- More predictable returns
+- Easier to handle psychologically
+
+### Opportunity Capture
+- Exposure to multiple market opportunities
+- Benefits from different market cycles
+- Reduces dependency on single market
+
+## Types of Diversification
+
+### 1. Asset Class Diversification
+Spread across different asset classes:
+- Stocks
+- Bonds
+- Commodities
+- Real Estate
+- Cryptocurrencies
+- Forex
+
+### 2. Geographic Diversification
+Spread across different regions:
+- North America
+- Europe
+- Asia
+- Emerging markets
+- Different time zones
+
+### 3. Sector Diversification
+Spread across different sectors:
+- Technology
+- Healthcare
+- Finance
+- Energy
+- Consumer goods
+
+### 4. Strategy Diversification
+Use different trading strategies:
+- Trend following
+- Mean reversion
+- Breakout trading
+- Arbitrage
+
+### 5. Timeframe Diversification
+Trade across different timeframes:
+- Scalping
+- Day trading
+- Swing trading
+- Position trading
+
+## Correlation: The Key to Diversification
+
+### Understanding Correlation
+- **Positive correlation (+1)**: Assets move together
+- **Negative correlation (-1)**: Assets move opposite
+- **No correlation (0)**: Assets move independently
+
+### Ideal Diversification
+Combine assets with low or negative correlation:
+- Stocks + Bonds (traditionally negative correlation)
+- USD + Gold (negative correlation during crises)
+- Tech stocks + Consumer staples (low correlation)
+
+### Measuring Correlation
+Use correlation coefficient:
+- 0.7 to 1.0: High positive correlation
+- 0.3 to 0.7: Moderate positive correlation
+- -0.3 to 0.3: Low correlation
+- -0.7 to -0.3: Moderate negative correlation
+- -1.0 to -0.7: High negative correlation
+
+## Practical Diversification Strategies
+
+### The 1% Rule
+Never risk more than 1% of total portfolio on any single trade.
+
+### The 5% Sector Rule
+Never have more than 5% of portfolio in one sector.
+
+### The 10% Asset Rule
+Never have more than 10% of portfolio in one asset class.
+
+### The Core-Satellite Approach
+- **Core (70-80%)**: Broad market exposure (index funds, major pairs)
+- **Satellite (20-30%)**: Specific opportunities (individual stocks, exotic pairs)
+
+## Diversification by Trading Style
+
+### Conservative Diversification
+- 60% stocks, 30% bonds, 10% alternatives
+- Focus on capital preservation
+- Lower volatility, lower returns
+
+### Balanced Diversification
+- 40% stocks, 40% bonds, 20% alternatives
+- Balance growth and stability
+- Moderate volatility, moderate returns
+
+### Aggressive Diversification
+- 70% stocks, 20% alternatives, 10% bonds
+- Focus on growth
+- Higher volatility, higher returns
+
+## Common Mistakes
+
+1. **Over-diversification**: Too many positions, diluting returns
+2. **False diversification**: Holding correlated assets thinking they're diversified
+3. **Diworsification**: Adding low-quality assets just for diversity
+4. **Ignoring correlation**: Not checking how assets relate to each other
+5. **Static allocation**: Not rebalancing as markets change
+
+## Rebalancing
+
+### What is Rebalancing?
+Periodically adjusting your portfolio back to target allocations.
+
+### When to Rebalance
+- Time-based (quarterly, annually)
+- Threshold-based (when allocation drifts by 5%+)
+- Market-based (after significant market moves)
+
+### How to Rebalance
+1. Calculate current allocations
+2. Compare to target allocations
+3. Sell over-weighted assets
+4. Buy under-weighted assets
+5. Minimize transaction costs
+
+## Diversification for Different Account Sizes
+
+### Small Accounts ($1,000-$10,000)
+- Focus on 2-3 asset classes
+- 5-10 positions maximum
+- Use ETFs for instant diversification
+
+### Medium Accounts ($10,000-$100,000)
+- 3-4 asset classes
+- 10-20 positions
+- Mix of individual assets and ETFs
+
+### Large Accounts ($100,000+)
+- 4-5 asset classes
+- 20+ positions
+- Sophisticated diversification strategies
+
+## Tools for Diversification
+
+### ETFs and Index Funds
+Instant diversification within asset classes
+- SPY (S&P 500)
+- AGG (Bond market)
+- GLD (Gold)
+
+### Correlation Matrices
+Track how your positions relate to each other
+- Free online tools available
+- Most broker platforms include them
+
+### Portfolio Analytics
+Monitor diversification metrics
+- Concentration risk
+- Sector exposure
+- Geographic exposure
+
+## Conclusion
+
+Diversification is not about maximizing returns - it's about optimizing the risk-return relationship. A well-diversified portfolio will underperform the best asset class in bull markets but will significantly outperform in bear markets.
+
+The goal is not to have the highest returns, but to have the most consistent returns. Diversification helps you survive the inevitable downturns and be positioned for the recoveries.
+
+Remember: Diversification doesn't eliminate risk, it manages it. You still need proper risk management, due diligence, and discipline.`,
+  },
 ];
 
 export const tools: Tool[] = [
   {
     id: 1, name: "eToro", slug: "etoro", logo: "ET",
-    rating: 4.5, reviews: 12500,
+    rating: 4.1,
     description: "Social trading platform with CopyTrader technology. Trade stocks, crypto, ETFs and more with zero commission.",
     longDescription: "eToro is the world's leading social trading platform, revolutionizing how people invest and trade. Founded in 2007, eToro pioneered the concept of social trading, allowing users to copy the trades of successful investors automatically. With over 30 million registered users worldwide, eToro offers commission-free stock trading, cryptocurrency trading, and innovative features like CopyTrader, CopyPortfolios, and a social news feed. The platform is regulated by top-tier authorities including the FCA, CySEC, and ASIC, providing a secure environment for traders of all experience levels. Whether you're a complete beginner looking to learn from experts or an experienced trader seeking a user-friendly platform with social features, eToro provides a comprehensive trading ecosystem that combines traditional investing with cutting-edge social technology.",
     category: "Stock Brokers", categoryId: 3,
@@ -469,7 +1917,7 @@ export const tools: Tool[] = [
   },
   {
     id: 2, name: "Binance", slug: "binance", logo: "BN",
-    rating: 4.7, reviews: 18500,
+    rating: 1.6,
     description: "World's largest cryptocurrency exchange by volume. Spot, futures, margin trading with low fees.",
     longDescription: "Binance is the world's largest cryptocurrency exchange by trading volume, serving over 180 million users across 180+ countries. Founded in 2017 by Changpeng Zhao, Binance has grown from a crypto-to-crypto exchange to a comprehensive blockchain ecosystem that includes spot trading, futures, margin trading, staking, savings, NFT marketplace, and its own blockchain (BNB Chain). With industry-leading trading fees starting at just 0.10% and further discounts when using BNB, Binance offers unmatched cost efficiency for active traders. The platform supports over 350 cryptocurrencies and provides advanced trading features including multiple order types, API access, and professional charting tools. Despite regulatory challenges in some jurisdictions, Binance continues to lead the crypto industry with innovation, liquidity, and a commitment to user security through its SAFU (Secure Asset Fund for Users) insurance fund.",
     category: "Crypto Exchanges", categoryId: 2,
@@ -496,7 +1944,7 @@ export const tools: Tool[] = [
   },
   {
     id: 3, name: "Interactive Brokers", slug: "interactive-brokers", logo: "IB",
-    rating: 4.6, reviews: 9800,
+    rating: 4.6,
     description: "Professional-grade trading platform with global market access. Advanced tools for serious traders.",
     longDescription: "Interactive Brokers (IBKR) is one of the world's most sophisticated and well-established brokerage firms, founded in 1978 by Thomas Peterffy. With over $373 billion in client equity and serving clients in 200+ countries, IBKR provides direct market access to stocks, options, futures, forex, bonds, and funds across 150+ global markets. The platform is renowned for its professional-grade trading tools, including the Trader Workstation (TWS), advanced order types, algorithmic trading capabilities, and comprehensive API access. IBKR offers two pricing structures: IBKR Pro for active traders seeking the lowest possible margin rates (currently among the lowest in the industry) and IBKR Lite for commission-free trading of US stocks and ETFs. The platform is regulated by top-tier authorities including the SEC, FCA, ASIC, and multiple other global regulators, making it one of the most secure and trusted brokers for serious traders and institutional investors.",
     category: "Stock Brokers", categoryId: 3,
@@ -522,7 +1970,7 @@ export const tools: Tool[] = [
   },
   {
     id: 6, name: "TradingView", slug: "tradingview", logo: "TV",
-    rating: 4.9, reviews: 28000,
+    rating: 1.6,
     description: "Advanced charting platform with social networking for traders. Custom indicators and Pine Script.",
     longDescription: "TradingView is the world's most popular charting platform and social network for traders and investors, used by over 50 million users worldwide. Founded in 2011, TradingView has revolutionized technical analysis with its web-based, real-time charting platform that offers professional-grade tools previously only available in expensive desktop software. The platform supports stocks, forex, crypto, futures, and indices across 100+ exchanges globally. Its standout feature is Pine Script, a proprietary programming language that allows users to create custom indicators and automated trading strategies. The social aspect of TradingView sets it apart - traders can publish their analysis ideas, follow other analysts, and engage in discussions. With tiered pricing from free to Premium, TradingView caters to everyone from casual investors to professional traders. Many brokers now integrate TradingView charts directly into their platforms, a testament to its industry-leading position.",
     category: "Trading Tools", categoryId: 7,
@@ -548,7 +1996,7 @@ export const tools: Tool[] = [
   },
   {
     id: 4, name: "Coinbase", slug: "coinbase", logo: "CB",
-    rating: 4.3, reviews: 15200,
+    rating: 4.0,
     description: "Easy-to-use crypto exchange with strong security. Perfect for beginners entering the crypto space.",
     longDescription: "Coinbase is one of the world's most trusted and user-friendly cryptocurrency exchanges, serving over 108 million verified users across 100+ countries. Founded in 2012 and publicly listed on NASDAQ (COIN), Coinbase has established itself as the go-to platform for retail investors entering the crypto space. The platform offers a simple, intuitive interface for buying, selling, and storing cryptocurrencies, along with features like Coinbase Earn (learn about crypto and earn rewards), staking, and a non-custodial wallet. For more experienced traders, Coinbase Advanced Trade provides lower fees and advanced charting tools. Security is a cornerstone of Coinbase's offering - 98% of customer funds are held in cold storage, and the platform maintains $320 million in crime insurance. Coinbase is fully regulated in the US (FinCEN, multiple state licenses) and compliant with regulations in all jurisdictions where it operates.",
     category: "Crypto Exchanges", categoryId: 2,
@@ -574,7 +2022,7 @@ export const tools: Tool[] = [
   },
   {
     id: 5, name: "MetaTrader 5", slug: "metatrader-5", logo: "MT",
-    rating: 4.8, reviews: 22000,
+    rating: 4.8,
     description: "Multi-asset platform for trading forex, stocks and futures. Advanced technical analysis and algo trading.",
     longDescription: "MetaTrader 5 (MT5) is the world's most popular multi-asset trading platform developed by MetaQuotes Software. Building on the legendary success of MT4, the MT5 platform offers enhanced capabilities including more timeframes (21 vs 9), additional order types (including Buy Stop Limit and Sell Stop Limit), an integrated economic calendar, depth of market (DOM) view, and a built-in MQL5 development environment for algorithmic trading. Unlike MT4 which was forex-focused, MT5 is a true multi-asset platform supporting forex, stocks, futures, CFDs, and commodities from a single interface. The MQL5 community marketplace provides thousands of ready-made trading robots (Expert Advisors) and custom indicators. MT5 is offered by hundreds of brokers worldwide and is the platform of choice for serious traders who demand professional-grade tools, backtesting capabilities, and algorithmic trading functionality. While the interface has a steeper learning curve than modern web platforms, its depth and customization options are unmatched.",
     category: "Trading Tools", categoryId: 7,
@@ -600,7 +2048,7 @@ export const tools: Tool[] = [
   },
   {
     id: 8, name: "Robinhood", slug: "robinhood", logo: "RH",
-    rating: 4.0, reviews: 11000,
+    rating: 4.0,
     description: "Commission-free stock trading app with crypto. Simple interface designed for mobile-first trading.",
     longDescription: "Robinhood revolutionized the brokerage industry by pioneering commission-free trading when it launched in 2013. The mobile-first platform has since expanded to include cryptocurrency trading, fractional shares, cash management with a debit card, and retirement accounts (IRA). With over 23 million users and $89 billion in assets under custody, Robinhood has made investing accessible to a new generation of traders. The platform's simple, gamified interface removes the intimidation factor from investing, though it has faced criticism for encouraging excessive trading behavior. Robinhood generates revenue primarily through payment for order flow (PFOF) and its Gold subscription service. The company is publicly traded on NASDAQ (HOOD) and is regulated by the SEC and FINRA, with SIPC insurance protecting securities up to $500,000. Robinhood is best suited for casual investors and beginners who prioritize a clean mobile experience over advanced trading tools and research.",
     category: "Stock Brokers", categoryId: 3,
@@ -626,7 +2074,7 @@ export const tools: Tool[] = [
   },
   {
     id: 9, name: "OANDA", slug: "oanda", logo: "OA",
-    rating: 4.4, reviews: 8500,
+    rating: 4.4,
     description: "Award-winning forex and CFD broker with competitive spreads and no minimum deposit. Trusted by traders globally since 1996.",
     longDescription: "OANDA is one of the most established names in forex trading, founded in 1996. As a pioneer in online currency trading, OANDA revolutionized retail forex by providing transparent, technology-driven trading solutions. The broker is regulated by multiple top-tier authorities including the FCA (UK), CFTC/NFA (US), ASIC (Australia), and MAS (Singapore). OANDA offers competitive spreads starting from 0.0 pips on its premium account, with no minimum deposit requirement. The platform provides access to forex, indices, commodities, metals, and bonds as CFDs. OANDA's proprietary trading platform is complemented by full MT4 and MT5 integration, along with advanced API access for algorithmic traders.",
     category: "Forex Brokers", categoryId: 1,
@@ -652,7 +2100,7 @@ export const tools: Tool[] = [
   },
   {
     id: 10, name: "Plus500", slug: "plus500", logo: "P5",
-    rating: 4.3, reviews: 7200,
+    rating: 4.3,
     description: "User-friendly CFD trading platform with zero commissions. Trade 2,800+ instruments including forex, stocks, ETFs and crypto.",
     longDescription: "Plus500 is a leading global CFD provider listed on the London Stock Exchange (FTSE 250), offering commission-free trading on over 2,800 financial instruments. Founded in 2008, Plus500 has grown to serve millions of customers across 50+ countries. The platform specializes in CFDs covering forex, stocks, ETFs, indices, commodities, options, and cryptocurrencies. Plus500's proprietary trading platform is designed for simplicity with built-in risk management tools including guaranteed stop-loss orders and negative balance protection. Regulated by FCA, CySEC, ASIC, and MAS.",
     category: "CFD Brokers", categoryId: 4,
@@ -677,7 +2125,7 @@ export const tools: Tool[] = [
   },
   {
     id: 11, name: "Tastyworks", slug: "tastyworks", logo: "TW",
-    rating: 4.2, reviews: 3200,
+    rating: 4.2,
     description: "Options-focused trading platform built by traders for traders. Advanced options chains and strategy visualization tools.",
     longDescription: "Tastyworks is a specialized brokerage platform designed specifically for options and futures traders. Founded by the team behind thinkorswim, Tastyworks was built from the ground up to optimize the options trading experience with visual strategy representation and probability analysis. Commissions are capped at $10 per leg. Regulated by FINRA.",
     category: "Options Trading", categoryId: 5,
@@ -701,7 +2149,7 @@ export const tools: Tool[] = [
   },
   {
     id: 12, name: "PayPal", slug: "paypal", logo: "PP",
-    rating: 4.5, reviews: 56000,
+    rating: 4.5,
     description: "Global leader in digital payments. Send, receive and hold money in 25+ currencies with buyer protection included.",
     longDescription: "PayPal is the world's most widely used digital payment platform, serving over 435 million active accounts across 200+ markets. Founded in 1998, PayPal revolutionized online payments by providing secure, convenient money transfers. For traders and investors, PayPal is commonly used for funding brokerage accounts. The platform also supports buying, holding, and selling select cryptocurrencies. NASDAQ listed (PYPL).",
     category: "Payment Systems", categoryId: 6,
@@ -725,7 +2173,7 @@ export const tools: Tool[] = [
   },
   {
     id: 13, name: "Skrill", slug: "skrill", logo: "SK",
-    rating: 4.1, reviews: 18900,
+    rating: 4.1,
     description: "Digital wallet popular with forex and crypto traders. Low-cost international transfers and prepaid card available.",
     longDescription: "Skrill is a leading digital wallet particularly popular among forex traders, crypto enthusiasts, and online gaming communities. Part of the Paysafe Group, Skrill serves over 40 million users worldwide with instant transfers in 40+ currencies, a prepaid Mastercard, and integrated crypto. Regulated by the FCA in the UK.",
     category: "Payment Systems", categoryId: 6,
@@ -749,7 +2197,7 @@ export const tools: Tool[] = [
   },
   {
     id: 14, name: "Babypips", slug: "babypips", logo: "BP",
-    rating: 4.8, reviews: 32000,
+    rating: 4.8,
     description: "The internet's most popular free forex education platform. Learn trading from zero to advanced with structured courses.",
     longDescription: "Babypips.com is the world's most beloved free forex education platform, having taught millions of traders since 2005. The 'School of Pipsology' offers a comprehensive, structured trading course from Pre-School to Graduation levels. Beyond the school, Babypips offers forums, market analysis, and an economic calendar. Completely free and widely regarded as the best starting point for forex education.",
     category: "Education", categoryId: 8,
@@ -773,7 +2221,7 @@ export const tools: Tool[] = [
   },
   {
     id: 15, name: "IG Markets", slug: "ig-markets", logo: "IG",
-    rating: 4.6, reviews: 11000,
+    rating: 4.6,
     description: "World's largest CFD provider by revenue. Trade 17,000+ markets with competitive spreads and professional-grade tools.",
     longDescription: "IG Group is the world's largest CFD broker by revenue and a FTSE 250 listed company with over 45 years of trading history. Founded in 1974, IG serves over 400,000 clients worldwide with access to 17,000+ financial markets. The platform combines TradingView-powered charting with advanced order types. Regulated by FCA, ASIC, MAS, and others.",
     category: "CFD Brokers", categoryId: 4,
@@ -797,7 +2245,7 @@ export const tools: Tool[] = [
   },
   {
     id: 16, name: "Zerodha", slug: "zerodha", logo: "ZD",
-    rating: 4.7, reviews: 42000,
+    rating: 4.7,
     description: "India's largest retail stock broker with flat-fee pricing. Best technology platform for traders and investors.",
     longDescription: "Zerodha is India's largest retail stock broker by active clients, serving over 12 million customers. Founded in 2010 by Nithin Kamath, Zerodha disrupted the Indian brokerage industry with its flat-fee pricing model - Rs 20 per trade regardless of size, and zero brokerage on equity delivery trades. The flagship platform, Kite, offers a modern, feature-rich trading experience with advanced charts, 100+ indicators, and direct mutual fund investments through Coin. Regulated by SEBI, Zerodha is a member of NSE, BSE, and MCX. The company also runs Rainmatter, a fintech incubator, and publishes educational content through Varsity - India's largest free stock market education initiative.",
     category: "Stock Brokers", categoryId: 3,
@@ -821,7 +2269,7 @@ export const tools: Tool[] = [
   },
   {
     id: 17, name: "Upstox", slug: "upstox", logo: "UP",
-    rating: 4.4, reviews: 28000,
+    rating: 4.4,
     description: "Popular low-cost Indian broker backed by Ratan Tata. Simple flat pricing with a modern trading platform.",
     longDescription: "Upstox is one of India's fastest-growing discount brokers, backed by Tiger Global and Ratan Tata. Serving over 10 million customers, Upstox offers flat-fee brokerage (Rs 20/trade or 2.5% whichever is lower) with zero brokerage on equity delivery. The platform provides a modern web and mobile trading experience with advanced charting, option chain analysis, and direct mutual fund investments. Upstox is a SEBI-registered broker and depository participant.",
     category: "Stock Brokers", categoryId: 3,
@@ -845,7 +2293,7 @@ export const tools: Tool[] = [
   },
   {
     id: 18, name: "Groww", slug: "groww", logo: "GW",
-    rating: 4.5, reviews: 35000,
+    rating: 4.5,
     description: "India's most popular investment app for mutual funds and stocks. Zero brokerage on all equity delivery trades.",
     longDescription: "Groww started as a direct mutual fund platform in 2016 and expanded into stock broking in 2020, quickly becoming one of India's most popular investment platforms with over 50 million users. The app offers a beautifully simple interface for investing in mutual funds, stocks, ETFs, IPOs, and FDs. Groww charges zero brokerage on all equity delivery trades and Rs 20 or 0.05% per order for intraday/F&O. The platform is SEBI-registered with NSE and BSE membership.",
     category: "Stock Brokers", categoryId: 3,
@@ -869,7 +2317,7 @@ export const tools: Tool[] = [
   },
   {
     id: 19, name: "Angel One", slug: "angel-one", logo: "AN",
-    rating: 4.2, reviews: 22000,
+    rating: 4.2,
     description: "Full-service Indian broker offering zero brokerage on equity delivery with ARQ AI-powered advisory.",
     longDescription: "Angel One (formerly Angel Broking) is one of India's largest full-service retail brokers with over 15 million clients. Listed on the NSE and BSE, Angel One blends traditional brokerage services with modern fintech - offering zero brokerage on equity delivery and flat Rs 20 per order for all other segments. The ARQ AI-powered investment engine provides personalized portfolio recommendations. Registered with SEBI, Angel One offers trading across equity, F&O, commodities, currencies, and mutual funds.",
     category: "Stock Brokers", categoryId: 3,
@@ -893,7 +2341,7 @@ export const tools: Tool[] = [
   },
   {
     id: 20, name: "WazirX", slug: "wazirx", logo: "WX",
-    rating: 4.1, reviews: 18500,
+    rating: 4.1,
     description: "India's largest cryptocurrency exchange with INR deposits and P2P trading. Part of the Binance ecosystem.",
     longDescription: "WazirX is India's most popular cryptocurrency exchange with over 15 million users. Acquired by Binance in 2019, WazirX offers spot trading of 250+ cryptocurrencies with INR deposits via UPI, bank transfer, and P2P trading. The platform features its own utility token (WRX), instant INR deposits/withdrawals, and a simple interface suitable for beginners. WazirX Smart Token Fund (STF) allows users to invest in professional crypto traders' portfolios.",
     category: "Crypto Exchanges", categoryId: 2,
@@ -917,7 +2365,7 @@ export const tools: Tool[] = [
   },
   {
     id: 21, name: "CoinDCX", slug: "coindcx", logo: "DC",
-    rating: 4.3, reviews: 16000,
+    rating: 4.3,
     description: "Indian crypto exchange with highest liquidity and zero-fee trading on select pairs. Backed by Coinbase Ventures.",
     longDescription: "CoinDCX is India's safest and most liquid cryptocurrency exchange, founded in 2018 and backed by Coinbase Ventures, Polychain Capital, and B Capital. Serving over 15 million users, CoinDCX offers 500+ cryptocurrencies, INR deposits, margin trading, futures, and staking. The DCX Learn platform provides free crypto education. CoinDCX is known for the highest liquidity among Indian exchanges and was the first Indian crypto unicorn.",
     category: "Crypto Exchanges", categoryId: 2,
@@ -941,7 +2389,7 @@ export const tools: Tool[] = [
   },
   {
     id: 22, name: "Charles Schwab", slug: "charles-schwab", logo: "CS",
-    rating: 4.7, reviews: 22000,
+    rating: 4.7,
     description: "America's largest publicly traded brokerage with commission-free trading and excellent research tools.",
     longDescription: "Charles Schwab is one of the largest and most respected brokerages in the United States, managing over $8.5 trillion in client assets. Founded in 1971, Schwab pioneered discount brokerage and now offers commission-free trading on stocks, ETFs, and options. The platform provides comprehensive research from multiple providers, retirement planning tools, banking services, and 24/7 customer support. All accounts include SIPC protection up to $500,000 including $250,000 cash.",
     category: "Stock Brokers", categoryId: 3,
@@ -965,7 +2413,7 @@ export const tools: Tool[] = [
   },
   {
     id: 23, name: "Fidelity", slug: "fidelity", logo: "FD",
-    rating: 4.8, reviews: 25000,
+    rating: 4.8,
     description: "Top-rated US brokerage with zero-commission trading, zero-expense index funds, and exceptional research.",
     longDescription: "Fidelity Investments is one of the world's largest asset managers with $4.9 trillion in assets under administration. Founded in 1946, Fidelity offers commission-free trading with zero account minimums, industry-leading research from 20+ independent providers, and zero-expense-ratio index funds (Fidelity ZERO). The platform provides retirement planning, wealth management, banking, and crypto trading. Fidelity is privately held, which allows long-term focus on customer experience without quarterly earnings pressure.",
     category: "Stock Brokers", categoryId: 3,
@@ -989,7 +2437,7 @@ export const tools: Tool[] = [
   },
   {
     id: 24, name: "Webull", slug: "webull", logo: "WB",
-    rating: 4.3, reviews: 15000,
+    rating: 4.3,
     description: "Commission-free trading platform with advanced charting, paper trading, and crypto. Popular with active traders.",
     longDescription: "Webull is a fast-growing commission-free brokerage platform with over 20 million users globally. Known for its advanced charting tools, extended trading hours, and cryptocurrency trading, Webull appeals to active and technically-oriented traders. The platform provides level 2 data, 60+ technical indicators, paper trading, and options trading with no commissions. Webull is regulated by the SEC and FINRA in the US.",
     category: "Stock Brokers", categoryId: 3,
@@ -1013,7 +2461,7 @@ export const tools: Tool[] = [
   },
   {
     id: 25, name: "TD Ameritrade", slug: "td-ameritrade", logo: "TD",
-    rating: 4.6, reviews: 32000,
+    rating: 4.6,
     description: "Powerful trading platform with thinkorswim desktop. Commission-free trading with professional-grade tools.",
     longDescription: "TD Ameritrade is one of America's premier online brokerages, serving millions of retail investors. Recently acquired by Charles Schwab, the platform is best known for thinkorswim - a professional-grade desktop and mobile trading platform with powerful analysis tools, custom scripting (thinkScript), paper trading, and a vibrant community. TD Ameritrade offers commission-free trading on US stocks, ETFs, and options, plus comprehensive educational resources.",
     category: "Stock Brokers", categoryId: 3,
@@ -1037,7 +2485,7 @@ export const tools: Tool[] = [
   },
   {
     id: 26, name: "Kraken", slug: "kraken", logo: "KK",
-    rating: 4.5, reviews: 14000,
+    rating: 4.5,
     description: "One of the oldest and most trusted crypto exchanges. Superior security, low fees, and staking rewards.",
     longDescription: "Kraken is one of the world's oldest and most trusted cryptocurrency exchanges, founded in 2011. Based in the US, Kraken serves over 10 million clients with spot trading, futures, margin (up to 5x), and staking across 200+ cryptocurrencies. Known for industry-leading security, Kraken has never been hacked. The platform offers competitive fees starting at 0.16%/0.26% (maker/taker) with volume-based discounts. Kraken is regulated in multiple jurisdictions.",
     category: "Crypto Exchanges", categoryId: 2,
@@ -1061,7 +2509,7 @@ export const tools: Tool[] = [
   },
   {
     id: 27, name: "Hargreaves Lansdown", slug: "hargreaves-lansdown", logo: "HL",
-    rating: 4.4, reviews: 12000,
+    rating: 4.4,
     description: "UK's largest investment platform with Wealth 150 fund list, ISA, SIPP, and comprehensive research.",
     longDescription: "Hargreaves Lansdown (HL) is the UK's largest direct-to-consumer investment platform, founded in 1981 and listed on the FTSE 100. Serving over 1.8 million clients with GBP 132 billion in assets, HL offers Stocks and Shares ISA, Self-Invested Personal Pension (SIPP), Lifetime ISA, Junior ISA, and general investment accounts. The Wealth 150 is HL's curated list of what they consider the best funds. The platform is FCA regulated and FSCS protected up to GBP 85,000.",
     category: "Stock Brokers", categoryId: 3,
@@ -1085,7 +2533,7 @@ export const tools: Tool[] = [
   },
   {
     id: 28, name: "Trading 212", slug: "trading-212", logo: "T2",
-    rating: 4.5, reviews: 22000,
+    rating: 4.5,
     description: "Commission-free trading platform popular in UK and Europe. OTC stocks, fractional shares, and ISA accounts.",
     longDescription: "Trading 212 is a rapidly growing commission-free trading platform serving over 3 million users across the UK and Europe. Founded in 2004 (as a forex broker) and pivoting to stock trading in 2017, Trading 212 offers zero-commission trading on 10,000+ stocks and ETFs, fractional shares, ISA and Invest accounts, and a popular Pie feature for automated portfolio allocation. FCA regulated and FSCS protected (GBP 85,000).",
     category: "Stock Brokers", categoryId: 3,
@@ -1109,7 +2557,7 @@ export const tools: Tool[] = [
   },
   {
     id: 29, name: "Freetrade", slug: "freetrade", logo: "FT",
-    rating: 4.2, reviews: 8000,
+    rating: 4.2,
     description: "Mobile-first commission-free trading app for UK investors. Simple, beautiful interface with ISA and SIPP.",
     longDescription: "Freetrade is a UK-based mobile-first investment platform that has gained popularity for its clean design and simple approach to investing. Founded in 2016, Freetrade offers commission-free trading on UK, US, and European stocks. The platform includes a Stocks and Shares ISA, a Self-Invested Personal Pension (SIPP), and fractional shares. FCA regulated with FSCS protection.",
     category: "Stock Brokers", categoryId: 3,
@@ -1133,7 +2581,7 @@ export const tools: Tool[] = [
   },
   {
     id: 30, name: "CMC Markets", slug: "cmc-markets", logo: "CM",
-    rating: 4.3, reviews: 9000,
+    rating: 4.3,
     description: "Award-winning UK CFD and spread betting provider. Institutional-grade execution with 10,000+ instruments.",
     longDescription: "CMC Markets is a leading UK-based provider of CFD trading and spread betting, founded in 1989 and listed on the London Stock Exchange (FTSE 250). Serving clients in the UK and internationally, CMC Markets offers access to 10,000+ financial instruments across forex, indices, commodities, shares, and treasuries. The proprietary Next Generation platform features advanced charting with 115+ technical indicators, pattern recognition, and integrated Reuters news. FCA regulated with client funds held in segregated accounts.",
     category: "CFD Brokers", categoryId: 4,
@@ -1157,7 +2605,7 @@ export const tools: Tool[] = [
   },
   {
     id: 31, name: "DEGIRO", slug: "degiro", logo: "DG",
-    rating: 4.3, reviews: 18000,
+    rating: 4.3,
     description: "Europe's largest discount broker with ultra-low fees. Access to 50+ exchanges across 30 countries.",
     longDescription: "DEGIRO is Europe's largest and most popular discount broker, serving over 2.5 million clients across 30+ countries. Founded in 2008 and now part of flatexDEGIRO Bank AG (listed on Xetra), DEGIRO offers some of the lowest trading fees in Europe. The platform provides access to 50+ exchanges worldwide, allowing investors to trade stocks, ETFs, bonds, options, futures, and warrants. As a German-regulated bank, client assets are protected up to EUR 100,000 (EUR 20,000 for cash).",
     category: "Stock Brokers", categoryId: 3,
@@ -1181,7 +2629,7 @@ export const tools: Tool[] = [
   },
   {
     id: 32, name: "Trade Republic", slug: "trade-republic", logo: "TR",
-    rating: 4.4, reviews: 12000,
+    rating: 4.4,
     description: "Popular German neobroker with commission-free savings plans, fractional shares, and 4% interest on cash.",
     longDescription: "Trade Republic is Germany's leading neobroker and one of Europe's fastest-growing investment platforms, serving over 4 million clients across 17 European countries. Founded in 2015, Trade Republic offers commission-free trading with external trading venue execution. The platform is known for its simple flat-fee model (EUR 1 per trade), savings plans (Sparplane) with fractional shares from EUR 1, and competitive 4% interest on uninvested cash. Regulated by BaFin and Bundesbank.",
     category: "Stock Brokers", categoryId: 3,
@@ -1205,7 +2653,7 @@ export const tools: Tool[] = [
   },
   {
     id: 33, name: "XTB", slug: "xtb", logo: "XB",
-    rating: 4.5, reviews: 15000,
+    rating: 4.5,
     description: "Leading European CFD and forex broker with award-winning xStation platform. Stock trading with zero commissions.",
     longDescription: "XTB is one of Europe's largest and most awarded CFD and forex brokers, founded in 2002 and listed on the Warsaw Stock Exchange. Serving over 800,000 clients in 13+ countries, XTB offers trading on 5,800+ instruments including forex, indices, commodities, shares, ETFs, and cryptocurrencies as CFDs. The proprietary xStation 5 platform is widely praised for its speed, reliability, and user-friendly design. Regulated by FCA, KNF, CySEC, and other EU authorities.",
     category: "CFD Brokers", categoryId: 4,
@@ -1229,7 +2677,7 @@ export const tools: Tool[] = [
   },
   {
     id: 34, name: "Bitpanda", slug: "bitpanda", logo: "BP",
-    rating: 4.2, reviews: 9000,
+    rating: 4.2,
     description: "Austrian multi-asset platform for crypto, stocks, ETFs, metals, and commodities. Ideal for European investors.",
     longDescription: "Bitpanda is an Austrian-based multi-asset investment platform founded in 2014, serving over 4 million users across Europe. Unlike pure crypto exchanges, Bitpanda offers stocks, ETFs, precious metals, cryptocurrencies, and commodities from a single account. The platform provides automated savings plans, fractional investing from EUR 1, and a Bitpanda Card for spending crypto. Regulated by the FMA (Austria) and BaFin (Germany).",
     category: "Crypto Exchanges", categoryId: 2,
@@ -1253,7 +2701,7 @@ export const tools: Tool[] = [
   },
   {
     id: 35, name: "Saxo Bank", slug: "saxo-bank", logo: "SX",
-    rating: 4.5, reviews: 11000,
+    rating: 4.5,
     description: "Premium multi-asset broker offering 71,000+ instruments. Professional-grade platform for serious investors.",
     longDescription: "Saxo Bank is a Danish investment bank and online broker founded in 1992, offering access to over 71,000 financial instruments across global markets. The flagship SaxoTraderGO and SaxoTraderPRO platforms provide professional-grade trading across stocks, ETFs, bonds, forex, futures, options, and CFDs. Saxo serves clients in 170+ countries and holds banking licenses in multiple jurisdictions including Denmark (FSA), UK (FCA), and Singapore (MAS).",
     category: "Stock Brokers", categoryId: 3,
@@ -1277,7 +2725,7 @@ export const tools: Tool[] = [
   },
   {
     id: 36, name: "Forex.com", slug: "forex-com", logo: "FC",
-    rating: 4.3, reviews: 13000,
+    rating: 4.3,
     description: "Leading US forex broker with competitive spreads and advanced trading platforms. GAIN Capital Group subsidiary.",
     longDescription: "Forex.com is one of the world's leading forex brokers, operated by GAIN Capital (a StoneX Group company, NASDAQ: SNEX). Founded in 2001 and headquartered in the US, Forex.com serves clients in 180+ countries. It's one of the few brokers registered with both the CFTC/NFA (US) and FCA (UK). The broker offers 80+ currency pairs, plus indices, commodities, and crypto CFDs. $100 minimum deposit and highly competitive spreads from 0.2 pips.",
     category: "Forex Brokers", categoryId: 1,
@@ -1301,7 +2749,7 @@ export const tools: Tool[] = [
   },
   {
     id: 37, name: "Revolut", slug: "revolut", logo: "RV",
-    rating: 4.4, reviews: 180000,
+    rating: 4.4,
     description: "All-in-one finance super app with banking, stock trading, crypto, and currency exchange in 30+ currencies.",
     longDescription: "Revolut is a British-Lithuanian fintech company and neobank founded in 2015, serving over 45 million customers globally. Revolut's super app combines banking, commission-free stock trading (3 trades/month free), cryptocurrency trading, commodity trading, savings vaults, and multi-currency accounts supporting 30+ fiat currencies. Regulated by the FCA and Bank of Lithuania.",
     category: "Payment Systems", categoryId: 6,
@@ -1325,7 +2773,7 @@ export const tools: Tool[] = [
   },
   {
     id: 38, name: "N26", slug: "n26", logo: "N2",
-    rating: 4.3, reviews: 45000,
+    rating: 4.3,
     description: "German mobile bank with stock and ETF trading. Clean interface, Spaces sub-accounts, and full banking license.",
     longDescription: "N26 is a German neobank founded in 2013, serving over 8 million customers across 24 European countries. With a full German banking license, N26 provides a mobile-first banking experience with real-time notifications, sub-accounts (Spaces), and competitive overdraft. In partnership with various brokers, N26 now offers commission-free stock and ETF trading directly from the banking app. Deposits are protected up to EUR 100,000 under the German Deposit Protection Scheme.",
     category: "Payment Systems", categoryId: 6,
@@ -1349,7 +2797,7 @@ export const tools: Tool[] = [
   },
   {
     id: 39, name: "Investopedia", slug: "investopedia", logo: "IN",
-    rating: 4.7, reviews: 45000,
+    rating: 4.7,
     description: "World's leading financial education website with free dictionary, tutorials, stock simulator, and expert analysis.",
     longDescription: "Investopedia is the world's most comprehensive financial education resource, founded in 1999 and now part of the Dotdash Meredith publishing family (IAC). With over 20 million monthly visitors, Investopedia offers thousands of articles, a comprehensive financial dictionary, tutorials, courses, and a free stock market simulator. The platform covers everything from basic investing concepts to advanced derivatives trading. The Stock Simulator allows risk-free practice with $100,000 in virtual money and real market data.",
     category: "Education", categoryId: 8,
@@ -1373,7 +2821,7 @@ export const tools: Tool[] = [
   },
   {
     id: 40, name: "FXCM", slug: "fxcm", logo: "FM",
-    rating: 4.1, reviews: 11000,
+    rating: 4.1,
     description: "Established forex broker with low-cost trading, advanced platforms, and comprehensive market research.",
     longDescription: "FXCM is one of the world's most established forex and CFD brokers, founded in 1999 and headquartered in London. The broker serves clients in 100+ countries through regulated entities in the UK (FCA), Australia (ASIC), South Africa (FSCA), and other jurisdictions. FXCM offers 39 currency pairs plus CFDs on indices, commodities, and crypto. The platform provides its proprietary Trading Station alongside MT4, NinjaTrader, and API connectivity. FXCM is known for competitive spreads with Active Traders receiving rebates.",
     category: "Forex Brokers", categoryId: 1,
@@ -1397,7 +2845,7 @@ export const tools: Tool[] = [
   },
   {
     id: 41, name: "Investing.com", slug: "investing-com", logo: "IV",
-    rating: 4.6, reviews: 50000,
+    rating: 4.6,
     description: "Global financial portal with real-time data, charts, news, economic calendar, and portfolio tracking tools.",
     longDescription: "Investing.com is one of the world's top financial portals, founded in 2007 and serving over 100 million monthly users across 44 language editions. The platform provides real-time quotes, interactive charts, technical analysis tools, an economic calendar, breaking financial news, and portfolio tracking. Investing.com's free tools include stock screeners, a cryptocurrency monitor, commodity prices, and forex rates. The mobile app is one of the most downloaded finance apps globally.",
     category: "Trading Tools", categoryId: 7,
@@ -1421,7 +2869,7 @@ export const tools: Tool[] = [
   },
   {
     id: 42, name: "Zerodha", slug: "zerodha", logo: "ZE",
-    rating: 4.8, reviews: 45000,
+    rating: 4.8,
     description: "India's largest retail broker with zero brokerage on equity delivery and Rs.20/trade intraday.",
     longDescription: "Zerodha is India's largest retail stock broker by active clients, founded in 2010 by Nithin and Nikhil Kamath. The company pioneered the discount broking model in India, offering zero brokerage on equity delivery investments and a flat Rs.20 per executed order for intraday and F&O trades. With over 7.5 million clients and contributing 15% of daily retail trading volumes on NSE, Zerodha has revolutionized investing in India.",
     category: "Stock Brokers", categoryId: 3,
@@ -1447,7 +2895,7 @@ export const tools: Tool[] = [
   },
   {
     id: 43, name: "Upstox", slug: "upstox", logo: "UP",
-    rating: 4.5, reviews: 32000,
+    rating: 4.5,
     description: "Fast-growing discount broker with Rs.20/trade, backed by Rakesh Jhunjhunwala investment.",
     longDescription: "Upstox (formerly RKSV Securities) is one of India's fastest-growing discount brokers, founded in 2010 and backed by marquee investors including Rakesh Jhunjhunwala. With over 5 million clients, Upstox offers a flat Rs.20 per trade pricing model across segments.",
     category: "Stock Brokers", categoryId: 3,
@@ -1471,7 +2919,7 @@ export const tools: Tool[] = [
   },
   {
     id: 44, name: "Groww", slug: "groww", logo: "GR",
-    rating: 4.6, reviews: 28000,
+    rating: 4.6,
     description: "Simple investing platform for stocks, mutual funds, SIP. Perfect for millennial investors.",
     longDescription: "Groww started as a mutual fund platform in 2017 and has grown to become one of India's most popular investing platforms for millennials. With over 8 million users, Groww offers commission-free direct mutual funds and recently entered stock broking with competitive pricing.",
     category: "Stock Brokers", categoryId: 3,
@@ -1495,7 +2943,7 @@ export const tools: Tool[] = [
   },
   {
     id: 45, name: "Angel One", slug: "angel-one", logo: "AN",
-    rating: 4.4, reviews: 25000,
+    rating: 4.4,
     description: "Full-service stock broker with research, advisory, and Rs.20 per trade pricing.",
     longDescription: "Angel One (formerly Angel Broking) is a leading full-service stock broker in India, established in 1987 and listed on BSE. With over 7 million clients, Angel One offers a unique hybrid model combining discount broking pricing with full-service benefits.",
     category: "Stock Brokers", categoryId: 3,
@@ -1519,7 +2967,7 @@ export const tools: Tool[] = [
   },
   {
     id: 46, name: "5paisa", slug: "5paisa", logo: "5P",
-    rating: 4.2, reviews: 18000,
+    rating: 4.2,
     description: "India's first discount broker with flat Rs.10 per trade pricing.",
     longDescription: "5paisa was India's first discount broker, founded in 2016 as part of the India Infoline (IIFL) group. With a mission to make trading affordable for all Indians, 5paisa pioneered the flat-rate brokerage model at just Rs.10 per trade.",
     category: "Stock Brokers", categoryId: 3,
@@ -1543,7 +2991,7 @@ export const tools: Tool[] = [
   },
   {
     id: 47, name: "Finvasia", slug: "finvasia", logo: "FI",
-    rating: 4.3, reviews: 9000,
+    rating: 4.3,
     description: "Zero brokerage broker with lifetime free trading across all segments.",
     longDescription: "Finvasia is a unique broker in India offering lifetime zero brokerage across all segments including Equity, F&O, Currency, and Commodity. Founded in 2016, Finvasia has created a completely free trading model.",
     category: "Stock Brokers", categoryId: 3,
@@ -1567,7 +3015,7 @@ export const tools: Tool[] = [
   },
   {
     id: 48, name: "Shoonya", slug: "shoonya", logo: "SH",
-    rating: 4.1, reviews: 5500,
+    rating: 4.1,
     description: "Zero brokerage discount broker by Finvasia Group with modern UI.",
     longDescription: "Shoonya (Hindi for 'Zero') is a zero-brokerage discount broking platform launched by the Finvasia Group in 2021 with a more modern, user-friendly interface.",
     category: "Stock Brokers", categoryId: 3,
@@ -1590,7 +3038,7 @@ export const tools: Tool[] = [
   },
   {
     id: 49, name: "WazirX", slug: "wazirx", logo: "WX",
-    rating: 4.3, reviews: 22000,
+    rating: 4.3,
     description: "India's largest crypto exchange with INR trading, P2P marketplace. Owned by Binance.",
     longDescription: "WazirX is India's largest cryptocurrency exchange, founded in 2018 by Nischal Shetty and acquired by Binance in 2021. With over 10 million users, WazirX offers instant INR deposits via UPI, IMPS, and bank transfer.",
     category: "Crypto Exchanges", categoryId: 2,
@@ -1615,7 +3063,7 @@ export const tools: Tool[] = [
   },
   {
     id: 50, name: "CoinDCX", slug: "coindcx", logo: "CD",
-    rating: 4.4, reviews: 18000,
+    rating: 4.4,
     description: "India's most trusted crypto exchange with 3.5M+ users. Backed by Coinbase and Binance.",
     longDescription: "CoinDCX is one of India's largest and most trusted cryptocurrency exchanges, founded in 2018. With over 3.5 million users and backing from top investors including Coinbase Ventures, Binance, and BitTorrent.",
     category: "Crypto Exchanges", categoryId: 2,
@@ -1639,7 +3087,7 @@ export const tools: Tool[] = [
   },
   {
     id: 51, name: "ZebPay", slug: "zebpay", logo: "ZP",
-    rating: 4.2, reviews: 15000,
+    rating: 4.2,
     description: "One of India's oldest crypto exchanges (2014) with strong security and INR support.",
     longDescription: "ZebPay is one of India's oldest and most established cryptocurrency exchanges, founded in 2014 by three IIT Delhi graduates. Despite temporarily exiting India during the RBI banking ban (2018-2020), ZebPay returned stronger.",
     category: "Crypto Exchanges", categoryId: 2,
@@ -1663,7 +3111,7 @@ export const tools: Tool[] = [
   },
   {
     id: 52, name: "Bitbns", slug: "bitbns", logo: "BB",
-    rating: 4.0, reviews: 12000,
+    rating: 4.0,
     description: "Indian crypto exchange with unique features like recurring buys and SIP for crypto.",
     longDescription: "BitBNS is a homegrown Indian cryptocurrency exchange founded in 2017, known for introducing innovative features like Crypto SIP (Systematic Investment Plan) and recurring buys.",
     category: "Crypto Exchanges", categoryId: 2,
@@ -1688,7 +3136,7 @@ export const tools: Tool[] = [
 // REMOVED
   {
     id: 53, name: "IC Markets", slug: "ic-markets", logo: "IC",
-    rating: 4.7, reviews: 28000,
+    rating: 4.7,
     description: "Australian forex broker with ultra-low spreads from 0.0 pips. ECN execution.",
     longDescription: "IC Markets is Australia's largest forex broker by volume, founded in 2007 and regulated by ASIC, CySEC. Known for true ECN execution with spreads from 0.0 pips and ultra-fast order execution (avg 33ms), IC Markets serves over 180,000 clients globally.",
     category: "Forex Brokers", categoryId: 1,
@@ -1712,7 +3160,7 @@ export const tools: Tool[] = [
   },
   {
     id: 54, name: "Pepperstone", slug: "pepperstone", logo: "PS",
-    rating: 4.6, reviews: 22000,
+    rating: 4.6,
     description: "Award-winning forex broker from Australia with tight spreads and fast execution.",
     longDescription: "Pepperstone is an Australian forex and CFD broker founded in 2010, regulated by ASIC, FCA, CySEC. Serving over 300,000 clients globally with competitive pricing and average execution speed of 30ms.",
     category: "Forex Brokers", categoryId: 1,
@@ -1735,7 +3183,7 @@ export const tools: Tool[] = [
   },
   {
     id: 55, name: "XM", slug: "xm", logo: "XM",
-    rating: 4.5, reviews: 45000,
+    rating: 4.5,
     description: "Global forex broker with 1000+ instruments, no requotes.",
     longDescription: "XM is a global forex broker founded in 2009, serving over 10 million clients from 190+ countries with no rejections or re-quotes.",
     category: "Forex Brokers", categoryId: 1,
@@ -1758,7 +3206,7 @@ export const tools: Tool[] = [
   },
   {
     id: 56, name: "Exness", slug: "exness", logo: "EX",
-    rating: 4.6, reviews: 78000,
+    rating: 4.6,
     description: "World's largest forex broker by volume with instant withdrawals.",
     longDescription: "Exness is the world's largest forex broker by retail volume, founded in 2008 with over 800,000 active clients. Known for instant withdrawals and unlimited leverage.",
     category: "Forex Brokers", categoryId: 1,
@@ -1782,7 +3230,7 @@ export const tools: Tool[] = [
   },
   {
     id: 57, name: "Axi", slug: "axi", logo: "AX",
-    rating: 4.4, reviews: 15000,
+    rating: 4.4,
     description: "Australian forex broker with MT4/MT5 and free trading tools.",
     longDescription: "Axi (formerly AxiTrader) is an Australian forex broker founded in 2007, regulated by ASIC, FCA, DFSA.",
     category: "Forex Brokers", categoryId: 1,
@@ -1805,7 +3253,7 @@ export const tools: Tool[] = [
   },
   {
     id: 58, name: "ThinkMarkets", slug: "thinkmarkets", logo: "TM",
-    rating: 4.3, reviews: 12000,
+    rating: 4.3,
     description: "Multi-asset broker with ThinkTrader platform and fast execution.",
     longDescription: "ThinkMarkets is a global broker founded in 2010, regulated by FCA, ASIC with ultra-fast execution (avg 34ms).",
     category: "Forex Brokers", categoryId: 1,
@@ -1828,7 +3276,7 @@ export const tools: Tool[] = [
   },
   {
     id: 59, name: "Tickmill", slug: "tickmill", logo: "TK",
-    rating: 4.5, reviews: 18000,
+    rating: 4.5,
     description: "Low-cost forex broker with ECN execution.",
     longDescription: "Tickmill is a global forex broker founded in 2014, regulated by FCA, CySEC with spreads from 0.0 pips and low commissions.",
     category: "Forex Brokers", categoryId: 1,
@@ -1851,7 +3299,7 @@ export const tools: Tool[] = [
   },
   {
     id: 60, name: "FXTM", slug: "fxtm", logo: "FT",
-    rating: 4.4, reviews: 25000,
+    rating: 4.4,
     description: "Global forex broker with flexible leverage and education.",
     longDescription: "FXTM (ForexTime) is a global broker founded in 2011, serving over 2 million clients with flexible leverage up to 1:1000.",
     category: "Forex Brokers", categoryId: 1,
@@ -1876,7 +3324,7 @@ export const tools: Tool[] = [
 // REMOVED
   {
     id: 61, name: "IG Group", slug: "ig-group", logo: "IG",
-    rating: 4.7, reviews: 85000,
+    rating: 4.7,
     description: "World's #1 CFD provider with 17,000+ markets. FTSE 250 since 1974.",
     longDescription: "IG Group is the world's largest CFD provider, FTSE 250 company founded in 1974, serving 300,000+ clients with 17,000+ markets.",
     category: "CFD Brokers", categoryId: 4,
@@ -1900,7 +3348,7 @@ export const tools: Tool[] = [
   },
   {
     id: 62, name: "AvaTrade", slug: "avatrade", logo: "AV",
-    rating: 4.3, reviews: 35000,
+    rating: 4.3,
     description: "Global CFD broker with 1,200+ instruments and strong regulation.",
     longDescription: "AvaTrade is a global CFD broker founded in 2006, serving 800,000+ clients in 150+ countries with 1,200+ instruments.",
     category: "CFD Brokers", categoryId: 4,
@@ -1923,7 +3371,7 @@ export const tools: Tool[] = [
   },
   {
     id: 63, name: "Saxo Bank", slug: "saxo-bank", logo: "SB",
-    rating: 4.8, reviews: 25000,
+    rating: 4.8,
     description: "Premium Danish investment bank with excellent CFD platform.",
     longDescription: "Saxo Bank is a Danish investment bank founded in 1992, serving high-net-worth clients with premium SaxoTraderGO platform.",
     category: "CFD Brokers", categoryId: 4,
@@ -1948,7 +3396,7 @@ export const tools: Tool[] = [
 // REMOVED
   {
     id: 64, name: "PayPal", slug: "paypal", logo: "PP",
-    rating: 4.5, reviews: 250000,
+    rating: 4.5,
     description: "World's leading digital wallet with 400M+ users.",
     longDescription: "PayPal is the world's largest digital payment platform, founded in 1998, serving 400+ million users in 200+ countries.",
     category: "Payment Systems", categoryId: 6,
@@ -1971,7 +3419,7 @@ export const tools: Tool[] = [
   },
   {
     id: 65, name: "Wise", slug: "wise", logo: "WS",
-    rating: 4.8, reviews: 120000,
+    rating: 4.8,
     description: "Multi-currency account with mid-market exchange rates.",
     longDescription: "Wise (formerly TransferWise) is UK-based fintech founded in 2011, known for transparent international transfers using real mid-market rates.",
     category: "Payment Systems", categoryId: 6,
@@ -1995,7 +3443,7 @@ export const tools: Tool[] = [
   },
   {
     id: 66, name: "Revolut", slug: "revolut", logo: "RV",
-    rating: 4.4, reviews: 85000,
+    rating: 4.4,
     description: "Digital banking app with forex, crypto, commodities trading.",
     longDescription: "Revolut is a UK-based digital banking platform founded in 2015, serving 30+ million customers with trading features.",
     category: "Payment Systems", categoryId: 6,
@@ -2018,7 +3466,7 @@ export const tools: Tool[] = [
   },
   {
     id: 67, name: "Skrill", slug: "skrill", logo: "SK",
-    rating: 4.2, reviews: 45000,
+    rating: 4.2,
     description: "Digital wallet popular with forex traders and gaming sites.",
     longDescription: "Skrill is a UK-based digital wallet founded in 2001, serving 50+ million users, popular among forex traders.",
     category: "Payment Systems", categoryId: 6,
@@ -2041,7 +3489,7 @@ export const tools: Tool[] = [
   },
   {
     id: 68, name: "Neteller", slug: "neteller", logo: "NT",
-    rating: 4.1, reviews: 38000,
+    rating: 4.1,
     description: "Sister of Skrill, popular with forex traders for broker transfers.",
     longDescription: "Neteller is a digital wallet launched in 1999, part of Paysafe Group, popular among forex traders for instant broker deposits.",
     category: "Payment Systems", categoryId: 6,
@@ -2064,7 +3512,7 @@ export const tools: Tool[] = [
   },
   {
     id: 69, name: "Firstrade", slug: "firstrade", logo: "FR",
-    rating: 4.2, reviews: 12000,
+    rating: 4.2,
     description: "Commission-free options trading with $0 per contract fees.",
     longDescription: "Firstrade is a US-based discount broker founded in 1985, offering truly free options trading with $0 commission and $0 per-contract fees.",
     category: "Options Trading", categoryId: 5,
@@ -2087,7 +3535,7 @@ export const tools: Tool[] = [
   },
   {
     id: 70, name: "Moomoo", slug: "moomoo", logo: "MO",
-    rating: 4.4, reviews: 18000,
+    rating: 4.4,
     description: "Advanced options trading platform with free Level 2 data.",
     longDescription: "Moomoo is a trading platform by Futu Holdings, founded in 2016, known for advanced options tools and free Level 2 data.",
     category: "Options Trading", categoryId: 5,
@@ -2110,7 +3558,7 @@ export const tools: Tool[] = [
   },
   {
     id: 71, name: "Finviz", slug: "finviz", logo: "FV",
-    rating: 4.6, reviews: 85000,
+    rating: 4.6,
     description: "Stock screener and heat map for US markets.",
     longDescription: "Finviz is a popular stock screening and visualization website, offering powerful stock screeners and heat maps.",
     category: "Trading Tools", categoryId: 7,
@@ -2133,7 +3581,7 @@ export const tools: Tool[] = [
   },
   {
     id: 72, name: "StockCharts", slug: "stockcharts", logo: "SC",
-    rating: 4.5, reviews: 42000,
+    rating: 4.5,
     description: "Advanced charting platform with technical indicators.",
     longDescription: "StockCharts.com is a leading technical analysis platform founded in 1998, providing advanced charting tools.",
     category: "Trading Tools", categoryId: 7,
@@ -2156,7 +3604,7 @@ export const tools: Tool[] = [
   },
   {
     id: 73, name: "Seeking Alpha", slug: "seeking-alpha", logo: "SA",
-    rating: 4.5, reviews: 95000,
+    rating: 4.5,
     description: "Crowdsourced investment research with analyst articles.",
     longDescription: "Seeking Alpha is a crowdsourced investment research platform founded in 2004, featuring analyst articles and market analysis.",
     category: "Trading Tools", categoryId: 7,
@@ -2179,7 +3627,7 @@ export const tools: Tool[] = [
   },
   {
     id: 74, name: "Benzinga", slug: "benzinga", logo: "BZ",
-    rating: 4.4, reviews: 35000,
+    rating: 4.4,
     description: "Financial news and data platform with trading tools.",
     longDescription: "Benzinga is a financial media company founded in 2010, offering real-time news squawk and trading tools.",
     category: "Trading Tools", categoryId: 7,
@@ -2202,7 +3650,7 @@ export const tools: Tool[] = [
   },
   {
     id: 75, name: "FTMO", slug: "ftmo", logo: "FT",
-    rating: 4.7, reviews: 55000,
+    rating: 4.7,
     description: "Leading prop trading firm with funded trader programs.",
     longDescription: "FTMO is a leading proprietary trading firm founded in 2015, offering evaluation challenges with funding up to $2 million.",
     category: "Education", categoryId: 8,
@@ -2226,7 +3674,7 @@ export const tools: Tool[] = [
   },
   {
     id: 76, name: "The5%ers", slug: "the5ers", logo: "5P",
-    rating: 4.4, reviews: 15000,
+    rating: 4.4,
     description: "Prop trading firm with funded trader programs and education.",
     longDescription: "The5%ers is a proprietary trading firm offering funded trader programs and trading education.",
     category: "Education", categoryId: 8,
@@ -2249,7 +3697,7 @@ export const tools: Tool[] = [
   },
   {
     id: 77, name: "Urban Forex", slug: "urban-forex", logo: "UF",
-    rating: 4.6, reviews: 45000,
+    rating: 4.6,
     description: "Free forex education with community-driven learning.",
     longDescription: "Urban Forex is a forex education platform offering free daily videos and market analysis.",
     category: "Education", categoryId: 8,
@@ -2272,7 +3720,7 @@ export const tools: Tool[] = [
   },
   {
     id: 78, name: "Public.com", slug: "public", logo: "PU",
-    rating: 4.3, reviews: 22000,
+    rating: 4.3,
     description: "Social investing app with thematic investing and options trading.",
     longDescription: "Public.com is a social investing platform founded in 2015, offering commission-free trading with community features.",
     category: "Options Trading", categoryId: 5,
@@ -2297,7 +3745,7 @@ export const tools: Tool[] = [
 // REMOVED
   {
     id: 79, name: "Trading 212", slug: "trading-212", logo: "T2",
-    rating: 4.5, reviews: 95000,
+    rating: 4.5,
     description: "UK's popular commission-free investing app with ISA accounts.",
     longDescription: "Trading 212 is a UK-based commission-free investing platform founded in 2006, offering stocks, ETFs, and CFDs with zero commission. Known for its user-friendly app and innovative AutoInvest feature.",
     category: "Stock Brokers", categoryId: 3,
@@ -2318,7 +3766,7 @@ export const tools: Tool[] = [
   },
   {
     id: 80, name: "Hargreaves Lansdown", slug: "hargreaves-lansdown", logo: "HL",
-    rating: 4.3, reviews: 65000,
+    rating: 4.3,
     description: "UK's largest investment platform with full-service brokerage.",
     longDescription: "Hargreaves Lansdown is the UK's largest investment platform, founded in 1981, serving over 1.5 million investors with comprehensive investment services including shares, funds, pensions, and ISAs.",
     category: "Stock Brokers", categoryId: 3,
@@ -2339,7 +3787,7 @@ export const tools: Tool[] = [
   },
   {
     id: 81, name: "Interactive Investor", slug: "interactive-investor", logo: "II",
-    rating: 4.2, reviews: 35000,
+    rating: 4.2,
     description: "UK flat-fee investment platform with pension and ISA.",
     longDescription: "Interactive Investor is a UK investment platform founded in 1995, known for flat-fee pricing rather than percentage-based fees, making it cost-effective for larger portfolios.",
     category: "Stock Brokers", categoryId: 3,
@@ -2362,7 +3810,7 @@ export const tools: Tool[] = [
 // REMOVED
   {
     id: 82, name: "Vanguard", slug: "vanguard", logo: "VG",
-    rating: 4.7, reviews: 125000,
+    rating: 4.7,
     description: "Index fund pioneer with low-cost investing for long-term investors.",
     longDescription: "Vanguard is an investment management company founded in 1975, known for pioneering index funds and ultra-low-cost investing. With $7+ trillion in assets, Vanguard is owned by its funds, meaning clients own Vanguard.",
     category: "Stock Brokers", categoryId: 3,
@@ -2383,7 +3831,7 @@ export const tools: Tool[] = [
   },
   {
     id: 83, name: "Betterment", slug: "betterment", logo: "BT",
-    rating: 4.6, reviews: 55000,
+    rating: 4.6,
     description: "Robo-advisor with automated investing and tax-loss harvesting.",
     longDescription: "Betterment is the largest independent robo-advisor, founded in 2008, offering automated investing with tax-loss harvesting, goal-based planning, and low fees.",
     category: "Stock Brokers", categoryId: 3,
@@ -2404,7 +3852,7 @@ export const tools: Tool[] = [
   },
   {
     id: 84, name: "Wealthfront", slug: "wealthfront", logo: "WF",
-    rating: 4.5, reviews: 48000,
+    rating: 4.5,
     description: "Robo-advisor with advanced tax strategies and 529 plans.",
     longDescription: "Wealthfront is a leading robo-advisor founded in 2008, offering automated investing with advanced tax strategies including tax-loss harvesting, direct indexing, and 529 college savings plans.",
     category: "Stock Brokers", categoryId: 3,
@@ -2427,7 +3875,7 @@ export const tools: Tool[] = [
 // REMOVED
   {
     id: 85, name: "Binance", slug: "binance-eu", logo: "BN",
-    rating: 4.5, reviews: 65000,
+    rating: 4.5,
     description: "World's largest crypto exchange with EU compliance.",
     longDescription: "Binance is the world's largest cryptocurrency exchange by volume, with dedicated EU operations complying with European regulations including MiCA.",
     category: "Crypto Exchanges", categoryId: 2,
@@ -2448,7 +3896,7 @@ export const tools: Tool[] = [
   },
   {
     id: 86, name: "Kraken", slug: "kraken-eu", logo: "KR",
-    rating: 4.6, reviews: 52000,
+    rating: 4.6,
     description: "Secure US crypto exchange with strong EU presence.",
     longDescription: "Kraken is a US-based cryptocurrency exchange founded in 2011, known for security and compliance, with strong operations in the EU including banking services.",
     category: "Crypto Exchanges", categoryId: 2,
@@ -2469,7 +3917,7 @@ export const tools: Tool[] = [
   },
   {
     id: 87, name: "Bitstamp", slug: "bitstamp", logo: "BS",
-    rating: 4.4, reviews: 38000,
+    rating: 4.4,
     description: "Longest-running crypto exchange (2011) with EU base.",
     longDescription: "Bitstamp is the longest-running cryptocurrency exchange, founded in 2011 and based in Luxembourg, offering a secure and compliant platform for European traders.",
     category: "Crypto Exchanges", categoryId: 2,
@@ -2492,7 +3940,7 @@ export const tools: Tool[] = [
 // REMOVED
   {
     id: 88, name: "KuCoin", slug: "kucoin", logo: "KC",
-    rating: 4.3, reviews: 75000,
+    rating: 4.3,
     description: "Global crypto exchange with 700+ altcoins and low fees.",
     longDescription: "KuCoin is a global cryptocurrency exchange founded in 2017, known for listing new altcoins early and offering one of the largest selections of cryptocurrencies with competitive fees.",
     category: "Crypto Exchanges", categoryId: 2,
@@ -2513,7 +3961,7 @@ export const tools: Tool[] = [
   },
   {
     id: 89, name: "Bybit", slug: "bybit", logo: "BY",
-    rating: 4.4, reviews: 85000,
+    rating: 4.4,
     description: "Derivatives-focused crypto exchange with low fees and high leverage.",
     longDescription: "Bybit is a cryptocurrency derivatives exchange founded in 2018, known for perpetual contracts with up to 100x leverage and competitive trading fees.",
     category: "Crypto Exchanges", categoryId: 2,
@@ -2536,7 +3984,7 @@ export const tools: Tool[] = [
 
   {
     id: 90, name: "Phemex", slug: "phemex", logo: "PH",
-    rating: 4.2, reviews: 75000,
+    rating: 4.2,
     description: "Crypto derivatives with no KYC.",
     longDescription: "Phemex offers crypto derivatives with no KYC requirements.",
     category: "Crypto Exchanges", categoryId: 2,
@@ -2557,7 +4005,7 @@ export const tools: Tool[] = [
   },
   {
     id: 91, name: "AscendEX", slug: "ascendex", logo: "AE",
-    rating: 4.0, reviews: 95000,
+    rating: 4.0,
     description: "Crypto exchange with early listings.",
     longDescription: "AscendEX lists promising altcoins early.",
     category: "Crypto Exchanges", categoryId: 2,
@@ -2578,7 +4026,7 @@ export const tools: Tool[] = [
   },
   {
     id: 92, name: "Vantage", slug: "vantage", logo: "VG",
-    rating: 4.4, reviews: 38000,
+    rating: 4.4,
     description: "Multi-regulated forex broker.",
     longDescription: "Vantage is a globally regulated forex broker.",
     category: "Forex Brokers", categoryId: 1,
@@ -2599,7 +4047,7 @@ export const tools: Tool[] = [
   },
   {
     id: 93, name: "XTB", slug: "xtb", logo: "XT",
-    rating: 4.4, reviews: 65000,
+    rating: 4.4,
     description: "Publicly listed CFD broker.",
     longDescription: "XTB is listed on Warsaw Stock Exchange.",
     category: "CFD Brokers", categoryId: 4,
@@ -2620,7 +4068,7 @@ export const tools: Tool[] = [
   },
   {
     id: 94, name: "TradingView", slug: "tradingview", logo: "TV",
-    rating: 4.7, reviews: 850000,
+    rating: 4.7,
     description: "Advanced charting platform.",
     longDescription: "TradingView is the leading charting platform.",
     category: "Trading Tools", categoryId: 5,
@@ -2643,7 +4091,7 @@ export const tools: Tool[] = [
   // === BATCH 1: STOCK BROKERS & CRYPTO (95-109) ===
   {
     id: 95, name: "Questrade", slug: "questrade", logo: "QT",
-    rating: 4.3, reviews: 85000,
+    rating: 4.3,
     description: "Canada's largest online brokerage.",
     longDescription: "Questrade offers low-cost trading with free ETF purchases.",
     category: "Stock Brokers", categoryId: 3,
@@ -2664,7 +4112,7 @@ export const tools: Tool[] = [
   },
   {
     id: 96, name: "Wealthsimple", slug: "wealthsimple", logo: "WS",
-    rating: 4.4, reviews: 125000,
+    rating: 4.4,
     description: "Canadian robo-advisor and neo-broker.",
     longDescription: "Wealthsimple combines robo-advisory with self-directed trading.",
     category: "Stock Brokers", categoryId: 3,
@@ -2685,7 +4133,7 @@ export const tools: Tool[] = [
   },
   {
     id: 97, name: "CommSec", slug: "commsec", logo: "CS",
-    rating: 4.2, reviews: 95000,
+    rating: 4.2,
     description: "Australia's leading stockbroker.",
     longDescription: "CommSec is Commonwealth Bank's brokerage arm, Australia's largest broker.",
     category: "Stock Brokers", categoryId: 3,
@@ -2706,7 +4154,7 @@ export const tools: Tool[] = [
   },
   {
     id: 98, name: "Stake", slug: "stake", logo: "ST",
-    rating: 4.3, reviews: 185000,
+    rating: 4.3,
     description: "Australian broker for US stock trading.",
     longDescription: "Stake allows Australians to trade US stocks commission-free.",
     category: "Stock Brokers", categoryId: 3,
@@ -2727,7 +4175,7 @@ export const tools: Tool[] = [
   },
   {
     id: 99, name: "Sharesies", slug: "sharesies", logo: "SS",
-    rating: 4.5, reviews: 95000,
+    rating: 4.5,
     description: "New Zealand micro-investing platform.",
     longDescription: "Sharesies allows Kiwis to invest with as little as NZ$5.",
     category: "Stock Brokers", categoryId: 3,
@@ -2748,7 +4196,7 @@ export const tools: Tool[] = [
   },
   {
     id: 100, name: "Bitpanda", slug: "bitpanda", logo: "BP",
-    rating: 4.3, reviews: 185000,
+    rating: 4.3,
     description: "European crypto and multi-asset platform.",
     longDescription: "Bitpanda offers crypto, stocks, and commodities in one platform.",
     category: "Crypto Exchanges", categoryId: 2,
@@ -2769,7 +4217,7 @@ export const tools: Tool[] = [
   },
   {
     id: 101, name: "Bison", slug: "bison", logo: "BS",
-    rating: 4.1, reviews: 75000,
+    rating: 4.1,
     description: "German crypto exchange by Börse Stuttgart.",
     longDescription: "Bison is a regulated crypto exchange from Stuttgart Stock Exchange.",
     category: "Crypto Exchanges", categoryId: 2,
@@ -2790,7 +4238,7 @@ export const tools: Tool[] = [
   },
   {
     id: 102, name: "Vantage CFD", slug: "vantage-cfd", logo: "VC",
-    rating: 4.3, reviews: 28000,
+    rating: 4.3,
     description: "Multi-asset CFD broker.",
     longDescription: "Vantage offers CFD trading on 600+ instruments.",
     category: "CFD Brokers", categoryId: 4,
@@ -2811,7 +4259,7 @@ export const tools: Tool[] = [
   },
   {
     id: 103, name: "Pepperstone", slug: "pepperstone", logo: "PP",
-    rating: 4.5, reviews: 48000,
+    rating: 4.5,
     description: "Australian forex broker.",
     longDescription: "Pepperstone offers tight spreads and fast execution.",
     category: "Forex Brokers", categoryId: 1,
@@ -2832,7 +4280,7 @@ export const tools: Tool[] = [
   },
   {
     id: 104, name: "CMC Markets", slug: "cmc-markets", logo: "CMC",
-    rating: 4.5, reviews: 55000,
+    rating: 4.5,
     description: "LSE-listed CFD broker since 1989.",
     longDescription: "CMC Markets offers 12,000+ instruments with next-gen platform.",
     category: "CFD Brokers", categoryId: 4,
@@ -2853,7 +4301,7 @@ export const tools: Tool[] = [
   },
   {
     id: 105, name: "Investopedia Academy", slug: "investopedia-academy", logo: "IA",
-    rating: 4.5, reviews: 125000,
+    rating: 4.5,
     description: "Premium financial education courses.",
     longDescription: "Investopedia Academy offers premium courses on trading and finance.",
     category: "Education", categoryId: 8,
@@ -2874,7 +4322,7 @@ export const tools: Tool[] = [
   },
   {
     id: 106, name: "Udemy Trading", slug: "udemy-trading", logo: "UD",
-    rating: 4.2, reviews: 450000,
+    rating: 4.2,
     description: "Affordable trading courses from various instructors.",
     longDescription: "Udemy offers thousands of trading courses at affordable prices.",
     category: "Education", categoryId: 8,
@@ -2895,7 +4343,7 @@ export const tools: Tool[] = [
   },
   {
     id: 107, name: "Coursera Finance", slug: "coursera-finance", logo: "CR",
-    rating: 4.5, reviews: 285000,
+    rating: 4.5,
     description: "University-level finance courses.",
     longDescription: "Coursera offers finance courses from top universities.",
     category: "Education", categoryId: 8,
@@ -2916,7 +4364,7 @@ export const tools: Tool[] = [
   },
   {
     id: 108, name: "PayPal", slug: "paypal-crypto", logo: "PP",
-    rating: 4.0, reviews: 285000,
+    rating: 4.0,
     description: "Crypto trading within PayPal.",
     longDescription: "PayPal allows crypto buying, selling, and checkout.",
     category: "Crypto Exchanges", categoryId: 2,
@@ -2937,7 +4385,7 @@ export const tools: Tool[] = [
   },
   {
     id: 109, name: "Venmo Crypto", slug: "venmo-crypto", logo: "VN",
-    rating: 3.9, reviews: 125000,
+    rating: 3.9,
     description: "Crypto trading within Venmo app.",
     longDescription: "Venmo offers crypto trading integrated with the social payment app.",
     category: "Crypto Exchanges", categoryId: 2,
@@ -2960,7 +4408,7 @@ export const tools: Tool[] = [
   // === BATCH 2: FOREX, CFD, PAYMENT (110-124) ===
   {
     id: 110, name: "Dukascopy", slug: "dukascopy", logo: "DK",
-    rating: 4.3, reviews: 28000,
+    rating: 4.3,
     description: "Swiss forex broker with banking license.",
     longDescription: "Dukascopy is a Swiss forex broker with a banking license.",
     category: "Forex Brokers", categoryId: 1,
@@ -2981,7 +4429,7 @@ export const tools: Tool[] = [
   },
   {
     id: 111, name: "Admirals", slug: "admirals", logo: "AD",
-    rating: 4.2, reviews: 22000,
+    rating: 4.2,
     description: "Multi-regulated forex broker.",
     longDescription: "Admirals is regulated by FCA, CySEC, ASIC.",
     category: "Forex Brokers", categoryId: 1,
@@ -3002,7 +4450,7 @@ export const tools: Tool[] = [
   },
   {
     id: 112, name: "FXTM", slug: "fxtm", logo: "FTM",
-    rating: 4.2, reviews: 42000,
+    rating: 4.2,
     description: "Global forex broker with copy trading.",
     longDescription: "FXTM offers forex, CFDs with copy trading features.",
     category: "Forex Brokers", categoryId: 1,
@@ -3023,7 +4471,7 @@ export const tools: Tool[] = [
   },
   {
     id: 113, name: "AvaTrade", slug: "avatrade", logo: "AV",
-    rating: 4.3, reviews: 52000,
+    rating: 4.3,
     description: "Multi-regulated CFD broker with fixed spreads.",
     longDescription: "AvaTrade offers fixed spreads and negative balance protection.",
     category: "CFD Brokers", categoryId: 4,
@@ -3044,7 +4492,7 @@ export const tools: Tool[] = [
   },
   {
     id: 114, name: "IC Markets", slug: "ic-markets", logo: "IC",
-    rating: 4.5, reviews: 75000,
+    rating: 4.5,
     description: "Australian ECN broker with tight spreads.",
     longDescription: "IC Markets offers ultra-low spreads with true ECN execution.",
     category: "Forex Brokers", categoryId: 1,
@@ -3065,7 +4513,7 @@ export const tools: Tool[] = [
   },
   {
     id: 115, name: "Tickmill", slug: "tickmill", logo: "TM",
-    rating: 4.3, reviews: 42000,
+    rating: 4.3,
     description: "FCA-regulated ECN forex broker.",
     longDescription: "Tickmill offers tight spreads with FCA regulation.",
     category: "Forex Brokers", categoryId: 1,
@@ -3086,7 +4534,7 @@ export const tools: Tool[] = [
   },
   {
     id: 116, name: "XM", slug: "xm", logo: "XM",
-    rating: 4.3, reviews: 185000,
+    rating: 4.3,
     description: "Global forex broker with 10M+ clients.",
     longDescription: "XM has 10M+ clients across 190 countries.",
     category: "Forex Brokers", categoryId: 1,
@@ -3107,7 +4555,7 @@ export const tools: Tool[] = [
   },
   {
     id: 117, name: "OctaFX", slug: "octafx", logo: "OF",
-    rating: 4.0, reviews: 125000,
+    rating: 4.0,
     description: "Forex broker with copy trading.",
     longDescription: "OctaFX offers copy trading and low deposits.",
     category: "Forex Brokers", categoryId: 1,
@@ -3128,7 +4576,7 @@ export const tools: Tool[] = [
   },
   {
     id: 118, name: "HotForex", slug: "hotforex", logo: "HF",
-    rating: 4.1, reviews: 65000,
+    rating: 4.1,
     description: "Forex broker with multiple accounts.",
     longDescription: "HotForex offers various account types and conditions.",
     category: "Forex Brokers", categoryId: 1,
@@ -3149,7 +4597,7 @@ export const tools: Tool[] = [
   },
   {
     id: 119, name: "Neteller", slug: "neteller", logo: "NT",
-    rating: 4.1, reviews: 380000,
+    rating: 4.1,
     description: "Digital wallet popular with forex.",
     longDescription: "Neteller is widely used by forex brokers and gaming.",
     category: "Payment Systems", categoryId: 7,
@@ -3170,7 +4618,7 @@ export const tools: Tool[] = [
   },
   {
     id: 120, name: "ecoPayz", slug: "ecopayz", logo: "EP",
-    rating: 4.0, reviews: 285000,
+    rating: 4.0,
     description: "Digital wallet for forex and gaming.",
     longDescription: "ecoPayz is a UK-based e-wallet for forex.",
     category: "Payment Systems", categoryId: 7,
@@ -3191,7 +4639,7 @@ export const tools: Tool[] = [
   },
   {
     id: 121, name: "Payoneer", slug: "payoneer", logo: "PO",
-    rating: 4.2, reviews: 520000,
+    rating: 4.2,
     description: "Cross-border payments for businesses.",
     longDescription: "Payoneer provides cross-border payments for businesses.",
     category: "Payment Systems", categoryId: 7,
@@ -3212,7 +4660,7 @@ export const tools: Tool[] = [
   },
   {
     id: 122, name: "MuchBetter", slug: "muchbetter", logo: "MB",
-    rating: 4.2, reviews: 125000,
+    rating: 4.2,
     description: "Mobile-first digital wallet.",
     longDescription: "MuchBetter is mobile-first e-wallet for trading.",
     category: "Payment Systems", categoryId: 7,
@@ -3233,7 +4681,7 @@ export const tools: Tool[] = [
   },
   {
     id: 123, name: "Jeton", slug: "jeton", logo: "JT",
-    rating: 4.1, reviews: 95000,
+    rating: 4.1,
     description: "Digital wallet with crypto support.",
     longDescription: "Jeton offers wallet services with crypto features.",
     category: "Payment Systems", categoryId: 7,
@@ -3254,7 +4702,7 @@ export const tools: Tool[] = [
   },
   {
     id: 124, name: "Paysafecard", slug: "paysafecard", logo: "PS",
-    rating: 4.0, reviews: 985000,
+    rating: 4.0,
     description: "Prepaid payment method for trading.",
     longDescription: "Paysafecard is a prepaid payment method used by brokers.",
     category: "Payment Systems", categoryId: 7,
@@ -3276,7 +4724,7 @@ export const tools: Tool[] = [
   // === BATCH 3: CRYPTO, TRADING TOOLS, EDUCATION (125-139) ===
   {
     id: 125, name: "Bitfinex", slug: "bitfinex", logo: "BF",
-    rating: 4.2, reviews: 185000,
+    rating: 4.2,
     description: "Professional crypto exchange.",
     longDescription: "Bitfinex offers advanced crypto trading with margin.",
     category: "Crypto Exchanges", categoryId: 2,
@@ -3297,7 +4745,7 @@ export const tools: Tool[] = [
   },
   {
     id: 126, name: "Huobi", slug: "huobi", logo: "HB",
-    rating: 4.1, reviews: 225000,
+    rating: 4.1,
     description: "Global crypto with 500+ coins.",
     longDescription: "Huobi offers 500+ coins with global service.",
     category: "Crypto Exchanges", categoryId: 2,
@@ -3318,7 +4766,7 @@ export const tools: Tool[] = [
   },
   {
     id: 127, name: "MEXC", slug: "mexc", logo: "MX",
-    rating: 4.3, reviews: 165000,
+    rating: 4.3,
     description: "Crypto exchange with 1500+ altcoins.",
     longDescription: "MEXC lists 1500+ coins with early access.",
     category: "Crypto Exchanges", categoryId: 2,
@@ -3339,7 +4787,7 @@ export const tools: Tool[] = [
   },
   {
     id: 128, name: "Bybit", slug: "bybit-derivatives", logo: "BY",
-    rating: 4.4, reviews: 285000,
+    rating: 4.0,
     description: "Crypto derivatives with copy trading.",
     longDescription: "Bybit offers derivatives and spot with copy trading.",
     category: "Crypto Exchanges", categoryId: 2,
@@ -3360,7 +4808,7 @@ export const tools: Tool[] = [
   },
   {
     id: 129, name: "KuCoin", slug: "kucoin-global", logo: "KC",
-    rating: 4.3, reviews: 385000,
+    rating: 4.3,
     description: "Global crypto with 750+ coins.",
     longDescription: "KuCoin offers 750+ coins with global service.",
     category: "Crypto Exchanges", categoryId: 2,
@@ -3381,7 +4829,7 @@ export const tools: Tool[] = [
   },
   {
     id: 130, name: "Finviz", slug: "finviz-premium", logo: "FV",
-    rating: 4.5, reviews: 180000,
+    rating: 4.5,
     description: "Stock screener and heat maps.",
     longDescription: "Finviz offers stock screening and visualization.",
     category: "Trading Tools", categoryId: 5,
@@ -3402,7 +4850,7 @@ export const tools: Tool[] = [
   },
   {
     id: 131, name: "Benzinga Pro", slug: "benzinga-pro-news", logo: "BZ",
-    rating: 4.4, reviews: 45000,
+    rating: 4.4,
     description: "Real-time news for traders.",
     longDescription: "Benzinga Pro offers squawk alerts and news.",
     category: "Trading Tools", categoryId: 5,
@@ -3423,7 +4871,7 @@ export const tools: Tool[] = [
   },
   {
     id: 132, name: "Autochartist", slug: "autochartist-auto", logo: "AC",
-    rating: 4.4, reviews: 65000,
+    rating: 4.4,
     description: "Automated pattern recognition.",
     longDescription: "Autochartist scans for chart patterns automatically.",
     category: "Trading Tools", categoryId: 5,
@@ -3444,7 +4892,7 @@ export const tools: Tool[] = [
   },
   {
     id: 133, name: "Trading Central", slug: "trading-central-auto", logo: "TC",
-    rating: 4.5, reviews: 45000,
+    rating: 4.5,
     description: "Professional technical analysis.",
     longDescription: "Trading Central provides analyst insights to brokers.",
     category: "Trading Tools", categoryId: 5,
@@ -3465,7 +4913,7 @@ export const tools: Tool[] = [
   },
   {
     id: 134, name: "Yahoo Finance", slug: "yahoo-finance-plus", logo: "YF",
-    rating: 4.5, reviews: 980000,
+    rating: 4.5,
     description: "Free financial news and data.",
     longDescription: "Yahoo Finance offers comprehensive free market data.",
     category: "Trading Tools", categoryId: 5,
@@ -3486,7 +4934,7 @@ export const tools: Tool[] = [
   },
   {
     id: 135, name: "Babypips", slug: "babypips-school", logo: "BP",
-    rating: 4.7, reviews: 280000,
+    rating: 4.7,
     description: "Free forex education.",
     longDescription: "Babypips School of Pipsology teaches forex.",
     category: "Education", categoryId: 8,
@@ -3507,7 +4955,7 @@ export const tools: Tool[] = [
   },
   {
     id: 136, name: "Rayner Teo", slug: "rayner-teo-free", logo: "RT",
-    rating: 4.5, reviews: 185000,
+    rating: 4.5,
     description: "Free trading on YouTube.",
     longDescription: "Rayner Teo teaches price action trading.",
     category: "Education", categoryId: 8,
@@ -3528,7 +4976,7 @@ export const tools: Tool[] = [
   },
   {
     id: 137, name: "The Trading Channel", slug: "trading-channel", logo: "TTC",
-    rating: 4.3, reviews: 95000,
+    rating: 4.3,
     description: "Pattern trading education.",
     longDescription: "The Trading Channel teaches pattern trading.",
     category: "Education", categoryId: 8,
@@ -3549,7 +4997,7 @@ export const tools: Tool[] = [
   },
   {
     id: 138, name: "Warrior Trading", slug: "warrior-trading-day", logo: "WT",
-    rating: 4.2, reviews: 35000,
+    rating: 4.2,
     description: "Day trading education.",
     longDescription: "Warrior Trading teaches day trading strategies.",
     category: "Education", categoryId: 8,
@@ -3570,7 +5018,7 @@ export const tools: Tool[] = [
   },
   {
     id: 139, name: "Investopedia Academy", slug: "investopedia-academy-cert", logo: "IA",
-    rating: 4.5, reviews: 125000,
+    rating: 4.5,
     description: "Premium finance courses.",
     longDescription: "Investopedia offers certified finance courses.",
     category: "Education", categoryId: 8,
@@ -3593,7 +5041,7 @@ export const tools: Tool[] = [
   // === BATCH 4: OPTIONS, FUTURES, PAYMENT (140-154) ===
   {
     id: 140, name: "Tastytrade", slug: "tastytrade-options", logo: "TT",
-    rating: 4.5, reviews: 95000,
+    rating: 4.5,
     description: "Options and futures trading platform.",
     longDescription: "tastytrade specializes in options and futures with education.",
     category: "Options Platforms", categoryId: 6,
@@ -3614,7 +5062,7 @@ export const tools: Tool[] = [
   },
   {
     id: 141, name: "tastyworks", slug: "tastyworks-pro", logo: "TW",
-    rating: 4.4, reviews: 75000,
+    rating: 4.4,
     description: "Professional derivatives platform.",
     longDescription: "tastyworks offers advanced options and futures trading.",
     category: "Options Platforms", categoryId: 6,
@@ -3635,7 +5083,7 @@ export const tools: Tool[] = [
   },
   {
     id: 142, name: "CME Group", slug: "cme-futures", logo: "CME",
-    rating: 4.2, reviews: 45000,
+    rating: 4.2,
     description: "World's largest futures exchange.",
     longDescription: "CME Group operates the world's largest futures and options exchange.",
     category: "Futures", categoryId: 4,
@@ -3656,7 +5104,7 @@ export const tools: Tool[] = [
   },
   {
     id: 143, name: "E*TRADE", slug: "etrade-futures", logo: "ET",
-    rating: 4.5, reviews: 485000,
+    rating: 4.5,
     description: "Full-service broker with futures.",
     longDescription: "E*TRADE offers stocks, options, futures with excellent platform.",
     category: "Futures", categoryId: 4,
@@ -3677,7 +5125,7 @@ export const tools: Tool[] = [
   },
   {
     id: 144, name: "NinjaTrader", slug: "ninjatrader-futures", logo: "NT",
-    rating: 4.3, reviews: 185000,
+    rating: 4.3,
     description: "Advanced futures trading software.",
     longDescription: "NinjaTrader offers advanced futures trading with analytics.",
     category: "Futures", categoryId: 4,
@@ -3698,7 +5146,7 @@ export const tools: Tool[] = [
   },
   {
     id: 145, name: "Stripe", slug: "stripe-payments", logo: "ST",
-    rating: 4.6, reviews: 2850000,
+    rating: 4.6,
     description: "Online payment processing.",
     longDescription: "Stripe processes online payments for businesses globally.",
     category: "Payment Systems", categoryId: 7,
@@ -3719,7 +5167,7 @@ export const tools: Tool[] = [
   },
   {
     id: 146, name: "PayPal", slug: "paypal-business", logo: "PP",
-    rating: 4.3, reviews: 8500000,
+    rating: 4.3,
     description: "Global digital payments.",
     longDescription: "PayPal is the world's largest digital payments platform.",
     category: "Payment Systems", categoryId: 7,
@@ -3740,7 +5188,7 @@ export const tools: Tool[] = [
   },
   {
     id: 147, name: "Square", slug: "square-pos", logo: "SQ",
-    rating: 4.4, reviews: 1850000,
+    rating: 4.4,
     description: "POS and payment processing.",
     longDescription: "Square offers POS systems with integrated payments.",
     category: "Payment Systems", categoryId: 7,
@@ -3761,7 +5209,7 @@ export const tools: Tool[] = [
   },
   {
     id: 148, name: "Adyen", slug: "adyen-enterprise", logo: "AY",
-    rating: 4.5, reviews: 85000,
+    rating: 4.5,
     description: "Enterprise payment platform.",
     longDescription: "Adyen serves enterprise merchants with global payments.",
     category: "Payment Systems", categoryId: 7,
@@ -3784,7 +5232,7 @@ export const tools: Tool[] = [
   // === BATCH 5: MORE TOOLS (149-176) ===
   {
     id: 149, name: "Bitpanda", slug: "bitpanda-eu", logo: "BP",
-    rating: 4.3, reviews: 185000,
+    rating: 4.3,
     description: "European crypto and stocks.",
     longDescription: "Bitpanda offers crypto, stocks, and metals trading.",
     category: "Crypto Exchanges", categoryId: 2,
@@ -3805,7 +5253,7 @@ export const tools: Tool[] = [
   },
   {
     id: 150, name: "Gemini", slug: "gemini-trust", logo: "GM",
-    rating: 4.2, reviews: 165000,
+    rating: 4.2,
     description: "US regulated crypto exchange.",
     longDescription: "Gemini is a US-regulated crypto exchange with strong security.",
     category: "Crypto Exchanges", categoryId: 2,
@@ -3826,7 +5274,7 @@ export const tools: Tool[] = [
   },
   {
     id: 151, name: "Crypto.com", slug: "crypto-com-app", logo: "CC",
-    rating: 4.1, reviews: 685000,
+    rating: 4.1,
     description: "All-in-one crypto platform.",
     longDescription: "Crypto.com offers exchange, card, earn, and NFT.",
     category: "Crypto Exchanges", categoryId: 2,
@@ -3847,7 +5295,7 @@ export const tools: Tool[] = [
   },
   {
     id: 152, name: "OKX", slug: "okx-global", logo: "OK",
-    rating: 4.3, reviews: 485000,
+    rating: 4.3,
     description: "Global crypto with DeFi.",
     longDescription: "OKX offers spot, derivatives, and DeFi wallet.",
     category: "Crypto Exchanges", categoryId: 2,
@@ -3868,7 +5316,7 @@ export const tools: Tool[] = [
   },
   {
     id: 153, name: "Gate.io", slug: "gate-io-altcoins", logo: "GT",
-    rating: 4.0, reviews: 385000,
+    rating: 4.0,
     description: "Crypto with 1700+ coins.",
     longDescription: "Gate.io lists 1700+ altcoins with early access.",
     category: "Crypto Exchanges", categoryId: 2,
@@ -3889,7 +5337,7 @@ export const tools: Tool[] = [
   },
   {
     id: 154, name: "StableBle", slug: "stableble-crypto", logo: "SB",
-    rating: 4.2, reviews: 45000,
+    rating: 4.2,
     description: "AI-powered crypto trading.",
     longDescription: "StableBle offers automated crypto trading strategies.",
     category: "Trading Tools", categoryId: 5,
@@ -3910,7 +5358,7 @@ export const tools: Tool[] = [
   },
   {
     id: 155, name: "CoinMarketCap", slug: "coinmarketcap-data", logo: "CMC",
-    rating: 4.5, reviews: 1250000,
+    rating: 4.5,
     description: "Crypto data and rankings.",
     longDescription: "CoinMarketCap provides crypto prices, rankings, and data.",
     category: "Trading Tools", categoryId: 5,
@@ -3931,7 +5379,7 @@ export const tools: Tool[] = [
   },
   {
     id: 156, name: "CoinGecko", slug: "coingecko-api", logo: "CG",
-    rating: 4.6, reviews: 985000,
+    rating: 4.6,
     description: "Independent crypto data.",
     longDescription: "CoinGecko offers independent crypto data and API.",
     category: "Trading Tools", categoryId: 5,
@@ -3952,7 +5400,7 @@ export const tools: Tool[] = [
   },
   {
     id: 157, name: "TradingView", slug: "tradingview-basic", logo: "TV",
-    rating: 4.7, reviews: 5850000,
+    rating: 4.7,
     description: "Charts and social trading.",
     longDescription: "TradingView is the leading platform for charts and ideas.",
     category: "Trading Tools", categoryId: 5,
@@ -3973,7 +5421,7 @@ export const tools: Tool[] = [
   },
   {
     id: 158, name: "Learn to Trade", slug: "learn-to-trade-free", logo: "LTT",
-    rating: 4.2, reviews: 45000,
+    rating: 4.2,
     description: "Free trading education.",
     longDescription: "Learn to Trade offers free and paid trading courses.",
     category: "Education", categoryId: 8,
@@ -3994,7 +5442,7 @@ export const tools: Tool[] = [
   },
   {
     id: 159, name: "Stacked", slug: "stacked-crypto-app", logo: "ST",
-    rating: 4.4, reviews: 25000,
+    rating: 4.4,
     description: "Portfolio tracker for crypto.",
     longDescription: "Stacked tracks crypto portfolio with tax tools.",
     category: "Trading Tools", categoryId: 5,
@@ -4015,7 +5463,7 @@ export const tools: Tool[] = [
   },
   {
     id: 160, name: "Delta", slug: "delta-portfolio-app", logo: "DL",
-    rating: 4.3, reviews: 185000,
+    rating: 4.3,
     description: "Portfolio tracker all assets.",
     longDescription: "Delta tracks crypto, stocks, and fiat portfolios.",
     category: "Trading Tools", categoryId: 5,
@@ -4036,7 +5484,7 @@ export const tools: Tool[] = [
   },
   {
     id: 161, name: "Revolut", slug: "revolut-crypto", logo: "RV",
-    rating: 4.2, reviews: 2850000,
+    rating: 4.2,
     description: "Neobank with crypto trading.",
     longDescription: "Revolut is a neobank offering stocks, crypto, and forex.",
     category: "Crypto Exchanges", categoryId: 2,
@@ -4057,7 +5505,7 @@ export const tools: Tool[] = [
   },
   {
     id: 162, name: "eToroX", slug: "etorox-crypto", logo: "EX",
-    rating: 4.0, reviews: 85000,
+    rating: 4.0,
     description: "eToro crypto exchange.",
     longDescription: "eToroX is eToro's dedicated crypto exchange.",
     category: "Crypto Exchanges", categoryId: 2,
@@ -4078,7 +5526,7 @@ export const tools: Tool[] = [
   },
   {
     id: 163, name: "Nexo", slug: "nexo-crypto-lend", logo: "NX",
-    rating: 4.3, reviews: 285000,
+    rating: 4.3,
     description: "Crypto lending platform.",
     longDescription: "Nexo offers crypto-backed loans and earn interest.",
     category: "Crypto Exchanges", categoryId: 2,
@@ -4099,7 +5547,7 @@ export const tools: Tool[] = [
   },
   {
     id: 164, name: "BlockFi", slug: "blockfi-crypto-interest", logo: "BF",
-    rating: 3.8, reviews: 185000,
+    rating: 3.8,
     description: "Crypto lending (restructuring).",
     longDescription: "BlockFi offers crypto interest accounts and loans.",
     category: "Crypto Exchanges", categoryId: 2,
@@ -4120,7 +5568,7 @@ export const tools: Tool[] = [
   },
   {
     id: 165, name: "Celsius", slug: "celsius-crypto-network", logo: "CL",
-    rating: 3.5, reviews: 285000,
+    rating: 3.5,
     description: "Crypto lending (bankrupt).",
     longDescription: "Celsius was a crypto lending platform, now bankrupt.",
     category: "Crypto Exchanges", categoryId: 2,
@@ -4141,7 +5589,7 @@ export const tools: Tool[] = [
   },
   {
     id: 166, name: "Venmo", slug: "venmo-crypto", logo: "VM",
-    rating: 4.1, reviews: 1850000,
+    rating: 4.1,
     description: "P2P payments with crypto.",
     longDescription: "Venmo offers P2P payments and crypto trading.",
     category: "Payment Systems", categoryId: 7,
@@ -4162,7 +5610,7 @@ export const tools: Tool[] = [
   },
   {
     id: 167, name: "Cash App", slug: "cash-app-btc", logo: "CA",
-    rating: 4.3, reviews: 2850000,
+    rating: 4.3,
     description: "P2P with Bitcoin trading.",
     longDescription: "Cash App offers P2P payments and Bitcoin trading.",
     category: "Payment Systems", categoryId: 7,
@@ -4183,7 +5631,7 @@ export const tools: Tool[] = [
   },
   {
     id: 168, name: "Klarna", slug: "klarna-bnpl", logo: "KL",
-    rating: 4.2, reviews: 1850000,
+    rating: 4.2,
     description: "Buy now, pay later.",
     longDescription: "Klarna offers BNPL services with shopping app.",
     category: "Payment Systems", categoryId: 7,
@@ -4204,7 +5652,7 @@ export const tools: Tool[] = [
   },
   {
     id: 169, name: "Afterpay", slug: "afterpay-clearpay", logo: "AP",
-    rating: 4.1, reviews: 985000,
+    rating: 4.1,
     description: "Buy now, pay later.",
     longDescription: "Afterpay offers BNPL with retail partners.",
     category: "Payment Systems", categoryId: 7,
@@ -4225,7 +5673,7 @@ export const tools: Tool[] = [
   },
   {
     id: 170, name: "Wise", slug: "wise-transfer", logo: "WS",
-    rating: 4.6, reviews: 1850000,
+    rating: 4.6,
     description: "International money transfers.",
     longDescription: "Wise offers low-cost international transfers.",
     category: "Payment Systems", categoryId: 7,
@@ -4246,7 +5694,7 @@ export const tools: Tool[] = [
   },
   {
     id: 171, name: "Payoneer", slug: "payoneer-freelancer", logo: "PO",
-    rating: 4.0, reviews: 685000,
+    rating: 4.0,
     description: "Cross-border payments.",
     longDescription: "Payoneer serves freelancers and businesses globally.",
     category: "Payment Systems", categoryId: 7,
@@ -4267,7 +5715,7 @@ export const tools: Tool[] = [
   },
   {
     id: 172, name: "Skrill", slug: "skrill-wallet", logo: "SK",
-    rating: 3.9, reviews: 485000,
+    rating: 3.9,
     description: "Digital wallet and payments.",
     longDescription: "Skrill offers digital wallet, crypto, and forex.",
     category: "Payment Systems", categoryId: 7,
@@ -4288,7 +5736,7 @@ export const tools: Tool[] = [
   },
   {
     id: 173, name: "Neteller", slug: "neteller-vip", logo: "NT",
-    rating: 4.0, reviews: 385000,
+    rating: 4.0,
     description: "Digital wallet for traders.",
     longDescription: "Neteller offers digital wallet popular with traders.",
     category: "Payment Systems", categoryId: 7,
@@ -4309,7 +5757,7 @@ export const tools: Tool[] = [
   },
   {
     id: 174, name: "Zelle", slug: "zelle-p2p", logo: "ZL",
-    rating: 4.4, reviews: 2850000,
+    rating: 4.4,
     description: "US bank-to-bank transfers.",
     longDescription: "Zelle offers instant bank transfers via US banks.",
     category: "Payment Systems", categoryId: 7,
@@ -4330,7 +5778,7 @@ export const tools: Tool[] = [
   },
   {
     id: 175, name: "Google Pay", slug: "google-pay-wallet", logo: "GP",
-    rating: 4.5, reviews: 5850000,
+    rating: 4.5,
     description: "Digital wallet and payments.",
     longDescription: "Google Pay offers contactless payments and P2P.",
     category: "Payment Systems", categoryId: 7,
@@ -4351,7 +5799,7 @@ export const tools: Tool[] = [
   },
   {
     id: 176, name: "Apple Pay", slug: "apple-pay-wallet", logo: "AP",
-    rating: 4.6, reviews: 6850000,
+    rating: 4.6,
     description: "Apple digital wallet.",
     longDescription: "Apple Pay offers contactless payments for Apple devices.",
     category: "Payment Systems", categoryId: 7,
@@ -4372,7 +5820,7 @@ export const tools: Tool[] = [
   },
   {
     id: 177, name: "IG", slug: "ig", logo: "IG",
-    rating: 4.6, reviews: 18500,
+    rating: 4.6,
     description: "World's No.1 CFD provider with 17,000+ markets. LSE-listed broker since 1974.",
     longDescription: "IG is the world's leading CFD and spread betting provider, established in 1974 and listed on the London Stock Exchange (LSE: IGG). With over 400,000 clients globally, IG offers access to 17,000+ markets including forex, indices, shares, commodities, and cryptocurrencies. The broker is regulated by multiple Tier-1 authorities including FCA (UK), ASIC (Australia), BaFin (Germany), MAS (Singapore), and more. IG's proprietary Next Generation platform is widely regarded as one of the most advanced trading interfaces in the industry. The broker also offers MetaTrader 4, ProRealTime, and TradingView integration. With 50+ years of continuous operation and public financial disclosures, IG represents one of the most trusted names in online trading.",
     category: "Forex Brokers", categoryId: 1,
@@ -4397,7 +5845,7 @@ export const tools: Tool[] = [
   },
   {
     id: 178, name: "Pepperstone", slug: "pepperstone", logo: "PS",
-    rating: 4.5, reviews: 12400,
+    rating: 4.5,
     description: "Award-winning forex broker with raw spreads from 0.0 pips. Multi-regulated across ASIC, FCA, CySEC.",
     longDescription: "Pepperstone is a leading forex and CFD broker founded in 2010 in Melbourne, Australia. Trusted by over 830,000 traders worldwide, Pepperstone is renowned for its ultra-low spreads and lightning-fast execution. The broker offers multiple account types including the popular Razor account with raw spreads from 0.0 pips plus commission. Pepperstone is regulated by Tier-1 authorities including ASIC (Australia), FCA (UK), CySEC (Cyprus), BaFin (Germany), DFSA (Dubai), and more. The broker supports MetaTrader 4, MetaTrader 5, cTrader, and TradingView, catering to all types of traders from beginners to professionals. With a strong focus on technology and execution quality, Pepperstone has won numerous awards for its trading conditions.",
     category: "Forex Brokers", categoryId: 1,
@@ -4422,7 +5870,7 @@ export const tools: Tool[] = [
   },
   {
     id: 179, name: "OANDA", slug: "oanda", logo: "OA",
-    rating: 4.4, reviews: 9800,
+    rating: 4.4,
     description: "Pioneer in online forex since 1996. CFTC/NFA registered US broker with competitive spreads.",
     longDescription: "OANDA is a pioneering forex broker established in 1996, making it one of the oldest continuously operating retail forex brokers. Unique among major brokers, OANDA maintains CFTC and NFA registration for US clients, a distinction few international brokers hold due to stringent US regulations. The broker serves clients in over 180 countries with regulation across FCA (UK), ASIC (Australia), IIROC (Canada), MAS (Singapore), and JFSA (Japan). OANDA is known for its transparent pricing, innovative trading technology, and comprehensive research tools. The broker offers its proprietary OANDA Trade platform alongside MetaTrader 4 and MetaTrader 5. With a strong focus on forex and CFD trading, OANDA provides excellent execution quality and a wide range of currency pairs.",
     category: "Forex Brokers", categoryId: 1,
@@ -4447,7 +5895,7 @@ export const tools: Tool[] = [
   },
   {
     id: 180, name: "CMC Markets", slug: "cmc-markets", logo: "CM",
-    rating: 4.5, reviews: 11200,
+    rating: 4.5,
     description: "LSE-listed CFD specialist since 1989. Next Generation platform with 13,000+ instruments.",
     longDescription: "CMC Markets is a leading CFD and spread betting broker founded in 1989 and listed on the London Stock Exchange (CMCX). With over 30 years of experience, CMC Markets has established itself as a trusted name in online trading, particularly known for its innovative Next Generation trading platform. The broker offers access to 13,000+ instruments including forex, indices, shares, commodities, treasuries, and cryptocurrencies. CMC Markets is regulated by Tier-1 authorities including FCA (UK), ASIC (Australia), BaFin (Germany), and MAS (Singapore). The Next Generation platform is widely praised for its advanced charting, pattern recognition, and comprehensive market research tools. With strong financials and public disclosure, CMC Markets represents a safe choice for CFD traders.",
     category: "Forex Brokers", categoryId: 1,
@@ -4472,7 +5920,7 @@ export const tools: Tool[] = [
   },
   {
     id: 181, name: "Saxo Bank", slug: "saxo-bank", logo: "SB",
-    rating: 4.7, reviews: 8500,
+    rating: 4.7,
     description: "Danish investment bank since 1992. Multi-asset trading with SaxoTraderPRO platform.",
     longDescription: "Saxo Bank is a Danish investment bank founded in 1992, operating under full banking license from the Danish Financial Supervisory Authority (FSA). With over 1 million clients and $100+ billion in client assets, Saxo Bank provides a premium trading experience across forex, stocks, bonds, ETFs, futures, options, and more. The broker is regulated across multiple jurisdictions including FCA (UK), FINMA (Switzerland), ASIC (Australia), MAS (Singapore), and JFSA (Japan). Saxo's proprietary SaxoTraderPRO and SaxoTraderGO platforms are among the most sophisticated in the industry, offering professional-grade tools and research. Saxo Bank caters to both retail and institutional clients with tiered pricing based on trading volume.",
     category: "Forex Brokers", categoryId: 1,
@@ -4497,7 +5945,7 @@ export const tools: Tool[] = [
   },
   {
     id: 182, name: "XM Group", slug: "xm-group", logo: "XM",
-    rating: 4.4, reviews: 15600,
+    rating: 4.4,
     description: "Multi-award winning broker with ultra-low spreads and no rejections. 99.35% execution speed.",
     longDescription: "XM Group is a globally recognized forex and CFD broker established in 2009, serving over 5 million clients from 196 countries. The broker is known for its 'No Rejections' policy, meaning orders are executed at the requested price in 99.35% of cases. XM is regulated by multiple authorities including CySEC (Cyprus), ASIC (Australia), DFSA (Dubai), and FSCA (South Africa). The broker offers ultra-low spreads starting from 0.6 pips on major pairs with no hidden fees or commissions. XM provides access to over 1,000 instruments including forex, indices, commodities, stocks, and precious metals. The broker supports MetaTrader 4 and MetaTrader 5 platforms, with 24/5 multilingual customer support in over 30 languages.",
     category: "Forex Brokers", categoryId: 1,
@@ -4522,7 +5970,7 @@ export const tools: Tool[] = [
   },
   {
     id: 183, name: "Exness", slug: "exness", logo: "EX",
-    rating: 4.5, reviews: 22000,
+    rating: 4.5,
     description: "Multi-asset broker with instant withdrawals and unlimited leverage. Trusted by millions worldwide.",
     longDescription: "Exness is a leading multi-asset broker founded in 2008, serving over 800,000 active traders and processing $4+ trillion in monthly volume. The broker is renowned for its instant withdrawal system, with most withdrawals processed automatically within seconds. Exness offers unlimited leverage up to 1:unlimited on certain accounts, making it popular among high-risk traders. The broker is regulated by CySEC (Cyprus), FCA (UK), FSA (Seychelles), FSCA (South Africa), and CMA (Kenya). Exness provides access to forex, metals, cryptocurrencies, energies, indices, and stocks. The broker supports MetaTrader 4, MetaTrader 5, and its proprietary WebTerminal platform.",
     category: "Forex Brokers", categoryId: 1,
@@ -4547,7 +5995,7 @@ export const tools: Tool[] = [
   },
   {
     id: 184, name: "IC Markets", slug: "ic-markets", logo: "IC",
-    rating: 4.4, reviews: 11800,
+    rating: 4.4,
     description: "True ECN broker with raw spreads from 0.0 pips. cTrader platform with depth of market.",
     longDescription: "IC Markets is an Australian-based forex and CFD broker founded in 2007, known for its True ECN trading environment. The broker offers raw spreads from 0.0 pips with depth of market visibility, making it popular among professional traders. IC Markets is regulated by ASIC (Australia), CySEC (Cyprus), and FSA (Seychelles). The broker provides access to over 2,250 instruments including forex, indices, commodities, stocks, bonds, and cryptocurrencies. IC Markets supports MetaTrader 4, MetaTrader 5, and cTrader platforms, with the cTrader platform offering advanced features like depth of market and algorithmic trading capabilities.",
     category: "Forex Brokers", categoryId: 1,
@@ -4572,7 +6020,7 @@ export const tools: Tool[] = [
   },
   {
     id: 185, name: "AvaTrade", slug: "avatrade", logo: "AV",
-    rating: 4.3, reviews: 9500,
+    rating: 4.3,
     description: "Multi-regulated broker with fixed spreads and comprehensive education. Established since 2006.",
     longDescription: "AvaTrade is a multi-regulated forex and CFD broker founded in 2006, serving over 300,000 registered traders globally. The broker is known for its fixed spread accounts, which provide cost certainty for traders. AvaTrade is regulated by multiple authorities including Central Bank of Ireland (EU), ASIC (Australia), FSA (Japan), FSCA (South Africa), and FSC (BVI). The broker offers access to over 1,250 instruments including forex, stocks, commodities, indices, ETFs, and cryptocurrencies. AvaTrade provides its proprietary AvaTradeGO platform alongside MetaTrader 4 and MetaTrader 5. The broker is particularly noted for its comprehensive educational resources and dedicated trading education program.",
     category: "Forex Brokers", categoryId: 1,
@@ -4597,7 +6045,7 @@ export const tools: Tool[] = [
   },
   {
     id: 186, name: "FxPro", slug: "fxpro", logo: "FX",
-    rating: 4.3, reviews: 8900,
+    rating: 4.3,
     description: "UK-based broker with advanced trading tools and multiple account types. No dealing desk execution.",
     longDescription: "FxPro is a UK-based forex and CFD broker established in 2006, serving clients in over 170 countries. The broker is known for its no dealing desk execution model and advanced trading tools. FxPro is regulated by FCA (UK), CySEC (Cyprus), FSCA (South Africa), and SCB (Bahamas). The broker offers access to over 2,100 instruments including forex, indices, shares, commodities, futures, and metals. FxPro provides its proprietary FxPro Edge platform alongside MetaTrader 4, MetaTrader 5, and cTrader. The broker is particularly noted for its advanced trading tools including FxPro Quant, FxPro Library, and economic calendar integration.",
     category: "Forex Brokers", categoryId: 1,
@@ -4622,7 +6070,7 @@ export const tools: Tool[] = [
   },
   {
     id: 187, name: "Bybit", slug: "bybit", logo: "BY",
-    rating: 4.6, reviews: 24500,
+    rating: 4.6,
     description: "Top crypto derivatives exchange with 10% market share. Advanced futures and options trading.",
     longDescription: "Bybit is a leading cryptocurrency derivatives exchange founded in 2018, known for its advanced futures and options trading platform. With approximately 10% market share in the derivatives market, Bybit processes billions in daily volume. The exchange offers spot trading, perpetual futures, USDT futures, inverse futures, and options trading. Bybit is particularly noted for its intuitive interface, low fees (0.1% maker, 0.1% taker), and innovative products like the Bybit Earn program. The exchange serves over 15 million users worldwide and maintains strong security practices with cold storage and insurance funds.",
     category: "Crypto Exchanges", categoryId: 2,
@@ -4647,7 +6095,7 @@ export const tools: Tool[] = [
   },
   {
     id: 188, name: "OKX", slug: "okx", logo: "OK",
-    rating: 4.5, reviews: 19800,
+    rating: 4.5,
     description: "Leading crypto exchange with 15% derivatives market share. MiCA compliant EU entity.",
     longDescription: "OKX is a major cryptocurrency exchange founded in 2017, serving over 50 million users globally. The exchange holds approximately 15% market share in the derivatives market, making it one of the top platforms for futures and options trading. OKX is particularly noted for its MiCA-compliant European entity, providing regulated access to EU traders. The exchange offers spot trading, perpetual futures, options, DeFi earning, and an NFT marketplace. OKX supports over 350 cryptocurrencies and provides advanced trading features including grid trading, DCA (dollar-cost averaging), and copy trading.",
     category: "Crypto Exchanges", categoryId: 2,
@@ -4672,7 +6120,7 @@ export const tools: Tool[] = [
   },
   {
     id: 189, name: "Kraken", slug: "kraken", logo: "KR",
-    rating: 4.7, reviews: 16500,
+    rating: 4.7,
     description: "Most trusted crypto exchange for security. US-regulated with fiat on-ramps. 200+ assets.",
     longDescription: "Kraken is widely regarded as one of the most secure and trusted cryptocurrency exchanges, founded in 2011 and serving over 10 million clients. The exchange is particularly noted for its strong security record, having never experienced a major hack. Kraken is regulated in the US and other jurisdictions, offering fiat on-ramps in multiple currencies. The exchange supports over 200 cryptocurrencies including Bitcoin, Ethereum, and numerous altcoins. Kraken provides spot trading, futures trading, margin trading, staking, and an OTC desk for large trades.",
     category: "Crypto Exchanges", categoryId: 2,
@@ -4697,7 +6145,7 @@ export const tools: Tool[] = [
   },
   {
     id: 190, name: "MEXC", slug: "mexc", logo: "MX",
-    rating: 4.3, reviews: 13200,
+    rating: 4.3,
     description: "High-leverage crypto exchange with 3.4% futures market share. 1500+ trading pairs.",
     longDescription: "MEXC (formerly MXC) is a cryptocurrency exchange founded in 2018, known for its high leverage offerings and extensive selection of trading pairs. The exchange holds approximately 3.4% market share in the futures market, making it a significant player in derivatives trading. MEXC supports over 1,500 trading pairs, including numerous altcoins not available on larger exchanges. The platform offers spot trading, futures with up to 125x leverage, ETF products, and staking services. MEXC is particularly popular among traders seeking access to emerging cryptocurrencies and high-leverage trading opportunities.",
     category: "Crypto Exchanges", categoryId: 2,
@@ -4722,7 +6170,7 @@ export const tools: Tool[] = [
   },
   {
     id: 191, name: "Gate.io", slug: "gate-io", logo: "GT",
-    rating: 4.4, reviews: 14500,
+    rating: 4.4,
     description: "Comprehensive crypto exchange with 6.8% futures market share. 1400+ cryptocurrencies listed.",
     longDescription: "Gate.io is a full-service cryptocurrency exchange founded in 2013, serving over 10 million users worldwide. The exchange holds approximately 6.8% market share in the futures market and is known for its extensive cryptocurrency selection. Gate.io supports over 1,400 cryptocurrencies, making it one of the largest exchanges by number of listed assets. The platform offers spot trading, futures trading, margin trading, options, ETF products, and an NFT marketplace. Gate.io also provides DeFi services including staking, lending, and liquidity mining.",
     category: "Crypto Exchanges", categoryId: 2,
@@ -4747,7 +6195,7 @@ export const tools: Tool[] = [
   },
   {
     id: 192, name: "Crypto.com", slug: "crypto-com", logo: "CC",
-    rating: 4.4, reviews: 28500,
+    rating: 4.4,
     description: "Comprehensive crypto ecosystem with exchange, Visa card, and DeFi services. 7% market share.",
     longDescription: "Crypto.com is a comprehensive cryptocurrency platform founded in 2016, offering a full ecosystem of crypto services. The exchange holds approximately 7% market share in spot trading and provides services including spot trading, derivatives, a Visa debit card, staking, earn products, and an NFT marketplace. Crypto.com is particularly noted for its Visa card which allows users to spend cryptocurrency at millions of merchants worldwide. The platform serves over 80 million users and is regulated in multiple jurisdictions including the US, Europe, and Asia.",
     category: "Crypto Exchanges", categoryId: 2,
@@ -4772,7 +6220,7 @@ export const tools: Tool[] = [
   },
   {
     id: 193, name: "KuCoin", slug: "kucoin", logo: "KC",
-    rating: 4.5, reviews: 17800,
+    rating: 4.5,
     description: "People's Exchange with 4.6% spot market share. 700+ cryptocurrencies and futures trading.",
     longDescription: "KuCoin, founded in 2017 and known as 'The People's Exchange', serves over 30 million users worldwide. The exchange holds approximately 4.6% market share in spot trading and offers a comprehensive range of crypto services. KuCoin supports over 700 cryptocurrencies including Bitcoin, Ethereum, and numerous altcoins. The platform provides spot trading, futures trading with up to 100x leverage, margin trading, P2P trading, and staking services. KuCoin is particularly noted for its user-friendly interface and low trading fees.",
     category: "Crypto Exchanges", categoryId: 2,
@@ -4797,7 +6245,7 @@ export const tools: Tool[] = [
   },
   {
     id: 194, name: "Bitget", slug: "bitget", logo: "BG",
-    rating: 4.4, reviews: 11200,
+    rating: 4.4,
     description: "Fast-growing crypto exchange with 4.9% futures market share. Copy trading and futures focus.",
     longDescription: "Bitget is a rapidly growing cryptocurrency exchange founded in 2018, known for its strong focus on futures trading and copy trading features. The exchange holds approximately 4.9% market share in the futures market and serves over 20 million users. Bitget offers spot trading, perpetual futures with up to 125x leverage, copy trading, and an earn program. The platform is particularly noted for its copy trading feature which allows users to automatically copy the trades of successful traders. Bitget supports over 500 cryptocurrencies and provides competitive trading fees.",
     category: "Crypto Exchanges", categoryId: 2,
@@ -4822,7 +6270,7 @@ export const tools: Tool[] = [
   },
   {
     id: 195, name: "Fidelity", slug: "fidelity", logo: "FD",
-    rating: 4.8, reviews: 45000,
+    rating: 4.8,
     description: "Best overall broker with $5.9T AUM. Zero-commission trading and excellent research.",
     longDescription: "Fidelity Investments is one of the largest and most respected brokerage firms in the world, founded in 1946 and managing over $5.9 trillion in assets. The broker is consistently ranked as the best overall broker for both beginners and experienced investors. Fidelity offers $0 commission trading on US stocks, ETFs, and options, with no account minimums. The platform provides access to extensive research tools, educational resources, and a wide range of investment products including mutual funds, bonds, and retirement accounts. Fidelity's mobile app is highly rated, and the broker offers excellent customer service with 24/7 support.",
     category: "Stock Brokers", categoryId: 3,
@@ -4847,7 +6295,7 @@ export const tools: Tool[] = [
   },
   {
     id: 196, name: "Charles Schwab", slug: "charles-schwab", logo: "CS",
-    rating: 4.7, reviews: 38000,
+    rating: 4.7,
     description: "Full-service broker with thinkorswim platform. $0 commissions and banking integration.",
     longDescription: "Charles Schwab is a leading full-service brokerage firm founded in 1971, serving over 35 million client accounts. The broker acquired TD Ameritrade in 2020, bringing the popular thinkorswim platform under its umbrella. Schwab offers $0 commission trading on US stocks, ETFs, and options, with no account minimums. The platform provides access to extensive research, educational resources, and a wide range of investment products. Schwab also offers banking services including checking accounts, savings accounts, and mortgages, making it a comprehensive financial services provider.",
     category: "Stock Brokers", categoryId: 3,
@@ -4872,7 +6320,7 @@ export const tools: Tool[] = [
   },
   {
     id: 197, name: "E*TRADE", slug: "etrade", logo: "ET",
-    rating: 4.5, reviews: 22000,
+    rating: 4.5,
     description: "Advanced trading platform with Power E*TRADE. $0 commissions and strong research.",
     longDescription: "E*TRADE from Morgan Stanley is a leading online brokerage founded in 1982, known for its advanced trading platforms and comprehensive research tools. The broker offers $0 commission trading on US stocks, ETFs, and options, with no account minimums. E*TRADE's Power E*TRADE platform is particularly noted for its advanced charting, options analysis tools, and customization options. The platform provides access to extensive research, educational resources, and a wide range of investment products. E*TRADE was acquired by Morgan Stanley in 2020, combining its retail brokerage expertise with Morgan Stanley's institutional strength.",
     category: "Stock Brokers", categoryId: 3,
@@ -4897,7 +6345,7 @@ export const tools: Tool[] = [
   },
   {
     id: 198, name: "Robinhood", slug: "robinhood", logo: "RH",
-    rating: 4.4, reviews: 52000,
+    rating: 4.4,
     description: "Pioneer of commission-free trading. Mobile-first platform with crypto and options.",
     longDescription: "Robinhood pioneered commission-free trading when it launched in 2013, disrupting the brokerage industry with its mobile-first approach and $0 trading fees. The platform serves over 22 million users and offers trading in stocks, ETFs, options, and cryptocurrencies. Robinhood is known for its intuitive mobile app, fractional shares, and simple interface that appeals to beginner investors. The platform also offers retirement accounts (IRA) and cash management features. While Robinhood has faced criticism for its gamification of trading and limited research tools, it remains popular among younger investors and those seeking a simple, low-cost trading experience.",
     category: "Stock Brokers", categoryId: 3,
@@ -4922,7 +6370,7 @@ export const tools: Tool[] = [
   },
   {
     id: 199, name: "Vanguard", slug: "vanguard", logo: "VG",
-    rating: 4.6, reviews: 28500,
+    rating: 4.6,
     description: "Low-cost index fund pioneer. $0 commission trading and excellent mutual funds.",
     longDescription: "Vanguard is one of the world's largest investment companies, founded in 1975 by John Bogle, who pioneered index funds and passive investing. The company manages over $8 trillion in assets and is known for its low-cost mutual funds and ETFs. Vanguard offers $0 commission trading on stocks and ETFs, with no account minimums. The platform is particularly noted for its extensive selection of low-cost index funds and target-date retirement funds. Vanguard's philosophy emphasizes long-term, buy-and-hold investing rather than active trading. The broker also offers retirement accounts, educational resources, and financial planning services.",
     category: "Stock Brokers", categoryId: 3,
@@ -4947,7 +6395,7 @@ export const tools: Tool[] = [
   },
   {
     id: 200, name: "Webull", slug: "webull", logo: "WB",
-    rating: 4.5, reviews: 18500,
+    rating: 4.5,
     description: "Commission-free trading with advanced charting. Paper trading and extended hours.",
     longDescription: "Webull is a commission-free trading platform founded in 2017, targeting active traders with its advanced charting and analysis tools. The platform offers $0 commission trading on stocks, ETFs, and options, with no account minimums. Webull is particularly noted for its sophisticated charting capabilities, extended hours trading (pre-market and after-hours), and paper trading feature that allows users to practice with $1 million in virtual funds. The platform also offers cryptocurrency trading and IPO access. Webull's mobile app is highly rated, and the broker provides 24/7 customer support.",
     category: "Stock Brokers", categoryId: 3,
@@ -4972,7 +6420,7 @@ export const tools: Tool[] = [
   },
   {
     id: 201, name: "Moomoo", slug: "moomoo", logo: "MM",
-    rating: 4.4, reviews: 12500,
+    rating: 4.4,
     description: "Advanced trading platform with 8.1% APY cash sweep. $0 commissions and strong tools.",
     longDescription: "Moomoo is a commission-free trading platform founded in 2018, offering advanced trading tools and competitive cash sweep rates. The platform provides $0 commission trading on US stocks, ETFs, and options, with no account minimums. Moomoo is particularly noted for its 8.1% APY on uninvested cash, one of the highest rates in the industry. The platform offers sophisticated charting, Level 2 market data, and pre-market and after-hours trading. Moomoo also provides access to Hong Kong and Chinese markets, making it attractive to international investors. The broker's mobile app is highly rated for its professional features.",
     category: "Stock Brokers", categoryId: 3,
@@ -4997,7 +6445,7 @@ export const tools: Tool[] = [
   },
   {
     id: 202, name: "Ally Invest", slug: "ally-invest", logo: "AI",
-    rating: 4.3, reviews: 9800,
+    rating: 4.3,
     description: "Bank-integrated broker with $0 commissions. Low options fees at $0.50/contract.",
     longDescription: "Ally Invest is the brokerage arm of Ally Bank, founded in 2017 as part of Ally Financial's expansion into investment services. The platform offers $0 commission trading on stocks, ETFs, and options, with no account minimums. Ally Invest is particularly noted for its low options contract fees at $0.50, among the lowest in the industry. The broker is integrated with Ally Bank, allowing seamless transfers between banking and investment accounts. Ally Invest provides access to stocks, ETFs, options, mutual funds, bonds, and forex. The platform offers both a self-directed trading experience and managed portfolios through Ally Invest Robo-Portfolios.",
     category: "Stock Brokers", categoryId: 3,
@@ -5022,7 +6470,7 @@ export const tools: Tool[] = [
   },
   {
     id: 203, name: "Firstrade", slug: "firstrade", logo: "FT",
-    rating: 4.3, reviews: 7500,
+    rating: 4.3,
     description: "Commission-free trading with free options. $0 minimum and strong mutual fund selection.",
     longDescription: "Firstrade is a discount brokerage founded in 1985, known for its truly commission-free trading including free options contracts. The platform offers $0 commission on stocks, ETFs, and options, with a low $0 minimum deposit. Firstrade is particularly noted for its extensive selection of over 11,000 mutual funds with no transaction fees. The broker provides access to stocks, ETFs, options, mutual funds, bonds, and retirement accounts. Firstrade's mobile app is highly rated, and the broker offers customer support in multiple languages including English, Chinese, and Korean.",
     category: "Stock Brokers", categoryId: 3,
@@ -5047,7 +6495,7 @@ export const tools: Tool[] = [
   },
   {
     id: 204, name: "Public", slug: "public", logo: "PU",
-    rating: 4.2, reviews: 14500,
+    rating: 4.2,
     description: "Community-driven investing with social features. $0 commissions and options revenue sharing.",
     longDescription: "Public is a commission-free investing platform founded in 2019, known for its social features and community-driven approach to investing. The platform offers $0 commission trading on stocks, ETFs, and options, with no account minimums. Public is particularly noted for its social feed where users can share investment ideas, discuss stocks, and follow other investors. The platform also offers a unique revenue-sharing program where users earn $0.06-$0.18 per options contract traded. Public provides access to stocks, ETFs, options, crypto, and alternative assets including fine art and collectibles. The platform emphasizes transparency and education for beginner investors.",
     category: "Stock Brokers", categoryId: 3,
@@ -5072,7 +6520,7 @@ export const tools: Tool[] = [
   },
   {
     id: 205, name: "Plus500", slug: "plus500", logo: "P5",
-    rating: 4.3, reviews: 18500,
+    rating: 4.3,
     description: "Leading CFD broker with no commissions. Trade 2,000+ instruments with leverage.",
     longDescription: "Plus500 is a leading CFD and forex broker founded in 2008, listed on the London Stock Exchange (LSE: PLUS). The broker is known for its commission-free trading model, making money from spreads only. Plus500 offers access to over 2,000 instruments including stocks, indices, commodities, forex, ETFs, options, and cryptocurrencies. The platform provides leverage up to 1:300 on certain instruments and is particularly noted for its simple, user-friendly interface. Plus500 is regulated by multiple Tier-1 authorities including FCA (UK), ASIC (Australia), CySEC (Cyprus), and MAS (Singapore).",
     category: "CFD Brokers", categoryId: 4,
@@ -5097,7 +6545,7 @@ export const tools: Tool[] = [
   },
   {
     id: 206, name: "tastyfx", slug: "tastyfx", logo: "TF",
-    rating: 4.4, reviews: 8900,
+    rating: 4.4,
     description: "US-regulated forex broker from IG Group. Low FX fees with advanced trading tools.",
     longDescription: "tastyfx is the US forex brokerage arm of IG Group, launched in 2022 to serve US traders. The broker is CFTC and NFA registered, providing regulated forex trading to US residents. tastyfx offers access to 80+ currency pairs with competitive spreads and low trading fees. The platform provides advanced trading tools including TradingView integration, behavioral science technology, and an AI chatbot. tastyfx also offers unique features like IRA accounts for tax-advantaged forex trading and high cash interest rates on Prime accounts. The broker combines IG's institutional strength with a modern, user-friendly platform.",
     category: "CFD Brokers", categoryId: 4,
@@ -5122,7 +6570,7 @@ export const tools: Tool[] = [
   },
   {
     id: 207, name: "FOREX.com", slug: "forex-com", logo: "FC",
-    rating: 4.4, reviews: 14500,
+    rating: 4.4,
     description: "Global forex broker with 500+ markets. MT5 platform with advanced trading tools.",
     longDescription: "FOREX.com is a leading forex and CFD broker founded in 2001, serving over 1.5 million clients worldwide. The broker is part of GAIN Capital Holdings, which was acquired by StoneX in 2020. FOREX.com offers access to over 500 markets including forex, indices, commodities, shares, and cryptocurrencies. The broker provides multiple trading platforms including MetaTrader 5, its proprietary FOREX.com platform with TradingView integration, and advanced tools like Performance Analytics. FOREX.com is regulated by multiple authorities including FCA (UK), ASIC (Australia), and CFTC/NFA (US).",
     category: "CFD Brokers", categoryId: 4,
@@ -5147,7 +6595,7 @@ export const tools: Tool[] = [
   },
   {
     id: 208, name: "PayPal", slug: "paypal", logo: "PP",
-    rating: 4.5, reviews: 8500000,
+    rating: 4.5,
     description: "Global payment platform with 400M+ users. Online payments and money transfers.",
     longDescription: "PayPal is the world's largest online payment platform, founded in 1998 and serving over 400 million active users worldwide. The platform allows users to send and receive money, make online payments, and conduct international transactions securely. PayPal is particularly noted for its buyer protection program, which covers eligible purchases if they don't arrive or match the description. The platform supports over 25 currencies and is accepted by millions of merchants worldwide. PayPal also offers credit products, debit cards, and business solutions for merchants.",
     category: "Payment Systems", categoryId: 6,
@@ -5172,7 +6620,7 @@ export const tools: Tool[] = [
   },
   {
     id: 209, name: "Skrill", slug: "skrill", logo: "SK",
-    rating: 4.2, reviews: 1250000,
+    rating: 4.2,
     description: "Digital wallet for online payments and crypto. Low-cost international money transfers.",
     longDescription: "Skrill is a digital wallet and online payment platform founded in 2001, serving over 40 million customers worldwide. The platform is particularly popular for international money transfers and forex trading deposits. Skrill offers competitive exchange rates and low fees for cross-border payments. The platform also supports cryptocurrency trading, allowing users to buy, sell, and store crypto within their wallet. Skrill is regulated by the FCA (UK) and provides a prepaid Mastercard for spending funds worldwide.",
     category: "Payment Systems", categoryId: 6,
@@ -5197,7 +6645,7 @@ export const tools: Tool[] = [
   },
   {
     id: 210, name: "Neteller", slug: "neteller", logo: "NT",
-    rating: 4.1, reviews: 980000,
+    rating: 4.1,
     description: "E-wallet for online payments and forex trading. Prepaid card and VIP program.",
     longDescription: "Neteller is an e-wallet and online payment platform founded in 1999, serving millions of customers worldwide. The platform is particularly popular in the forex trading community as a deposit and withdrawal method. Neteller offers instant transfers, a prepaid Mastercard, and a VIP program with lower fees and higher limits for high-volume users. The platform supports multiple currencies and provides competitive exchange rates for international transfers. Neteller is regulated by the FCA (UK) and is part of the Paysafe Group, which also owns Skrill.",
     category: "Payment Systems", categoryId: 6,
@@ -5222,7 +6670,7 @@ export const tools: Tool[] = [
   },
   {
     id: 211, name: "Revolut", slug: "revolut", logo: "RV",
-    rating: 4.4, reviews: 2500000,
+    rating: 4.4,
     description: "Digital banking app with multi-currency accounts. Crypto trading and stock trading.",
     longDescription: "Revolut is a digital banking platform founded in 2015, serving over 25 million customers worldwide. The platform offers multi-currency accounts, international money transfers, cryptocurrency trading, and stock trading. Revolut is particularly noted for its competitive exchange rates and low fees for international transfers. The platform provides a debit card that can be used worldwide with fee-free spending up to a monthly limit. Revolut also offers budgeting tools, savings accounts, and insurance products. The platform is regulated by multiple authorities including the FCA (UK) and has obtained banking licenses in several European countries.",
     category: "Payment Systems", categoryId: 6,
@@ -5247,7 +6695,7 @@ export const tools: Tool[] = [
   },
   {
     id: 212, name: "thinkorswim", slug: "thinkorswim", logo: "TS",
-    rating: 4.8, reviews: 18500,
+    rating: 4.8,
     description: "Advanced trading platform from Schwab. Professional charting and analysis tools.",
     longDescription: "thinkorswim is an advanced trading platform originally developed by thinkorswim Group and acquired by TD Ameritrade, which was subsequently acquired by Charles Schwab in 2020. The platform is widely considered one of the most sophisticated trading platforms available to retail traders. thinkorswim offers professional-grade charting, advanced options analysis, paper trading, and extensive customization options. The platform supports stocks, options, futures, forex, and futures options. thinkorswim is particularly noted for its thinkScript language for custom indicators and strategies, and its comprehensive backtesting capabilities.",
     category: "Trading Tools", categoryId: 7,
@@ -5272,7 +6720,7 @@ export const tools: Tool[] = [
   },
   {
     id: 213, name: "NinjaTrader", slug: "ninjatrader", logo: "NT",
-    rating: 4.5, reviews: 12500,
+    rating: 4.1,
     description: "Advanced trading platform for futures and forex. Custom indicators and automated trading.",
     longDescription: "NinjaTrader is an advanced trading platform founded in 2003, particularly popular among futures and forex traders. The platform offers professional-grade charting, advanced order execution, and extensive customization options. NinjaTrader is particularly noted for its NinjaScript programming language for custom indicators and automated trading strategies. The platform supports futures, forex, stocks, and options trading. NinjaTrader can be connected to multiple brokers and data providers, making it a flexible choice for traders who want to use different execution venues.",
     category: "Trading Tools", categoryId: 7,
@@ -5297,7 +6745,7 @@ export const tools: Tool[] = [
   },
   {
     id: 214, name: "MultiCharts", slug: "multicharts", logo: "MC",
-    rating: 4.3, reviews: 6500,
+    rating: 4.3,
     description: "Professional trading platform with advanced charting. Multiple broker connections.",
     longDescription: "MultiCharts is a professional trading platform founded in 2004, designed for serious traders who need advanced charting and analysis tools. The platform is particularly noted for its ability to connect to multiple brokers and data providers simultaneously, allowing traders to compare prices and execute trades across different venues. MultiCharts supports stocks, futures, forex, and options trading. The platform offers advanced features including portfolio backtesting, optimization, and the PowerLanguage scripting language for custom indicators and strategies.",
     category: "Trading Tools", categoryId: 7,
@@ -5322,7 +6770,7 @@ export const tools: Tool[] = [
   },
   {
     id: 215, name: "Dukascopy", slug: "dukascopy", logo: "DU",
-    rating: 4.3, reviews: 7200,
+    rating: 4.3,
     description: "Swiss bank with ECN forex trading. White-label platform and crypto services.",
     longDescription: "Dukascopy Bank is a Swiss bank founded in 2004, regulated by FINMA and offering ECN forex trading services. The bank is particularly noted for its Swiss banking license and strong regulatory oversight. Dukascopy offers access to over 600 instruments including forex, CFDs on stocks, indices, commodities, and cryptocurrencies. The broker provides its proprietary JForex platform, which is known for its advanced features and algorithmic trading capabilities. Dukascopy also offers crypto services including a crypto exchange and custody services.",
     category: "Forex Brokers", categoryId: 1,
@@ -5347,7 +6795,7 @@ export const tools: Tool[] = [
   },
   {
     id: 216, name: "Swissquote", slug: "swissquote", logo: "SQ",
-    rating: 4.4, reviews: 8500,
+    rating: 4.4,
     description: "Swiss online bank with forex and crypto trading. Multi-asset platform.",
     longDescription: "Swissquote is a Swiss online bank founded in 1996, regulated by FINMA and listed on the SIX Swiss Exchange. The bank offers a comprehensive range of financial services including forex trading, stock trading, cryptocurrency trading, and wealth management. Swissquote is particularly noted for its strong Swiss banking credentials and multi-asset trading platform. The bank provides access to over 3 million financial products including forex, stocks, ETFs, funds, bonds, and cryptocurrencies. Swissquote also offers robo-advisory services and traditional wealth management for high-net-worth clients.",
     category: "Forex Brokers", categoryId: 1,
@@ -5372,7 +6820,7 @@ export const tools: Tool[] = [
   },
   {
     id: 217, name: "Interactive Brokers", slug: "interactive-brokers", logo: "IB",
-    rating: 4.7, reviews: 32000,
+    rating: 4.7,
     description: "Global broker with lowest costs. Trade 150+ markets from one account.",
     longDescription: "Interactive Brokers (IBKR) is a leading global brokerage firm founded in 1977, known for its low costs and extensive market access. The broker offers trading in over 150 markets across 33 countries, including stocks, options, futures, forex, bonds, and funds. Interactive Brokers is particularly noted for its sophisticated trading platform (IBKR Pro/IBKR Lite), competitive pricing, and global reach. The broker is regulated by multiple authorities including SEC (US), FCA (UK), and various other jurisdictions. Interactive Brokers serves both retail and institutional clients, with strong appeal to professional traders and international investors.",
     category: "Stock Brokers", categoryId: 3,
@@ -5397,7 +6845,7 @@ export const tools: Tool[] = [
   },
   {
     id: 218, name: "Coinbase", slug: "coinbase", logo: "CB",
-    rating: 4.3, reviews: 42000,
+    rating: 4.3,
     description: "Largest US crypto exchange. Public company with strong regulation.",
     longDescription: "Coinbase is the largest cryptocurrency exchange in the United States, founded in 2012 and publicly traded on NASDAQ (COIN). The exchange is particularly noted for its strong regulatory compliance and user-friendly interface. Coinbase offers trading in over 200 cryptocurrencies including Bitcoin, Ethereum, and numerous altcoins. The platform provides various services including spot trading, Coinbase Pro for advanced trading, staking, and a crypto wallet. Coinbase is regulated by multiple US authorities and is considered one of the safest and most compliant crypto exchanges for US residents.",
     category: "Crypto Exchanges", categoryId: 2,
@@ -5422,7 +6870,7 @@ export const tools: Tool[] = [
   },
   {
     id: 219, name: "Gemini", slug: "gemini", logo: "GM",
-    rating: 4.2, reviews: 18500,
+    rating: 4.2,
     description: "US-regulated crypto exchange founded by Winklevoss twins. Security-focused.",
     longDescription: "Gemini is a cryptocurrency exchange founded in 2014 by Cameron and Tyler Winklevoss, known for its strong focus on security and regulatory compliance. The exchange is regulated by the New York Department of Financial Services (NYDFS) and holds BitLicenses in multiple states. Gemini offers trading in over 100 cryptocurrencies including Bitcoin, Ethereum, and various altcoins. The platform provides spot trading, futures trading, staking, and a crypto wallet. Gemini is particularly noted for its institutional-grade security measures and custody services, making it popular among security-conscious traders and institutional investors.",
     category: "Crypto Exchanges", categoryId: 2,
@@ -5447,7 +6895,7 @@ export const tools: Tool[] = [
   },
   {
     id: 220, name: "Huobi", slug: "huobi", logo: "HB",
-    rating: 4.3, reviews: 19500,
+    rating: 4.3,
     description: "Global crypto exchange with 5% spot market share. 300+ cryptocurrencies.",
     longDescription: "Huobi (now HTX) is a major cryptocurrency exchange founded in 2013 in China, now operating globally with headquarters in Seychelles. The exchange holds approximately 5% market share in spot trading and serves over 10 million users worldwide. Huobi offers trading in over 300 cryptocurrencies including Bitcoin, Ethereum, and numerous altcoins. The platform provides spot trading, futures trading with up to 125x leverage, options, staking, and an earn program. Huobi is particularly noted for its global presence and support for multiple languages and fiat currencies.",
     category: "Crypto Exchanges", categoryId: 2,
@@ -5472,7 +6920,7 @@ export const tools: Tool[] = [
   },
   {
     id: 221, name: "Bitfinex", slug: "bitfinex", logo: "BF",
-    rating: 4.2, reviews: 14500,
+    rating: 4.2,
     description: "Advanced crypto exchange with margin trading and derivatives. High liquidity.",
     longDescription: "Bitfinex is a cryptocurrency exchange founded in 2012, known for its advanced trading features and high liquidity. The exchange is particularly popular among professional traders and institutional investors. Bitfinex offers spot trading, margin trading with up to 100x leverage, derivatives trading, and lending/borrowing services. The platform supports over 170 cryptocurrencies and provides advanced order types, API access, and sophisticated trading tools. Bitfinex is particularly noted for its deep liquidity and low spreads on major trading pairs.",
     category: "Crypto Exchanges", categoryId: 2,
@@ -5497,7 +6945,7 @@ export const tools: Tool[] = [
   },
   {
     id: 222, name: "tastytrade", slug: "tastytrade", logo: "TT",
-    rating: 4.5, reviews: 14500,
+    rating: 4.5,
     description: "Options-focused broker with $0 commissions. Advanced options analysis tools.",
     longDescription: "tastytrade (formerly tastyworks) is an options-focused brokerage founded in 2017 by the creators of thinkorswim. The broker is particularly noted for its $0 commission options trading and advanced options analysis tools. tastytrade offers trading in stocks, options, futures, and crypto. The platform is designed specifically for options traders with features like profit/loss visualization, probability analysis, and strategy builders. tastytrade is part of the tastytrade ecosystem which includes educational content and live trading shows. The broker is regulated by the SEC and FINRA in the US.",
     category: "Options Trading", categoryId: 5,
@@ -5522,7 +6970,7 @@ export const tools: Tool[] = [
   },
   {
     id: 223, name: "TradeStation", slug: "tradestation", logo: "TS",
-    rating: 4.4, reviews: 12500,
+    rating: 4.4,
     description: "Advanced trading platform with EasyLanguage. Stocks, options, futures trading.",
     longDescription: "TradeStation is a brokerage and trading platform founded in 1982, known for its advanced charting and analysis tools. The platform is particularly noted for its EasyLanguage programming language, which allows users to create custom indicators and trading strategies. TradeStation offers trading in stocks, options, futures, and crypto. The platform provides professional-grade charting, backtesting, and automated trading capabilities. TradeStation is regulated by the SEC and FINRA in the US and serves both retail and institutional traders. The broker is particularly popular among algorithmic traders and those who require sophisticated analysis tools.",
     category: "Options Trading", categoryId: 5,
@@ -5547,7 +6995,7 @@ export const tools: Tool[] = [
   },
   {
     id: 224, name: "TradingView", slug: "tradingview", logo: "TV",
-    rating: 4.8, reviews: 85000,
+    rating: 4.8,
     description: "Most popular charting platform with 50M+ users. Social trading and broker connections.",
     longDescription: "TradingView is the world's most popular charting and social trading platform, founded in 2011 and serving over 50 million users. The platform is particularly noted for its intuitive charting interface, extensive indicator library, and social features. TradingView allows users to chart over 100,000 instruments across stocks, forex, crypto, and futures. The platform can be connected to multiple brokers for direct trading from the charts. TradingView's social features include idea sharing, following other traders, and a community of over 30 million published trading ideas. The platform offers both free and premium subscription tiers.",
     category: "Trading Tools", categoryId: 7,
@@ -5572,7 +7020,7 @@ export const tools: Tool[] = [
   },
   {
     id: 225, name: "Bookmap", slug: "bookmap", logo: "BM",
-    rating: 4.4, reviews: 4500,
+    rating: 4.4,
     description: "Order flow visualization platform. Heatmap and liquidity analysis tools.",
     longDescription: "Bookmap is an advanced trading platform founded in 2014, specializing in order flow visualization and liquidity analysis. The platform is particularly noted for its heatmap visualization of limit order books, showing market depth and liquidity in real-time. Bookmap is popular among futures and forex traders who need to understand market microstructure and order flow dynamics. The platform provides tools for volume analysis, iceberg order detection, and liquidity tracking. Bookmap can be connected to multiple data providers and brokers, making it a flexible choice for traders who need advanced order flow analysis.",
     category: "Trading Tools", categoryId: 7,
@@ -5597,7 +7045,7 @@ export const tools: Tool[] = [
   },
   {
     id: 226, name: "Sierra Chart", slug: "sierra-chart", logo: "SC",
-    rating: 4.3, reviews: 5500,
+    rating: 4.3,
     description: "Professional trading platform with advanced charting. Customizable and fast.",
     longDescription: "Sierra Chart is a professional trading platform founded in 2004, known for its advanced charting capabilities and high performance. The platform is particularly popular among futures and forex traders who need fast execution and extensive customization options. Sierra Chart supports multiple data feeds and broker connections, allowing traders to use their preferred execution venue. The platform offers advanced features including portfolio backtesting, optimization, and the ACSIL scripting language for custom indicators and strategies. Sierra Chart is particularly noted for its stability and low resource usage.",
     category: "Trading Tools", categoryId: 7,
@@ -5622,7 +7070,7 @@ export const tools: Tool[] = [
   },
   {
     id: 227, name: "Wise", slug: "wise", logo: "WS",
-    rating: 4.6, reviews: 3200000,
+    rating: 4.6,
     description: "International money transfer service with low fees. Multi-currency account.",
     longDescription: "Wise (formerly TransferWise) is a financial technology company founded in 2011, specializing in international money transfers and multi-currency accounts. The platform is particularly noted for its transparent pricing and low fees for cross-border payments. Wise offers a multi-currency account that allows users to hold and convert over 50+ currencies at the mid-market rate. The platform provides a debit card for spending in multiple currencies and business accounts for international payments. Wise is regulated by multiple authorities including the FCA (UK) and has obtained banking licenses in several countries.",
     category: "Payment Systems", categoryId: 6,
@@ -5647,7 +7095,7 @@ export const tools: Tool[] = [
   },
   {
     id: 228, name: "Payoneer", slug: "payoneer", logo: "PN",
-    rating: 4.2, reviews: 1850000,
+    rating: 4.2,
     description: "Global payment platform for freelancers and businesses. Virtual accounts in multiple countries.",
     longDescription: "Payoneer is a financial services company founded in 2005, specializing in cross-border payments for freelancers and businesses. The platform is particularly noted for its virtual receiving accounts in multiple countries, allowing users to receive payments as if they had local bank accounts. Payoneer offers services including global payments, mass payouts, and a prepaid Mastercard. The platform is popular among freelancers working with international clients, e-commerce sellers, and businesses needing to pay contractors globally. Payoneer is regulated by multiple authorities including FinCEN (US) and various European regulators.",
     category: "Payment Systems", categoryId: 6,
@@ -5672,7 +7120,7 @@ export const tools: Tool[] = [
   },
   {
     id: 229, name: "Tickmill", slug: "tickmill", logo: "TM",
-    rating: 4.3, reviews: 6800,
+    rating: 4.3,
     description: "ECN forex broker with low spreads. FCA and Seychelles regulation.",
     longDescription: "Tickmill is a forex and CFD broker founded in 2014, known for its ECN trading environment and low spreads. The broker is regulated by FCA (UK), CySEC (Cyprus), FSA (Seychelles), and FSCA (South Africa). Tickmill offers access to over 60 currency pairs, CFDs on indices, commodities, and bonds. The broker provides its proprietary WebTrader platform alongside MetaTrader 4 and MetaTrader 5. Tickmill is particularly noted for its competitive pricing with raw spreads from 0.0 pips on its Pro account and fast execution speeds.",
     category: "Forex Brokers", categoryId: 1,
@@ -5697,7 +7145,7 @@ export const tools: Tool[] = [
   },
   {
     id: 230, name: "FXTM", slug: "fxtm", logo: "FT",
-    rating: 4.2, reviews: 9500,
+    rating: 4.2,
     description: "Multi-regulated forex broker with competitive spreads. Educational resources.",
     longDescription: "FXTM (ForexTime) is a forex and CFD broker founded in 2011, regulated by CySEC (Cyprus), FCA (UK), FSCA (South Africa), and other authorities. The broker offers access to over 250 instruments including currency pairs, CFDs on stocks, indices, commodities, and cryptocurrencies. FXTM provides multiple account types including ECN accounts with raw spreads and standard accounts with no commission. The broker is particularly noted for its extensive educational resources and market analysis. FXTM supports MetaTrader 4 and MetaTrader 5 platforms.",
     category: "Forex Brokers", categoryId: 1,
@@ -5722,7 +7170,7 @@ export const tools: Tool[] = [
   },
   {
     id: 231, name: "Binance", slug: "binance", logo: "BN",
-    rating: 4.6, reviews: 52000,
+    rating: 4.6,
     description: "World's largest crypto exchange by volume. 600+ cryptocurrencies and futures.",
     longDescription: "Binance is the world's largest cryptocurrency exchange by trading volume, founded in 2017 by Changpeng Zhao. The exchange holds approximately 50% market share in spot trading and serves over 200 million users worldwide. Binance offers trading in over 600 cryptocurrencies including Bitcoin, Ethereum, and numerous altcoins. The platform provides spot trading, futures trading with up to 125x leverage, options, staking, earn products, and an NFT marketplace. Binance is particularly noted for its low trading fees, extensive coin selection, and Binance Smart Chain (BSC) ecosystem.",
     category: "Crypto Exchanges", categoryId: 2,
@@ -5747,7 +7195,7 @@ export const tools: Tool[] = [
   },
   {
     id: 232, name: "Binance.US", slug: "binance-us", logo: "BU",
-    rating: 4.1, reviews: 8500,
+    rating: 4.1,
     description: "US-regulated crypto exchange. 100+ cryptocurrencies for US residents.",
     longDescription: "Binance.US is the US-regulated cryptocurrency exchange operated by BAM Trading Services, a separate entity from global Binance. Founded in 2019, the exchange serves US residents in compliance with US regulations. Binance.US offers trading in over 100 cryptocurrencies including Bitcoin, Ethereum, and various altcoins. The platform provides spot trading, staking, and earn products. Binance.US is regulated by FinCEN and holds money transmission licenses in all US states. The exchange is particularly noted for its competitive fees and connection to the Binance ecosystem.",
     category: "Crypto Exchanges", categoryId: 2,
@@ -5772,7 +7220,7 @@ export const tools: Tool[] = [
   },
   {
     id: 233, name: "eToro", slug: "etoro", logo: "ET",
-    rating: 4.4, reviews: 35000,
+    rating: 4.4,
     description: "Social trading platform with copy trading. Stocks, crypto, and more.",
     longDescription: "eToro is a social trading and multi-asset brokerage founded in 2007, known for its copy trading feature which allows users to automatically copy the trades of successful investors. The platform offers trading in stocks, ETFs, cryptocurrencies, commodities, indices, and forex. eToro is regulated by multiple authorities including CySEC (Cyprus), FCA (UK), ASIC (Australia), and FINRA (US). The platform is particularly noted for its user-friendly interface, social features, and zero-commission trading on stocks and ETFs. eToro serves over 30 million users worldwide.",
     category: "Stock Brokers", categoryId: 3,
@@ -5797,7 +7245,7 @@ export const tools: Tool[] = [
   },
   {
     id: 234, name: "Merrill Edge", slug: "merrill-edge", logo: "ME",
-    rating: 4.5, reviews: 18500,
+    rating: 4.5,
     description: "Bank of America's brokerage with $0 commissions. Research and rewards.",
     longDescription: "Merrill Edge is the brokerage arm of Bank of America, founded in 2010 to provide investment services to Bank of America customers. The broker offers $0 commission trading on US stocks, ETFs, and options, with no account minimums. Merrill Edge is particularly noted for its integration with Bank of America accounts, allowing seamless transfers between banking and investment accounts. The platform provides access to extensive research from Merrill Lynch analysts, including stock ratings and recommendations. Merrill Edge also offers the Preferred Rewards program which provides benefits based on combined Bank of America and Merrill Edge balances.",
     category: "Stock Brokers", categoryId: 3,
@@ -5822,7 +7270,7 @@ export const tools: Tool[] = [
   },
   {
     id: 235, name: "TD Ameritrade", slug: "td-ameritrade", logo: "TA",
-    rating: 4.6, reviews: 28500,
+    rating: 4.6,
     description: "Full-service broker with thinkorswim. Now part of Charles Schwab.",
     longDescription: "TD Ameritrade was a leading brokerage firm founded in 1975, acquired by Charles Schwab in 2020. The broker is particularly noted for its thinkorswim platform, one of the most advanced trading platforms available to retail traders. TD Ameritrade offers $0 commission trading on US stocks, ETFs, and options, with no account minimums. The platform provides access to extensive research, educational resources, and a wide range of investment products. While new accounts are now directed to Schwab, existing TD Ameritrade clients continue to have access to the platform and services.",
     category: "Stock Brokers", categoryId: 3,
@@ -5847,7 +7295,7 @@ export const tools: Tool[] = [
   },
   {
     id: 236, name: "QuantConnect", slug: "quantconnect", logo: "QC",
-    rating: 4.5, reviews: 4500,
+    rating: 4.5,
     description: "Algorithmic trading platform with LEAN engine. Backtesting and live trading.",
     longDescription: "QuantConnect is an algorithmic trading platform founded in 2011, known for its open-source LEAN trading engine. The platform provides cloud-based backtesting, research, and live trading capabilities for stocks, forex, futures, and crypto. QuantConnect is particularly noted for its extensive historical data, institutional-grade infrastructure, and supportive community. The platform supports multiple programming languages including Python, C#, and F#. QuantConnect can be connected to multiple brokers including Interactive Brokers, Alpaca, and others for live trading.",
     category: "Trading Tools", categoryId: 7,
@@ -5872,7 +7320,7 @@ export const tools: Tool[] = [
   },
   {
     id: 237, name: "MetaStock", slug: "metastock", logo: "MS",
-    rating: 4.3, reviews: 5200,
+    rating: 4.3,
     description: "Technical analysis software with advanced charting. Power indicators and backtesting.",
     longDescription: "MetaStock is a technical analysis and charting software founded in 1982, known for its advanced charting capabilities and extensive indicator library. The platform provides professional-grade charting, backtesting, and scanning tools for stocks, futures, forex, and crypto. MetaStock is particularly noted for its PowerTools including PowerScanner, PowerStats, and the Refinitiv Xenith news feed. The platform supports multiple data feeds and can be connected to various brokers for trading. MetaStock is popular among technical analysts and traders who require sophisticated analysis tools.",
     category: "Trading Tools", categoryId: 7,
@@ -5897,7 +7345,7 @@ export const tools: Tool[] = [
   },
   {
     id: 238, name: "AmiBroker", slug: " Amibroker", logo: "AB",
-    rating: 4.4, reviews: 6500,
+    rating: 4.4,
     description: "Technical analysis software with AFL scripting. Fast backtesting and optimization.",
     longDescription: "AmiBroker is a technical analysis and charting software founded in 1995, known for its fast backtesting engine and AFL (AmiBroker Formula Language) scripting. The platform provides advanced charting, portfolio backtesting, and optimization tools for stocks, futures, forex, and crypto. AmiBroker is particularly noted for its lightning-fast backtesting speed and ability to optimize thousands of parameters quickly. The platform supports multiple data feeds and can be connected to various brokers for trading. AmiBroker is popular among system traders and quants who require fast backtesting and optimization.",
     category: "Trading Tools", categoryId: 7,
@@ -5922,7 +7370,7 @@ export const tools: Tool[] = [
   },
   {
     id: 239, name: "Stripe", slug: "stripe", logo: "ST",
-    rating: 4.7, reviews: 450000,
+    rating: 4.7,
     description: "Payment processing for businesses. Online payments and subscriptions.",
     longDescription: "Stripe is a financial services platform founded in 2010, specializing in online payment processing for businesses. The platform is particularly noted for its developer-friendly API and comprehensive suite of payment solutions. Stripe offers services including payment processing, subscription management, invoicing, and financial reporting. The platform supports over 135 currencies and is accepted in 46 countries. Stripe is particularly popular among e-commerce businesses, SaaS companies, and marketplaces due to its flexibility and extensive feature set.",
     category: "Payment Systems", categoryId: 6,
@@ -5947,7 +7395,7 @@ export const tools: Tool[] = [
   },
   {
     id: 240, name: "Square", slug: "square", logo: "SQ",
-    rating: 4.5, reviews: 285000,
+    rating: 4.5,
     description: "Payment solutions for small businesses. Point of sale and online payments.",
     longDescription: "Square (now Block) is a financial services platform founded in 2009, specializing in payment solutions for small businesses. The platform is particularly noted for its point-of-sale (POS) systems, card readers, and online payment processing. Square offers services including in-person payments, online payments, invoicing, payroll, and business banking. The platform is popular among small businesses, restaurants, and retailers due to its ease of use and comprehensive business tools. Square also offers Cash App for peer-to-peer payments and stock trading.",
     category: "Payment Systems", categoryId: 6,
@@ -5972,7 +7420,7 @@ export const tools: Tool[] = [
   },
   {
     id: 241, name: "Global Prime", slug: "global-prime", logo: "GP",
-    rating: 4.2, reviews: 4200,
+    rating: 4.2,
     description: "ECN forex broker with raw spreads. ASIC and VFSC regulation.",
     longDescription: "Global Prime is a forex and CFD broker founded in 2010, known for its ECN trading environment and raw spreads. The broker is regulated by ASIC (Australia) and VFSC (Vanuatu). Global Prime offers access to over 300 instruments including currency pairs, CFDs on indices, commodities, and metals. The broker provides MetaTrader 4 and MetaTrader 5 platforms. Global Prime is particularly noted for its True ECN model with no dealing desk intervention and competitive pricing.",
     category: "Forex Brokers", categoryId: 1,
@@ -5997,7 +7445,7 @@ export const tools: Tool[] = [
   },
   {
     id: 242, name: "Eightcap", slug: "eightcap", logo: "EC",
-    rating: 4.2, reviews: 5800,
+    rating: 4.2,
     description: "Multi-asset broker with crypto and indices. Competitive spreads and fast execution.",
     longDescription: "Eightcap is a multi-asset broker founded in 2009, offering trading in forex, indices, commodities, shares, and cryptocurrencies. The broker is regulated by ASIC (Australia) and CySEC (Cyprus). Eightcap provides access to over 800 instruments including 60+ currency pairs, indices, commodities, and 300+ cryptocurrencies. The broker supports MetaTrader 4, MetaTrader 5, and TradingView platforms. Eightcap is particularly noted for its competitive spreads, fast execution, and strong crypto offering.",
     category: "Forex Brokers", categoryId: 1,
@@ -6022,7 +7470,7 @@ export const tools: Tool[] = [
   },
   {
     id: 243, name: "CoinMarketCap", slug: "coinmarketcap", logo: "CM",
-    rating: 4.6, reviews: 2500000,
+    rating: 4.6,
     description: "Leading crypto data platform. Prices, charts, and market cap rankings.",
     longDescription: "CoinMarketCap is the world's most-referenced cryptocurrency data platform, founded in 2013 and acquired by Binance in 2020. The platform provides real-time cryptocurrency prices, market capitalizations, trading volumes, and historical data for over 10,000 cryptocurrencies. CoinMarketCap is particularly noted for its market cap rankings, which are widely used as the industry standard for cryptocurrency valuation. The platform also offers portfolio tracking, educational content, and cryptocurrency news.",
     category: "Trading Tools", categoryId: 7,
@@ -6047,7 +7495,7 @@ export const tools: Tool[] = [
   },
   {
     id: 244, name: "CoinGecko", slug: "coingecko", logo: "CG",
-    rating: 4.5, reviews: 1850000,
+    rating: 4.5,
     description: "Independent crypto data platform. Prices, NFT floor prices, and DeFi data.",
     longDescription: "CoinGecko is an independent cryptocurrency data platform founded in 2014, known for its comprehensive cryptocurrency data and independence from exchange ownership. The platform provides real-time prices, market capitalizations, trading volumes, and unique metrics like Gecko Trust Score. CoinGecko also tracks NFT floor prices, DeFi data, and cryptocurrency derivatives. The platform is particularly noted for its independence and commitment to providing unbiased cryptocurrency data.",
     category: "Trading Tools", categoryId: 7,
@@ -6072,7 +7520,7 @@ export const tools: Tool[] = [
   },
   {
     id: 245, name: "Delta Exchange", slug: "delta-exchange", logo: "DE",
-    rating: 4.2, reviews: 8500,
+    rating: 4.2,
     description: "Crypto derivatives exchange with options and futures. 100+ derivatives products.",
     longDescription: "Delta Exchange is a cryptocurrency derivatives exchange founded in 2018, specializing in options and futures trading. The exchange offers over 100 derivatives products including perpetual futures, calendar futures, and options on major cryptocurrencies. Delta is particularly noted for its options trading platform, which provides advanced options tools and strategies. The exchange is regulated in multiple jurisdictions and serves both retail and institutional traders. Delta also offers copy trading and a mobile app for trading on the go.",
     category: "Crypto Exchanges", categoryId: 2,
@@ -6097,7 +7545,7 @@ export const tools: Tool[] = [
   },
   {
     id: 246, name: "Deribit", slug: "deribit", logo: "DR",
-    rating: 4.4, reviews: 12500,
+    rating: 4.4,
     description: "Leading crypto options and futures exchange. Bitcoin and Ethereum derivatives.",
     longDescription: "Deribit is a cryptocurrency derivatives exchange founded in 2016, specializing in options and futures trading on Bitcoin and Ethereum. The exchange is particularly noted for its deep liquidity in crypto options and its advanced trading platform. Deribit offers perpetual futures, options, and futures with various expiration dates. The platform provides advanced order types, portfolio margining, and block trading for institutional clients. Deribit is regulated in certain jurisdictions and serves both retail and institutional traders.",
     category: "Crypto Exchanges", categoryId: 2,
@@ -6122,7 +7570,7 @@ export const tools: Tool[] = [
   },
   {
     id: 247, name: "Acorns", slug: "acorns", logo: "AC",
-    rating: 4.3, reviews: 85000,
+    rating: 4.3,
     description: "Micro-investing app with round-ups. Automated investing for beginners.",
     longDescription: "Acorns is a micro-investing app founded in 2012, designed to make investing easy for beginners through automated round-ups. The app automatically rounds up your everyday purchases to the nearest dollar and invests the spare change. Acorns offers diversified portfolios of ETFs, retirement accounts (IRA), and a checking account with debit card. The platform is particularly noted for its simplicity and ease of use, making investing accessible to those who might not otherwise invest. Acorns is regulated by the SEC and FINRA in the US.",
     category: "Stock Brokers", categoryId: 3,
@@ -6147,7 +7595,7 @@ export const tools: Tool[] = [
   },
   {
     id: 248, name: "Betterment", slug: "betterment", logo: "BT",
-    rating: 4.4, reviews: 45000,
+    rating: 4.4,
     description: "Robo-advisor with automated investing. Tax-loss harvesting and smart beta.",
     longDescription: "Betterment is a robo-advisor founded in 2008, offering automated investing with sophisticated portfolio management. The platform provides diversified portfolios of ETFs, tax-loss harvesting, smart beta strategies, and retirement accounts. Betterment is particularly noted for its tax-efficient investing features and goal-based investing approach. The platform serves over 700,000 clients with over $30 billion in assets under management. Betterment is regulated by the SEC and FINRA in the US.",
     category: "Stock Brokers", categoryId: 3,
@@ -6172,7 +7620,7 @@ export const tools: Tool[] = [
   },
   {
     id: 249, name: "Wealthfront", slug: "wealthfront", logo: "WF",
-    rating: 4.4, reviews: 38000,
+    rating: 4.4,
     description: "Robo-advisor with tax-loss harvesting. Risk assessment and automated portfolios.",
     longDescription: "Wealthfront is a robo-advisor founded in 2008, offering automated investing with advanced tax optimization features. The platform provides diversified portfolios of ETFs, tax-loss harvesting, direct indexing, and retirement accounts. Wealthfront is particularly noted for its risk assessment questionnaire and sophisticated tax-loss harvesting. The platform serves over 500,000 clients with over $50 billion in assets under management. Wealthfront is regulated by the SEC and FINRA in the US.",
     category: "Stock Brokers", categoryId: 3,
@@ -6197,7 +7645,7 @@ export const tools: Tool[] = [
   },
   {
     id: 250, name: "Stash", slug: "stash", logo: "SH",
-    rating: 4.1, reviews: 65000,
+    rating: 4.1,
     description: "Micro-investing app with fractional shares. Educational content and themed portfolios.",
     longDescription: "Stash is a micro-investing app founded in 2015, designed to make investing accessible through fractional shares and educational content. The platform allows users to invest in stocks and ETFs with as little as $5, using fractional shares to buy portions of expensive stocks. Stash offers themed portfolios called 'Stash' that group stocks by themes like technology, clean energy, or dividend payers. The platform also offers a debit card and banking services. Stash is regulated by the SEC and FINRA in the US.",
     category: "Stock Brokers", categoryId: 3,
@@ -6222,7 +7670,7 @@ export const tools: Tool[] = [
   },
   {
     id: 251, name: "Razorpay", slug: "razorpay", logo: "RZ",
-    rating: 4.6, reviews: 45000,
+    rating: 4.6,
     description: "India's leading payment gateway. UPI, cards, and net banking.",
     longDescription: "Razorpay is India's leading payment gateway and financial services platform founded in 2014. The platform provides payment processing services for businesses including UPI, credit/debit cards, net banking, wallets, and EMI options. Razorpay is particularly noted for its developer-friendly API, instant settlements, and comprehensive payment solutions. The platform serves over 500,000 businesses in India and is regulated by the Reserve Bank of India (RBI). Razorpay also offers Neo-banking services through RazorpayX.",
     category: "Payment Systems", categoryId: 6,
@@ -6247,7 +7695,7 @@ export const tools: Tool[] = [
   },
   {
     id: 252, name: "Paytm", slug: "paytm", logo: "PY",
-    rating: 4.3, reviews: 8500000,
+    rating: 4.3,
     description: "India's digital payments platform. UPI, wallet, and financial services.",
     longDescription: "Paytm is India's largest digital payments platform founded in 2010, offering a wide range of financial services. The platform provides UPI payments, digital wallet, bill payments, mobile recharges, and investment services. Paytm is particularly noted for its widespread adoption in India and integration with daily life. The platform also offers Paytm Money for stock trading and mutual funds, and Paytm Payments Bank. Paytm is regulated by the RBI and other Indian financial authorities.",
     category: "Payment Systems", categoryId: 6,
@@ -6272,7 +7720,7 @@ export const tools: Tool[] = [
   },
   {
     id: 253, name: "PhonePe", slug: "phonepe", logo: "PP",
-    rating: 4.4, reviews: 6500000,
+    rating: 4.4,
     description: "India's UPI payment app. Digital payments and financial services.",
     longDescription: "PhonePe is India's leading UPI-based payment app founded in 2016, now owned by Flipkart. The platform provides UPI payments, digital wallet, bill payments, mobile recharges, and investment services. PhonePe is particularly noted for its fast UPI transactions and widespread merchant acceptance. The platform also offers PhonePe Switch for shopping and PhonePe Pulse for analytics. PhonePe is regulated by the RBI and is one of the most popular payment apps in India.",
     category: "Payment Systems", categoryId: 6,
@@ -6297,7 +7745,7 @@ export const tools: Tool[] = [
   },
   {
     id: 254, name: "IC Markets", slug: "ic-markets", logo: "IC",
-    rating: 4.4, reviews: 18500,
+    rating: 4.4,
     description: "Australian ECN broker accepting Indian clients. Raw spreads and fast execution.",
     longDescription: "IC Markets is an Australian ECN forex broker founded in 2007, known for its raw spreads and fast execution. The broker is regulated by ASIC (Australia) and CySEC (Cyprus). IC Markets accepts clients from India and offers access to over 60 currency pairs, CFDs on indices, commodities, and cryptocurrencies. The broker provides MetaTrader 4, MetaTrader 5, and cTrader platforms. IC Markets is particularly noted for its True ECN pricing with no dealing desk intervention.",
     category: "Forex Brokers", categoryId: 1,
@@ -6322,7 +7770,7 @@ export const tools: Tool[] = [
   },
   {
     id: 255, name: "XM Group", slug: "xm-group", logo: "XM",
-    rating: 4.3, reviews: 28500,
+    rating: 4.3,
     description: "Multi-regulated forex broker accepting Indian clients. Low spreads and bonuses.",
     longDescription: "XM Group is a forex and CFD broker founded in 2009, regulated by CySEC (Cyprus), ASIC (Australia), and IFSC (Belize). The broker accepts clients from India and offers access to over 1000 instruments including currency pairs, CFDs on stocks, indices, commodities, and precious metals. XM provides MetaTrader 4 and MetaTrader 5 platforms. The broker is particularly noted for its low spreads, no re-quotes, and welcome bonuses for new clients.",
     category: "Forex Brokers", categoryId: 1,
@@ -6347,8 +7795,8 @@ export const tools: Tool[] = [
   },
   {
     id: 256, name: "Exness", slug: "exness", logo: "EX",
-    rating: 4.4, reviews: 32000,
-    description: "Global forex broker accepting印度clients. Instant withdrawals and low spreads.",
+    rating: 4.4,
+    description: "Global forex broker accepting Indian clients. Instant withdrawals and low spreads.",
     longDescription: "Exness is a forex and CFD broker founded in 2008, regulated by CySEC (Cyprus), FCA (UK), FSA (Seychelles), and FSCA (South Africa). The broker accepts clients from India and offers access to over 200 instruments including currency pairs, CFDs on indices, commodities, and cryptocurrencies. Exness provides MetaTrader 4, MetaTrader 5, and its proprietary WebTerminal. The broker is particularly noted for its instant withdrawals, low spreads, and high leverage options.",
     category: "Forex Brokers", categoryId: 1,
     features: ["Instant Withdrawals", "Low Spreads", "MT4/MT5", "High Leverage", "Islamic Accounts", "Indian Clients Accepted", "No Deposit Fees"],
@@ -6372,7 +7820,7 @@ export const tools: Tool[] = [
   },
   {
     id: 257, name: "Gemini", slug: "gemini", logo: "GM",
-    rating: 4.2, reviews: 18500,
+    rating: 4.2,
     description: "US-regulated crypto exchange. NYDFS regulated with strong security.",
     longDescription: "Gemini is a cryptocurrency exchange founded in 2014 by Cameron and Tyler Winklevoss, regulated by the New York Department of Financial Services (NYDFS). The exchange offers trading in over 100 cryptocurrencies including Bitcoin, Ethereum, and various altcoins. Gemini provides spot trading, futures trading, staking, and a crypto wallet. The exchange is particularly noted for its institutional-grade security measures and custody services. Gemini is available to US residents and serves both retail and institutional clients.",
     category: "Crypto Exchanges", categoryId: 2,
@@ -6397,7 +7845,7 @@ export const tools: Tool[] = [
   },
   {
     id: 258, name: "Kraken Pro", slug: "kraken-pro", logo: "KP",
-    rating: 4.5, reviews: 42000,
+    rating: 4.5,
     description: "Advanced crypto trading platform. Low fees and professional tools.",
     longDescription: "Kraken Pro is the advanced trading platform offered by Kraken, one of the oldest and most reputable cryptocurrency exchanges. Founded in 2011, Kraken Pro provides professional-grade trading tools including advanced order types, margin trading, futures, and API access. The platform is regulated by FinCEN (US), FCA (UK), and various other authorities. Kraken Pro is particularly noted for its low fees, deep liquidity, and institutional-grade security.",
     category: "Crypto Exchanges", categoryId: 2,
@@ -6422,7 +7870,7 @@ export const tools: Tool[] = [
   },
   {
     id: 259, name: "Webull", slug: "webull", logo: "WB",
-    rating: 4.3, reviews: 28500,
+    rating: 4.3,
     description: "Commission-free trading platform. Stocks, options, and crypto.",
     longDescription: "Webull is a commission-free trading platform founded in 2017, offering trading in stocks, options, ETFs, and cryptocurrencies. The platform is regulated by the SEC and FINRA in the US and serves over 13 million users. Webull is particularly noted for its advanced charting tools, extended trading hours, and paper trading feature. The platform provides $0 commission trades on stocks and ETFs, with competitive options pricing. Webull is available to US residents and offers both mobile and desktop trading.",
     category: "Stock Brokers", categoryId: 3,
@@ -6440,14 +7888,14 @@ export const tools: Tool[] = [
     mobileApp: true, demoAccount: true,
     bestFor: ["Active Traders", "Options Traders", "Chart Enthusiasts"],
     faq: [
-      { q: "Does Webull charge commissions?", a: "No, Webull charges $0 commission on stock and ETF trades. Options contracts cost $0.65 each. There are no account minimums or maintenance fees." },
+      { q: "Does Webull charge commissions?", a: "No, Webull charges $0 commission on online US stock and ETF trades. Options contracts cost $0.65 each. There are no account minimums." },
       { q: "Does Webull offer paper trading?", a: "Yes, Webull offers a paper trading feature that allows you to practice trading with virtual money before risking real capital." },
       { q: "Is Webull good for beginners?", a: "Webull can be challenging for beginners due to its advanced features. However, the paper trading feature and educational content help new traders learn." },
     ],
   },
   {
     id: 260, name: "Ally Invest", slug: "ally-invest", logo: "AI",
-    rating: 4.2, reviews: 18500,
+    rating: 4.2,
     description: "Bank-owned brokerage with $0 commissions. Integrated banking and investing.",
     longDescription: "Ally Invest is the brokerage arm of Ally Financial (formerly GMAC), founded in 1995 and offering brokerage services since 2017. The broker provides $0 commission trading on US stocks, ETFs, and options, with no account minimums. Ally Invest is particularly noted for its integration with Ally Bank, allowing seamless transfers between banking and investment accounts. The platform offers managed portfolios through Ally Invest Robo-Portfolio and self-directed trading. Ally Invest is regulated by the SEC and FINRA in the US.",
     category: "Stock Brokers", categoryId: 3,
@@ -6472,7 +7920,7 @@ export const tools: Tool[] = [
   },
   {
     id: 261, name: "Saxo Bank", slug: "saxo-bank", logo: "SB",
-    rating: 4.4, reviews: 19500,
+    rating: 4.4,
     description: "Danish investment bank with multi-asset trading. Premium platform.",
     longDescription: "Saxo Bank is a Danish investment bank founded in 1992, offering multi-asset trading services to retail and institutional clients. The bank is regulated by multiple authorities including FCA (UK), FINMA (Switzerland), and others. Saxo Bank provides access to over 40,000 instruments including stocks, bonds, ETFs, forex, CFDs, futures, and options. The bank is particularly noted for its SaxoTraderGO and SaxoTraderPRO platforms, which offer professional-grade trading tools. Saxo Bank serves clients in over 20 countries.",
     category: "Forex Brokers", categoryId: 1,
@@ -6497,7 +7945,7 @@ export const tools: Tool[] = [
   },
   {
     id: 262, name: "eToro UK", slug: "etoro-uk", logo: "ET",
-    rating: 4.4, reviews: 35000,
+    rating: 4.4,
     description: "UK-regulated social trading platform. FCA regulated with copy trading.",
     longDescription: "eToro UK is the UK-regulated branch of eToro, a social trading and multi-asset brokerage founded in 2007. The platform is regulated by the FCA (UK) and offers trading in stocks, ETFs, cryptocurrencies, commodities, indices, and forex. eToro UK is particularly noted for its copy trading feature, which allows users to automatically copy the trades of successful investors. The platform provides $0 commission trading on stocks and ETFs and serves over 30 million users worldwide.",
     category: "Stock Brokers", categoryId: 3,
@@ -6522,7 +7970,7 @@ export const tools: Tool[] = [
   },
   {
     id: 263, name: "Degiro", slug: "degiro", logo: "DG",
-    rating: 4.5, reviews: 28500,
+    rating: 4.5,
     description: "Low-cost European broker. Wide range of European stocks and ETFs.",
     longDescription: "Degiro is a low-cost European broker founded in 2008, regulated by BaFin (Germany) and AFM (Netherlands). The broker offers trading in stocks, ETFs, bonds, options, futures, and warrants across 30+ European exchanges. Degiro is particularly noted for its low fees and access to European markets. The platform provides a simple web-based interface and mobile app. Degiro serves over 2 million clients across Europe and is known for its transparent pricing structure.",
     category: "Stock Brokers", categoryId: 3,
@@ -6547,7 +7995,7 @@ export const tools: Tool[] = [
   },
   {
     id: 264, name: "Bitpanda", slug: "bitpanda", logo: "BP",
-    rating: 4.3, reviews: 14500,
+    rating: 4.3,
     description: "European crypto exchange and broker. Regulated in Austria and Germany.",
     longDescription: "Bitpanda is a cryptocurrency exchange and broker founded in 2014, regulated by FMA (Austria) and BaFin (Germany). The platform offers trading in over 350 cryptocurrencies including Bitcoin, Ethereum, and numerous altcoins. Bitpanda also provides trading in stocks, ETFs, precious metals, and indices. The platform is particularly noted for its user-friendly interface and strong regulatory compliance in Europe. Bitpanda serves over 4 million users across Europe.",
     category: "Crypto Exchanges", categoryId: 2,
@@ -6572,7 +8020,7 @@ export const tools: Tool[] = [
   },
   {
     id: 265, name: "NinjaTrader", slug: "ninjatrader", logo: "NT",
-    rating: 4.4, reviews: 8500,
+    rating: 4.4,
     description: "Advanced trading platform for futures and forex. Charting and automation.",
     longDescription: "NinjaTrader is an advanced trading platform founded in 2004, specializing in futures and forex trading. The platform provides professional-grade charting, backtesting, and automated trading capabilities. NinjaTrader is particularly noted for its advanced order types, market replay feature, and extensive indicator library. The platform can be connected to multiple brokers including NinjaTrader Brokerage, Interactive Brokers, and others. NinjaTrader is popular among futures traders and algorithmic traders.",
     category: "Trading Tools", categoryId: 7,
@@ -6597,7 +8045,7 @@ export const tools: Tool[] = [
   },
   {
     id: 266, name: "cTrader", slug: "ctrader", logo: "CT",
-    rating: 4.3, reviews: 6500,
+    rating: 4.3,
     description: "Advanced forex trading platform. ECN trading with advanced order types.",
     longDescription: "cTrader is an advanced forex trading platform developed by Spotware, founded in 2010. The platform is particularly noted for its ECN trading capabilities, advanced order types, and modern interface. cTrader provides professional-grade charting, algorithmic trading with cAlgo, and copy trading features. The platform is offered by multiple forex brokers and is popular among ECN traders and algorithmic traders. cTrader is available on desktop, web, and mobile devices.",
     category: "Trading Tools", categoryId: 7,
@@ -6622,7 +8070,7 @@ export const tools: Tool[] = [
   },
   {
     id: 267, name: "TradingView Academy", slug: "tradingview-academy", logo: "TA",
-    rating: 4.6, reviews: 85000,
+    rating: 4.6,
     description: "TradingView's educational platform. Free courses on technical analysis and trading strategies.",
     longDescription: "TradingView Academy is the educational arm of TradingView, offering free courses on technical analysis, chart patterns, and trading strategies. The platform provides video tutorials, articles, and interactive lessons designed for traders of all skill levels. TradingView Academy is particularly noted for its integration with TradingView charts, allowing users to practice what they learn directly on the platform. The content is created by experienced traders and educators and is available globally.",
     category: "Education", categoryId: 8,
@@ -6647,7 +8095,7 @@ export const tools: Tool[] = [
   },
   {
     id: 268, name: "Khan Academy Finance", slug: "khan-academy-finance", logo: "KA",
-    rating: 4.7, reviews: 125000,
+    rating: 4.7,
     description: "Free finance and investing courses. Non-profit educational platform.",
     longDescription: "Khan Academy Finance is a free educational platform offering courses on finance, investing, and economics. Founded by Salman Khan, the non-profit organization provides high-quality education accessible to everyone worldwide. The finance section covers topics like stocks, bonds, interest, inflation, and personal finance. Khan Academy is particularly noted for its bite-sized video lessons and practice exercises. The platform is completely free and serves millions of learners globally.",
     category: "Education", categoryId: 8,
@@ -6672,7 +8120,7 @@ export const tools: Tool[] = [
   },
   {
     id: 269, name: "Investing.com Academy", slug: "investing-com-academy", logo: "IA",
-    rating: 4.4, reviews: 65000,
+    rating: 4.4,
     description: "Trading courses and webinars. Market analysis and educational content.",
     longDescription: "Investing.com Academy is the educational platform of Investing.com, one of the world's largest financial portals. The platform offers trading courses, webinars, and educational content covering forex, stocks, crypto, and commodities. Investing.com Academy is particularly noted for its integration with real-time market data and analysis. The platform provides both free and premium content, serving traders of all skill levels. The courses are created by experienced traders and market analysts.",
     category: "Education", categoryId: 8,
@@ -6697,7 +8145,7 @@ export const tools: Tool[] = [
   },
   {
     id: 270, name: "BabyPips School", slug: "babypips-school", logo: "BP",
-    rating: 4.8, reviews: 150000,
+    rating: 4.8,
     description: "Free forex education platform. School of Pipsology course.",
     longDescription: "BabyPips School is the world's most popular free forex education platform, famous for its 'School of Pipsology' course. Founded in 2005, BabyPips has taught millions of traders forex trading from beginner to advanced levels. The platform offers a structured curriculum covering all aspects of forex trading including technical analysis, fundamental analysis, risk management, and trading psychology. BabyPips is completely free and is widely regarded as the best starting point for forex education.",
     category: "Education", categoryId: 8,
@@ -6722,7 +8170,7 @@ export const tools: Tool[] = [
   },
   {
     id: 271, name: "Investopedia", slug: "investopedia", logo: "IV",
-    rating: 4.7, reviews: 45000,
+    rating: 4.7,
     description: "Financial dictionary and education. Stock simulator and expert analysis.",
     longDescription: "Investopedia is the world's leading financial education website, founded in 1999. The platform offers a comprehensive financial dictionary with over 20,000 terms, tutorials, courses, and expert analysis. Investopedia is particularly noted for its stock simulator, which allows users to practice trading with virtual money. The platform covers all aspects of finance including investing, trading, personal finance, and economics. Investopedia serves over 50 million monthly visitors and is trusted by financial professionals worldwide.",
     category: "Education", categoryId: 8,
@@ -6747,7 +8195,7 @@ export const tools: Tool[] = [
   },
   {
     id: 272, name: "Udemy Trading", slug: "udemy-trading", logo: "UT",
-    rating: 4.2, reviews: 450000,
+    rating: 4.2,
     description: "Marketplace for trading courses. Thousands of affordable courses from instructors.",
     longDescription: "Udemy Trading is a section of Udemy dedicated to trading and investing courses. Udemy is a massive open online course (MOOC) platform founded in 2010, offering over 200,000 courses across various topics. The trading section includes thousands of courses on forex, stocks, crypto, options, and technical analysis. Udemy is particularly noted for its affordable pricing and lifetime access to purchased courses. The platform serves over 50 million students globally with courses created by expert instructors.",
     category: "Education", categoryId: 8,
@@ -6772,7 +8220,7 @@ export const tools: Tool[] = [
   },
   {
     id: 273, name: "Coursera Finance", slug: "coursera-finance", logo: "CF",
-    rating: 4.5, reviews: 285000,
+    rating: 4.5,
     description: "University-level finance courses. Certificates from top universities.",
     longDescription: "Coursera Finance is a section of Coursera offering finance and trading courses from top universities and institutions worldwide. Founded in 2012, Coursera partners with universities like Yale, Stanford, and Wharton to offer high-quality courses. The platform provides specializations, professional certificates, and degrees in finance, trading, and investment management. Coursera is particularly noted for its academic rigor and recognized certificates that can be added to LinkedIn profiles.",
     category: "Education", categoryId: 8,
@@ -6797,7 +8245,7 @@ export const tools: Tool[] = [
   },
   {
     id: 274, name: "FTMO", slug: "ftmo", logo: "FM",
-    rating: 4.7, reviews: 55000,
+    rating: 4.7,
     description: "Proprietary trading firm with funded trader programs. Evaluation challenges.",
     longDescription: "FTMO is a leading proprietary trading firm founded in 2015, offering funded trader programs for forex and CFD traders. The firm provides evaluation challenges where traders can prove their skills and get funded with up to $2 million in capital. FTMO is particularly noted for its transparent rules, 90% profit split, and comprehensive trading tools. The firm also provides education, psychology coaching, and a supportive community. FTMO serves traders globally and is one of the most respected prop firms in the industry.",
     category: "Education", categoryId: 8,
@@ -6822,7 +8270,7 @@ export const tools: Tool[] = [
   },
   {
     id: 275, name: "The5%ers", slug: "the5ers", logo: "T5",
-    rating: 4.4, reviews: 15000,
+    rating: 4.4,
     description: "Proprietary trading firm with funded trader programs. Trading education and mentorship.",
     longDescription: "The5%ers is a proprietary trading firm founded in 2016, offering funded trader programs and comprehensive trading education. The firm provides evaluation challenges where traders can prove their skills and get funded with firm capital. The5%ers is particularly noted for its focus on trading psychology, mentorship, and educational resources. The firm offers various account sizes and scaling plans. The5%ers serves traders globally and emphasizes sustainable trading practices over quick profits.",
     category: "Education", categoryId: 8,
@@ -6847,7 +8295,7 @@ export const tools: Tool[] = [
   },
   {
     id: 276, name: "MyTradingSkills", slug: "mytrading-skills", logo: "MT",
-    rating: 4.5, reviews: 8500,
+    rating: 4.5,
     description: "Professional trading education platform. Accredited courses and certification.",
     longDescription: "MyTradingSkills is a professional trading education platform founded in 2015, offering accredited courses and certification in trading and technical analysis. The platform provides comprehensive courses on forex, stocks, and cryptocurrency trading, with a focus on practical skills and real-world application. MyTradingSkills is particularly noted for its accreditation by CPD (Continuing Professional Development) and its structured learning paths. The platform serves traders globally and offers both free and premium content.",
     category: "Education", categoryId: 8,
@@ -6868,6 +8316,1206 @@ export const tools: Tool[] = [
       { q: "Is MyTradingSkills accredited?", a: "Yes, MyTradingSkills courses are accredited by CPD (Continuing Professional Development), making the certificates recognized for professional development." },
       { q: "What courses does MyTradingSkills offer?", a: "MyTradingSkills offers courses on technical analysis, trading strategies, risk management, and specific courses for forex, stocks, and cryptocurrency trading." },
       { q: "Do I get a certificate from MyTradingSkills?", a: "Yes, upon completing premium courses, you receive a CPD-accredited certificate that can be used for professional development." },
+    ],
+  },
+  {
+    id: 277, name: "Zerodha Varsity", slug: "zerodha-varsity", logo: "ZV",
+    rating: 4.8,
+    description: "India's largest free stock market education platform. Comprehensive courses from basics to advanced.",
+    longDescription: "Zerodha Varsity is India's largest and most comprehensive free stock market education platform, created by Karthik Rangappa at Zerodha. The platform offers extensive and in-depth collection of stock market and financial lessons covering everything from savings and taxation to option strategies and technical analysis. Varsity is completely free, open-access, and has no signup requirements, paywalls, or ads. It's one of the largest financial education resources on the web with over 2 million users. The platform also offers Varsity Certified, an online certification program to test market knowledge.",
+    category: "Education", categoryId: 8,
+    features: ["Free Stock Market Courses", "Module-based Learning", "Quizzes & Tests", "Varsity Certified", "Indian Market Focus", "No Signup Required", "Comprehensive Coverage"],
+    pros: ["100% free and open-access", "Largest Indian financial education resource", "No ads or paywalls", "Indian market focused", "Structured learning modules", "Certification available"],
+    cons: ["India-focused content", "No live webinars", "Text-based primarily", "Limited video content"],
+    pricing: "Free", pricingDetail: "All content is completely free. No signup, no paywall, no ads. Certification program is also free.",
+    minDeposit: "$0", platforms: ["Web", "iOS", "Android"],
+    website: "https://zerodha.com/varsity", affiliate: false, trending: true, featured: true,
+    yearFounded: 2015, regulation: ["SEBI Registered"],
+    supportedCountries: ["India"],
+    depositMethods: ["N/A"],
+    withdrawalTime: "N/A",
+    customerSupport: "Community, Email",
+    mobileApp: true, demoAccount: false,
+    bestFor: ["Indian Market Beginners", "Self-paced Learners", "Free Education Seekers"],
+    faq: [
+      { q: "Is Zerodha Varsity really free?", a: "Yes, Zerodha Varsity is 100% free with no signup, no paywall, and no ads. All content is openly accessible." },
+      { q: "What topics does Zerodha Varsity cover?", a: "Zerodha Varsity covers the entire spectrum of financial literacy and capital markets, from savings and taxation to option strategies and technical analysis." },
+      { q: "Is Varsity Certified free?", a: "Yes, the Varsity Certified program is also free and designed to test your market knowledge and give you confidence in capital markets." },
+    ],
+  },
+  {
+    id: 278, name: "IG Academy", slug: "ig-academy", logo: "IG",
+    rating: 4.6,
+    description: "Free online trading courses and webinars from IG. Global financial markets education.",
+    longDescription: "IG Academy is the educational platform of IG, a world-leading financial trading company with over 50 years of experience. The platform offers free online courses, webinars, and seminars covering forex, stocks, indices, and commodities. IG Academy provides short, step-by-step courses including videos, interactive exercises, and quizzes. The platform also hosts regular webinars and seminars where experts share knowledge and insights. IG Academy is available globally and is particularly noted for its practical, hands-on approach to learning trading skills.",
+    category: "Education", categoryId: 8,
+    features: ["Free Online Courses", "Webinars & Seminars", "Video Lessons", "Interactive Exercises", "Quizzes", "Demo Account Practice", "Expert Instructors"],
+    pros: ["Completely free education", "50+ years of company experience", "Interactive learning format", "Regular webinars", "Global availability", "Demo account for practice"],
+    cons: ["IG-focused content", "Promotes IG services", "Limited advanced content", "English only"],
+    pricing: "Free", pricingDetail: "All courses, webinars, and educational content are completely free. No payment required.",
+    minDeposit: "$0", platforms: ["Web", "iOS", "Android"],
+    website: "https://ig.com/en/learn-to-trade/ig-academy", affiliate: false, trending: false, featured: true,
+    yearFounded: 1974, regulation: ["FCA", "ASIC", "CFTC", "MAS"],
+    supportedCountries: ["Global (excl. restricted countries)"],
+    depositMethods: ["N/A"],
+    withdrawalTime: "N/A",
+    customerSupport: "24/7 Support, Community",
+    mobileApp: true, demoAccount: true,
+    bestFor: ["Beginner Traders", "Webinar Seekers", "Interactive Learners"],
+    faq: [
+      { q: "Is IG Academy really free?", a: "Yes, IG Academy is completely free. All courses, webinars, and educational content are available at no cost." },
+      { q: "What topics does IG Academy cover?", a: "IG Academy covers forex, stocks, indices, commodities, and general trading concepts with practical, hands-on lessons." },
+      { q: "Does IG Academy offer webinars?", a: "Yes, IG Academy hosts regular webinars and seminars where experts share their knowledge and insights with opportunities to ask questions." },
+    ],
+  },
+  {
+    id: 279, name: "Kotak StockShaala", slug: "kotak-stockshaala", logo: "KS",
+    rating: 4.5,
+    description: "Free stock market courses with certificate from Kotak Neo. Indian market focused education.",
+    longDescription: "Kotak StockShaala is a free learning platform built by Kotak Neo, a SEBI-registered stockbroker, designed to help users learn share market basics and advanced trading concepts without spending money. The platform offers bite-sized, jargon-free lessons that make learning easy. Courses follow a proper sequence from how markets work to options strategies and algorithmic trading. All courses are built for Indian markets with real Indian company examples. StockShaala also offers webinars with industry leaders for in-depth market knowledge and provides certificates upon course completion.",
+    category: "Education", categoryId: 8,
+    features: ["Free Stock Market Courses", "Certificate Programs", "Indian Market Focus", "Webinars", "Jargon-free Lessons", "Structured Learning", "SEBI-registered Broker"],
+    pros: ["Completely free courses", "Indian market focused", "Certificates available", "Webinars with experts", "SEBI-registered broker backing", "No sales pitch"],
+    cons: ["India-specific content", "Limited to stock market", "Kotak Neo branding", "Basic to intermediate level"],
+    pricing: "Free", pricingDetail: "All courses and webinars are completely free. No payment required for any content or certificates.",
+    minDeposit: "$0", platforms: ["Web"],
+    website: "https://kotakneo.com/stockshaala", affiliate: false, trending: false, featured: true,
+    yearFounded: 2021, regulation: ["SEBI"],
+    supportedCountries: ["India"],
+    depositMethods: ["N/A"],
+    withdrawalTime: "N/A",
+    customerSupport: "Email, Help Center",
+    mobileApp: false, demoAccount: false,
+    bestFor: ["Indian Market Beginners", "Certificate Seekers", "Free Education"],
+    faq: [
+      { q: "Is Kotak StockShaala really free?", a: "Yes, Kotak StockShaala is completely free. You can learn share market basics and advanced concepts without spending a rupee." },
+      { q: "Do I get a certificate from Kotak StockShaala?", a: "Yes, Kotak StockShaala offers certificates upon completion of courses, adding credibility to your learning." },
+      { q: "Is Kotak StockShaala focused on Indian markets?", a: "Yes, all courses are built specifically for Indian markets with real Indian company examples and regulatory frameworks." },
+    ],
+  },
+  {
+    id: 280, name: "Interactive Brokers Academy", slug: "ibkr-academy", logo: "IB",
+    rating: 4.7,
+    description: "Free trading courses and webinars from Interactive Brokers. Comprehensive financial education.",
+    longDescription: "Interactive Brokers Traders' Academy (IBKR Campus) offers free online courses on the concepts and tools of financial trading. The platform provides engaging lessons utilizing award-winning trading tools with notes and quizzes to reinforce learning. IBKR Academy offers instructor-led video courses, live webinars, and engaging podcasts. The platform covers forex education with expert-led video courses, forex webinars, and the latest trends in global currency news. IBKR also provides Student Trading Lab, a free online resource for educators. The platform serves active traders, investors, educators, and students globally.",
+    category: "Education", categoryId: 8,
+    features: ["Free Trading Courses", "Live Webinars", "Video Courses", "Podcasts", "Forex Education", "Student Trading Lab", "Expert Instructors"],
+    pros: ["Completely free education", "Award-winning trading tools", "Live webinars available", "Multiple learning formats", "Student resources", "Global coverage"],
+    cons: ["IBKR-focused content", "Advanced content limited", "Promotes IBKR platform", "English only"],
+    pricing: "Free", pricingDetail: "All courses, webinars, and educational content are completely free. No payment required.",
+    minDeposit: "$0", platforms: ["Web", "iOS", "Android"],
+    website: "https://interactivebrokers.com/campus", affiliate: false, trending: false, featured: true,
+    yearFounded: 1993, regulation: ["SEC", "FCA", "ASIC", "IIROC", "SFC", "MAS"],
+    supportedCountries: ["Global (excl. restricted countries)"],
+    depositMethods: ["N/A"],
+    withdrawalTime: "N/A",
+    customerSupport: "24/7 Support, Educational Support",
+    mobileApp: true, demoAccount: true,
+    bestFor: ["Active Traders", "Webinar Seekers", "Multi-asset Learners"],
+    faq: [
+      { q: "Is IBKR Academy really free?", a: "Yes, IBKR Academy is completely free. All courses, webinars, and educational content are available at no cost." },
+      { q: "What learning formats does IBKR Academy offer?", a: "IBKR Academy offers instructor-led video courses, live webinars, podcasts, and written lessons with quizzes." },
+      { q: "Does IBKR Academy cover forex trading?", a: "Yes, IBKR Academy has comprehensive forex education with expert-led video courses, webinars, and global currency news analysis." },
+    ],
+  },
+  {
+    id: 281, name: "Upstox Uplearn", slug: "upstox-uplearn", logo: "UU",
+    rating: 4.4,
+    description: "Free trading courses and webinars from Upstox. Indian stock market education.",
+    longDescription: "Upstox Uplearn is an educational platform offering practical knowledge with real-world applications taught by industry experts. The platform provides crash courses, complete trading mastery programs, and regular webinars on topics like options trading, scalping, and momentum trading. Upstox Uplearn features 50+ webinars and courses with expert instructors like Milan Bavishi who has two decades of Indian stock market experience. The platform offers both free courses and premium content, serving beginners to advanced traders interested in Indian markets.",
+    category: "Education", categoryId: 8,
+    features: ["Free Trading Courses", "Live Webinars", "Crash Courses", "Expert Instructors", "Indian Market Focus", "Options Trading", "Technical Analysis"],
+    pros: ["Free courses available", "Expert instructors with decades of experience", "Live webinars with doubt solving", "Indian market focus", "Practical applications"],
+    cons: ["Premium content requires payment", "India-specific content", "Limited advanced free content", "Upstox branding"],
+    pricing: "Free & Premium", pricingDetail: "Basic courses and some webinars are free. Premium courses and advanced content require payment.",
+    minDeposit: "$0", platforms: ["Web", "iOS", "Android"],
+    website: "https://upstox.com/uplearn", affiliate: false, trending: false, featured: true,
+    yearFounded: 2020, regulation: ["SEBI"],
+    supportedCountries: ["India"],
+    depositMethods: ["N/A"],
+    withdrawalTime: "N/A",
+    customerSupport: "Email, Help Center",
+    mobileApp: true, demoAccount: false,
+    bestFor: ["Indian Market Traders", "Webinar Learners", "Options Trading"],
+    faq: [
+      { q: "Is Upstox Uplearn free?", a: "Upstox Uplearn offers both free and premium content. Basic courses and some webinars are free, while advanced courses require payment." },
+      { q: "What topics does Upstox Uplearn cover?", a: "Upstox Uplearn covers options trading, scalping, momentum trading, technical analysis, and other Indian stock market topics." },
+      { q: "Who teaches Upstox Uplearn courses?", a: "Upstox Uplearn courses are taught by industry experts like Milan Bavishi who has two decades of Indian stock market experience." },
+    ],
+  },
+  {
+    id: 282, name: "TradeLearn UK", slug: "tradelearn-uk", logo: "TL",
+    rating: 4.5,
+    description: "100% free trading education UK. No sign-up required. Stocks, forex, and crypto courses.",
+    longDescription: "TradeLearn is a UK-based free trading education platform offering 100% free courses with no sign-up required. The platform covers stocks, forex, and crypto trading with smart money concepts explained simply. TradeLearn offers 20 free lessons updated for 2025, covering beginner to advanced topics including smart money concepts, order flow, institutional trading, Wyckoff theory, and market microstructure. The platform emphasizes no fluff, no upsells, and no premium tiers - everything is genuinely free. TradeLearn is designed for traders who want real education without marketing gimmicks.",
+    category: "Education", categoryId: 8,
+    features: ["100% Free Courses", "No Sign-up Required", "Smart Money Concepts", "Order Flow Trading", "Institutional Trading", "Wyckoff Theory", "Market Microstructure"],
+    pros: ["Completely free with no catch", "No sign-up required", "No premium tiers or upsells", "Advanced concepts covered", "Updated regularly", "UK-focused"],
+    cons: ["UK market focus", "Text-based primarily", "Limited video content", "No certification", "No community features"],
+    pricing: "Free", pricingDetail: "All content is 100% free with no sign-up required, no premium tiers, and no upsells. Everything is genuinely free.",
+    minDeposit: "$0", platforms: ["Web"],
+    website: "https://tradelearn.co.uk", affiliate: false, trending: false, featured: true,
+    yearFounded: 2023, regulation: ["N/A"],
+    supportedCountries: ["UK", "Global"],
+    depositMethods: ["N/A"],
+    withdrawalTime: "N/A",
+    customerSupport: "Email",
+    mobileApp: false, demoAccount: false,
+    bestFor: ["UK Traders", "Advanced Concepts Learners", "No-signup Preference"],
+    faq: [
+      { q: "Is TradeLearn really 100% free?", a: "Yes, TradeLearn is 100% free with no sign-up required, no premium tiers, no upsells, and no hidden costs. Everything is genuinely free." },
+      { q: "What topics does TradeLearn cover?", a: "TradeLearn covers stocks, forex, and crypto trading with advanced concepts like smart money concepts, order flow, institutional trading, and Wyckoff theory." },
+      { q: "Do I need to sign up for TradeLearn?", a: "No, TradeLearn requires no sign-up. You can access all content immediately without any registration." },
+    ],
+  },
+  {
+    id: 283, name: "QuantInsti", slug: "quantinsti", logo: "QI",
+    rating: 4.6,
+    description: "Free algorithmic trading courses. Python for trading, market data, and automation.",
+    longDescription: "QuantInsti is an educational platform focused on making algorithmic trading knowledge and technology accessible to everyone. The platform offers comprehensive free courses including Python for Trading, Stock Market Basics, Introduction to Machine Learning for Trading, Options Trading Strategies in Python, and Getting Market Data. QuantInsti also offers specialized courses like Algo Trading with Zerodha Kite Connect API. The platform provides hundreds of engaging webinars, vast repository of insightful blogs, and free fintech tools. QuantInsti has been actively contributing as speakers and industry experts at academic and professional forums globally for over 14 years.",
+    category: "Education", categoryId: 8,
+    features: ["Free Algo Trading Courses", "Python for Trading", "Machine Learning for Trading", "Market Data Courses", "Webinars", "Free Fintech Tools", "Expert Blogs"],
+    pros: ["Completely free courses", "Specialized in algo trading", "Python programming focus", "Industry expert instructors", "Practical applications", "Global recognition"],
+    cons: ["Technical focus", "Requires programming knowledge", "Limited traditional trading", "Advanced content"],
+    pricing: "Free & Premium", pricingDetail: "Many courses are completely free. Advanced specialized programs and certifications require payment.",
+    minDeposit: "$0", platforms: ["Web"],
+    website: "https://quantra.quantinsti.com", affiliate: false, trending: false, featured: true,
+    yearFounded: 2010, regulation: ["N/A"],
+    supportedCountries: ["Global"],
+    depositMethods: ["N/A"],
+    withdrawalTime: "N/A",
+    customerSupport: "Email, Help Center",
+    mobileApp: false, demoAccount: false,
+    bestFor: ["Algo Traders", "Python Programmers", "Quantitative Finance"],
+    faq: [
+      { q: "Are QuantInsti courses free?", a: "QuantInsti offers many courses completely free including Python for Trading, Stock Market Basics, and Introduction to Machine Learning for Trading." },
+      { q: "Does QuantInsti require programming knowledge?", a: "Yes, QuantInsti courses focus on algorithmic trading and require basic programming knowledge, particularly in Python." },
+      { q: "What makes QuantInsti different?", a: "QuantInsti specializes in algorithmic trading education with practical applications, industry experts, and focus on quantitative finance." },
+    ],
+  },
+  {
+    id: 284, name: "24Five Academy", slug: "24five-academy", logo: "24",
+    rating: 4.3,
+    description: "100% free trading courses. Structured video courses for stocks and forex trading.",
+    longDescription: "24Five Academy is an online trading academy offering 100% free structured video courses for stocks and forex trading. The platform has helped over 12,000 traders master trading with expert-led video courses. All courses are completely free with no credit card required and instant access. 24Five Academy offers structured learning paths for beginners (starting from zero), intermediate (building on basics), and advanced traders (master-level skills like algo trading and psychology). The platform is created by professional traders to take learners from zero to pro with proven methods and fresh content.",
+    category: "Education", categoryId: 8,
+    features: ["100% Free Courses", "Structured Learning Paths", "Video Courses", "Stocks & Forex Trading", "Beginner to Advanced", "No Credit Card Required", "Instant Access"],
+    pros: ["Completely free with no hidden fees", "Structured learning paths", "Expert-led video courses", "No credit card required", "Instant access to all content", "Community support"],
+    cons: ["Limited to stocks and forex", "Relatively new platform", "No certification", "Dubai-based (regional focus)"],
+    pricing: "Free", pricingDetail: "All courses are 100% free with no credit card required, no hidden fees, and instant access to all content.",
+    minDeposit: "$0", platforms: ["Web"],
+    website: "https://academy.24five.com", affiliate: false, trending: false, featured: true,
+    yearFounded: 2023, regulation: ["UAE Authorities"],
+    supportedCountries: ["Global"],
+    depositMethods: ["N/A"],
+    withdrawalTime: "N/A",
+    customerSupport: "Email, Community",
+    mobileApp: false, demoAccount: false,
+    bestFor: ["Beginner Traders", "Video Course Learners", "Free Education Seekers"],
+    faq: [
+      { q: "Are 24Five Academy courses really free?", a: "Yes, all courses at 24Five Academy are 100% free with no credit card required, no hidden fees, and instant access." },
+      { q: "What learning paths does 24Five Academy offer?", a: "24Five Academy offers structured paths for beginners (starting from zero), intermediate (building on basics), and advanced traders (algo trading and psychology)." },
+      { q: "What markets does 24Five Academy cover?", a: "24Five Academy focuses on stocks and forex trading with structured video courses for both markets." },
+    ],
+  },
+  {
+    id: 285, name: "Morningstar Australia", slug: "morningstar-australia", logo: "MA",
+    rating: 4.6,
+    description: "Free investing course for Australians. Foundations of financial independence.",
+    longDescription: "Morningstar Australia offers a free investing course called 'Foundations of Financial Independence' designed to make investing accessible for all Australians. The course provides a framework and structure to build, monitor, and maintain a portfolio to achieve goals. The curriculum includes modules on setting up for investing success, asset allocation, selecting investments, monitoring and maintaining portfolios, and more. Each module includes additional free material and insights from Morningstar. The course is completely free as Morningstar's mission is to empower investor success without requiring payment for foundational knowledge.",
+    category: "Education", categoryId: 8,
+    features: ["Free Investing Course", "Australian Market Focus", "Portfolio Management", "Asset Allocation", "Investment Selection", "Structured Curriculum", "Expert Insights"],
+    pros: ["Completely free", "Australian market focused", "Structured learning approach", "Morningstar's expertise", "Practical portfolio management", "No payment required"],
+    cons: ["Australia-specific content", "Basic to intermediate level", "No advanced trading", "No certification"],
+    pricing: "Free", pricingDetail: "The entire 'Foundations of Financial Independence' course is completely free. No payment required for any content.",
+    minDeposit: "$0", platforms: ["Web"],
+    website: "https://morningstar.com.au/personal-finance", affiliate: false, trending: false, featured: true,
+    yearFounded: 1984, regulation: ["ASIC"],
+    supportedCountries: ["Australia"],
+    depositMethods: ["N/A"],
+    withdrawalTime: "N/A",
+    customerSupport: "Email, Help Center",
+    mobileApp: false, demoAccount: false,
+    bestFor: ["Australian Investors", "Portfolio Management", "Structured Learners"],
+    faq: [
+      { q: "Is Morningstar Australia's course free?", a: "Yes, the 'Foundations of Financial Independence' course is completely free. Morningstar's mission is to make investing accessible without payment." },
+      { q: "Is this course Australia-specific?", a: "Yes, the course is designed specifically for Australian investors with Australian market examples and regulatory considerations." },
+      { q: "What does the course cover?", a: "The course covers setting up for investing success, asset allocation, selecting investments, monitoring portfolios, and practical portfolio management." },
+    ],
+  },
+  {
+    id: 286, name: "Santander Open Academy", slug: "santander-open-academy", logo: "SO",
+    rating: 4.5,
+    description: "Free advanced trading course from Santander. Analysis and risk management.",
+    longDescription: "Santander Open Academy offers 'The Trader's Path: Analysis and Risk Management', a free advanced trading program. The course bridges the gap between basic investment knowledge and professional trading methodology, covering technical and fundamental analysis, risk management, and achieving consistent results. The program includes mathematical expectation, behavioral economics, fundamental analysis, technical analysis, cryptocurrencies, and ETPs. The course is designed for those with intermediate financial knowledge and is available in Spanish, English, and Portuguese. Content is created by professionals from Banco Santander's Equities and Securities team in Spain.",
+    category: "Education", categoryId: 8,
+    features: ["Free Advanced Course", "Technical Analysis", "Fundamental Analysis", "Risk Management", "Cryptocurrencies & ETPs", "Multi-language", "Certificate Available"],
+    pros: ["Completely free", "Advanced trading methodology", "Bank professionals as instructors", "Multi-language support", "Certificate upon completion", "Structured curriculum"],
+    cons: ["Intermediate level required", "Bank-focused content", "Limited to Santander approach", "No live trading"],
+    pricing: "Free", pricingDetail: "The entire course is completely free with unlimited places and direct access upon registration. Certificate available upon completion.",
+    minDeposit: "$0", platforms: ["Web"],
+    website: "https://santanderopenacademy.com", affiliate: false, trending: false, featured: true,
+    yearFounded: 2018, regulation: ["European Banking Authorities"],
+    supportedCountries: ["Global"],
+    depositMethods: ["N/A"],
+    withdrawalTime: "N/A",
+    customerSupport: "Email, Help Center",
+    mobileApp: false, demoAccount: false,
+    bestFor: ["Intermediate Traders", "Advanced Analysis Learners", "Certificate Seekers"],
+    faq: [
+      { q: "Is Santander's trading course free?", a: "Yes, 'The Trader's Path' course is completely free with unlimited places and direct access upon registration." },
+      { q: "What level is this course suitable for?", a: "This course is designed for those with intermediate financial knowledge who already understand basic investment concepts." },
+      { q: "Is a certificate available?", a: "Yes, upon completing the course, you receive a certificate from Santander Open Academy." },
+    ],
+  },
+  {
+    id: 287, name: "London Academy of Trading", slug: "lat-webinars", logo: "LAT",
+    rating: 4.4,
+    description: "Free financial trading webinars. Introduction to financial markets and trading.",
+    longDescription: "London Academy of Trading (LAT) offers free webinars on financial trading, including 'An Introduction to Financial Markets & Trading'. The 2-hour webinar is hosted by Paddy Osborn, LAT's Academic Dean and Managing Director, who explains how to trade financial markets using LAT's award-winning trading approach. The webinar covers how fundamental news and macroeconomic data affects prices, central bank roles, and technical analysis for predicting price moves. The presentation uses real-time and historical charts with an open forum for questions throughout. LAT's courses are designed by traders for traders with practical, real-world applications.",
+    category: "Education", categoryId: 8,
+    features: ["Free Webinars", "Financial Markets Introduction", "Technical Analysis", "Fundamental Analysis", "Real-time Chart Analysis", "Q&A Sessions", "Expert Instructors"],
+    pros: ["Free webinars available", "Award-winning trading approach", "Expert instructors", "Real-time analysis", "Interactive Q&A sessions", "UK-based institution"],
+    cons: ["Webinar format only", "Limited free content", "UK time zone", "Promotes paid courses"],
+    pricing: "Free", pricingDetail: "The introductory webinar is completely free. Advanced courses and programs require payment.",
+    minDeposit: "$0", platforms: ["Web"],
+    website: "https://lat.london/free-webinars", affiliate: false, trending: false, featured: true,
+    yearFounded: 2012, regulation: ["UK Education Authorities"],
+    supportedCountries: ["UK", "Global"],
+    depositMethods: ["N/A"],
+    withdrawalTime: "N/A",
+    customerSupport: "Email, Phone",
+    mobileApp: false, demoAccount: false,
+    bestFor: ["UK Traders", "Webinar Learners", "Financial Markets Introduction"],
+    faq: [
+      { q: "Are LAT webinars free?", a: "Yes, the introductory webinars like 'An Introduction to Financial Markets & Trading' are completely free." },
+      { q: "What do LAT webinars cover?", a: "LAT webinars cover financial markets introduction, technical analysis, fundamental analysis, and real-time chart analysis with expert instructors." },
+      { q: "Who hosts LAT webinars?", a: "LAT webinars are hosted by experts like Paddy Osborn, the Academic Dean and Managing Director, with years of trading experience." },
+    ],
+  },
+  {
+    id: 288, name: "BTG Pactual Academy", slug: "btg-pactual-academy", logo: "BP",
+    rating: 4.6,
+    description: "Free day trading course from Latin America's largest investment bank. Partnership with B3.",
+    longDescription: "BTG Pactual Academy offers 'Curso Excelência no Day Trade', a free day trading course in partnership with B3, Brazil's stock exchange. As Latin America's largest investment bank, BTG Pactual provides this comprehensive 7-module course covering technical analysis fundamentals, Elliott Wave theory, Fibonacci, chart patterns, technical indicators, risk management, trading strategies, and trading psychology. The course offers lifetime access and is completely free, taught by specialists who actively trade in the markets.",
+    category: "Education", categoryId: 8,
+    features: ["Free Day Trading Course", "7 Comprehensive Modules", "Technical Analysis", "Risk Management", "Trading Psychology", "Lifetime Access", "B3 Partnership"],
+    pros: ["Completely free", "Latin America's largest investment bank", "B3 stock exchange partnership", "Lifetime access", "Comprehensive curriculum", "Taught by active traders"],
+    cons: ["Brazil-focused content", "Portuguese language only", "Day trading specific", "Latin American market focus"],
+    pricing: "Free", pricingDetail: "The entire 7-module course is completely free with lifetime access. No payment required.",
+    minDeposit: "$0", platforms: ["Web"],
+    website: "https://cloud.btgpactual.com/curso-day-trade", affiliate: false, trending: false, featured: true,
+    yearFounded: 2018, regulation: ["CVM", "B3"],
+    supportedCountries: ["Brazil", "Latin America"],
+    depositMethods: ["N/A"],
+    withdrawalTime: "N/A",
+    customerSupport: "Email, Help Center",
+    mobileApp: false, demoAccount: false,
+    bestFor: ["Brazilian Traders", "Day Trading Beginners", "Latin American Markets"],
+    faq: [
+      { q: "Is BTG Pactual's course really free?", a: "Yes, the 'Curso Excelência no Day Trade' is completely free with lifetime access. No payment required." },
+      { q: "What does the course cover?", a: "The 7-module course covers technical analysis, Elliott Wave theory, Fibonacci, chart patterns, indicators, risk management, strategies, and psychology." },
+      { q: "Is this course legitimate?", a: "Yes, it's offered by BTG Pactual, Latin America's largest investment bank, in partnership with B3, Brazil's official stock exchange." },
+    ],
+  },
+  {
+    id: 289, name: "Toro Investimentos", slug: "toro-investimentos", logo: "TI",
+    rating: 4.4,
+    description: "Free day trading course for beginners with professional simulator. Brazilian market focus.",
+    longDescription: "Toro Investimentos offers 'Curso Grátis - Day Trade para Iniciantes', a free day trading course for beginners with a professional trading simulator. The course includes 7 lessons plus bonus content, focusing on risk management and intensive practice to help beginners start trading with confidence. The course is taught by the Head of Trading Analysis at Toro and includes access to their professional simulator to gain screen time and build confidence. The course is valued at R$499 but offered 100% free.",
+    category: "Education", categoryId: 8,
+    features: ["Free Day Trading Course", "Professional Simulator", "Risk Management Focus", "7 Lessons Plus Bonus", "Brazilian Market Focus", "Expert Instructor", "Immediate Access"],
+    pros: ["Completely free", "Professional trading simulator included", "Risk management focus", "Expert instructor", "Brazilian market focus", "Immediate access after registration"],
+    cons: ["Brazil-specific content", "Portuguese language only", "Requires account unlock for full access", "Day trading focus only"],
+    pricing: "Free", pricingDetail: "The course is 100% free. Full access requires opening a free account with Toro, but no payment is required.",
+    minDeposit: "$0", platforms: ["Web"],
+    website: "https://www.toroinvestimentos.com.br", affiliate: false, trending: false, featured: true,
+    yearFounded: 2019, regulation: ["CVM"],
+    supportedCountries: ["Brazil"],
+    depositMethods: ["N/A"],
+    withdrawalTime: "N/A",
+    customerSupport: "Email, Help Center",
+    mobileApp: false, demoAccount: true,
+    bestFor: ["Brazilian Beginners", "Simulation Practice", "Risk Management Learners"],
+    faq: [
+      { q: "Is Toro's free course really free?", a: "Yes, the basic course is 100% free. Full access to all content requires opening a free account, but no payment is needed." },
+      { q: "Does the course include a simulator?", a: "Yes, the course includes access to Toro's professional trading simulator to practice strategies and gain confidence." },
+      { q: "Who teaches the course?", a: "The course is taught by the Head of Trading Analysis at Toro Investimentos with years of market experience." },
+    ],
+  },
+  {
+    id: 290, name: "TBL Advisory Japan", slug: "tbl-advisory-japan", logo: "TJ",
+    rating: 4.5,
+    description: "Free investment & AI learning master course. Japanese market focus with TradingView integration.",
+    longDescription: "TBL Advisory offers 'TBL 投資＆AI学習 総合マスターコース', a completely free comprehensive learning program covering investment basics, practical chart analysis, and AI-powered trading strategies. The course covers everything from fundamental investment concepts to advanced chart analysis and modern AI-driven investment strategies. Students can learn at their own pace and experience simulation using actual tools. The course also includes TradingView setup support to apply learned chart analysis in real trading environments.",
+    category: "Education", categoryId: 8,
+    features: ["Free Investment Course", "AI Trading Strategies", "Chart Analysis", "TradingView Integration", "Simulation Tools", "Japanese Market Focus", "Self-paced Learning"],
+    pros: ["Completely free", "AI and modern trading strategies", "TradingView integration", "Japanese market focus", "Practical simulation tools", "Self-paced learning"],
+    cons: ["Japan-specific content", "Japanese language only", "AI focus may be technical", "Limited traditional trading"],
+    pricing: "Free", pricingDetail: "The entire master course is completely free. No payment required for any content or features.",
+    minDeposit: "$0", platforms: ["Web"],
+    website: "https://tbladvisory.com/courses/freehub", affiliate: false, trending: false, featured: true,
+    yearFounded: 2020, regulation: ["JFSA"],
+    supportedCountries: ["Japan"],
+    depositMethods: ["N/A"],
+    withdrawalTime: "N/A",
+    customerSupport: "Email, Help Center",
+    mobileApp: false, demoAccount: false,
+    bestFor: ["Japanese Traders", "AI Trading Learners", "Chart Analysis"],
+    faq: [
+      { q: "Is TBL's master course really free?", a: "Yes, the TBL Investment & AI Learning Master Course is completely free with no payment required." },
+      { q: "Does the course cover AI trading?", a: "Yes, the course covers modern AI-powered investment strategies and how to apply them in trading." },
+      { q: "Is TradingView included?", a: "Yes, the course includes TradingView setup support to apply chart analysis in real trading environments." },
+    ],
+  },
+  {
+    id: 291, name: "Abhay Trading Academy", slug: "abhay-trading-academy", logo: "AA",
+    rating: 4.3,
+    description: "Free live trading webinars globally. Smart money concepts and simplified trading education.",
+    longDescription: "Abhay Trading Academy offers free live trading webinars teaching simplified trading methods through expert traders trading live. The academy provides webinars on various topics including smart money concepts, technical analysis, and practical trading strategies. The webinars are accessible globally with registration available for multiple countries including India, USA, UK, Australia, Japan, Brazil, and many others. The academy focuses on making trading education accessible through live demonstrations and expert guidance.",
+    category: "Education", categoryId: 8,
+    features: ["Free Live Webinars", "Smart Money Concepts", "Global Access", "Expert Traders Live", "Multiple Topics", "Interactive Q&A", "Regular Sessions"],
+    pros: ["Completely free webinars", "Global accessibility", "Live trading demonstrations", "Smart money concepts", "Interactive Q&A sessions", "Multiple countries supported"],
+    cons: ["Webinar format only", "Limited recorded content", "Time zone dependent", "Promotes paid courses"],
+    pricing: "Free", pricingDetail: "All live webinars are completely free. Registration required but no payment needed.",
+    minDeposit: "$0", platforms: ["Web"],
+    website: "https://abhaytradingacademy.com/webinar", affiliate: false, trending: false, featured: true,
+    yearFounded: 2021, regulation: ["N/A"],
+    supportedCountries: ["Global"],
+    depositMethods: ["N/A"],
+    withdrawalTime: "N/A",
+    customerSupport: "Email, Contact Form",
+    mobileApp: false, demoAccount: false,
+    bestFor: ["Global Traders", "Webinar Learners", "Smart Money Concepts"],
+    faq: [
+      { q: "Are Abhay Trading webinars free?", a: "Yes, all live trading webinars are completely free. Registration is required but no payment is needed." },
+      { q: "What topics do the webinars cover?", a: "Webinars cover smart money concepts, technical analysis, trading strategies, and live trading demonstrations." },
+      { q: "Are the webinars accessible globally?", a: "Yes, webinars are accessible globally with registration available for multiple countries and time zones." },
+    ],
+  },
+  {
+    id: 292, name: "Trading.de Germany", slug: "trading-de-germany", logo: "TD",
+    rating: 4.5,
+    description: "Free trading course from beginner to professional. German market focus with proven strategies.",
+    longDescription: "Trading.de offers a comprehensive free trading course taking learners from beginner to professional level. The platform provides over 19 different lessons covering fundamental trading knowledge, advanced topics, and professional strategies. Taught by professional traders with over 10 years of experience, the course is presented through videos and summaries showing their best strategy step-by-step. The course starts with fundamental knowledge and progresses to advanced topics, culminating in a professional strategy that can be applied part-time or full-time.",
+    category: "Education", categoryId: 8,
+    features: ["Free Trading Course", "19+ Lessons", "Professional Strategies", "Video Content", "German Market Focus", "Step-by-Step Learning", "Quiz Included"],
+    pros: ["Completely free", "Professional trader instructors", "Comprehensive curriculum", "Proven strategies", "German market focus", "Video lessons with quizzes"],
+    cons: ["German language only", "Germany-focused content", "Specific strategy focus", "Limited live content"],
+    pricing: "Free", pricingDetail: "The entire trading course is completely free. No payment required for any content or features.",
+    minDeposit: "$0", platforms: ["Web"],
+    website: "https://trading.de/lernen/kurs", affiliate: false, trending: false, featured: true,
+    yearFounded: 2018, regulation: ["BaFin"],
+    supportedCountries: ["Germany", "Austria", "Switzerland"],
+    depositMethods: ["N/A"],
+    withdrawalTime: "N/A",
+    customerSupport: "Email, Help Center",
+    mobileApp: false, demoAccount: false,
+    bestFor: ["German Traders", "Strategy Learners", "Video Course Students"],
+    faq: [
+      { q: "Is Trading.de's course really free?", a: "Yes, the entire trading course with 19+ lessons is completely free. No payment required." },
+      { q: "What does the course cover?", a: "The course covers fundamental knowledge, advanced topics, and professional trading strategies with video lessons and quizzes." },
+      { q: "Who teaches the course?", a: "The course is taught by professional traders with over 10 years of trading experience." },
+    ],
+  },
+  {
+    id: 293, name: "WirMachenTrader", slug: "wirmachentrader", logo: "WM",
+    rating: 4.4,
+    description: "Free 90-minute trading basics course. 5-day program for US stock market trading.",
+    longDescription: "WirMachenTrader offers a free 90-minute trading basics course designed to build a solid foundation for successful US stock market trading. The 5-day course systematically builds trading knowledge day by day with practical, directly applicable modules. Each module requires 15-30 minutes daily. The course is perfect for absolute beginners requiring no prior knowledge, only motivation to learn trading correctly. With over 14 years of trading experience, the course provides proven strategies for US stock market trading.",
+    category: "Education", categoryId: 8,
+    features: ["Free Basics Course", "90-Minute Content", "5-Day Program", "US Stock Market Focus", "Systematic Learning", "Practical Modules", "Beginner Friendly"],
+    pros: ["Completely free", "Perfect for absolute beginners", "Systematic 5-day structure", "US stock market focus", "14+ years experience", "Practical and applicable"],
+    cons: ["German language only", "US market focus only", "Basic level only", "Limited to stock trading"],
+    pricing: "Free", pricingDetail: "The entire 5-day starter course is 100% free. No payment required for any content.",
+    minDeposit: "$0", platforms: ["Web"],
+    website: "https://www.wirmachentrader.de/starterkurs", affiliate: false, trending: false, featured: true,
+    yearFounded: 2015, regulation: ["BaFin"],
+    supportedCountries: ["Germany", "Austria", "Switzerland"],
+    depositMethods: ["N/A"],
+    withdrawalTime: "N/A",
+    customerSupport: "Email, Help Center",
+    mobileApp: false, demoAccount: false,
+    bestFor: ["German Beginners", "US Stock Market", "Structured Learning"],
+    faq: [
+      { q: "Is WirMachenTrader's course really free?", a: "Yes, the complete 5-day starter course is 100% free with no payment required." },
+      { q: "How long is the course?", a: "The course contains over 90 minutes of video content spread over 5 days, requiring 15-30 minutes daily." },
+      { q: "Is this suitable for beginners?", a: "Yes, the course is perfect for absolute beginners with no prior knowledge required." },
+    ],
+  },
+  {
+    id: 294, name: "NewTrading Germany", slug: "newtrading-germany", logo: "NT",
+    rating: 4.6,
+    description: "Free trading masterclass. Complete method without upsells. German trading veteran.",
+    longDescription: "NewTrading offers the 'NewTrading MasterClass', a completely free trading course teaching a complete trading method without any upsells or tricks. The course is offered voluntarily by Maxime Parra, an independent trader for 15 years and founder of NewTrading, a leading trading medium. The 9-module course covers the 7 pillars of trading: Vision, Style, Strategy, System, Platform, Routine, and Mantras, plus a bonus module showing the method under real conditions with commented trades. The course fights against expensive courses by providing quality education for free.",
+    category: "Education", categoryId: 8,
+    features: ["Free MasterClass", "Complete Trading Method", "9 Modules", "No Upsells", "7 Pillars System", "Real Trade Examples", "15 Years Experience"],
+    pros: ["Completely free", "No upsells or tricks", "Complete trading method", "15 years experience", "Real trade examples", "Systematic approach"],
+    cons: ["German language only", "Specific method focus", "Email delivery format", "No live content"],
+    pricing: "Free", pricingDetail: "The entire 9-module masterclass is completely free with no upsells, tricks, or hidden costs.",
+    minDeposit: "$0", platforms: ["Web"],
+    website: "https://newtrading.de", affiliate: false, trending: false, featured: true,
+    yearFounded: 2019, regulation: ["BaFin"],
+    supportedCountries: ["Germany", "Austria", "Switzerland"],
+    depositMethods: ["N/A"],
+    withdrawalTime: "N/A",
+    customerSupport: "Email, Help Center",
+    mobileApp: false, demoAccount: false,
+    bestFor: ["German Traders", "Method Learners", "No-upsell Preference"],
+    faq: [
+      { q: "Is NewTrading MasterClass really free?", a: "Yes, the entire 9-module masterclass is completely free with no upsells, tricks, or hidden costs." },
+      { q: "What does the course cover?", a: "The course covers 7 pillars of trading: Vision, Style, Strategy, System, Platform, Routine, and Mantras, plus real trade examples." },
+      { q: "Who teaches the course?", a: "The course is taught by Maxime Parra, an independent trader for 15 years and founder of NewTrading." },
+    ],
+  },
+  {
+    id: 295, name: "TradersClub24", slug: "tradersclub24", logo: "TC",
+    rating: 4.5,
+    description: "Free 30-day test access with live trading room. Germany's oldest trading club.",
+    longDescription: "TradersClub24 is Germany's oldest and largest trading club offering a free 30-day test access to their professional trading environment. The test access includes a professional trading environment, reliable strategies and tools, daily interactive live trading, and an online trading workshop for entry. The access ends automatically after 30 days without cancellation needed. Members get daily live trading in European and US markets, personal support from experienced coaches, and a strong community for learning and exchange.",
+    category: "Education", categoryId: 8,
+    features: ["Free 30-Day Access", "Live Trading Room", "Professional Tools", "Daily Webinars", "Personal Coaching", "Demo Account", "Strong Community"],
+    pros: ["Free 30-day test access", "Germany's largest trading club", "Daily live trading", "Personal coaching support", "Professional tools and strategies", "Automatic cancellation"],
+    cons: ["Limited to 30 days", "German language only", "German market focus", "Requires registration"],
+    pricing: "Free", pricingDetail: "30-day test access is completely free and ends automatically. No cancellation needed. No hidden costs.",
+    minDeposit: "$0", platforms: ["Web"],
+    website: "https://tradersclub24.de/trading/traden-lernen", affiliate: false, trending: false, featured: true,
+    yearFounded: 2012, regulation: ["BaFin"],
+    supportedCountries: ["Germany", "Austria", "Switzerland"],
+    depositMethods: ["N/A"],
+    withdrawalTime: "N/A",
+    customerSupport: "Email, Phone, Personal Coaching",
+    mobileApp: false, demoAccount: true,
+    bestFor: ["German Traders", "Live Trading Experience", "Community Learning"],
+    faq: [
+      { q: "Is TradersClub24 really free?", a: "Yes, the 30-day test access is completely free and ends automatically without cancellation." },
+      { q: "What does the test access include?", a: "The test access includes live trading room, professional tools, daily webinars, personal coaching, and demo account." },
+      { q: "Do I need to cancel after 30 days?", a: "No, the access ends automatically after 30 days. No cancellation is needed." },
+    ],
+  },
+  {
+    id: 296, name: "Monex Academy Japan", slug: "monex-academy-japan", logo: "MA",
+    rating: 4.5,
+    description: "Free Japanese stock investment course. Monex Securities supervised financial education.",
+    longDescription: "Monex Academy offers 'マネユニ・アカデミー 日本株コース', a Japanese stock investment course supervised by Monex Securities, one of Japan's leading online securities companies. The course provides a free trial experience covering the appeal of Japanese stocks and the essence of corporate analysis. The full course includes 10 hours of lectures covering risk management, trading timing, stock selection, technical analysis, chart basics, financial statement analysis, and trading mechanisms. The free trial allows students to experience the course atmosphere before committing to the full program.",
+    category: "Education", categoryId: 8,
+    features: ["Free Trial Course", "Japanese Stock Focus", "Financial Statement Analysis", "Technical Analysis", "Risk Management", "Monex Securities Supervised", "Online Learning"],
+    pros: ["Free trial available", "Supervised by major securities firm", "Comprehensive curriculum", "Japanese market focus", "Online accessible", "10 hours of content"],
+    cons: ["Japan-specific content", "Japanese language only", "Full course is paid", "Stock market focus only"],
+    pricing: "Free Trial", pricingDetail: "Free trial course available. Full course costs ¥55,000 but trial is completely free with no commitment.",
+    minDeposit: "$0", platforms: ["Web"],
+    website: "https://info.monex.co.jp/lp/mua-stock.html", affiliate: false, trending: false, featured: true,
+    yearFounded: 2015, regulation: ["SEBI", "JFSA"],
+    supportedCountries: ["Japan"],
+    depositMethods: ["N/A"],
+    withdrawalTime: "N/A",
+    customerSupport: "Email, Help Center",
+    mobileApp: false, demoAccount: false,
+    bestFor: ["Japanese Investors", "Stock Market Beginners", "Financial Analysis"],
+    faq: [
+      { q: "Is Monex Academy's trial really free?", a: "Yes, the free trial course is completely free with no payment required. Only the full course has a fee." },
+      { q: "What does the course cover?", a: "The course covers Japanese stock investment including risk management, technical analysis, financial statements, and trading strategies." },
+      { q: "Is this course legitimate?", a: "Yes, it's supervised by Monex Securities, a major Japanese online securities company regulated by JFSA." },
+    ],
+  },
+  {
+    id: 297, name: "Manakabu Japan", slug: "manakabu-japan", logo: "MK",
+    rating: 4.4,
+    description: "Free stock investment seminar. 30,000+ attendees. Original trading strategies.",
+    longDescription: "Manakabu (株の学校 マナカブ) offers free stock investment seminars with over 30,000 cumulative attendees. The 90-100 minute free experience seminars teach original strategies focusing only on essential skills needed to win in trading, filtering out unnecessary fundamental and technical analysis. The seminars are conducted online with limited participants to ensure interactive learning. The academy offers re-auditing without time limits and provides communication support via LINE and email. Graduates report 70%+ success in recovering course fees within six months.",
+    category: "Education", categoryId: 8,
+    features: ["Free Seminar", "Original Strategies", "Interactive Online", "Limited Participants", "Re-auditing Allowed", "Community Support", "Proven Results"],
+    pros: ["Completely free seminars", "30,000+ attendees", "Original trading strategies", "Interactive learning", "Re-auditing without limits", "Strong community support"],
+    cons: ["Japan-specific content", "Japanese language only", "Promotes paid courses", "Limited to stock trading"],
+    pricing: "Free", pricingDetail: "The experience seminar is completely free. No payment required for the 90-100 minute session.",
+    minDeposit: "$0", platforms: ["Web"],
+    website: "https://manakabu.com/seminar/", affiliate: false, trending: false, featured: true,
+    yearFounded: 2018, regulation: ["JFSA"],
+    supportedCountries: ["Japan"],
+    depositMethods: ["N/A"],
+    withdrawalTime: "N/A",
+    customerSupport: "Email, LINE",
+    mobileApp: false, demoAccount: false,
+    bestFor: ["Japanese Traders", "Strategy Learners", "Interactive Seminar Seekers"],
+    faq: [
+      { q: "Is Manakabu's seminar really free?", a: "Yes, the 90-100 minute experience seminar is completely free with no payment required." },
+      { q: "How many people have attended?", a: "Over 30,000 people have attended Manakabu's free seminars cumulatively." },
+      { q: "What makes their approach different?", a: "They teach original strategies focusing only on essential winning skills, filtering out unnecessary analysis methods." },
+    ],
+  },
+  {
+    id: 298, name: "3Starter Japan", slug: "3starter-japan", logo: "3S",
+    rating: 4.3,
+    description: "Free investment basics course. 2,000+ students since 2013. Candlesticks to advanced analysis.",
+    longDescription: "3Starter offers '投資の基礎はタダで学べコース', a completely free investment basics course that has been running since 2013 with over 2,000 students. The course covers candlesticks, indicators, Dow theory, Elliott Wave principle, Fibonacci, market psychology, market correlations, and time strategies. It includes 15 basic lessons, 7 advanced themes, and 11 supplementary content items including videos and texts. The course is designed for systematic learning from demo account setup, with content equivalent to several books but provided entirely free.",
+    category: "Education", categoryId: 8,
+    features: ["Free Investment Course", "15 Basic Lessons", "7 Advanced Themes", "11 Supplementary Items", "Systematic Learning", "Demo Account Setup", "Since 2013"],
+    pros: ["Completely free", "Long-standing since 2013", "2,000+ students", "Comprehensive curriculum", "Systematic approach", "Video and text content"],
+    cons: ["Japan-specific content", "Japanese language only", "FX/CFD focus", "Self-paced only"],
+    pricing: "Free", pricingDetail: "The entire course with all lessons, themes, and supplementary content is completely free. No payment required.",
+    minDeposit: "$0", platforms: ["Web"],
+    website: "https://3starter.jp/toushikiso-course.html", affiliate: false, trending: false, featured: true,
+    yearFounded: 2013, regulation: ["JFSA"],
+    supportedCountries: ["Japan"],
+    depositMethods: ["N/A"],
+    withdrawalTime: "N/A",
+    customerSupport: "Email, Help Center",
+    mobileApp: false, demoAccount: false,
+    bestFor: ["Japanese Beginners", "FX/CFD Traders", "Systematic Learners"],
+    faq: [
+      { q: "Is 3Starter's course really free?", a: "Yes, the entire investment basics course with all lessons and supplementary content is completely free." },
+      { q: "How long has this course been running?", a: "The course has been running since 2013, with over 2,000 students completing it." },
+      { q: "What does the course cover?", a: "The course covers candlesticks, indicators, Dow theory, Elliott Wave, Fibonacci, psychology, correlations, and time strategies." },
+    ],
+  },
+  {
+    id: 299, name: "KCIE South Korea", slug: "kcie-south-korea", logo: "KC",
+    rating: 4.6,
+    description: "Korea Council for Investor Education. Free online courses for financial literacy.",
+    longDescription: "The Korea Council for Investor Education (KCIE) offers free online courses through their e-learning platform to enhance financial literacy and investment understanding. The platform provides systematic financial learning accessible anytime and anywhere. Their derivatives school covers 6 themes and 40 stories about derivatives understanding, taught by top derivatives experts. KCIE is dedicated to helping Korean investors make informed investment decisions through comprehensive education programs covering stocks, derivatives, and general financial knowledge.",
+    category: "Education", categoryId: 8,
+    features: ["Free Online Courses", "Derivatives School", "6 Themes & 40 Stories", "Expert Instructors", "Systematic Learning", "Financial Literacy", "Korean Market Focus"],
+    pros: ["Completely free", "Government-backed council", "Expert derivatives instructors", "Systematic curriculum", "Korean market focus", "Accessible anytime"],
+    cons: ["Korea-specific content", "Korean language only", "Derivatives focus", "Limited live content"],
+    pricing: "Free", pricingDetail: "All online courses and educational content are completely free. No payment required.",
+    minDeposit: "$0", platforms: ["Web"],
+    website: "https://kcie.or.kr/elearning", affiliate: false, trending: false, featured: true,
+    yearFounded: 2015, regulation: ["FSC"],
+    supportedCountries: ["South Korea"],
+    depositMethods: ["N/A"],
+    withdrawalTime: "N/A",
+    customerSupport: "Email, Phone",
+    mobileApp: false, demoAccount: false,
+    bestFor: ["Korean Investors", "Derivatives Learners", "Financial Literacy"],
+    faq: [
+      { q: "Is KCIE's education really free?", a: "Yes, all online courses and educational content provided by KCIE are completely free." },
+      { q: "What does the derivatives school cover?", a: "The derivatives school covers 6 themes and 40 stories about derivatives understanding taught by top experts." },
+      { q: "Is KCIE legitimate?", a: "Yes, KCIE is the Korea Council for Investor Education, a government-backed organization dedicated to investor education." },
+    ],
+  },
+  {
+    id: 300, name: "XM Education Korea", slug: "xm-education-korea", logo: "XE",
+    rating: 4.5,
+    description: "Free forex trading education for Korean traders. Daily webinars and structured learning.",
+    longDescription: "XM Education Center offers comprehensive free forex education specifically for South Korean traders through daily webinars and structured learning programs. XM accepts South Korean clients and provides KRW-denominated accounts. The education includes daily live webinars conducted by professional market analysts covering fundamental analysis with economic indicators, technical analysis with chart patterns and trading indicators, risk management strategies, and money management. The platform provides live educational trading rooms showing real-time market analysis with free access to all educational materials without requiring any deposit.",
+    category: "Education", categoryId: 8,
+    features: ["Free Forex Education", "Daily Live Webinars", "Professional Analysts", "Fundamental Analysis", "Technical Analysis", "Risk Management", "KRW Accounts"],
+    pros: ["Completely free education", "Daily live webinars", "Professional market analysts", "Korean language support", "KRW-denominated accounts", "No deposit required"],
+    cons: ["Forex focus only", "XM platform promotion", "Time zone dependent", "Limited to forex markets"],
+    pricing: "Free", pricingDetail: "All educational content including webinars, courses, and analysis is completely free. No deposit required to access education.",
+    minDeposit: "$0", platforms: ["Web", "iOS", "Android"],
+    website: "https://www.xm.com/education", affiliate: false, trending: false, featured: true,
+    yearFounded: 2009, regulation: ["FSC", "CySEC", "FCA", "ASIC"],
+    supportedCountries: ["South Korea", "Global"],
+    depositMethods: ["N/A"],
+    withdrawalTime: "N/A",
+    customerSupport: "Email, Phone, Live Chat",
+    mobileApp: true, demoAccount: true,
+    bestFor: ["Korean Forex Traders", "Webinar Learners", "Daily Analysis Seekers"],
+    faq: [
+      { q: "Is XM Education really free?", a: "Yes, all educational content including webinars and courses is completely free. No deposit required." },
+      { q: "Do they offer Korean language support?", a: "Yes, XM provides education with Korean language support and accepts South Korean clients with KRW accounts." },
+      { q: "What do the webinars cover?", a: "Daily webinars cover fundamental analysis, technical analysis, risk management, and live market analysis by professional analysts." },
+    ],
+  },
+  {
+    id: 301, name: "XP Educação Brazil", slug: "xp-educacao-brazil", logo: "XP",
+    rating: 4.7,
+    description: "Free day trading masterclass. Pam Semezzato teaches technique and risk management.",
+    longDescription: "XP Educação offers a free masterclass titled 'Os 2 Pilares Essenciais no Day Trade' taught by Pam Semezzato, a national reference in day trading and CNPI-T analyst since 2018. The masterclass reveals the secrets that transform beginner traders into profitable professionals, focusing on the two essential pillars: technique and risk management. Pam teaches her daily-used setup for identifying opportunities, defining entry and exit points, and acting with precision. The course also covers risk control per operation, maintaining discipline after loss sequences, and reading personal results for continuous evolution.",
+    category: "Education", categoryId: 8,
+    features: ["Free Masterclass", "Technique & Risk Management", "CNPI-T Analyst Instructor", "Trading Setup", "Psychology", "Discipline Training", "Proven Methodology"],
+    pros: ["Completely free", "Taught by CNPI-T analyst", "Focus on essential pillars", "Real trading methodology", "Psychology and discipline", "Brazilian market focus"],
+    cons: ["Brazil-specific content", "Portuguese language only", "Day trading focus", "Promotes paid courses"],
+    pricing: "Free", pricingDetail: "The masterclass is completely free. No payment required for the session.",
+    minDeposit: "$0", platforms: ["Web"],
+    website: "https://xpeducacao.com.br", affiliate: false, trending: false, featured: true,
+    yearFounded: 2019, regulation: ["CVM"],
+    supportedCountries: ["Brazil"],
+    depositMethods: ["N/A"],
+    withdrawalTime: "N/A",
+    customerSupport: "Email, Help Center",
+    mobileApp: false, demoAccount: false,
+    bestFor: ["Brazilian Day Traders", "Risk Management Learners", "Technique Seekers"],
+    faq: [
+      { q: "Is XP Educação's masterclass really free?", a: "Yes, the day trading masterclass is completely free with no payment required." },
+      { q: "Who teaches the masterclass?", a: "The masterclass is taught by Pam Semezzato, a CNPI-T analyst since 2018 and national reference in day trading." },
+      { q: "What are the two pillars covered?", a: "The masterclass covers technique (trading setup and precision) and risk management (control and discipline)." },
+    ],
+  },
+  {
+    id: 302, name: "Finantres Mexico", slug: "finantres-mexico", logo: "FM",
+    rating: 4.5,
+    description: "Free ETF investment course for Mexico. Complete guide to ETF investing strategies.",
+    longDescription: "Finantres México offers 'Curso Gratis para Invertir en ETFs en México', a comprehensive free course designed for the Latin American market with 100% focus on Mexico. The course teaches how ETFs work from scratch, how to build diversified portfolios with national and international ETFs, and practical and fiscal strategies for Mexico and Latin America. Students learn to choose ETFs like professionals, considering sectors, geographies, commissions, volume, and issuers. The course covers common beginner mistakes and how to avoid them, with clear language and direct approach without unnecessary technicalities.",
+    category: "Education", categoryId: 8,
+    features: ["Free ETF Course", "Mexico-Specific", "Portfolio Building", "Tax Strategies", "Professional Selection", "Risk Management", "Beginner Friendly"],
+    pros: ["Completely free", "Mexico-focused content", "Comprehensive ETF guide", "Tax strategies for Mexico", "Professional approach", "No technical jargon"],
+    cons: ["ETF focus only", "Mexico-specific content", "Spanish language only", "Limited to ETF investing"],
+    pricing: "Free", pricingDetail: "The entire ETF investment course is completely free. No payment required.",
+    minDeposit: "$0", platforms: ["Web"],
+    website: "https://finantres.mx/curso-gratis-invertir-etf-mexico/", affiliate: false, trending: false, featured: true,
+    yearFounded: 2020, regulation: ["CNBV"],
+    supportedCountries: ["Mexico", "Latin America"],
+    depositMethods: ["N/A"],
+    withdrawalTime: "N/A",
+    customerSupport: "Email, Help Center",
+    mobileApp: false, demoAccount: false,
+    bestFor: ["Mexican Investors", "ETF Learners", "Portfolio Builders"],
+    faq: [
+      { q: "Is Finantres' ETF course really free?", a: "Yes, the complete ETF investment course for Mexico is entirely free with no payment required." },
+      { q: "Is this course specific to Mexico?", a: "Yes, the course is designed specifically for the Mexican and Latin American market with local tax strategies." },
+      { q: "What does the course cover?", a: "The course covers how ETFs work, portfolio building, professional selection criteria, tax strategies, and common mistakes to avoid." },
+    ],
+  },
+  {
+    id: 303, name: "Finanflix Latin America", slug: "finanflix-latin-america", logo: "FF",
+    rating: 4.4,
+    description: "Free 6-class trading course. Market analysis, risk management, and strategy building.",
+    longDescription: "Finanflix offers a free 6-class trading course designed for beginners with no prior experience. The course teaches what a financial market is, how operations work, and the first steps to becoming a trader. Students learn solid trading bases, market viewpoints, general concepts, and necessary fundamentals to operate with confidence. The course covers psychology applied to trading, risk management, and the bases of the first strategy to achieve success. With dynamic and practical classes, students learn to analyze markets, manage risks, and build a solid strategy step by step to stand out as professional traders.",
+    category: "Education", categoryId: 8,
+    features: ["Free 6-Class Course", "Beginner Friendly", "Market Analysis", "Risk Management", "Strategy Building", "Trading Psychology", "Practical Approach"],
+    pros: ["Completely free", "No prior experience needed", "Dynamic and practical classes", "Comprehensive coverage", "Latin America focus", "Strategy building focus"],
+    cons: ["Spanish language only", "Latin America focus", "Basic level only", "Limited to 6 classes"],
+    pricing: "Free", pricingDetail: "The entire 6-class trading course is completely free. No payment required.",
+    minDeposit: "$0", platforms: ["Web"],
+    website: "https://finanflix.com/cursos/curso-trading-inicial/", affiliate: false, trending: false, featured: true,
+    yearFounded: 2021, regulation: ["N/A"],
+    supportedCountries: ["Latin America", "Global"],
+    depositMethods: ["N/A"],
+    withdrawalTime: "N/A",
+    customerSupport: "Email, Help Center",
+    mobileApp: false, demoAccount: false,
+    bestFor: ["Latin American Beginners", "Strategy Builders", "Risk Management Learners"],
+    faq: [
+      { q: "Is Finanflix's course really free?", a: "Yes, the complete 6-class trading course is entirely free with no payment required." },
+      { q: "Do I need prior experience?", a: "No, the course is designed for beginners with no prior experience in trading." },
+      { q: "What does the course cover?", a: "The course covers market analysis, risk management, trading psychology, and building a solid trading strategy." },
+    ],
+  },
+  {
+    id: 304, name: "IG Academy Germany", slug: "ig-academy-germany", logo: "IG",
+    rating: 4.7,
+    description: "Free online trading courses and webinars. 45+ years of market experience.",
+    longDescription: "IG Academy Germany offers free online trading courses, webinars, and seminars through IG, a global leader with over 45 years of experience in financial markets. The academy provides a wide range of resources to refine trading skills with flexible learning options. Students can access short step-by-step online courses including videos, interactive exercises, and quizzes to test knowledge. Live sessions include regular webinars and seminars where experts share their insights and provide ample opportunity for questions. The academy covers various topics from financial market introduction to economic indicators and trading strategies.",
+    category: "Education", categoryId: 8,
+    features: ["Free Online Courses", "Live Webinars", "Interactive Exercises", "Quizzes", "45+ Years Experience", "Step-by-Step Learning", "Expert Instructors"],
+    pros: ["Completely free", "45+ years market experience", "Global leader in trading", "Interactive learning", "Live expert sessions", "Comprehensive topics"],
+    cons: ["IG platform promotion", "German language only", "Requires registration", "Time zone dependent for live sessions"],
+    pricing: "Free", pricingDetail: "All online courses, webinars, and educational content are completely free. No payment required.",
+    minDeposit: "$0", platforms: ["Web", "iOS", "Android"],
+    website: "https://web.ig.com/de/lerne-handeln/ig-academy", affiliate: false, trending: false, featured: true,
+    yearFounded: 1974, regulation: ["BaFin"],
+    supportedCountries: ["Germany", "Europe"],
+    depositMethods: ["N/A"],
+    withdrawalTime: "N/A",
+    customerSupport: "Email, Phone, Live Chat",
+    mobileApp: true, demoAccount: true,
+    bestFor: ["German Traders", "Structured Learners", "Webinar Attendees"],
+    faq: [
+      { q: "Is IG Academy really free?", a: "Yes, all online courses, webinars, and educational content provided by IG Academy are completely free." },
+      { q: "What learning formats are available?", a: "IG Academy offers step-by-step online courses with videos, interactive exercises, quizzes, and live webinars." },
+      { q: "Is IG Academy legitimate?", a: "Yes, IG is a global trading leader with over 45 years of experience, regulated by BaFin in Germany." },
+    ],
+  },
+  {
+    id: 305, name: "S Broker börsenfit", slug: "sbroker-borsenfit", logo: "SB",
+    rating: 4.6,
+    description: "Free stock market education platform. Learn stocks, trading, and wealth building.",
+    longDescription: "S Broker's börsenfit is a free education platform offering knowledge about stocks, securities trading, and wealth building. The platform provides free access to know-how around stocks, securities trading, and asset accumulation. Students can access webinars and podcasts, with content available anytime and anywhere. The platform is specifically designed for private individuals who want to engage with stock market topics and further their education. No prior knowledge or admission requirements are needed to use börsenfit, and the usage is provided completely free by S Broker.",
+    category: "Education", categoryId: 8,
+    features: ["Free Education Platform", "Stock Market Basics", "Wealth Building", "Webinars & Podcasts", "No Prior Knowledge", "Anytime Access", "S Broker Provided"],
+    pros: ["Completely free", "No prior knowledge needed", "Available anytime anywhere", "Webinars and podcasts", "German market focus", "S Broker backing"],
+    cons: ["German language only", "Germany-specific content", "S Broker platform focus", "Limited advanced topics"],
+    pricing: "Free", pricingDetail: "The entire börsenfit education platform is completely free. No payment required for any content.",
+    minDeposit: "$0", platforms: ["Web"],
+    website: "https://akademie.sbroker.de/home", affiliate: false, trending: false, featured: true,
+    yearFounded: 2015, regulation: ["BaFin"],
+    supportedCountries: ["Germany"],
+    depositMethods: ["N/A"],
+    withdrawalTime: "N/A",
+    customerSupport: "Email, Phone",
+    mobileApp: false, demoAccount: false,
+    bestFor: ["German Beginners", "Stock Market Learners", "Wealth Building"],
+    faq: [
+      { q: "Is börsenfit really free?", a: "Yes, the entire börsenfit education platform is provided completely free by S Broker with no payment required." },
+      { q: "Do I need prior knowledge?", a: "No, börsenfit requires no prior knowledge or admission requirements. It's designed for beginners." },
+      { q: "What content is available?", a: "The platform offers content on stocks, securities trading, wealth building, webinars, and podcasts." },
+    ],
+  },
+  {
+    id: 306, name: "Goldesel Akademie Germany", slug: "goldesel-akademie-germany", logo: "GA",
+    rating: 4.4,
+    description: "Free stock market and trading learning. Understandable articles and learning paths.",
+    longDescription: "Goldesel Akademie offers free education on stocks, stock market, and trading in an understandable format. The academy provides learning paths with articles where progress is saved for learners. Topics include 'Investing for Beginners' teaching how to start in the stock market from scratch, 'Stock Analysis' teaching systematic stock analysis by examining business models, industries, competitive advantages, key figures, and balance sheets, and 'Opening a Depot' teaching how to open the first own depot and successfully invest in stocks and ETFs. The content is designed to be accessible and understandable for all levels.",
+    category: "Education", categoryId: 8,
+    features: ["Free Learning Paths", "Stock Analysis", "Depot Opening Guide", "Investment Basics", "Progress Tracking", "Understandable Content", "German Market Focus"],
+    pros: ["Completely free", "Understandable content", "Progress tracking", "Systematic stock analysis", "Beginner friendly", "German market focus"],
+    cons: ["German language only", "Germany-specific content", "Article-based learning", "Limited video content"],
+    pricing: "Free", pricingDetail: "All learning paths, articles, and educational content are completely free. No payment required.",
+    minDeposit: "$0", platforms: ["Web"],
+    website: "https://goldesel.de/akademie", affiliate: false, trending: false, featured: true,
+    yearFounded: 2018, regulation: ["BaFin"],
+    supportedCountries: ["Germany"],
+    depositMethods: ["N/A"],
+    withdrawalTime: "N/A",
+    customerSupport: "Email, Help Center",
+    mobileApp: false, demoAccount: false,
+    bestFor: ["German Beginners", "Stock Analysis Learners", "Depot Opening"],
+    faq: [
+      { q: "Is Goldesel Akademie really free?", a: "Yes, all learning paths, articles, and educational content are completely free with no payment required." },
+      { q: "What topics are covered?", a: "The academy covers investing for beginners, stock analysis, depot opening, and systematic investment strategies." },
+      { q: "Is progress tracked?", a: "Yes, the learning paths save your progress so you can continue where you left off." },
+    ],
+  },
+  {
+    id: 307, name: "Bourse Direct France", slug: "boursedirect-france", logo: "BD",
+    rating: 4.5,
+    description: "Free stock market training with experts. Webinars and coaching available.",
+    longDescription: "Bourse Direct offers free stock market training through webinars conducted by experts and privileged partners to enrich knowledge of financial markets. The free 100% online training includes live webinars covering topics like first steps in stock market, understanding what can be traded in stock market, types of investors, and trading methods. Students can access replays of webinars on stock market and savings to benefit from speaker expertise. Bourse Direct also offers paid personalized coaching sessions in small groups or one-to-one. All trainers are professionals with over 15 years of experience.",
+    category: "Education", categoryId: 8,
+    features: ["Free Webinars", "Expert Trainers", "Live Sessions", "Webinar Replays", "Personal Coaching Available", "15+ Years Experience", "French Market Focus"],
+    pros: ["Completely free webinars", "Expert trainers with 15+ years", "Live interactive sessions", "Webinar replays available", "French market focus", "Professional instructors"],
+    cons: ["French language only", "France-specific content", "Coaching is paid", "Promotes Bourse Direct platform"],
+    pricing: "Free", pricingDetail: "All webinars and training sessions are completely free. Personal coaching is paid but optional.",
+    minDeposit: "$0", platforms: ["Web"],
+    website: "https://www.boursedirect.fr/fr/formations", affiliate: false, trending: false, featured: true,
+    yearFounded: 1998, regulation: ["AMF"],
+    supportedCountries: ["France"],
+    depositMethods: ["N/A"],
+    withdrawalTime: "N/A",
+    customerSupport: "Email, Phone",
+    mobileApp: false, demoAccount: false,
+    bestFor: ["French Investors", "Webinar Learners", "Beginner Training"],
+    faq: [
+      { q: "Is Bourse Direct training really free?", a: "Yes, all webinars and training sessions are completely free. Only personalized coaching is paid." },
+      { q: "Who are the trainers?", a: "All trainers are professionals with over 15 years of experience in their respective fields." },
+      { q: "Can I access webinar replays?", a: "Yes, replays of webinars on stock market and savings are available for free access." },
+    ],
+  },
+  {
+    id: 308, name: "Place des Investisseurs Academy", slug: "place-des-investisseurs-academy", logo: "PI",
+    rating: 4.6,
+    description: "Free financial education platform for all citizens. Videos, quizzes, and certificates.",
+    longDescription: "Place des Investisseurs Academy is a 100% free online financial education platform designed to equip every citizen including students, employees, young professionals, and retirees. The platform offers practical, concrete, and progressive courses with videos, quizzes, podcasts, and practical fact sheets. Students obtain a certificate at the end of each course and can learn at their own pace without jargon or judgment. Key themes include private equity, sustainable finance, ESG regulations, and more. The platform is supported by engaged actors like Bpifrance, Easybourse Groupe, Banque Postale, and others.",
+    category: "Education", categoryId: 8,
+    features: ["Free Platform", "Videos & Quizzes", "Certificates", "Podcasts", "Personalized Path", "No Jargon", "ESG & Sustainable Finance"],
+    pros: ["Completely free", "100% free platform", "Certificates upon completion", "Personalized learning paths", "No jargon approach", "Supported by major institutions", "ESG focus"],
+    cons: ["French language only", "France-specific content", "Focus on sustainable finance", "Limited trading content"],
+    pricing: "Free", pricingDetail: "The entire platform with all courses, videos, quizzes, and certificates is completely free.",
+    minDeposit: "$0", platforms: ["Web"],
+    website: "https://www.placedesinvestisseurs.org/place-des-investisseurs-academy/", affiliate: false, trending: false, featured: true,
+    yearFounded: 2020, regulation: ["AMF"],
+    supportedCountries: ["France"],
+    depositMethods: ["N/A"],
+    withdrawalTime: "N/A",
+    customerSupport: "Email, Help Center",
+    mobileApp: false, demoAccount: false,
+    bestFor: ["French Citizens", "Financial Literacy", "ESG Investing"],
+    faq: [
+      { q: "Is Place des Investisseurs Academy really free?", a: "Yes, the entire platform is 100% free with all courses, videos, quizzes, and certificates available at no cost." },
+      { q: "Who is this platform for?", a: "The platform is designed for everyone including students, employees, young professionals, and retirees." },
+      { q: "Do I get a certificate?", a: "Yes, students obtain a certificate at the end of each course upon completion." },
+    ],
+  },
+  {
+    id: 309, name: "DailyTrading France", slug: "dailytrading-france", logo: "DT",
+    rating: 4.4,
+    description: "Free complete trading program. 8 modules, 40+ hours, from basics to advanced strategies.",
+    longDescription: "DailyTrading offers a completely free and structured trading formation program from absolute fundamentals to advanced strategies. The program includes 8 modules with over 40 hours of content, practical exercises, and an action plan. Students learn the absolute fundamentals (markets, actors, instruments), technical analysis from A to Z, risk management and money management, trader psychology, creating personal strategies, and using trading platforms like MT5. The 90-day action plan guides students from opening a demo account to executing 50 demo trades with a journal, building a solid foundation for real trading.",
+    category: "Education", categoryId: 8,
+    features: ["Free Complete Program", "8 Modules", "40+ Hours Content", "Technical Analysis", "Risk Management", "Psychology", "90-Day Action Plan"],
+    pros: ["Completely free", "Comprehensive 8-module program", "40+ hours of content", "Structured learning path", "90-day action plan", "From basics to advanced"],
+    cons: ["French language only", "Self-paced only", "Requires discipline", "Demo account focus"],
+    pricing: "Free", pricingDetail: "The entire 8-module program with 40+ hours of content is completely free. No payment required.",
+    minDeposit: "$0", platforms: ["Web"],
+    website: "https://www.dailytrading.fr/tutoriels/formation-trading-programme-complet", affiliate: false, trending: false, featured: true,
+    yearFounded: 2019, regulation: ["AMF"],
+    supportedCountries: ["France"],
+    depositMethods: ["N/A"],
+    withdrawalTime: "N/A",
+    customerSupport: "Email, Help Center",
+    mobileApp: false, demoAccount: true,
+    bestFor: ["French Beginners", "Structured Learners", "Comprehensive Education"],
+    faq: [
+      { q: "Is DailyTrading's formation really free?", a: "Yes, the complete 8-module program with 40+ hours of content is entirely free." },
+      { q: "What does the program cover?", a: "The program covers fundamentals, technical analysis, risk management, psychology, strategy creation, and platform usage." },
+      { q: "Is there a structured plan?", a: "Yes, the program includes a 90-day action plan guiding from demo account to 50 practice trades." },
+    ],
+  },
+  {
+    id: 310, name: "Banca Sella Italy", slug: "banca-sella-italy", logo: "BS",
+    rating: 4.5,
+    description: "Free Module 1 trading course. 22+ hours of webinars, Italian bank.",
+    longDescription: "Banca Sella offers a modular and complete online trading course with over 22 hours of webinars available live and on demand. The innovative course is designed to acquire specific skills on online trading techniques and market scenarios. Module 1 'Fare trading con soddisfazione' is completely free without any commitment. The course covers what online trading is, what's needed for effective DIY trading, methodology pillars, and the smart path. Students can follow lessons from PC, tablet, or smartphone. The full course has 5 modules, but Module 1 is entirely free.",
+    category: "Education", categoryId: 8,
+    features: ["Free Module 1", "22+ Hours Webinars", "Live & On Demand", "Multi-Device Access", "Italian Bank", "Trading Techniques", "Market Scenarios"],
+    pros: ["Module 1 completely free", "22+ hours of webinars", "Live and on demand access", "Multi-device support", "Italian bank backing", "No commitment for Module 1"],
+    cons: ["Italian language only", "Italy-specific content", "Only Module 1 is free", "Promotes paid modules"],
+    pricing: "Free", pricingDetail: "Module 1 is completely free without commitment. Full 5-module course costs €350 but Module 1 requires no payment.",
+    minDeposit: "$0", platforms: ["Web", "iOS", "Android"],
+    website: "https://www.sella.it/banca-on-line/trader/formazione-e-webinar/impara-il-trading-da-casa", affiliate: false, trending: false, featured: true,
+    yearFounded: 1986, regulation: ["CONSOB"],
+    supportedCountries: ["Italy"],
+    depositMethods: ["N/A"],
+    withdrawalTime: "N/A",
+    customerSupport: "Email, Phone",
+    mobileApp: true, demoAccount: false,
+    bestFor: ["Italian Traders", "Webinar Learners", "Bank-Backed Education"],
+    faq: [
+      { q: "Is Banca Sella's Module 1 really free?", a: "Yes, Module 1 is completely free without any commitment or payment required." },
+      { q: "How many hours of content?", a: "The course offers over 22 hours of webinars available both live and on demand." },
+      { q: "Can I access from mobile?", a: "Yes, lessons can be followed from PC, tablet, or smartphone with multi-device access." },
+    ],
+  },
+  {
+    id: 311, name: "Educati e Finanziati Italy", slug: "educati-e-finanziati-italy", logo: "EF",
+    rating: 4.6,
+    description: "Free financial education course. Base and advanced levels for independent investing.",
+    longDescription: "Educati e Finanziati offers a complete and independent financial education course that is clear and practical for investing consciously and independently. The course is structured on two levels: Base Course for solid fundamentals including 4-pillar strategy, liquidity management, emergency fund, bonds, and ETF introduction; and Advanced Course for advanced strategies including portfolio analysis, tax optimization, market microstructure, and advanced asset allocation. The course teaches how to build a solid investment strategy from basic current account management to long-term ETF investments.",
+    category: "Education", categoryId: 8,
+    features: ["Free Financial Education", "Base & Advanced Levels", "4-Pillar Strategy", "ETF Focus", "Tax Optimization", "Independent Investing", "Italian Market Focus"],
+    pros: ["Completely free", "Two-level structure", "Base and advanced content", "Independent investing focus", "Tax optimization for Italy", "Clear and practical"],
+    cons: ["Italian language only", "Italy-specific tax content", "ETF focus primarily", "Self-paced only"],
+    pricing: "Free", pricingDetail: "The entire financial education course with both base and advanced levels is completely free.",
+    minDeposit: "$0", platforms: ["Web"],
+    website: "https://www.educatiefinanziati.it/", affiliate: false, trending: false, featured: true,
+    yearFounded: 2020, regulation: ["CONSOB"],
+    supportedCountries: ["Italy"],
+    depositMethods: ["N/A"],
+    withdrawalTime: "N/A",
+    customerSupport: "Email, Help Center",
+    mobileApp: false, demoAccount: false,
+    bestFor: ["Italian Investors", "Financial Literacy", "Independent Investing"],
+    faq: [
+      { q: "Is Educati e Finanziati really free?", a: "Yes, the entire financial education course with both base and advanced levels is completely free." },
+      { q: "What are the two levels?", a: "The Base Course covers fundamentals and 4-pillar strategy. The Advanced Course covers portfolio analysis, tax optimization, and advanced asset allocation." },
+      { q: "Is this suitable for beginners?", a: "Yes, the Base Course is designed for beginners to build solid fundamentals in financial education." },
+    ],
+  },
+  {
+    id: 312, name: "IG Academy Netherlands", slug: "ig-academy-netherlands", logo: "IG",
+    rating: 4.7,
+    description: "Free online trading courses and webinars. 49 years of financial market experience.",
+    longDescription: "IG Academy Netherlands offers free online trading courses, webinars, and live sessions through IG, a market leader with 49 years of experience in financial markets. The academy provides a wide range of informative and educational material allowing students to learn where and when they want. Online courses include short step-by-step courses with videos, interactive exercises, and quizzes to test knowledge. Live sessions include regular webinars and seminars where experts share insights and provide opportunities for questions. Market updates provide the latest stock market news and analysis from the analyst team.",
+    category: "Education", categoryId: 8,
+    features: ["Free Online Courses", "Live Webinars", "Interactive Exercises", "Market Updates", "49 Years Experience", "Step-by-Step Learning", "Expert Analysts"],
+    pros: ["Completely free", "49 years market experience", "Global market leader", "Interactive learning", "Live expert sessions", "Market updates included"],
+    cons: ["IG platform promotion", "Dutch language only", "Requires registration", "Time zone dependent for live sessions"],
+    pricing: "Free", pricingDetail: "All online courses, webinars, and educational content are completely free. No payment required.",
+    minDeposit: "$0", platforms: ["Web", "iOS", "Android"],
+    website: "https://www.ig.com/nl/leer-om-te-handelen/ig-academy", affiliate: false, trending: false, featured: true,
+    yearFounded: 1974, regulation: ["AFM"],
+    supportedCountries: ["Netherlands", "Europe"],
+    depositMethods: ["N/A"],
+    withdrawalTime: "N/A",
+    customerSupport: "Email, Phone, Live Chat",
+    mobileApp: true, demoAccount: true,
+    bestFor: ["Dutch Traders", "Structured Learners", "Webinar Attendees"],
+    faq: [
+      { q: "Is IG Academy Netherlands really free?", a: "Yes, all online courses, webinars, and educational content are completely free with no payment required." },
+      { q: "What learning formats are available?", a: "IG Academy offers step-by-step courses with videos, interactive exercises, quizzes, and live webinars." },
+      { q: "Is IG Academy legitimate?", a: "Yes, IG is a market leader with 49 years of experience, regulated by AFM in the Netherlands." },
+    ],
+  },
+  {
+    id: 313, name: "Beleggen.online Netherlands", slug: "beleggen-online-netherlands", logo: "BO",
+    rating: 4.5,
+    description: "100% free investment courses. ETFs, stocks, and real estate education for everyone.",
+    longDescription: "Beleggen.online offers 100% free education to make investing accessible for everyone regardless of experience or financial situation. The mission is to provide clear, practical, and easy-to-follow education through free crash courses and practical tools. The platform offers free courses including 'Financial Freedom Course' (10 hours), 'Begin Investing Course' (4 weeks, 8 hours), 'Advanced Investing Course' (4 weeks, 6 hours), and 'Trading Course' (4 weeks, 10 hours). Students can also subscribe to a free stock portfolio receiving updates every 2 weeks. The focus is on ETFs, stocks, and real estate investing.",
+    category: "Education", categoryId: 8,
+    features: ["100% Free Education", "Multiple Free Courses", "ETF & Stock Focus", "Real Estate Investing", "Stock Portfolio", "Practical Tools", "Beginner Friendly"],
+    pros: ["Completely free", "Multiple course options", "ETF and stock focus", "Real estate included", "Free stock portfolio updates", "Practical tools", "Happy Investors backing"],
+    cons: ["Dutch language only", "Netherlands-specific content", "Self-paced only", "Promotes paid services"],
+    pricing: "Free", pricingDetail: "All courses and educational content are 100% free. No payment required for any course.",
+    minDeposit: "$0", platforms: ["Web"],
+    website: "https://beleggen.online/", affiliate: false, trending: false, featured: true,
+    yearFounded: 2019, regulation: ["AFM"],
+    supportedCountries: ["Netherlands"],
+    depositMethods: ["N/A"],
+    withdrawalTime: "N/A",
+    customerSupport: "Email, Help Center",
+    mobileApp: false, demoAccount: false,
+    bestFor: ["Dutch Beginners", "ETF Investors", "Long-term Investors"],
+    faq: [
+      { q: "Is Beleggen.online really free?", a: "Yes, all courses and educational content are 100% free with no payment required." },
+      { q: "What courses are available?", a: "Free courses include Financial Freedom (10 hours), Begin Investing (8 hours), Advanced Investing (6 hours), and Trading (10 hours)." },
+      { q: "Is there a stock portfolio?", a: "Yes, students can subscribe to a free stock portfolio receiving updates every 2 weeks." },
+    ],
+  },
+  {
+    id: 314, name: "DoopieCash Netherlands", slug: "doopiecash-netherlands", logo: "DC",
+    rating: 4.4,
+    description: "Free investment course. 6 modules on stocks, ETFs, crypto, and real estate.",
+    longDescription: "DoopieCash offers a free investment course teaching step-by-step how to start investing, avoid mistakes, and make money work long-term. Investment coach Jordy Tiebot shares his proven approach in this practical training. The course covers 6 modules including introduction, platform usage, financial freedom basics, money management, basic principles of successful investing, and practical steps. Students learn about stocks, ETFs, crypto, and real estate with clear explanations, examples, and assignments. The course is designed for beginners with everything explained step by step.",
+    category: "Education", categoryId: 8,
+    features: ["Free Investment Course", "6 Comprehensive Modules", "Stocks, ETFs, Crypto, Real Estate", "Proven Strategy", "Money Management", "Beginner Friendly", "Practical Assignments"],
+    pros: ["Completely free", "6 comprehensive modules", "Multiple asset classes", "Proven strategy by coach", "Practical assignments", "Beginner focused"],
+    cons: ["Dutch language only", "Netherlands-specific content", "Promotes paid programs", "Self-paced only"],
+    pricing: "Free", pricingDetail: "The complete 6-module investment course is entirely free with no payment required.",
+    minDeposit: "$0", platforms: ["Web"],
+    website: "https://doopiecash.nl/leren-beleggen/gratis-cursus-beleggen/", affiliate: false, trending: false, featured: true,
+    yearFounded: 2020, regulation: ["AFM"],
+    supportedCountries: ["Netherlands"],
+    depositMethods: ["N/A"],
+    withdrawalTime: "N/A",
+    customerSupport: "Email, Help Center",
+    mobileApp: false, demoAccount: false,
+    bestFor: ["Dutch Beginners", "Multi-Asset Learners", "Practical Training"],
+    faq: [
+      { q: "Is DoopieCash's course really free?", a: "Yes, the complete 6-module investment course is entirely free with no payment required." },
+      { q: "What does the course cover?", a: "The course covers stocks, ETFs, crypto, real estate, money management, and practical investment steps." },
+      { q: "Who teaches the course?", a: "The course is taught by investment coach Jordy Tiebot sharing his proven investment approach." },
+    ],
+  },
+  {
+    id: 315, name: "Happy Investors Netherlands", slug: "happy-investors-netherlands", logo: "HI",
+    rating: 4.6,
+    description: "7 free investment courses worth €1,000. 40+ hours of lessons and workbooks.",
+    longDescription: "Happy Investors offers 7 complete investment courses completely free, together comprising 40+ hours of lessons and workbooks. The mission is to help with simple investing toward financial freedom. The free courses include Financial Independence (€100 value), Pension Investing (€200), Advanced Investing (€200), Value Investing (€200), Sustainable Investing (€100), Stock Trading (€200), and Option Trading. Students also get tools and checklists including calculation tool, portfolio tool, and stock checklist. The content teaches building rest, structure, and discipline for long-term systematic investing.",
+    category: "Education", categoryId: 8,
+    features: ["7 Free Courses", "40+ Hours Content", "€1,000 Total Value", "Tools & Checklists", "Pension Focus", "Value Investing", "Sustainable Investing"],
+    pros: ["Completely free", "7 complete courses", "40+ hours of content", "Tools and checklists included", "Multiple investment styles", "Pension and value focus"],
+    cons: ["Dutch language only", "Netherlands-specific content", "Self-paced only", "Promotes premium services"],
+    pricing: "Free", pricingDetail: "All 7 courses with 40+ hours of content and tools are completely free. Total value €1,000 but no payment required.",
+    minDeposit: "$0", platforms: ["Web"],
+    website: "https://thehappyinvestors.nl/gratis-training-beleggen/", affiliate: false, trending: false, featured: true,
+    yearFounded: 2018, regulation: ["AFM"],
+    supportedCountries: ["Netherlands"],
+    depositMethods: ["N/A"],
+    withdrawalTime: "N/A",
+    customerSupport: "Email, Help Center",
+    mobileApp: false, demoAccount: false,
+    bestFor: ["Dutch Investors", "Comprehensive Education", "Multiple Strategies"],
+    faq: [
+      { q: "Are Happy Investors courses really free?", a: "Yes, all 7 courses with 40+ hours of content and tools are completely free. No payment required." },
+      { q: "How many courses are included?", a: "7 complete courses are included: Financial Independence, Pension Investing, Advanced Investing, Value Investing, Sustainable Investing, Stock Trading, and Option Trading." },
+      { q: "What tools are included?", a: "Tools include calculation tool, portfolio tool, stock checklist, and various workbooks." },
+    ],
+  },
+  {
+    id: 316, name: "Questrade", slug: "questrade", logo: "QT",
+    rating: 4.3,
+    description: "Canada's leading online brokerage with low fees and powerful trading platforms.",
+    longDescription: "Questrade is Canada's leading online brokerage, offering low-cost trading for stocks, ETFs, options, and more. Founded in 1999, Questrade has grown to become one of Canada's largest independent brokerages, serving over 200,000 clients with over $30 billion in assets. The platform offers competitive pricing with no annual fees, free ETF purchases, and powerful trading tools including IQ Edge platform and mobile app. Questrade is regulated by CIRO (formerly IIROC) and is a member of CIPF, providing up to $1M protection per account category.",
+    category: "Stock Brokers", categoryId: 3,
+    features: ["Free ETF Purchases", "IQ Edge Platform", "Mobile App", "No Annual Fees", "USD Accounts", "Automated Investing", "Margin Trading"],
+    pros: ["Low trading fees", "Free ETF purchases", "No annual account fees", "Strong regulation (CIRO)", "CIPF protection", "Powerful trading platform"],
+    cons: ["USD conversion fees", "Limited research tools", "No fractional shares", "Customer support not 24/7", "Minimum for some accounts"],
+    pricing: "Low fees", pricingDetail: "Stocks/ETFs: $0.01 per share (min $4.95, max $9.95). Options: $9.95 + $1 per contract. Free ETF purchases. No annual fees.",
+    minDeposit: "$1,000", platforms: ["Web", "iOS", "Android", "Desktop (IQ Edge)"],
+    website: "https://www.questrade.com", affiliate: true, trending: true, featured: true,
+    yearFounded: 1999, regulation: ["CIRO", "CIPF"],
+    supportedCountries: ["Canada"],
+    depositMethods: ["Bank Transfer", "EFT", "Bill Payment", "Cheque"],
+    withdrawalTime: "1-3 business days",
+    customerSupport: "Phone, Email, Live Chat",
+    mobileApp: true, demoAccount: true,
+    bestFor: ["Canadian Investors", "ETF Investors", "Active Traders", "Cost-Conscious Investors"],
+    faq: [
+      { q: "Is Questrade regulated?", a: "Yes, Questrade is regulated by CIRO (formerly IIROC) and is a member of CIPF, providing up to $1M protection per account category." },
+      { q: "Are ETF purchases free?", a: "Yes, Questrade offers free ETF purchases. You only pay when you sell ETFs." },
+      { q: "What is the minimum deposit?", a: "The minimum deposit is $1,000 for most account types." },
+    ],
+  },
+  {
+    id: 317, name: "DBS Vickers", slug: "dbs-vickers", logo: "DV",
+    rating: 4.1,
+    description: "Singapore's premier brokerage backed by DBS Bank with access to Asian markets.",
+    longDescription: "DBS Vickers Securities is the brokerage arm of DBS Group, Southeast Asia's largest bank. Established in 1986, DBS Vickers provides comprehensive securities trading services across Singapore, Hong Kong, Malaysia, and other Asian markets. The platform offers access to stocks, ETFs, bonds, and derivatives with competitive pricing and robust research tools. As a MAS-regulated broker, DBS Vickers adheres to strict financial standards and benefits from the financial strength of DBS Bank, one of Asia's safest banks.",
+    category: "Stock Brokers", categoryId: 3,
+    features: ["Asian Market Access", "DBS Bank Integration", "Research Tools", "Mobile Trading", "Margin Trading", "IPO Access", "Global Markets"],
+    pros: ["Backed by DBS Bank", "MAS Tier-1 regulation", "Wide Asian market access", "Strong research", "Bank integration", "IPO access"],
+    cons: ["Higher commission rates", "Limited crypto trading", "Singapore-focused", "Complex fee structure", "No fractional shares"],
+    pricing: "Competitive", pricingDetail: "Singapore stocks: 0.12% min $10. Hong Kong stocks: 0.25% min HK$100. US stocks: US$25 flat fee.",
+    minDeposit: "SGD 1,000", platforms: ["Web", "iOS", "Android"],
+    website: "https://www.dbsvickers.com", affiliate: true, trending: false, featured: true,
+    yearFounded: 1986, regulation: ["MAS"],
+    supportedCountries: ["Singapore", "Hong Kong", "Malaysia", "Asia"],
+    depositMethods: ["Bank Transfer", "GIRO", "Cheque", "DBS/POSB Account"],
+    withdrawalTime: "1-3 business days",
+    customerSupport: "Phone, Email, Live Chat",
+    mobileApp: true, demoAccount: false,
+    bestFor: ["Singapore Investors", "Asian Market Traders", "DBS Bank Customers", "Institutional Investors"],
+    faq: [
+      { q: "Is DBS Vickers regulated?", a: "Yes, DBS Vickers is licensed and regulated by the Monetary Authority of Singapore (MAS), a Tier-1 regulator." },
+      { q: "What markets can I trade?", a: "DBS Vickers provides access to Singapore, Hong Kong, Malaysia, and other Asian markets." },
+      { q: "Is it safe?", a: "Yes, DBS Vickers benefits from the financial strength of DBS Bank, one of Asia's largest and safest banks." },
+    ],
+  },
+  {
+    id: 318, name: "Trade Republic", slug: "trade-republic", logo: "TR",
+    rating: 4.5,
+    description: "Germany's leading neobroker with €1 trades and full banking license.",
+    longDescription: "Trade Republic is Germany's leading neobroker, founded in 2015 in Berlin. It offers commission-free trading for stocks, ETFs, and derivatives with a flat €1 fee per trade. Trade Republic received a full German banking license from BaFin in 2023, making it one of the few neobrokers with full banking status. The platform offers over 2,400 free ETF savings plans, competitive interest rates on cash deposits, and a user-friendly mobile app. Trade Republic is regulated by BaFin and supervised by the European Central Bank, providing strong investor protection.",
+    category: "Stock Brokers", categoryId: 3,
+    features: ["€1 Flat Fee", "Free ETF Savings Plans", "Full Banking License", "Mobile App", "Interest on Cash", "Fractional Shares", "Crypto Trading"],
+    pros: ["€1 flat trading fee", "2,400+ free ETF savings plans", "Full banking license", "BaFin + ECB regulation", "€100K deposit protection", "Interest on cash"],
+    cons: ["No desktop platform", "Limited research tools", "No demo account", "German language focus", "Limited customer support hours"],
+    pricing: "€1 per trade", pricingDetail: "Flat €1 fee per trade for stocks, ETFs, and derivatives. Free ETF savings plans from €1. No annual fees.",
+    minDeposit: "€0", platforms: ["iOS", "Android"],
+    website: "https://traderepublic.com", affiliate: true, trending: true, featured: true,
+    yearFounded: 2015, regulation: ["BaFin", "ECB"],
+    supportedCountries: ["Germany", "Europe", "EU/EEA"],
+    depositMethods: ["Bank Transfer", "SEPA", "Credit/Debit Card"],
+    withdrawalTime: "1-3 business days",
+    customerSupport: "Email, In-App Chat",
+    mobileApp: true, demoAccount: false,
+    bestFor: ["European Investors", "ETF Savers", "Mobile Traders", "Cost-Conscious Investors"],
+    faq: [
+      { q: "Is Trade Republic a bank?", a: "Yes, Trade Republic received a full German banking license from BaFin in 2023 and is supervised by the ECB." },
+      { q: "What is the trading fee?", a: "Trade Republic charges a flat €1 fee per trade for stocks, ETFs, and derivatives." },
+      { q: "Are ETF savings plans free?", a: "Yes, Trade Republic offers over 2,400 free ETF savings plans starting from €1 per execution." },
+    ],
+  },
+  {
+    id: 319, name: "Boursorama", slug: "boursorama", logo: "BO",
+    rating: 4.2,
+    description: "France's leading online bank and broker with competitive fees and comprehensive services.",
+    longDescription: "Boursorama is France's leading online bank and brokerage platform, founded in 1995. As a subsidiary of Société Générale, Boursorama offers a complete range of financial services including stock trading, banking accounts, savings products, and insurance. The platform is regulated by AMF and ACPR, providing strong investor protection. Boursorama is known for its competitive pricing, user-friendly interface, and comprehensive financial services. It's particularly popular among French investors for its low trading fees and integrated banking services.",
+    category: "Stock Brokers", categoryId: 3,
+    features: ["Online Banking", "Stock Trading", "Low Fees", "Mobile App", "Savings Accounts", "Insurance Products", "French Market Focus"],
+    pros: ["AMF Tier-1 regulation", "Low trading fees", "Integrated banking", "Société Générale backing", "User-friendly app", "French market expertise"],
+    cons: ["France-focused", "Limited international markets", "Bank account required", "French language interface", "Limited research tools"],
+    pricing: "Low fees", pricingDetail: "French stocks: €0.99 per trade. International stocks: €2.99 per trade. No annual account fees.",
+    minDeposit: "€0", platforms: ["Web", "iOS", "Android"],
+    website: "https://www.boursorama.com", affiliate: true, trending: false, featured: true,
+    yearFounded: 1995, regulation: ["AMF", "ACPR"],
+    supportedCountries: ["France", "Europe"],
+    depositMethods: ["Bank Transfer", "Card", "Direct Debit"],
+    withdrawalTime: "1-3 business days",
+    customerSupport: "Phone, Email, Live Chat",
+    mobileApp: true, demoAccount: false,
+    bestFor: ["French Investors", "Banking Integration", "Cost-Conscious Traders", "European Markets"],
+    faq: [
+      { q: "Is Boursorama regulated?", a: "Yes, Boursorama is regulated by AMF (financial markets) and ACPR (banking), both French Tier-1 regulators." },
+      { q: "Do I need a bank account?", a: "Yes, Boursorama requires you to have a BoursoBank account to use their trading services." },
+      { q: "What are the trading fees?", a: "French stocks cost €0.99 per trade, while international stocks cost €2.99 per trade." },
+    ],
+  },
+  {
+    id: 320, name: "Fineco Bank", slug: "fineco-bank", logo: "FB",
+    rating: 4.4,
+    description: "Italy's leading digital bank and broker with multi-market access and competitive pricing.",
+    longDescription: "Fineco Bank is Italy's leading digital bank and brokerage platform, founded in 1999 and listed on the Milan Stock Exchange. Fineco offers a comprehensive range of financial services including stock trading, banking accounts, and investment products. The platform is regulated by CONSOB, FCA, and Banca d'Italia, providing strong investor protection across Europe. Fineco is known for its competitive pricing, powerful PowerDesk trading platform, and access to global markets including US, European, and Asian exchanges.",
+    category: "Stock Brokers", categoryId: 3,
+    features: ["PowerDesk Platform", "Multi-Market Access", "Digital Banking", "Mobile App", "Competitive Spreads", "Global Markets", "Italian Focus"],
+    pros: ["Multi-country regulation (CONSOB, FCA)", "Powerful trading platform", "Global market access", "Competitive pricing", "Banking integration", "Listed on Milan Stock Exchange"],
+    cons: ["Italian language focus", "Complex fee structure", "Limited crypto", "Minimum for some features", "Customer support hours"],
+    pricing: "Competitive", pricingDetail: "Italian stocks: €2.95 per trade. US stocks: $2.95 per trade. No annual fees for basic accounts.",
+    minDeposit: "€0", platforms: ["Web", "iOS", "Android", "Desktop (PowerDesk)"],
+    website: "https://www.finecobank.com", affiliate: true, trending: true, featured: true,
+    yearFounded: 1999, regulation: ["CONSOB", "FCA", "Banca d'Italia"],
+    supportedCountries: ["Italy", "Europe", "UK"],
+    depositMethods: ["Bank Transfer", "SEPA", "Card"],
+    withdrawalTime: "1-3 business days",
+    customerSupport: "Phone, Email, Live Chat",
+    mobileApp: true, demoAccount: true,
+    bestFor: ["Italian Investors", "European Traders", "Multi-Market Access", "Advanced Traders"],
+    faq: [
+      { q: "Is Fineco regulated?", a: "Yes, Fineco is regulated by CONSOB (Italy), FCA (UK), and Banca d'Italia, providing strong investor protection." },
+      { q: "What markets can I trade?", a: "Fineco provides access to Italian, European, US, and Asian markets through a single platform." },
+      { q: "What is PowerDesk?", a: "PowerDesk is Fineco's advanced trading platform with professional charting tools and order types." },
+    ],
+  },
+  {
+    id: 321, name: "MyInvestor", slug: "myinvestor", logo: "MI",
+    rating: 4.3,
+    description: "Spain's digital bank and broker specializing in index funds and low-cost investing.",
+    longDescription: "MyInvestor is Spain's digital bank and broker focused on index fund investing and low-cost trading. Founded as a neobank, MyInvestor offers commission-free trading on thousands of funds and competitive pricing on stocks and ETFs. The platform is regulated by CNMV and Banco de España, providing strong investor protection. MyInvestor is particularly popular among Spanish investors for its focus on passive investing, competitive fees, and user-friendly mobile app. The platform also offers banking services including savings accounts and loans.",
+    category: "Stock Brokers", categoryId: 3,
+    features: ["Index Fund Focus", "Low Trading Fees", "Digital Banking", "Mobile App", "Fund Supermarket", "Spanish Market", "Savings Products"],
+    pros: ["CNMV regulation", "Low trading fees", "Index fund specialization", "Digital banking integration", "User-friendly app", "Spanish market focus"],
+    cons: ["Spain-focused", "Limited international markets", "Bank account required", "Spanish language interface", "Limited research tools"],
+    pricing: "Low fees", pricingDetail: "Spanish stocks: 0.12% min €2. International stocks: 0.20% min €10. Fund supermarket with thousands of funds.",
+    minDeposit: "€0", platforms: ["Web", "iOS", "Android"],
+    website: "https://myinvestor.es", affiliate: true, trending: false, featured: true,
+    yearFounded: 2017, regulation: ["CNMV", "Banco de España"],
+    supportedCountries: ["Spain", "Europe"],
+    depositMethods: ["Bank Transfer", "SEPA", "Card"],
+    withdrawalTime: "1-3 business days",
+    customerSupport: "Phone, Email, Live Chat",
+    mobileApp: true, demoAccount: false,
+    bestFor: ["Spanish Investors", "Index Fund Investors", "Passive Investors", "Cost-Conscious Traders"],
+    faq: [
+      { q: "Is MyInvestor regulated?", a: "Yes, MyInvestor is regulated by CNMV (Spanish securities regulator) and Banco de España (Spanish central bank)." },
+      { q: "What is the focus of MyInvestor?", a: "MyInvestor specializes in index fund investing and passive investment strategies with low costs." },
+      { q: "Do I need a bank account?", a: "Yes, MyInvestor requires you to have a MyInvestor bank account to use their investment services." },
+    ],
+  },
+  {
+    id: 322, name: "Nordnet", slug: "nordnet", logo: "NO",
+    rating: 4.4,
+    description: "Nordic region's leading online broker with access to Swedish, Norwegian, Danish, and Finnish markets.",
+    longDescription: "Nordnet is the Nordic region's leading online brokerage platform, founded in 1995 and listed on Nasdaq Stockholm. Nordnet provides comprehensive access to Swedish, Norwegian, Danish, and Finnish markets, along with international exchanges. The platform is regulated by Swedish FI and offers competitive pricing, powerful trading tools, and excellent customer service. Nordnet is particularly popular among Nordic investors for its local market expertise, competitive fees, and user-friendly platform. The company also offers banking services including savings accounts and loans.",
+    category: "Stock Brokers", categoryId: 3,
+    features: ["Nordic Market Access", "Multi-Country Support", "Mobile App", "Banking Services", "Competitive Fees", "Research Tools", "Local Expertise"],
+    pros: ["Swedish FI regulation", "Comprehensive Nordic coverage", "Competitive pricing", "Banking integration", "Listed on Nasdaq Stockholm", "Strong local presence"],
+    cons: ["Nordic-focused", "Limited non-European markets", "Swedish language focus", "Complex fee structure", "Limited crypto"],
+    pricing: "Competitive", pricingDetail: "Swedish stocks: 0.05% min SEK 39. Nordic stocks: 0.10% min SEK 79. International stocks: 0.25% min SEK 149.",
+    minDeposit: "SEK 0", platforms: ["Web", "iOS", "Android"],
+    website: "https://www.nordnet.se", affiliate: true, trending: false, featured: true,
+    yearFounded: 1995, regulation: ["Swedish FI"],
+    supportedCountries: ["Sweden", "Norway", "Denmark", "Finland", "Nordic"],
+    depositMethods: ["Bank Transfer", "Autogiro", "Card"],
+    withdrawalTime: "1-3 business days",
+    customerSupport: "Phone, Email, Live Chat",
+    mobileApp: true, demoAccount: false,
+    bestFor: ["Nordic Investors", "Swedish Market Traders", "Multi-Country Investors", "Cost-Conscious Traders"],
+    faq: [
+      { q: "Is Nordnet regulated?", a: "Yes, Nordnet is regulated by the Swedish Financial Supervisory Authority (FI) and is listed on Nasdaq Stockholm." },
+      { q: "What markets can I trade?", a: "Nordnet provides access to Swedish, Norwegian, Danish, and Finnish markets, plus international exchanges." },
+      { q: "Is it available in all Nordic countries?", a: "Yes, Nordnet operates in Sweden, Norway, Denmark, and Finland with local support." },
+    ],
+  },
+  {
+    id: 323, name: "EasyEquities", slug: "easyequities", logo: "EE",
+    rating: 4.1,
+    description: "South Africa's innovative broker offering fractional share trading and low-cost investing.",
+    longDescription: "EasyEquities is South Africa's innovative brokerage platform founded in 2014, known for pioneering fractional share trading in Africa. The platform allows investors to buy fractions of shares, making investing accessible with small amounts. EasyEquities is regulated by FSCA and offers access to South African, US, and other international markets. The platform is particularly popular among beginner investors for its low fees, user-friendly interface, and educational resources. EasyEquities also offers crypto trading through its EasyCrypto platform.",
+    category: "Stock Brokers", categoryId: 3,
+    features: ["Fractional Shares", "Low Trading Fees", "South African Focus", "Mobile App", "Crypto Trading", "Educational Resources", "US Market Access"],
+    pros: ["FSCA regulation", "Fractional share trading", "Low fees", "Beginner-friendly", "US market access", "Crypto trading available"],
+    cons: ["Tier-2 regulation (FSCA)", "Limited research tools", "South Africa-focused", "Limited customer support hours", "Platform stability issues"],
+    pricing: "Low fees", pricingDetail: "South African stocks: 0.35% min R10. US stocks: $0.50 per trade. No annual fees.",
+    minDeposit: "R0", platforms: ["Web", "iOS", "Android"],
+    website: "https://www.easyequities.co.za", affiliate: true, trending: false, featured: true,
+    yearFounded: 2014, regulation: ["FSCA"],
+    supportedCountries: ["South Africa", "Africa"],
+    depositMethods: ["EFT", "Bank Transfer", "Card"],
+    withdrawalTime: "2-5 business days",
+    customerSupport: "Email, Phone, Support Portal",
+    mobileApp: true, demoAccount: false,
+    bestFor: ["South African Investors", "Beginner Investors", "Fractional Share Traders", "Cost-Conscious Investors"],
+    faq: [
+      { q: "Is EasyEquities regulated?", a: "Yes, EasyEquities is regulated by the Financial Sector Conduct Authority (FSCA) of South Africa." },
+      { q: "What is fractional share trading?", a: "Fractional share trading allows you to buy portions of shares, making investing possible with small amounts." },
+      { q: "Can I trade US stocks?", a: "Yes, EasyEquities provides access to US stock markets alongside South African markets." },
+    ],
+  },
+  {
+    id: 324, name: "Rakuten Trade", slug: "rakuten-trade", logo: "RT",
+    rating: 4.2,
+    description: "Malaysia's first fully digital stockbroker with zero commission on first RM1,000 monthly trades.",
+    longDescription: "Rakuten Trade is Malaysia's first fully digital stockbroker, launched in 2017 as a joint venture between Rakuten Securities and Kenanga Investment Bank. The platform offers commission-free trading on the first RM1,000 of monthly purchases, making it highly attractive for small investors. Rakuten Trade is licensed by the Securities Commission Malaysia and is a Participating Organisation of Bursa Malaysia. The platform provides access to Malaysian, US, and Hong Kong markets through a user-friendly mobile app. Rakuten Trade is particularly popular among Malaysian beginners for its low fees and digital-first approach.",
+    category: "Stock Brokers", categoryId: 3,
+    features: ["Zero Commission (First RM1K)", "Digital-First", "Mobile App", "Multi-Market Access", "Kenanga Backing", "Low Minimums", "Malaysian Focus"],
+    pros: ["Securities Commission Malaysia license", "Zero commission on first RM1,000", "Fully digital", "Kenanga Investment Bank backing", "User-friendly app", "Multi-market access"],
+    cons: ["Malaysia-focused", "Limited research tools", "Bursa-only primarily", "Complex fee structure above threshold", "Limited customer support"],
+    pricing: "Low fees", pricingDetail: "First RM1,000 monthly: Free. Above RM1,000: RM1-RM100 based on trading value. US stocks: $1.88 per trade.",
+    minDeposit: "RM0", platforms: ["Web", "iOS", "Android"],
+    website: "https://www.rakutentrade.my", affiliate: true, trending: true, featured: true,
+    yearFounded: 2017, regulation: ["Securities Commission Malaysia"],
+    supportedCountries: ["Malaysia", "Southeast Asia"],
+    depositMethods: ["Online Banking", "FPX", "Bank Transfer"],
+    withdrawalTime: "1-3 business days",
+    customerSupport: "Phone, Email, Live Chat",
+    mobileApp: true, demoAccount: false,
+    bestFor: ["Malaysian Investors", "Beginner Investors", "Cost-Conscious Traders", "Bursa Malaysia Traders"],
+    faq: [
+      { q: "Is Rakuten Trade regulated?", a: "Yes, Rakuten Trade is licensed by the Securities Commission Malaysia and is a Participating Organisation of Bursa Malaysia." },
+      { q: "What does zero commission mean?", a: "The first RM1,000 of monthly trades are commission-free. Above this threshold, fees range from RM1 to RM100." },
+      { q: "What markets can I trade?", a: "Rakuten Trade provides access to Malaysian (Bursa), US, and Hong Kong markets." },
     ],
   },
 ];
@@ -6912,7 +9560,6 @@ export function getAvailableCountries(): string[] {
   });
   return Array.from(countries).sort();
 }
-export function getUserReviewsByTool(slug: string): UserReview[] { return userReviews.filter((r) => r.toolSlug === slug); }
 export function getRegionByCode(code: string): Region | undefined { return regions.find((r) => r.code === code); }
 export function getToolsByRegion(regionCode: string): Tool[] {
   const region = getRegionByCode(regionCode);

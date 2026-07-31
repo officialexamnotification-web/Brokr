@@ -25,7 +25,7 @@ import {
   Zap,
   BarChart3,
 } from "lucide-react";
-import { getToolBySlug, tools, getUserReviewsByTool } from "@/lib/data";
+import { getToolBySlug, tools } from "@/lib/data";
 import Rating from "@/components/common/Rating";
 import Badge from "@/components/common/Badge";
 import ToolCard from "@/components/common/ToolCard";
@@ -39,14 +39,11 @@ export default function ToolDetailPage({ params }: { params: { slug: string } })
 
   if (!tool) notFound();
 
-  const reviews = getUserReviewsByTool(slug);
-  const avgUserRating = reviews.length > 0 ? reviews.reduce((s, r) => s + r.rating, 0) / reviews.length : 0;
   const relatedTools = tools.filter((t) => t.categoryId === tool.categoryId && t.id !== tool.id).slice(0, 3);
 
   const compareTools = tools.filter((t) => t.categoryId === tool.categoryId && t.id !== tool.id).slice(0, 4);
   const comparisonKeys = [
     { label: "Rating", key: "rating" as const, format: (v: number) => `${v}/5` },
-    { label: "Reviews", key: "reviews" as const, format: (v: number) => v.toLocaleString() },
     { label: "Pricing", key: "pricing" as const, format: (v: string) => v },
     { label: "Founded", key: "yearFounded" as const, format: (v: number) => String(v) },
   ];
@@ -72,7 +69,7 @@ export default function ToolDetailPage({ params }: { params: { slug: string } })
                   {tool.trending && <TrendingUp className="w-5 h-5 text-emerald-500" />}
                 </div>
                 <div className="flex flex-wrap items-center gap-2 mb-2">
-                  <Rating value={tool.rating} reviews={tool.reviews} size="md" />
+                  <Rating value={tool.rating} size="md" />
                   <Badge variant="info">{tool.category}</Badge>
                   {tool.affiliate && <Badge variant="warning">Affiliate</Badge>}
                 </div>
@@ -202,60 +199,6 @@ export default function ToolDetailPage({ params }: { params: { slug: string } })
               </div>
             </div>
           )}
-
-          <div className="glass-card rounded-3xl p-6 lg:p-8">
-            <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-2">
-              <MessageCircle className="w-5 h-5 text-primary-500" /> User Reviews ({reviews.length})
-            </h2>
-            {reviews.length > 0 && (
-              <div className="flex items-center gap-4 mb-6 p-4 rounded-2xl bg-amber-50/50 dark:bg-amber-950/20 border border-amber-100 dark:border-amber-900/50">
-                <div className="text-4xl font-black text-amber-500">{avgUserRating.toFixed(1)}</div>
-                <div>
-                  <Rating value={avgUserRating} size="md" />
-                  <div className="text-xs text-slate-500 dark:text-slate-400 mt-1">{reviews.length} verified reviews</div>
-                </div>
-              </div>
-            )}
-            <div className="space-y-4">
-              {reviews.map((review) => (
-                <div key={review.id} className="p-4 rounded-2xl border border-slate-100 dark:border-slate-800">
-                  <div className="flex items-start justify-between mb-2">
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center text-white text-xs font-bold">
-                          {review.userName.charAt(0)}
-                        </div>
-                        <div>
-                          <div className="text-sm font-semibold text-slate-900 dark:text-white flex items-center gap-1.5">
-                            {review.userName}
-                            {review.verified && (
-                              <Badge variant="success" size="sm">Verified</Badge>
-                            )}
-                          </div>
-                          <div className="text-xs text-slate-400">{review.date}</div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="flex gap-0.5">
-                      {Array.from({ length: 5 }).map((_, i) => (
-                        <Star key={i} className={`w-3.5 h-3.5 ${i < review.rating ? "text-amber-400 fill-amber-400" : "text-slate-200 dark:text-slate-700"}`} />
-                      ))}
-                    </div>
-                  </div>
-                  <h4 className="text-sm font-bold text-slate-900 dark:text-white mb-1">{review.title}</h4>
-                  <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">{review.comment}</p>
-                  <div className="flex items-center gap-4 mt-3 text-xs text-slate-400">
-                    <button className="hover:text-primary-500 transition-colors">
-                      <ThumbsUp className="w-3.5 h-3.5 inline mr-1" /> Helpful ({review.helpful})
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </div>
-            <button className="mt-4 w-full py-3 rounded-2xl border-2 border-dashed border-slate-300 dark:border-slate-700 text-slate-500 dark:text-slate-400 text-sm font-semibold hover:border-primary-400 hover:text-primary-500 transition-colors">
-              Write a Review
-            </button>
-          </div>
 
           {relatedTools.length > 0 && (
             <div>

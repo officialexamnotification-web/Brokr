@@ -19,10 +19,10 @@ interface StatItem {
 }
 
 const stats: StatItem[] = [
-  { label: "Active Traders", value: 500, suffix: "K+", icon: Users },
-  { label: "Verified Reviews", value: 180, suffix: "K+", icon: Star },
-  { label: "Countries", value: 140, suffix: "+", icon: Globe },
-  { label: "Tools Listed", value: 250, suffix: "+", icon: TrendingUp },
+  { label: "Verified Tools", value: 275, suffix: "+", icon: TrendingUp },
+  { label: "Regulatory Bodies", value: 4, suffix: "+", icon: ShieldCheck },
+  { label: "Categories", value: 8, suffix: "", icon: Zap },
+  { label: "Countries", value: 4, suffix: "", icon: Globe },
 ];
 
 function Counter({ target, suffix }: { target: number; suffix: string }) {
