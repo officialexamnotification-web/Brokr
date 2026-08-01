@@ -2,12 +2,14 @@
 
 const COINGECKO_BASE = "https://api.coingecko.com/api/v3";
 const FRANKFURTER_BASE = "https://api.frankfurter.app";
+const ALPHA_VANTAGE_BASE = "https://www.alphavantage.co/query";
 
 // Cache implementation (in-memory for Next.js)
 const cache = new Map();
 const CACHE_DURATION = {
   crypto: 2 * 60 * 1000, // 2 minutes
   forex: 60 * 60 * 1000, // 1 hour
+  stock: 5 * 60 * 1000, // 5 minutes
 };
 
 function getCached<T>(key: string, duration: number): T | null {
@@ -168,8 +170,70 @@ export async function getForexHistory(base: string, target: string, days = 30) {
 export async function getPopularPairs() {
   const [crypto, forex] = await Promise.all([
     getCryptoPrices(["bitcoin", "ethereum", "binancecoin", "ripple", "solana"]),
-    getForexRates("USD", ["INR", "EUR", "GBP", "JPY"]),
+    getForexRates("USD", ["INR", "EUR", "GBP"]),
   ]);
 
   return { crypto, forex };
+}
+
+// ============ STOCKS ============
+
+export async function getStockPrices(symbols: string[] = ["AAPL", "GOOGL", "MSFT", "TSLA", "AMZN"]) {
+  const cacheKey = `stock:${symbols.join(",")}`;
+  const cached = getCached<{ [key: string]: { price: number; change: number; changePercent: number } }>(cacheKey, CACHE_DURATION.stock);
+  if (cached) return cached;
+
+  try {
+    // Using Alpha Vantage (requires API key - using demo key for testing)
+    // Note: Replace with your own API key from https://www.alphavantage.co/support/#api-key
+    const apiKey = process.env.ALPHA_VANTAGE_API_KEY || "demo";
+    
+    const results: { [key: string]: { price: number; change: number; changePercent: number } } = {};
+    
+    for (const symbol of symbols) {
+      const res = await fetch(`${ALPHA_VANTAGE_BASE}?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${apiKey}`, {
+        next: { revalidate: 300 }, // 5 minutes
+      });
+      const data = await res.json();
+      
+      if (data["Global Quote"]) {
+        const quote = data["Global Quote"];
+        results[symbol] = {
+          price: parseFloat(quote["05. price"]),
+          change: parseFloat(quote["09. change"]),
+          changePercent: parseFloat(quote["10. change percent"].replace("%", "")),
+        };
+      }
+    }
+
+    if (Object.keys(results).length > 0) {
+      setCache(cacheKey, results);
+      return results;
+    }
+
+    throw new Error("No valid stock data received");
+  } catch (error) {
+    console.warn("Stock API using fallback data:", error instanceof Error ? error.message : error);
+    // Fallback stock prices
+    const fallbackStocks: { [key: string]: { price: number; change: number; changePercent: number } } = {
+      AAPL: { price: 178.50, change: 2.30, changePercent: 1.30 },
+      GOOGL: { price: 141.80, change: -1.20, changePercent: -0.84 },
+      MSFT: { price: 378.90, change: 4.50, changePercent: 1.20 },
+      TSLA: { price: 248.50, change: -3.20, changePercent: -1.27 },
+      AMZN: { price: 178.25, change: 1.80, changePercent: 1.02 },
+    };
+    return symbols.reduce((acc, symbol) => {
+      if (fallbackStocks[symbol]) acc[symbol] = fallbackStocks[symbol];
+      return acc;
+    }, {} as typeof fallbackStocks);
+  }
+}
+
+export async function getStockPrice(symbol: string) {
+  const prices = await getStockPrices([symbol]);
+  return prices?.[symbol] || null;
+}
+
+export async function getPopularStocks() {
+  return getStockPrices(["AAPL", "GOOGL", "MSFT", "TSLA", "AMZN", "META", "NVDA", "JPM"]);
 }

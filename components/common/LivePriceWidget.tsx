@@ -7,7 +7,7 @@ import { TrendingDown, ShoppingCart, Award, Clock, Check } from "lucide-react";
 import { Tool, tools } from "@/lib/data";
 import Rating from "./Rating";
 import Badge from "./Badge";
-import { getCryptoPrices, getForexRates } from "@/lib/api";
+import { getCryptoPrices, getForexRates, getStockPrices } from "@/lib/api";
 
 interface LivePriceWidgetProps {
   currentTool: Tool;
@@ -16,17 +16,20 @@ interface LivePriceWidgetProps {
 export default function LivePriceWidget({ currentTool }: LivePriceWidgetProps) {
   const [cryptoPrices, setCryptoPrices] = useState<{ [key: string]: { inr: number; usd: number; change_24h: number } } | null>(null);
   const [forexRates, setForexRates] = useState<{ [key: string]: number } | null>(null);
+  const [stockPrices, setStockPrices] = useState<{ [key: string]: { price: number; change: number; changePercent: number } } | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchData() {
       try {
-        const [crypto, forex] = await Promise.all([
+        const [crypto, forex, stocks] = await Promise.all([
           getCryptoPrices(["bitcoin", "ethereum", "binancecoin", "ripple", "solana"]),
           getForexRates("USD", ["INR", "EUR", "GBP"]),
+          getStockPrices(["AAPL", "GOOGL", "MSFT", "TSLA", "AMZN"]),
         ]);
         setCryptoPrices(crypto);
         setForexRates(forex);
+        setStockPrices(stocks);
       } catch (error) {
         console.error("Failed to fetch live prices:", error);
       } finally {
@@ -76,6 +79,22 @@ export default function LivePriceWidget({ currentTool }: LivePriceWidgetProps) {
                       <div className="text-xs text-slate-500">₹{data.inr.toLocaleString()}</div>
                       <div className={`text-xs ${data.change_24h >= 0 ? 'text-green-600' : 'text-red-600'}`}>
                         {data.change_24h >= 0 ? '+' : ''}{data.change_24h.toFixed(2)}%
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+            {stockPrices && (
+              <div className="col-span-full mb-2">
+                <div className="text-xs font-semibold text-slate-500 dark:text-slate-400 mb-2">Stock Prices (Live)</div>
+                <div className="grid grid-cols-2 md:grid-cols-5 gap-2">
+                  {Object.entries(stockPrices).map(([symbol, data]) => (
+                    <div key={symbol} className="bg-slate-50 dark:bg-slate-800/50 rounded-lg p-2">
+                      <div className="text-xs font-medium text-slate-700 dark:text-slate-300">{symbol}</div>
+                      <div className="text-xs text-slate-500">${data.price.toLocaleString()}</div>
+                      <div className={`text-xs ${data.changePercent >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                        {data.changePercent >= 0 ? '+' : ''}{data.changePercent.toFixed(2)}%
                       </div>
                     </div>
                   ))}
