@@ -2,7 +2,7 @@
 
 const COINGECKO_BASE = "https://api.coingecko.com/api/v3";
 const FRANKFURTER_BASE = "https://api.frankfurter.app";
-const TERMINAL_FEED_BASE = "https://terminalfeed.io/api";
+const ALPHA_VANTAGE_BASE = "https://www.alphavantage.co/query";
 
 // Cache implementation (in-memory for Next.js)
 const cache = new Map();
@@ -183,26 +183,52 @@ export async function getStockPrices(symbols: string[] = ["AAPL", "GOOGL", "MSFT
   const cached = getCached<{ [key: string]: { price: number; change: number; changePercent: number } }>(cacheKey, CACHE_DURATION.stock);
   if (cached) return cached;
 
-  // Using realistic fallback data since public APIs (Robinhood, Webull, Yahoo Finance) are not working reliably
-  // and require authentication or have changed endpoints
-  const fallbackStocks: { [key: string]: { price: number; change: number; changePercent: number } } = {
-    AAPL: { price: 308.91, change: -24.52, changePercent: -7.35 },
-    GOOGL: { price: 356.13, change: 22.47, changePercent: 6.73 },
-    MSFT: { price: 464.72, change: 13.62, changePercent: 3.02 },
-    TSLA: { price: 311.21, change: 2.36, changePercent: 0.76 },
-    AMZN: { price: 271.58, change: 36.08, changePercent: 15.32 },
-    META: { price: 556.71, change: 17.68, changePercent: 3.28 },
-    NVDA: { price: 200.75, change: 5.71, changePercent: 2.93 },
-    JPM: { price: 198.45, change: 2.15, changePercent: 1.09 },
-  };
-  
-  const results = symbols.reduce((acc, symbol) => {
-    if (fallbackStocks[symbol]) acc[symbol] = fallbackStocks[symbol];
-    return acc;
-  }, {} as typeof fallbackStocks);
-  
-  setCache(cacheKey, results);
-  return results;
+  try {
+    // Using Alpha Vantage API with environment variable
+    const apiKey = process.env.ALPHA_VANTAGE_API_KEY || "demo";
+    
+    const results: { [key: string]: { price: number; change: number; changePercent: number } } = {};
+    
+    for (const symbol of symbols) {
+      const res = await fetch(`${ALPHA_VANTAGE_BASE}?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${apiKey}`, {
+        next: { revalidate: 300 }, // 5 minutes
+      });
+      const data = await res.json();
+      
+      if (data["Global Quote"]) {
+        const quote = data["Global Quote"];
+        results[symbol] = {
+          price: parseFloat(quote["05. price"]),
+          change: parseFloat(quote["09. change"]),
+          changePercent: parseFloat(quote["10. change percent"].replace("%", "")),
+        };
+      }
+    }
+
+    if (Object.keys(results).length > 0) {
+      setCache(cacheKey, results);
+      return results;
+    }
+
+    throw new Error("No valid stock data received");
+  } catch (error) {
+    console.warn("Stock API using fallback data:", error instanceof Error ? error.message : error);
+    // Fallback stock prices (realistic values)
+    const fallbackStocks: { [key: string]: { price: number; change: number; changePercent: number } } = {
+      AAPL: { price: 308.91, change: -24.52, changePercent: -7.35 },
+      GOOGL: { price: 356.13, change: 22.47, changePercent: 6.73 },
+      MSFT: { price: 464.72, change: 13.62, changePercent: 3.02 },
+      TSLA: { price: 311.21, change: 2.36, changePercent: 0.76 },
+      AMZN: { price: 271.58, change: 36.08, changePercent: 15.32 },
+      META: { price: 556.71, change: 17.68, changePercent: 3.28 },
+      NVDA: { price: 200.75, change: 5.71, changePercent: 2.93 },
+      JPM: { price: 198.45, change: 2.15, changePercent: 1.09 },
+    };
+    return symbols.reduce((acc, symbol) => {
+      if (fallbackStocks[symbol]) acc[symbol] = fallbackStocks[symbol];
+      return acc;
+    }, {} as typeof fallbackStocks);
+  }
 }
 
 export async function getStockPrice(symbol: string) {
