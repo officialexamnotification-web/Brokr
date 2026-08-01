@@ -9599,7 +9599,7 @@ export function searchTools(query: string, filters?: { category?: number; minRat
   if (filters) {
     if (filters.category) results = results.filter((t) => t.categoryId === filters.category);
     if (filters.categories && filters.categories.length > 0) results = results.filter((t) => filters.categories!.includes(t.categoryId || 0));
-    if (filters.minRating) results = results.filter((t) => t.rating >= (filters.minRating || 0));
+    if (filters.minRating) results = results.filter((t) => t.rating !== null && t.rating >= (filters.minRating || 0));
     if (filters.platform) results = results.filter((t) => t.platforms.some((p) => p.toLowerCase().includes(filters.platform!.toLowerCase())));
     if (filters.regulation) results = results.filter((t) => t.regulation.some((r) => r.toLowerCase().includes(filters.regulation!.toLowerCase())));
   }
