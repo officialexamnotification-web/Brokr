@@ -64,7 +64,10 @@ export async function getCryptoPrices(coins: string[] = ["bitcoin", "ethereum", 
     setCache(cacheKey, result);
     return result;
   } catch (error) {
-    console.warn("Crypto API using fallback:", error instanceof Error ? error.message : error);
+    console.error("CRYPTO ERROR DETAILS:", error);
+    console.error("CRYPTO ERROR TYPE:", error instanceof Error ? error.constructor.name : typeof error);
+    console.error("CRYPTO ERROR MESSAGE:", error instanceof Error ? error.message : String(error));
+    console.error("CRYPTO ERROR STACK:", error instanceof Error ? error.stack : "No stack trace");
     // Fallback prices
     const fallbackPrices: { [key: string]: { inr: number; usd: number; change_24h: number } } = {
       bitcoin: { inr: 5200000, usd: 62500, change_24h: 2.5 },
@@ -127,7 +130,10 @@ export async function getForexRates(base = "USD", targets?: string[]) {
     setCache(cacheKey, data.rates);
     return data.rates as { [key: string]: number };
   } catch (error) {
-    console.warn("Forex API using fallback rates:", error instanceof Error ? error.message : error);
+    console.error("FOREX ERROR DETAILS:", error);
+    console.error("FOREX ERROR TYPE:", error instanceof Error ? error.constructor.name : typeof error);
+    console.error("FOREX ERROR MESSAGE:", error instanceof Error ? error.message : String(error));
+    console.error("FOREX ERROR STACK:", error instanceof Error ? error.stack : "No stack trace");
     // Fallback rates with timestamp
     const fallbackRates: { [key: string]: number } = {
       INR: 83.5,
