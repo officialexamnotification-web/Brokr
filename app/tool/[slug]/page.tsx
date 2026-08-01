@@ -1,7 +1,8 @@
+"use client";
+
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import type { Metadata } from "next";
 import {
   ExternalLink,
   ChevronLeft,
@@ -28,37 +29,8 @@ import { getToolBySlug, tools } from "@/lib/data";
 import Rating from "@/components/common/Rating";
 import Badge from "@/components/common/Badge";
 import ToolCard from "@/components/common/ToolCard";
-import BetterAlternativeBanner from "@/components/common/BetterAlternativeBanner";
-import LivePriceWidget from "@/components/common/LivePriceWidget";
 import QuickCompareSidebar from "@/components/common/QuickCompareSidebar";
-
-export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
-  const tool = getToolBySlug(params.slug);
-  
-  if (!tool) {
-    return {
-      title: "Tool Not Found | Brokr",
-      description: "The trading tool you are looking for could not be found.",
-    };
-  }
-
-  return {
-    title: `${tool.name} Review ${tool.rating > 4.5 ? "⭐" : ""} | ${tool.category} | Brokr`,
-    description: `${tool.longDescription} Read our comprehensive review, compare features, pricing, and find out if ${tool.name} is right for you.`,
-    keywords: `${tool.name}, ${tool.category}, ${tool.name} review, ${tool.name} pricing, ${tool.name} features, trading platform, broker comparison`,
-    openGraph: {
-      title: `${tool.name} - ${tool.category} Trading Platform`,
-      description: tool.longDescription,
-      type: "website",
-      locale: "en_US",
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: `${tool.name} Review | Brokr`,
-      description: tool.longDescription,
-    },
-  };
-}
+import RiskWarningBanner from "@/components/common/RiskWarningBanner";
 
 export default function ToolDetailPage({ params }: { params: { slug: string } }) {
   const { slug } = params;
@@ -81,13 +53,15 @@ export default function ToolDetailPage({ params }: { params: { slug: string } })
       price: tool.pricing,
       priceCurrency: "USD",
     },
-    aggregateRating: {
-      "@type": "AggregateRating",
-      ratingValue: tool.rating,
-      bestRating: 5,
-      worstRating: 1,
-      ratingCount: Math.floor(Math.random() * 500) + 100,
-    },
+    ...(tool.rating ? {
+      aggregateRating: {
+        "@type": "AggregateRating",
+        ratingValue: tool.rating,
+        bestRating: 5,
+        worstRating: 1,
+        ratingCount: Math.floor(Math.random() * 500) + 100,
+      },
+    } : {}),
     author: {
       "@type": "Organization",
       name: "Brokr",
@@ -96,7 +70,7 @@ export default function ToolDetailPage({ params }: { params: { slug: string } })
 
   const compareTools = tools.filter((t) => t.categoryId === tool.categoryId && t.id !== tool.id).slice(0, 4);
   const comparisonKeys = [
-    { label: "Rating", key: "rating" as const, format: (v: number) => `${v}/5` },
+    { label: "Rating", key: "rating" as const, format: (v: number | null) => v ? `${v}/5` : "N/A" },
     { label: "Pricing", key: "pricing" as const, format: (v: string) => v },
     { label: "Founded", key: "yearFounded" as const, format: (v: number) => String(v) },
   ];
@@ -111,8 +85,6 @@ export default function ToolDetailPage({ params }: { params: { slug: string } })
       <Link href="/" className="inline-flex items-center gap-1.5 text-sm text-slate-500 dark:text-slate-400 hover:text-primary-600 dark:hover:text-primary-400 mb-8 transition-colors">
         <ChevronLeft className="w-4 h-4" /> Back to Home
       </Link>
-
-      <BetterAlternativeBanner currentTool={tool} />
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2 space-y-8">
@@ -153,7 +125,7 @@ export default function ToolDetailPage({ params }: { params: { slug: string } })
             </div>
           </div>
 
-          <LivePriceWidget currentTool={tool} />
+          <RiskWarningBanner />
 
           <div className="glass-card rounded-3xl p-6 lg:p-8">
             <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-2">

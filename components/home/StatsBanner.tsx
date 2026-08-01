@@ -22,7 +22,7 @@ const stats: StatItem[] = [
   { label: "Verified Tools", value: 275, suffix: "+", icon: TrendingUp },
   { label: "Regulatory Bodies", value: 4, suffix: "+", icon: ShieldCheck },
   { label: "Categories", value: 8, suffix: "", icon: Zap },
-  { label: "Countries", value: 4, suffix: "", icon: Globe },
+  { label: "Countries", value: 13, suffix: "", icon: Globe },
 ];
 
 function Counter({ target, suffix }: { target: number; suffix: string }) {

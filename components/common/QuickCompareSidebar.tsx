@@ -7,12 +7,12 @@ import {
   X,
   Zap,
   TrendingDown,
-  Star,
   ArrowRight,
   DollarSign,
   Shield,
   ExternalLink,
   ChevronRight,
+  CheckCircle,
 } from "lucide-react";
 import { Tool, tools } from "@/lib/data";
 import Rating from "./Rating";
@@ -29,14 +29,59 @@ export default function QuickCompareSidebar({ currentTool }: QuickCompareSidebar
 
   const alternatives = tools
     .filter((t) => t.categoryId === currentTool.categoryId && t.slug !== currentTool.slug)
+    .sort((a, b) => {
+      // Industry-standard 5-axis framework for broker comparison
+      const calculateScore = (tool: Tool) => {
+        // Axis 1: Regulation & Trust (Tier-based scoring)
+        const tier1Regulators = ['FCA', 'SEC', 'FINRA', 'CFTC', 'NFA', 'BaFin', 'ASIC', 'FINMA', 'MAS', 'JFSA', 'CIRO', 'SEBI', 'AMF', 'Consob', 'CNMV', 'AFM'];
+        const tier2Regulators = ['FSCA', 'DFSA', 'FSC', 'FMA', 'CySEC', 'MFSA'];
+        let regulationScore = 0;
+        tool.regulation.forEach(reg => {
+          if (tier1Regulators.some(t => reg.toUpperCase().includes(t))) {
+            regulationScore += 30; // Tier-1 = high trust
+          } else if (tier2Regulators.some(t => reg.toUpperCase().includes(t))) {
+            regulationScore += 15; // Tier-2 = medium trust
+          } else {
+            regulationScore += 5; // Other/offshore = low trust
+          }
+        });
+
+        // Axis 2: Total Cost (min deposit as proxy for cost structure)
+        const price = parseInt(tool.minDeposit.replace(/[^0-9]/g, "")) || Infinity;
+        const costScore = price === Infinity ? 0 : 10000 / price;
+
+        // Axis 3: Platforms & Execution
+        const platformsScore = tool.platforms.length * 8;
+        const mobileScore = tool.mobileApp ? 25 : 0;
+        const demoScore = tool.demoAccount ? 10 : 0;
+
+        // Axis 4: Asset Coverage (features as proxy for available instruments)
+        const featuresScore = tool.features.length * 5;
+
+        // Axis 5: Support & Operations (deposit methods as proxy)
+        const supportScore = tool.depositMethods.length * 3;
+
+        return regulationScore + costScore + platformsScore + mobileScore + demoScore + featuresScore + supportScore;
+      };
+      return calculateScore(b) - calculateScore(a);
+    })
     .slice(0, 4);
 
-  const betterRated = alternatives.filter((a) => a.rating > currentTool.rating);
   const cheaperOnes = alternatives.filter((a) => {
     const curPrice = parseInt(currentTool.minDeposit.replace(/[^0-9]/g, "")) || 0;
     const altPrice = parseInt(a.minDeposit.replace(/[^0-9]/g, "")) || 0;
     return altPrice < curPrice && altPrice > 0;
   });
+
+  const tier1Regulators = ['FCA', 'SEC', 'FINRA', 'CFTC', 'NFA', 'BaFin', 'ASIC', 'FINMA', 'MAS', 'JFSA', 'CIRO'];
+  const betterRegulated = alternatives.filter((a) => {
+    const curTier1 = currentTool.regulation.filter(r => tier1Regulators.some(t => r.toUpperCase().includes(t))).length;
+    const altTier1 = a.regulation.filter(r => tier1Regulators.some(t => r.toUpperCase().includes(t))).length;
+    return altTier1 > curTier1;
+  });
+
+  const morePlatforms = alternatives.filter((a) => a.platforms.length > currentTool.platforms.length);
+  const moreFeatures = alternatives.filter((a) => a.features.length > currentTool.features.length);
 
   useEffect(() => {
     if (dismissed) return;
@@ -93,7 +138,9 @@ export default function QuickCompareSidebar({ currentTool }: QuickCompareSidebar
                     Better alternatives found!
                   </div>
                   <div className="text-xs text-slate-500 dark:text-slate-400">
-                    {betterRated.length} higher rated &bull; {cheaperOnes.length} cheaper options
+                    {betterRegulated.length > 0 && `${betterRegulated.length} better regulated, `}
+                    {cheaperOnes.length > 0 && `${cheaperOnes.length} lower minimum, `}
+                    {morePlatforms.length > 0 && `${morePlatforms.length} more platforms`}
                   </div>
                 </div>
                 <ChevronRight className="w-5 h-5 text-slate-400" />
@@ -125,7 +172,7 @@ export default function QuickCompareSidebar({ currentTool }: QuickCompareSidebar
                   </div>
                 </div>
                 <p className="text-xs text-slate-500 dark:text-slate-400">
-                  While viewing {currentTool.name}, here are some alternatives you should consider:
+                  Compared on regulation, costs, platforms, and asset coverage:
                 </p>
               </div>
 
@@ -144,16 +191,23 @@ export default function QuickCompareSidebar({ currentTool }: QuickCompareSidebar
                         <span className="text-sm font-semibold text-slate-900 dark:text-white group-hover:text-primary-600 transition-colors">
                           {alt.name}
                         </span>
-                        {alt.rating > currentTool.rating && (
-                          <Badge variant="success" size="sm">Higher Rated</Badge>
+                        {betterRegulated.includes(alt) && (
+                          <Badge variant="success" size="sm">Tier-1 Regulated</Badge>
                         )}
                         {cheaperOnes.includes(alt) && (
-                          <Badge variant="warning" size="sm">Cheaper</Badge>
+                          <Badge variant="warning" size="sm">Lower Min Deposit</Badge>
+                        )}
+                        {morePlatforms.includes(alt) && (
+                          <Badge variant="info" size="sm">More Platforms</Badge>
                         )}
                       </div>
                       <div className="flex items-center gap-3 mt-0.5">
-                        <Rating value={alt.rating} size="sm" showValue={false} />
                         <span className="text-xs text-slate-400">{alt.pricing}</span>
+                        {alt.mobileApp && (
+                          <span className="text-xs text-slate-400 flex items-center gap-1">
+                            <CheckCircle className="w-3 h-3" /> Mobile App
+                          </span>
+                        )}
                       </div>
                     </div>
                     <ChevronRight className="w-4 h-4 text-slate-300 group-hover:text-primary-500 group-hover:translate-x-0.5 transition-all" />

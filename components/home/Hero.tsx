@@ -8,13 +8,6 @@ import { Search, ArrowRight } from "lucide-react";
 export default function Hero() {
   const [searchQuery, setSearchQuery] = useState("");
 
-  const stats = [
-    { label: "Verified Tools", value: "275+", desc: "Regulation checked" },
-    { label: "Categories", value: "8", desc: "Covering all markets" },
-    { label: "Countries", value: "4", desc: "Region-specific pages" },
-    { label: "Expert Articles", value: "50+", desc: "In-depth analysis" },
-  ];
-
   return (
     <section className="relative min-h-[90vh] flex items-center overflow-hidden bg-white dark:bg-slate-950">
       <div className="absolute inset-0 grid-pattern noise-bg pointer-events-none" />
@@ -100,30 +93,6 @@ export default function Hero() {
                 </div>
               </div>
             </div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.25 }}
-            className="grid grid-cols-2 md:grid-cols-4 gap-3"
-          >
-            {stats.map((stat, i) => (
-              <div
-                key={stat.label}
-                className="glass-card rounded-2xl p-4 text-center hover-lift cursor-default"
-              >
-                <div className="text-2xl lg:text-3xl font-black text-slate-900 dark:text-white stat-counter mb-0.5">
-                  {stat.value}
-                </div>
-                <div className="text-sm font-semibold text-slate-700 dark:text-slate-300">
-                  {stat.label}
-                </div>
-                <div className="text-xs text-slate-400 dark:text-slate-500 mt-0.5">
-                  {stat.desc}
-                </div>
-              </div>
-            ))}
           </motion.div>
         </div>
       </div>

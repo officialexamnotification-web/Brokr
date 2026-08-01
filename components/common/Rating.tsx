@@ -2,7 +2,7 @@ import React from "react";
 import { Star, StarHalf } from "lucide-react";
 
 interface RatingProps {
-  value: number;
+  value: number | null;
   reviews?: number;
   size?: "sm" | "md" | "lg";
   showValue?: boolean;
@@ -14,6 +14,11 @@ export default function Rating({
   size = "sm",
   showValue = true,
 }: RatingProps) {
+  // Handle null rating - show nothing
+  if (value === null) {
+    return null;
+  }
+
   const stars = [];
   const fullStars = Math.floor(value);
   const hasHalf = value % 1 >= 0.5;

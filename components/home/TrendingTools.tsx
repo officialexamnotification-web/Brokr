@@ -9,7 +9,7 @@ import ToolCard from "../common/ToolCard";
 
 export default function TrendingTools() {
   const trendingTools = getTrendingTools().slice(0, 4);
-  const featuredTools = getFeaturedTools().slice(0, 6);
+  const featuredTools = getFeaturedTools().slice(0, 8);
 
   return (
     <section className="py-24 lg:py-32 relative overflow-hidden">
@@ -40,7 +40,9 @@ export default function TrendingTools() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-20">
           {trendingTools.map((tool, i) => (
-            <ToolCard key={tool.id} tool={tool} index={i} />
+            <div key={tool.id} className="h-full">
+              <ToolCard tool={tool} index={i} />
+            </div>
           ))}
         </div>
 
@@ -66,9 +68,11 @@ export default function TrendingTools() {
           </Link>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {featuredTools.map((tool, i) => (
-            <ToolCard key={tool.id} tool={tool} variant="featured" index={i} />
+            <div key={tool.id} className="h-full">
+              <ToolCard tool={tool} variant="featured" index={i} />
+            </div>
           ))}
         </div>
       </div>

@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState, useMemo, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
@@ -6,26 +8,8 @@ import { Search as SearchIcon, X, Filter, SlidersHorizontal, Star, Globe, Smartp
 import { tools, categories, searchTools, getAvailableCountries } from "@/lib/data";
 import ToolCard from "@/components/common/ToolCard";
 import Badge from "@/components/common/Badge";
-import type { Metadata } from "next";
 
-export const metadata: Metadata = {
-  title: "Search & Compare Trading Tools | Brokr",
-  description: "Search and compare 275+ trading tools, brokers, and platforms. Filter by category, rating, country, regulation, and more to find the perfect trading platform.",
-  keywords: "trading tools search, broker comparison, find trading platform, compare brokers, trading platform finder",
-  openGraph: {
-    title: "Search Trading Tools | Brokr",
-    description: "Search and compare 275+ trading tools, brokers, and platforms to find the perfect match for your trading needs.",
-    type: "website",
-    locale: "en_US",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Search Trading Tools | Brokr",
-    description: "Find and compare the best trading tools and platforms with our advanced search filters.",
-  },
-};
-
-type SortOption = "rating" | "trending" | "name";
+type SortOption = "latest" | "trending" | "name";
 type ExperienceLevel = "all" | "beginner" | "intermediate" | "advanced";
 
 const platforms = ["Web", "iOS", "Android", "Desktop", "API"];
@@ -41,21 +25,23 @@ const experienceMap: Record<ExperienceLevel, string[]> = {
 function SearchContent() {
   const searchParams = useSearchParams();
   const initialQuery = searchParams.get("q") || "";
+  const initialCategory = searchParams.get("category") ? Number(searchParams.get("category")) : null;
+  const initialCountry = searchParams.get("country") || "";
+  const initialSort = searchParams.get("sort") as SortOption || "latest";
 
   const [query, setQuery] = useState(initialQuery);
-  const [sortBy, setSortBy] = useState<SortOption>("rating");
-  const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
-  const [minRating, setMinRating] = useState<number>(0);
+  const [sortBy, setSortBy] = useState<SortOption>(initialSort);
+  const [selectedCategories, setSelectedCategories] = useState<number[]>([]);
   const [selectedPlatform, setSelectedPlatform] = useState<string>("");
   const [selectedRegulation, setSelectedRegulation] = useState<string>("");
-  const [selectedCountry, setSelectedCountry] = useState<string>("");
+  const [selectedCountry, setSelectedCountry] = useState<string>(initialCountry);
   const [experience, setExperience] = useState<ExperienceLevel>("all");
   const [showFilters, setShowFilters] = useState(false);
+  const availableCountries = getAvailableCountries();
 
   const filteredTools = useMemo(() => {
     let results = searchTools(query, {
-      category: selectedCategory || undefined,
-      minRating: minRating || undefined,
+      categories: selectedCategories.length > 0 ? selectedCategories : undefined,
       platform: selectedPlatform || undefined,
       regulation: selectedRegulation || undefined,
     });
@@ -85,25 +71,24 @@ function SearchContent() {
 
     results.sort((a, b) => {
       switch (sortBy) {
-        case "rating": return b.rating - a.rating;
+        case "latest": return b.id - a.id;
         case "trending": return Number(b.trending) - Number(a.trending);
         case "name": return a.name.localeCompare(b.name);
         default: return 0;
       }
     });
     return results;
-  }, [query, sortBy, selectedCategory, minRating, selectedPlatform, selectedRegulation, experience, selectedCountry]);
+  }, [query, sortBy, selectedCategories, selectedPlatform, selectedRegulation, experience, selectedCountry]);
 
-  const hasFilters = query || selectedCategory || minRating > 0 || selectedPlatform || selectedRegulation || experience !== "all" || selectedCountry;
+  const hasFilters = query || selectedCategories.length > 0 || selectedPlatform || selectedRegulation || experience !== "all" || selectedCountry;
   const clearFilters = () => {
     setQuery("");
-    setSelectedCategory(null);
-    setMinRating(0);
+    setSelectedCategories([]);
     setSelectedPlatform("");
     setSelectedRegulation("");
     setSelectedCountry("");
     setExperience("all");
-    setSortBy("rating");
+    setSortBy("latest");
   };
 
   return (
@@ -131,15 +116,25 @@ function SearchContent() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               <div>
                 <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-2">Category</label>
-                <select value={selectedCategory || ""} onChange={(e) => setSelectedCategory(e.target.value ? Number(e.target.value) : null)} className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm text-slate-700 dark:text-slate-300 focus:outline-none focus:ring-2 focus:ring-primary-500/30">
-                  <option value="">All Categories</option>
-                  {categories.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
-                </select>
-              </div>
-              <div>
-                <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-2">Min Rating: {minRating}+</label>
-                <input type="range" min="0" max="5" step="0.5" value={minRating} onChange={(e) => setMinRating(Number(e.target.value))} className="w-full accent-primary-500" />
-                <div className="flex justify-between text-xs text-slate-400 mt-1"><span>0</span><span>5</span></div>
+                <div className="space-y-2 max-h-40 overflow-y-auto">
+                  {categories.map((c) => (
+                    <label key={c.id} className="flex items-center gap-2 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={selectedCategories.includes(c.id)}
+                        onChange={(e) => {
+                          if (e.target.checked) {
+                            setSelectedCategories([...selectedCategories, c.id]);
+                          } else {
+                            setSelectedCategories(selectedCategories.filter(id => id !== c.id));
+                          }
+                        }}
+                        className="w-4 h-4 rounded border-slate-300 text-primary-600 focus:ring-primary-500"
+                      />
+                      <span className="text-sm text-slate-700 dark:text-slate-300">{c.name}</span>
+                    </label>
+                  ))}
+                </div>
               </div>
               <div>
                 <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-2">Platform</label>
@@ -168,28 +163,9 @@ function SearchContent() {
                 <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-2">Country/Region</label>
                 <select value={selectedCountry} onChange={(e) => setSelectedCountry(e.target.value)} className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm text-slate-700 dark:text-slate-300 focus:outline-none focus:ring-2 focus:ring-primary-500/30">
                   <option value="">All Countries</option>
-                  <option value="Global">Global (Worldwide)</option>
-                  <option value="India">India</option>
-                  <option value="USA">USA</option>
-                  <option value="UK">UK</option>
-                  <option value="Europe">Europe</option>
-                  <option value="Australia">Australia</option>
-                  <option value="Japan">Japan</option>
-                  <option value="Brazil">Brazil</option>
-                  <option value="Mexico">Mexico</option>
-                  <option value="South Korea">South Korea</option>
-                  <option value="Singapore">Singapore</option>
-                  <option value="Canada">Canada</option>
-                  <option value="Germany">Germany</option>
-                  <option value="France">France</option>
-                  <option value="Italy">Italy</option>
-                  <option value="Spain">Spain</option>
-                  <option value="Sweden">Sweden</option>
-                  <option value="Norway">Norway</option>
-                  <option value="Denmark">Denmark</option>
-                  <option value="Finland">Finland</option>
-                  <option value="South Africa">South Africa</option>
-                  <option value="Malaysia">Malaysia</option>
+                  {availableCountries.map((country) => (
+                    <option key={country} value={country}>{country}</option>
+                  ))}
                 </select>
               </div>
               <div className="flex items-end">
@@ -208,12 +184,73 @@ function SearchContent() {
               </button>
             )}
           </div>
+          
+          {/* Active Filter Chips */}
+          {hasFilters && (
+            <div className="flex flex-wrap gap-2">
+              {selectedCategories.map(catId => {
+                const cat = categories.find(c => c.id === catId);
+                return cat ? (
+                  <span key={catId} className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-primary-50 dark:bg-primary-950/30 text-primary-700 dark:text-primary-300 text-xs font-medium">
+                    {cat.name}
+                    <button onClick={() => setSelectedCategories(selectedCategories.filter(id => id !== catId))} className="hover:text-primary-900 dark:hover:text-primary-100">
+                      <X className="w-3 h-3" />
+                    </button>
+                  </span>
+                ) : null;
+              })}
+              {selectedCountry && (
+                <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-primary-50 dark:bg-primary-950/30 text-primary-700 dark:text-primary-300 text-xs font-medium">
+                  {selectedCountry}
+                  <button onClick={() => setSelectedCountry("")} className="hover:text-primary-900 dark:hover:text-primary-100">
+                    <X className="w-3 h-3" />
+                  </button>
+                </span>
+              )}
+              {selectedPlatform && (
+                <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-primary-50 dark:bg-primary-950/30 text-primary-700 dark:text-primary-300 text-xs font-medium">
+                  {selectedPlatform}
+                  <button onClick={() => setSelectedPlatform("")} className="hover:text-primary-900 dark:hover:text-primary-100">
+                    <X className="w-3 h-3" />
+                  </button>
+                </span>
+              )}
+              {selectedRegulation && (
+                <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-primary-50 dark:bg-primary-950/30 text-primary-700 dark:text-primary-300 text-xs font-medium">
+                  {selectedRegulation}
+                  <button onClick={() => setSelectedRegulation("")} className="hover:text-primary-900 dark:hover:text-primary-100">
+                    <X className="w-3 h-3" />
+                  </button>
+                </span>
+              )}
+              {experience !== "all" && (
+                <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-primary-50 dark:bg-primary-950/30 text-primary-700 dark:text-primary-300 text-xs font-medium">
+                  {experience}
+                  <button onClick={() => setExperience("all")} className="hover:text-primary-900 dark:hover:text-primary-100">
+                    <X className="w-3 h-3" />
+                  </button>
+                </span>
+              )}
+            </div>
+          )}
+        </div>
+
+        <div className="flex items-center gap-3 flex-wrap">
           <div className="flex items-center gap-2">
             <span className="text-sm text-slate-400">Sort:</span>
             <select value={sortBy} onChange={(e) => setSortBy(e.target.value as SortOption)} className="text-sm py-2 pl-3 pr-8 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 focus:outline-none focus:ring-2 focus:ring-primary-500/30 appearance-none cursor-pointer">
-              <option value="rating">Highest Rated</option>
+              <option value="latest">Latest Added</option>
               <option value="trending">Trending</option>
               <option value="name">Alphabetical</option>
+            </select>
+          </div>
+          <div className="flex items-center gap-2">
+            <Globe className="w-4 h-4 text-slate-400" />
+            <select value={selectedCountry} onChange={(e) => setSelectedCountry(e.target.value)} className="text-sm py-2 pl-3 pr-8 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 focus:outline-none focus:ring-2 focus:ring-primary-500/30 appearance-none cursor-pointer">
+              <option value="">All Countries</option>
+              {availableCountries.map((country) => (
+                <option key={country} value={country}>{country}</option>
+              ))}
             </select>
           </div>
         </div>

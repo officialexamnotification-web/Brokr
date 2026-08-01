@@ -1,8 +1,8 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { ChevronLeft, TrendingUp } from "lucide-react";
+import { ChevronLeft, TrendingUp, ArrowRight, Sparkles, Filter, Globe } from "lucide-react";
 import type { Metadata } from "next";
-import { getCategoryById, getToolsByCategory, categories } from "@/lib/data";
+import { getCategoryById, getToolsByCategory, categories, getAvailableCountries } from "@/lib/data";
 import ToolCard from "@/components/common/ToolCard";
 
 export function generateStaticParams() {
@@ -51,6 +51,7 @@ export default function CategoryPage({
   }
 
   const categoryTools = getToolsByCategory(categoryId);
+  const availableCountries = getAvailableCountries(); // Already limited to 4 countries
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
@@ -76,9 +77,52 @@ export default function CategoryPage({
             </p>
           </div>
         </div>
-        <p className="text-slate-600 dark:text-slate-400 max-w-2xl">
+        <p className="text-slate-600 dark:text-slate-400 max-w-2xl mb-6">
           {category.description}
         </p>
+
+        {/* Filter Options */}
+        <div className="space-y-4">
+          {/* Quick Filters */}
+          <div className="flex flex-wrap gap-3">
+            <Link
+              href={`/search?category=${categoryId}&sort=trending`}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-orange-50 dark:bg-orange-950/40 text-orange-700 dark:text-orange-300 text-sm font-semibold hover:bg-orange-100 dark:hover:bg-orange-950/60 transition-colors"
+            >
+              <TrendingUp className="w-4 h-4" /> Trending
+            </Link>
+            <Link
+              href={`/search?category=${categoryId}&sort=name`}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-primary-50 dark:bg-primary-950/40 text-primary-700 dark:text-primary-300 text-sm font-semibold hover:bg-primary-100 dark:hover:bg-primary-950/60 transition-colors"
+            >
+              <Sparkles className="w-4 h-4" /> A-Z
+            </Link>
+            <Link
+              href={`/search?category=${categoryId}`}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-sm font-semibold hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
+            >
+              <Filter className="w-4 h-4" /> Advanced Filters
+            </Link>
+          </div>
+
+          {/* Country Filters */}
+          {availableCountries.length > 0 && (
+            <div className="flex flex-wrap gap-2">
+              <span className="text-xs text-slate-500 dark:text-slate-400 font-medium self-center mr-2">
+                <Globe className="w-3 h-3 inline mr-1" /> Filter by country:
+              </span>
+              {availableCountries.map((country) => (
+                <Link
+                  key={country}
+                  href={`/search?category=${categoryId}&country=${encodeURIComponent(country.toLowerCase())}`}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-50 dark:bg-slate-800/50 text-slate-600 dark:text-slate-300 text-xs font-medium hover:bg-primary-50 dark:hover:bg-primary-950/30 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
+                >
+                  {country}
+                </Link>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
 
       {categoryTools.length > 0 ? (

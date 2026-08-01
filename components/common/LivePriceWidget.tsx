@@ -15,7 +15,7 @@ interface LivePriceWidgetProps {
 export default function LivePriceWidget({ currentTool }: LivePriceWidgetProps) {
   const sameCategory = tools
     .filter((t) => t.categoryId === currentTool.categoryId && t.slug !== currentTool.slug)
-    .sort((a, b) => b.rating - a.rating)
+    .sort((a, b) => a.name.localeCompare(b.name))
     .slice(0, 5);
 
   if (sameCategory.length === 0) return null;
@@ -41,7 +41,6 @@ export default function LivePriceWidget({ currentTool }: LivePriceWidgetProps) {
         {sameCategory.map((tool, idx) => {
           const altDeposit = parseInt(tool.minDeposit.replace(/[^0-9]/g, "")) || 0;
           const isCheaper = altDeposit < curMinDeposit;
-          const isHigherRated = tool.rating > currentTool.rating;
 
           return (
             <motion.div
@@ -51,10 +50,10 @@ export default function LivePriceWidget({ currentTool }: LivePriceWidgetProps) {
               transition={{ delay: idx * 0.1 }}
               className="relative rounded-xl border border-slate-200 dark:border-slate-700 p-3 bg-white/50 dark:bg-slate-800/50 hover:border-primary-300 dark:hover:border-primary-700 transition-colors group"
             >
-              {(isCheaper || isHigherRated) && (
+              {isCheaper && (
                 <div className="absolute -top-2 -right-2 z-10">
-                  <Badge variant={isHigherRated ? "warning" : "success"} size="sm">
-                    {isHigherRated ? "Top Rated" : "Best Value"}
+                  <Badge variant="success" size="sm">
+                    Best Value
                   </Badge>
                 </div>
               )}
@@ -70,11 +69,6 @@ export default function LivePriceWidget({ currentTool }: LivePriceWidgetProps) {
                 </div>
 
                 <div className="space-y-1.5">
-                  <div className="flex items-center justify-between">
-                    <Rating value={tool.rating} size="sm" showValue={false} />
-                    <span className="text-xs font-bold text-green-600 dark:text-green-400">{tool.rating}</span>
-                  </div>
-
                   <div className="flex items-center justify-between text-xs">
                     <span className="text-slate-400">Min Deposit</span>
                     <span className="font-semibold text-slate-700 dark:text-slate-300">
@@ -85,6 +79,13 @@ export default function LivePriceWidget({ currentTool }: LivePriceWidgetProps) {
                   <div className="flex items-center justify-between text-xs">
                     <span className="text-slate-400">Pricing</span>
                     <span className="font-semibold text-slate-700 dark:text-slate-300 truncate ml-2">
+                      {(isCheaper) && (
+                        <div className="absolute top-2 right-2 flex gap-1.5">
+                          <span className="text-xs bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-400 px-2 py-0.5 rounded-full font-medium">
+                            Cheaper
+                          </span>
+                        </div>
+                      )}
                       {tool.pricing}
                     </span>
                   </div>

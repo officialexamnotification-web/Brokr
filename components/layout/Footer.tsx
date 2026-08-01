@@ -24,11 +24,12 @@ const footerLinks = {
     { label: "European Union", href: "/region/eu" },
   ],
   Company: [
-    { label: "About Us", href: "#" },
-    { label: "Contact", href: "#" },
-    { label: "Privacy Policy", href: "#" },
-    { label: "Terms of Service", href: "#" },
-    { label: "Affiliate Disclosure", href: "#" },
+    { label: "About Us", href: "/about" },
+    { label: "Contact", href: "/contact" },
+    { label: "Privacy Policy", href: "/privacy" },
+    { label: "Terms of Service", href: "/terms" },
+    { label: "Affiliate Disclosure", href: "/affiliate-disclosure" },
+    { label: "Methodology", href: "/methodology" },
   ],
 };
 
@@ -89,6 +90,9 @@ export default function Footer() {
         <div className="pt-8 border-t border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-sm text-slate-400 dark:text-slate-500">
             &copy; {new Date().getFullYear()} Brokr. All rights reserved.
+          </p>
+          <p className="text-xs text-slate-400 dark:text-slate-500 max-w-md">
+            Disclaimer: This website is for informational purposes only and does not constitute financial advice. Trading involves significant risk of loss. Please consult a licensed financial advisor before making investment decisions.
           </p>
         </div>
       </div>
