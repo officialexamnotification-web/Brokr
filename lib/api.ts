@@ -110,6 +110,7 @@ export async function getForexRates(base = "USD", targets?: string[]) {
       url += `&to=${targets.join(",")}`;
     }
 
+    console.log("Fetching Forex API:", url);
     const res = await fetch(url, {
       next: { revalidate: 3600 }, // ISR: revalidate every 1 hour
       headers: {
@@ -119,6 +120,8 @@ export async function getForexRates(base = "USD", targets?: string[]) {
     if (!res.ok) throw new Error(`Frankfurter API failed: ${res.status}`);
     const data = await res.json();
 
+    console.log("Forex API response:", data);
+    
     if (!data.rates) throw new Error("Invalid API response");
     
     setCache(cacheKey, data.rates);
