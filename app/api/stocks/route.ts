@@ -23,9 +23,12 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const symbols = searchParams.get('symbols')?.split(',') || ["AAPL", "GOOGL", "MSFT", "TSLA", "AMZN"];
     
+    console.log("Stock API request for symbols:", symbols);
+    
     const cacheKey = `stock:${symbols.join(",")}`;
     const cached = getCached<{ [key: string]: { price: number; change: number; changePercent: number } }>(cacheKey, CACHE_DURATION);
     if (cached) {
+      console.log("Returning cached stock data");
       return NextResponse.json(cached);
     }
 
@@ -36,6 +39,7 @@ export async function GET(request: Request) {
     console.log("API Key length:", apiKey.length);
     
     if (!apiKey) {
+      console.log("API key not provided, using fallback");
       throw new Error("StockData.org API key not provided");
     }
     
@@ -47,10 +51,14 @@ export async function GET(request: Request) {
     for (let i = 0; i < symbols.length; i += batchSize) {
       const batch = symbols.slice(i, i + batchSize);
       
+      console.log(`Fetching batch ${i/batchSize + 1}:`, batch);
+      
       const res = await fetch(`${STOCKDATA_BASE}/data/quote?symbols=${batch.join(",")}&api_token=${apiKey}`, {
         next: { revalidate: 900 }, // 15 minutes
       });
       const data = await res.json();
+      
+      console.log(`Batch ${i/batchSize + 1} response:`, data);
       
       if (data && Array.isArray(data.data)) {
         data.data.forEach((quote: any) => {
@@ -73,6 +81,8 @@ export async function GET(request: Request) {
       }
     }
 
+    console.log("Final results:", results);
+    
     if (Object.keys(results).length > 0) {
       setCache(cacheKey, results);
       return NextResponse.json(results);
