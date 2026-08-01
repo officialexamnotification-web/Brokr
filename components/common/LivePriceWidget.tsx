@@ -7,7 +7,7 @@ import { TrendingDown, ShoppingCart, Award, Clock, Check } from "lucide-react";
 import { Tool, tools } from "@/lib/data";
 import Rating from "./Rating";
 import Badge from "./Badge";
-import { getCryptoPrices, getForexRates } from "@/lib/api";
+import { getCryptoPrices } from "@/lib/api";
 
 interface LivePriceWidgetProps {
   currentTool: Tool;
@@ -22,13 +22,13 @@ export default function LivePriceWidget({ currentTool }: LivePriceWidgetProps) {
   useEffect(() => {
     async function fetchData() {
       try {
-        const [crypto, forex, stocksResponse] = await Promise.all([
+        const [crypto, forexResponse, stocksResponse] = await Promise.all([
           getCryptoPrices(["bitcoin", "ethereum", "binancecoin", "ripple", "solana"]),
-          getForexRates("USD", ["INR", "EUR", "GBP"]),
+          fetch('/api/forex?base=USD&targets=INR,EUR,GBP').then(res => res.json()),
           fetch('/api/stocks?symbols=AAPL,GOOGL,MSFT,TSLA,AMZN').then(res => res.json()),
         ]);
         setCryptoPrices(crypto);
-        setForexRates(forex);
+        setForexRates(forexResponse);
         setStockPrices(stocksResponse);
       } catch (error) {
         console.error("Failed to fetch live prices:", error);

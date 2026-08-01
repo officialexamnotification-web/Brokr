@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { getCryptoPrices, getForexRates } from "@/lib/api";
+import { getCryptoPrices } from "@/lib/api";
 import { TrendingUp, TrendingDown, Activity, Bitcoin, DollarSign, BarChart3 } from "lucide-react";
 
 export default function LivePrices() {
@@ -16,7 +16,7 @@ export default function LivePrices() {
       try {
         const [cryptoData, forexData, stockData] = await Promise.all([
           getCryptoPrices(["bitcoin", "ethereum", "binancecoin", "solana"]),
-          getForexRates("USD", ["INR", "EUR", "GBP", "JPY"]),
+          fetch('/api/forex?base=USD&targets=INR,EUR,GBP,JPY').then(res => res.json()),
           fetch('/api/stocks?symbols=AAPL,GOOGL,MSFT,TSLA,AMZN').then(res => res.json()),
         ]);
 

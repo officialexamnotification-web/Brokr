@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server';
 
+export const dynamic = "force-dynamic";
+
 const STOCKDATA_BASE = "https://api.stockdata.org/v1";
 
 // Cache implementation (in-memory for server-side)
@@ -19,10 +21,10 @@ function setCache<T>(key: string, data: T) {
 }
 
 export async function GET(request: Request) {
+  const { searchParams } = new URL(request.url);
+  const symbols = searchParams.get('symbols')?.split(',') || ["AAPL", "GOOGL", "MSFT", "TSLA", "AMZN"];
+  
   try {
-    const { searchParams } = new URL(request.url);
-    const symbols = searchParams.get('symbols')?.split(',') || ["AAPL", "GOOGL", "MSFT", "TSLA", "AMZN"];
-    
     console.log("Stock API request for symbols:", symbols);
     
     const cacheKey = `stock:${symbols.join(",")}`;
@@ -103,10 +105,7 @@ export async function GET(request: Request) {
       JPM: { price: 198.45, change: 2.15, changePercent: 1.09 },
     };
     
-    const { searchParams } = new URL(request.url);
-    const symbols = searchParams.get('symbols')?.split(',') || ["AAPL", "GOOGL", "MSFT", "TSLA", "AMZN"];
-    
-    const results = symbols.reduce((acc, symbol) => {
+    const results = symbols.reduce((acc: any, symbol: string) => {
       if (fallbackStocks[symbol]) acc[symbol] = fallbackStocks[symbol];
       return acc;
     }, {} as typeof fallbackStocks);
