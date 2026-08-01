@@ -6,7 +6,7 @@ import { TrendingUp, TrendingDown, Activity, Bitcoin, DollarSign, BarChart3 } fr
 
 export default function LivePrices() {
   const [crypto, setCrypto] = useState<{ id: string; symbol: string; inr: number; change: number }[]>([]);
-  const [forex, setForex] = useState<{ pair: string; rate: number }[]>([]);
+  const [forex, setForex] = useState<{ pair: string; rate: number; change: number }[]>([]);
   const [stocks, setStocks] = useState<{ symbol: string; price: number; change: number }[]>([]);
   const [loading, setLoading] = useState(true);
   const [usingFallback, setUsingFallback] = useState(false);
@@ -31,10 +31,10 @@ export default function LivePrices() {
 
         if (forexData) {
           setForex([
-            { pair: "USD/INR", rate: Number(forexData.INR) || 0 },
-            { pair: "EUR/INR", rate: forexData.EUR ? Number((forexData.EUR * forexData.INR).toFixed(2)) : 0 },
-            { pair: "GBP/INR", rate: forexData.GBP ? Number((forexData.GBP * forexData.INR).toFixed(2)) : 0 },
-            { pair: "USD/JPY", rate: Number(forexData.JPY) || 0 },
+            { pair: "USD/INR", rate: Number(forexData.INR) || 0, change: 0 },
+            { pair: "EUR/INR", rate: forexData.EUR ? Number((forexData.EUR * forexData.INR).toFixed(2)) : 0, change: 0 },
+            { pair: "GBP/INR", rate: forexData.GBP ? Number((forexData.GBP * forexData.INR).toFixed(2)) : 0, change: 0 },
+            { pair: "USD/JPY", rate: Number(forexData.JPY) || 0, change: 0 },
           ]);
         }
 
@@ -123,7 +123,15 @@ export default function LivePrices() {
                 {forex.map((fx) => (
                   <div key={fx.pair} className="flex items-center justify-between p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50">
                     <span className="text-sm font-bold text-slate-700 dark:text-slate-200">{fx.pair}</span>
-                    <span className="text-sm font-semibold text-slate-900 dark:text-white">{Number(fx.rate).toFixed(4)}</span>
+                    <div className="text-right">
+                      <div className="text-sm font-semibold text-slate-900 dark:text-white">{Number(fx.rate).toFixed(4)}</div>
+                      <div
+                        className={`text-xs flex items-center gap-0.5 ${fx.change >= 0 ? "text-green-600 dark:text-green-400" : "text-red-500 dark:text-red-400"}`}
+                      >
+                        {fx.change >= 0 ? <TrendingUp className="w-3 h-3" /> : <TrendingDown className="w-3 h-3" />}
+                        {Math.abs(fx.change).toFixed(2)}%
+                      </div>
+                    </div>
                   </div>
                 ))}
               </div>
