@@ -1,18 +1,41 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { TrendingDown, ShoppingCart, Award, Clock, Check } from "lucide-react";
 import { Tool, tools } from "@/lib/data";
 import Rating from "./Rating";
 import Badge from "./Badge";
+import { getCryptoPrices, getForexRates } from "@/lib/api";
 
 interface LivePriceWidgetProps {
   currentTool: Tool;
 }
 
 export default function LivePriceWidget({ currentTool }: LivePriceWidgetProps) {
+  const [cryptoPrices, setCryptoPrices] = useState<{ [key: string]: { inr: number; usd: number; change_24h: number } } | null>(null);
+  const [forexRates, setForexRates] = useState<{ [key: string]: number } | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const [crypto, forex] = await Promise.all([
+          getCryptoPrices(["bitcoin", "ethereum", "binancecoin", "ripple", "solana"]),
+          getForexRates("USD", ["INR", "EUR", "GBP"]),
+        ]);
+        setCryptoPrices(crypto);
+        setForexRates(forex);
+      } catch (error) {
+        console.error("Failed to fetch live prices:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchData();
+  }, []);
+
   const sameCategory = tools
     .filter((t) => t.categoryId === currentTool.categoryId && t.slug !== currentTool.slug)
     .sort((a, b) => a.name.localeCompare(b.name))
@@ -38,72 +61,42 @@ export default function LivePriceWidget({ currentTool }: LivePriceWidgetProps) {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3">
-        {sameCategory.map((tool, idx) => {
-          const altDeposit = parseInt(tool.minDeposit.replace(/[^0-9]/g, "")) || 0;
-          const isCheaper = altDeposit < curMinDeposit;
-
-          return (
-            <motion.div
-              key={tool.slug}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: idx * 0.1 }}
-              className="relative rounded-xl border border-slate-200 dark:border-slate-700 p-3 bg-white/50 dark:bg-slate-800/50 hover:border-primary-300 dark:hover:border-primary-700 transition-colors group"
-            >
-              {isCheaper && (
-                <div className="absolute -top-2 -right-2 z-10">
-                  <Badge variant="success" size="sm">
-                    Best Value
-                  </Badge>
+        {loading ? (
+          <div className="col-span-full text-center py-4 text-sm text-slate-400">Loading live prices...</div>
+        ) : (
+          <>
+            {cryptoPrices && (
+              <div className="col-span-full mb-2">
+                <div className="text-xs font-semibold text-slate-500 dark:text-slate-400 mb-2">Crypto Prices (Live)</div>
+                <div className="grid grid-cols-2 md:grid-cols-5 gap-2">
+                  {Object.entries(cryptoPrices).map(([coin, data]) => (
+                    <div key={coin} className="bg-slate-50 dark:bg-slate-800/50 rounded-lg p-2">
+                      <div className="text-xs font-medium text-slate-700 dark:text-slate-300 capitalize">{coin}</div>
+                      <div className="text-xs text-slate-500">${data.usd.toLocaleString()}</div>
+                      <div className="text-xs text-slate-500">₹{data.inr.toLocaleString()}</div>
+                      <div className={`text-xs ${data.change_24h >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                        {data.change_24h >= 0 ? '+' : ''}{data.change_24h.toFixed(2)}%
+                      </div>
+                    </div>
+                  ))}
                 </div>
-              )}
-
-              <Link href={`/tool/${tool.slug}`} className="block">
-                <div className="flex items-center gap-2 mb-2">
-                  <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-primary-500/10 to-purple-500/10 flex items-center justify-center">
-                    <span className="text-xs font-bold text-primary-600 dark:text-primary-400">{tool.logo}</span>
-                  </div>
-                  <span className="text-xs font-semibold text-slate-900 dark:text-white group-hover:text-primary-600 transition-colors truncate">
-                    {tool.name}
-                  </span>
+              </div>
+            )}
+            {forexRates && (
+              <div className="col-span-full mb-2">
+                <div className="text-xs font-semibold text-slate-500 dark:text-slate-400 mb-2">Forex Rates (Live)</div>
+                <div className="grid grid-cols-3 gap-2">
+                  {Object.entries(forexRates).map(([currency, rate]) => (
+                    <div key={currency} className="bg-slate-50 dark:bg-slate-800/50 rounded-lg p-2">
+                      <div className="text-xs font-medium text-slate-700 dark:text-slate-300">USD/{currency}</div>
+                      <div className="text-xs text-slate-500">{rate.toFixed(2)}</div>
+                    </div>
+                  ))}
                 </div>
-
-                <div className="space-y-1.5">
-                  <div className="flex items-center justify-between text-xs">
-                    <span className="text-slate-400">Min Deposit</span>
-                    <span className="font-semibold text-slate-700 dark:text-slate-300">
-                      {tool.minDeposit}
-                    </span>
-                  </div>
-
-                  <div className="flex items-center justify-between text-xs">
-                    <span className="text-slate-400">Pricing</span>
-                    <span className="font-semibold text-slate-700 dark:text-slate-300 truncate ml-2">
-                      {(isCheaper) && (
-                        <div className="absolute top-2 right-2 flex gap-1.5">
-                          <span className="text-xs bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-400 px-2 py-0.5 rounded-full font-medium">
-                            Cheaper
-                          </span>
-                        </div>
-                      )}
-                      {tool.pricing}
-                    </span>
-                  </div>
-                </div>
-
-                <div className="mt-2 pt-2 border-t border-slate-100 dark:border-slate-700 flex items-center justify-between">
-                  <span className="text-[10px] text-slate-400">View details</span>
-                  {isCheaper && (
-                    <span className="text-[10px] text-green-600 dark:text-green-400 font-semibold flex items-center gap-0.5">
-                      <TrendingDown className="w-3 h-3" />
-                      Save more
-                    </span>
-                  )}
-                </div>
-              </Link>
-            </motion.div>
-          );
-        })}
+              </div>
+            )}
+          </>
+        )}
       </div>
 
       <div className="mt-4 flex items-center justify-between">
