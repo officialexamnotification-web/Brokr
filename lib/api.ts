@@ -187,6 +187,9 @@ export async function getStockPrices(symbols: string[] = ["AAPL", "GOOGL", "MSFT
     // Using StockData.org API with environment variable
     const apiKey = process.env.STOCKDATA_API_KEY || "";
     
+    console.log("StockData API Key present:", !!apiKey);
+    console.log("API Key length:", apiKey.length);
+    
     if (!apiKey) {
       throw new Error("StockData.org API key not provided");
     }
