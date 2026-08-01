@@ -2,14 +2,14 @@
 
 const COINGECKO_BASE = "https://api.coingecko.com/api/v3";
 const FRANKFURTER_BASE = "https://api.frankfurter.app";
-const ALPHA_VANTAGE_BASE = "https://www.alphavantage.co/query";
+const STOCKDATA_BASE = "https://api.stockdata.org/v1";
 
 // Cache implementation (in-memory for Next.js)
 const cache = new Map();
 const CACHE_DURATION = {
   crypto: 2 * 60 * 1000, // 2 minutes
   forex: 60 * 60 * 1000, // 1 hour
-  stock: 6 * 60 * 60 * 1000, // 6 hours (to prevent API key exhaustion - 25 requests/day limit)
+  stock: 15 * 60 * 1000, // 15 minutes (StockData.org has 100 requests/day limit)
 };
 
 function getCached<T>(key: string, duration: number): T | null {
@@ -184,29 +184,45 @@ export async function getStockPrices(symbols: string[] = ["AAPL", "GOOGL", "MSFT
   if (cached) return cached;
 
   try {
-    // Using Alpha Vantage API with environment variable
-    const apiKey = process.env.ALPHA_VANTAGE_API_KEY || "demo";
+    // Using StockData.org API with environment variable
+    const apiKey = process.env.STOCKDATA_API_KEY || "";
+    
+    if (!apiKey) {
+      throw new Error("StockData.org API key not provided");
+    }
     
     const results: { [key: string]: { price: number; change: number; changePercent: number } } = {};
     
-    // Fetch stocks individually to avoid rate limits
-    for (const symbol of symbols) {
-      const res = await fetch(`${ALPHA_VANTAGE_BASE}?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${apiKey}`, {
-        next: { revalidate: 300 }, // 5 minutes
+    // StockData.org free plan allows only 3 symbols per request
+    // Process symbols in batches of 3
+    const batchSize = 3;
+    for (let i = 0; i < symbols.length; i += batchSize) {
+      const batch = symbols.slice(i, i + batchSize);
+      
+      const res = await fetch(`${STOCKDATA_BASE}/data/quote?symbols=${batch.join(",")}&api_token=${apiKey}`, {
+        next: { revalidate: 900 }, // 15 minutes
       });
       const data = await res.json();
       
-      if (data["Global Quote"]) {
-        const quote = data["Global Quote"];
-        results[symbol] = {
-          price: parseFloat(quote["05. price"]),
-          change: parseFloat(quote["09. change"]),
-          changePercent: parseFloat(quote["10. change percent"].replace("%", "")),
-        };
+      if (data && Array.isArray(data.data)) {
+        data.data.forEach((quote: any) => {
+          const price = quote.price;
+          const previousClose = quote.previous_close_price;
+          const change = quote.day_change;
+          const changePercent = previousClose ? ((price - previousClose) / previousClose) * 100 : 0;
+          
+          results[quote.ticker] = {
+            price: price,
+            change: change || 0,
+            changePercent: changePercent || 0,
+          };
+        });
       }
       
-      // Add delay between requests to avoid rate limits
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      // Add small delay between batches
+      if (i + batchSize < symbols.length) {
+        await new Promise(resolve => setTimeout(resolve, 500));
+      }
     }
 
     if (Object.keys(results).length > 0) {
