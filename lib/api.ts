@@ -9,7 +9,7 @@ const cache = new Map();
 const CACHE_DURATION = {
   crypto: 2 * 60 * 1000, // 2 minutes
   forex: 60 * 60 * 1000, // 1 hour
-  stock: 5 * 60 * 1000, // 5 minutes
+  stock: 6 * 60 * 60 * 1000, // 6 hours (to prevent API key exhaustion - 25 requests/day limit)
 };
 
 function getCached<T>(key: string, duration: number): T | null {
@@ -189,6 +189,7 @@ export async function getStockPrices(symbols: string[] = ["AAPL", "GOOGL", "MSFT
     
     const results: { [key: string]: { price: number; change: number; changePercent: number } } = {};
     
+    // Fetch stocks individually to avoid rate limits
     for (const symbol of symbols) {
       const res = await fetch(`${ALPHA_VANTAGE_BASE}?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${apiKey}`, {
         next: { revalidate: 300 }, // 5 minutes
@@ -203,6 +204,9 @@ export async function getStockPrices(symbols: string[] = ["AAPL", "GOOGL", "MSFT
           changePercent: parseFloat(quote["10. change percent"].replace("%", "")),
         };
       }
+      
+      // Add delay between requests to avoid rate limits
+      await new Promise(resolve => setTimeout(resolve, 1000));
     }
 
     if (Object.keys(results).length > 0) {
