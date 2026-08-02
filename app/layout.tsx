@@ -4,12 +4,13 @@ import { ThemeProvider } from "@/components/layout/ThemeProvider";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import CustomChatbot from "@/components/common/CustomChatbot";
+import CookieConsent from "@/components/layout/CookieConsent";
 
 export const metadata: Metadata = {
-  title: "Brokr - Compare Best Trading Tools & Brokers",
+  title: "Brokr - Trading Tools Directory",
   description:
-    "Independent reviews, detailed comparisons and expert ratings to help you find the perfect trading platform. Compare forex brokers, crypto exchanges, stock brokers and more.",
-  keywords: "trading tools, broker comparison, forex brokers, crypto exchanges, stock brokers, trading platform reviews",
+    "A neutral directory for discovering and comparing trading platforms, brokers, exchanges, education resources and market tools.",
+  keywords: "trading tools directory, broker comparison, forex brokers, crypto exchanges, stock brokers, trading platforms",
 };
 
 export default function RootLayout({
@@ -27,6 +28,7 @@ export default function RootLayout({
             <Footer />
           </div>
           <CustomChatbot />
+          <CookieConsent />
         </ThemeProvider>
       </body>
     </html>

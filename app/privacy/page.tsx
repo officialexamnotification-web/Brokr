@@ -30,7 +30,7 @@ export default function PrivacyPage() {
             Introduction
           </h2>
           <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
-            Brokr ("we," "our," or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website brokr.com and use our services. Please read this policy carefully to understand our practices regarding your personal information.
+            Brokr ("we," "our," or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit this website and use its services. Please read this policy carefully to understand our practices regarding your personal information.
           </p>
         </section>
 
@@ -59,6 +59,16 @@ export default function PrivacyPage() {
               </ul>
             </div>
           </div>
+        </section>
+
+        <section>
+          <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
+            <Cookie className="w-6 h-6 text-primary-600" />
+            Cookies and advertising
+          </h2>
+          <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
+            Brokr currently uses local browser storage for the cookie-preference banner and theme preference. Optional analytics and advertising should only be enabled after the relevant consent is recorded. If Google AdSense or other advertising partners are enabled, their cookies, processing, and regional consent requirements will be described here and configured before ads are served.
+          </p>
         </section>
 
         <section>

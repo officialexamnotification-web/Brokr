@@ -41,7 +41,7 @@ export async function GET(request: Request) {
     console.log("API Key length:", apiKey.length);
     
     if (!apiKey) {
-      console.log("API key not provided, using fallback");
+      console.log("API key not provided; market data unavailable");
       throw new Error("StockData.org API key not provided");
     }
     
@@ -92,24 +92,7 @@ export async function GET(request: Request) {
 
     throw new Error("No valid stock data received");
   } catch (error) {
-    console.warn("Stock API using fallback data:", error instanceof Error ? error.message : error);
-    // Fallback stock prices (realistic values)
-    const fallbackStocks: { [key: string]: { price: number; change: number; changePercent: number } } = {
-      AAPL: { price: 308.91, change: -24.52, changePercent: -7.35 },
-      GOOGL: { price: 356.13, change: 22.47, changePercent: 6.73 },
-      MSFT: { price: 464.72, change: 13.62, changePercent: 3.02 },
-      TSLA: { price: 311.21, change: 2.36, changePercent: 0.76 },
-      AMZN: { price: 271.58, change: 36.08, changePercent: 15.32 },
-      META: { price: 556.71, change: 17.68, changePercent: 3.28 },
-      NVDA: { price: 200.75, change: 5.71, changePercent: 2.93 },
-      JPM: { price: 198.45, change: 2.15, changePercent: 1.09 },
-    };
-    
-    const results = symbols.reduce((acc: any, symbol: string) => {
-      if (fallbackStocks[symbol]) acc[symbol] = fallbackStocks[symbol];
-      return acc;
-    }, {} as typeof fallbackStocks);
-    
-    return NextResponse.json(results);
+    console.warn("Stock API unavailable:", error instanceof Error ? error.message : error);
+    return NextResponse.json({ error: "Stock market data is temporarily unavailable." }, { status: 503 });
   }
 }

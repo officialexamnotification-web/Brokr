@@ -19,7 +19,7 @@ import Badge from "@/components/common/Badge";
 function CompareClient() {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const initialTools = searchParams.get("tools")?.split(",").filter(Boolean) || [];
+  const initialTools = Array.from(new Set(searchParams.get("tools")?.split(",").filter((slug) => tools.some((tool) => tool.slug === slug)) || [])).slice(0, 4);
 
   const [selectedSlugs, setSelectedSlugs] = useState<string[]>(initialTools);
   const [searchOpen, setSearchOpen] = useState(false);
@@ -115,7 +115,7 @@ function CompareClient() {
       ),
     },
     {
-      label: "Pros",
+      label: "Listed highlights",
       key: "pros",
       render: (t: Tool) => (
         <ul className="space-y-1">
@@ -129,7 +129,7 @@ function CompareClient() {
       ),
     },
     {
-      label: "Cons",
+      label: "Listed considerations",
       key: "cons",
       render: (t: Tool) => (
         <ul className="space-y-1">
@@ -182,7 +182,9 @@ function CompareClient() {
                   {tool.name}
                 </span>
                 <button
+                  type="button"
                   onClick={() => removeTool(slug)}
+                  aria-label={`Remove ${tool.name} from comparison`}
                   className="p-0.5 rounded-full hover:bg-primary-200 dark:hover:bg-primary-800 text-primary-500"
                 >
                   <X className="w-3.5 h-3.5" />
@@ -198,6 +200,8 @@ function CompareClient() {
         {selectedSlugs.length < 4 && (
           <div className="relative">
             <button
+              type="button"
+              aria-expanded={searchOpen}
               onClick={() => {
                 setSearchOpen(!searchOpen);
                 setToolToSelect(null);
@@ -229,6 +233,7 @@ function CompareClient() {
                     availableTools.map((tool) => (
                       <button
                         key={tool.slug}
+                        type="button"
                         onClick={() => addTool(tool.slug)}
                         className="w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors"
                       >

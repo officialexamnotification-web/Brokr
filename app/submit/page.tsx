@@ -25,26 +25,9 @@ export default function SubmitPage() {
     email: "",
   });
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-
-    try {
-      const response = await fetch("/api/submit", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        setSubmitted(true);
-      } else {
-        alert(data.error || "Something went wrong. Please try again.");
-      }
-    } catch (error) {
-      alert("Network error. Please try again.");
-    }
+    setSubmitted(true);
   };
 
   const handleChange = (
@@ -62,11 +45,11 @@ export default function SubmitPage() {
           <Check className="w-10 h-10 text-emerald-500" />
         </div>
         <h1 className="text-2xl font-bold text-slate-900 dark:text-white mb-4">
-          Submission Received!
+          Submission Preview
         </h1>
         <p className="text-slate-500 dark:text-slate-400 mb-8">
-          Thank you for submitting a tool. Our team will review it and add it to
-          our directory within 2-3 business days.
+          This form is currently a preview. Your information was not sent or
+          saved because the directory submission backend has not been connected yet.
         </p>
         <Link
           href="/"

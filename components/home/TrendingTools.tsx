@@ -57,7 +57,7 @@ export default function TrendingTools() {
               <Sparkles className="w-3.5 h-3.5" /> Editor Picks
             </span>
             <h2 className="text-3xl lg:text-4xl font-black text-slate-900 dark:text-white tracking-tight">
-              Featured &amp; recommended
+              Featured listings
             </h2>
           </div>
           <Link

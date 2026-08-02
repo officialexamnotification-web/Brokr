@@ -6,18 +6,18 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Trading Guides & Educational Articles | Brokr",
-  description: "Expert trading guides, educational articles, and insights to help you become a better trader. Learn forex trading, crypto strategies, stock market analysis, and more.",
+  description: "Educational trading guides and market explainers covering forex, crypto, stocks, and financial tools.",
   keywords: "trading guides, forex education, crypto tutorials, stock market analysis, trading strategies, trading blog",
   openGraph: {
     title: "Trading Guides & Insights | Brokr",
-    description: "Expert articles to help you become a better trader with comprehensive guides and market insights.",
+    description: "Educational articles with practical explanations of trading tools and markets.",
     type: "website",
     locale: "en_US",
   },
   twitter: {
     card: "summary_large_image",
     title: "Trading Guides | Brokr",
-    description: "Learn trading strategies and market analysis from expert articles and guides.",
+    description: "Learn trading concepts and market context from explanatory articles and guides.",
   },
 };
 
@@ -39,7 +39,7 @@ export default function BlogListPage() {
       <h1 className="text-3xl lg:text-5xl font-black text-slate-900 dark:text-white mb-3 tracking-tight">
         Trading <span className="gradient-text">Guides</span> &amp; Insights
       </h1>
-      <p className="text-lg text-slate-500 dark:text-slate-400 mb-12">Expert articles to help you become a better trader.</p>
+      <p className="text-lg text-slate-500 dark:text-slate-400 mb-12">Educational articles to help you understand trading tools and markets.</p>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {posts.map((post) => {
           const Icon = categoryIcons[post.category] || BookOpen;

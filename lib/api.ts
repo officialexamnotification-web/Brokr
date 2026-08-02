@@ -50,7 +50,8 @@ export async function getCryptoPrices(coins: string[] = ["bitcoin", "ethereum", 
 
     // Get USD/INR rate for conversion
     const forexRates = await getForexRates("USD", ["INR"]);
-    const usdToInr = forexRates?.INR || 83.5;
+    const usdToInr = forexRates?.INR;
+    if (!usdToInr) throw new Error("USD/INR data unavailable");
 
     const result: { [key: string]: { inr: number; usd: number; change_24h: number } } = {};
     data.forEach((coin: any) => {
@@ -68,18 +69,7 @@ export async function getCryptoPrices(coins: string[] = ["bitcoin", "ethereum", 
     console.error("CRYPTO ERROR TYPE:", error instanceof Error ? error.constructor.name : typeof error);
     console.error("CRYPTO ERROR MESSAGE:", error instanceof Error ? error.message : String(error));
     console.error("CRYPTO ERROR STACK:", error instanceof Error ? error.stack : "No stack trace");
-    // Fallback prices
-    const fallbackPrices: { [key: string]: { inr: number; usd: number; change_24h: number } } = {
-      bitcoin: { inr: 5200000, usd: 62500, change_24h: 2.5 },
-      ethereum: { inr: 185000, usd: 2220, change_24h: 1.8 },
-      binancecoin: { inr: 42000, usd: 505, change_24h: -0.5 },
-      solana: { inr: 9500, usd: 114, change_24h: 3.2 },
-      ripple: { inr: 42, usd: 0.50, change_24h: -1.2 },
-    };
-    return coins.reduce((acc, coin) => {
-      if (fallbackPrices[coin]) acc[coin] = fallbackPrices[coin];
-      return acc;
-    }, {} as typeof fallbackPrices);
+    return {};
   }
 }
 
@@ -134,19 +124,7 @@ export async function getForexRates(base = "USD", targets?: string[]) {
     console.error("FOREX ERROR TYPE:", error instanceof Error ? error.constructor.name : typeof error);
     console.error("FOREX ERROR MESSAGE:", error instanceof Error ? error.message : String(error));
     console.error("FOREX ERROR STACK:", error instanceof Error ? error.stack : "No stack trace");
-    // Fallback rates with timestamp
-    const fallbackRates: { [key: string]: number } = {
-      INR: 83.5,
-      EUR: 0.92,
-      GBP: 0.79,
-      JPY: 149.5,
-      AUD: 1.53,
-      CAD: 1.36,
-      CHF: 0.88,
-    };
-    return targets?.length ? 
-      Object.fromEntries(targets.map(t => [t, fallbackRates[t] || 1])) : 
-      fallbackRates;
+    return {};
   }
 }
 
@@ -244,22 +222,8 @@ export async function getStockPrices(symbols: string[] = ["AAPL", "GOOGL", "MSFT
 
     throw new Error("No valid stock data received");
   } catch (error) {
-    console.warn("Stock API using fallback data:", error instanceof Error ? error.message : error);
-    // Fallback stock prices (realistic values)
-    const fallbackStocks: { [key: string]: { price: number; change: number; changePercent: number } } = {
-      AAPL: { price: 308.91, change: -24.52, changePercent: -7.35 },
-      GOOGL: { price: 356.13, change: 22.47, changePercent: 6.73 },
-      MSFT: { price: 464.72, change: 13.62, changePercent: 3.02 },
-      TSLA: { price: 311.21, change: 2.36, changePercent: 0.76 },
-      AMZN: { price: 271.58, change: 36.08, changePercent: 15.32 },
-      META: { price: 556.71, change: 17.68, changePercent: 3.28 },
-      NVDA: { price: 200.75, change: 5.71, changePercent: 2.93 },
-      JPM: { price: 198.45, change: 2.15, changePercent: 1.09 },
-    };
-    return symbols.reduce((acc, symbol) => {
-      if (fallbackStocks[symbol]) acc[symbol] = fallbackStocks[symbol];
-      return acc;
-    }, {} as typeof fallbackStocks);
+    console.warn("Stock API unavailable:", error instanceof Error ? error.message : error);
+    return {};
   }
 }
 

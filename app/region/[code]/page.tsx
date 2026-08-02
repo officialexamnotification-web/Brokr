@@ -2,11 +2,22 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ChevronLeft, Shield, Globe, TrendingUp, Check, ArrowRight, ExternalLink } from "lucide-react";
 import { getRegionByCode, getToolsByRegion, regions } from "@/lib/data";
+import type { Metadata } from "next";
 import ToolCard from "@/components/common/ToolCard";
 import Badge from "@/components/common/Badge";
 
 export function generateStaticParams() {
   return regions.map((r) => ({ code: r.code }));
+}
+
+export async function generateMetadata({ params }: { params: { code: string } }): Promise<Metadata> {
+  const region = getRegionByCode(params.code);
+  if (!region) return { title: "Region Not Found | Brokr" };
+  return {
+    title: `Trading Tools in ${region.name} | Brokr Directory`,
+    description: `Browse informational listings for trading tools and platforms available in or relevant to ${region.name}. Verify local eligibility and current terms before use.`,
+    openGraph: { title: `Trading Tools in ${region.name} | Brokr`, description: region.description, type: "website" },
+  };
 }
 
 export default function RegionPage({ params }: { params: { code: string } }) {
@@ -27,7 +38,7 @@ export default function RegionPage({ params }: { params: { code: string } }) {
             <Globe className="w-8 h-8 text-indigo-600 dark:text-indigo-400" />
           </div>
           <div>
-            <h1 className="text-2xl lg:text-3xl font-black text-slate-900 dark:text-white">Best Trading Platforms in {region.name}</h1>
+            <h1 className="text-2xl lg:text-3xl font-black text-slate-900 dark:text-white">Trading Platforms and Tools in {region.name}</h1>
             <div className="flex items-center gap-2 mt-1">
               {region.regulations.map((r) => (
                 <Badge key={r} variant="info">{r}</Badge>
@@ -53,7 +64,7 @@ export default function RegionPage({ params }: { params: { code: string } }) {
       {regionTools.length > 0 && (
         <div>
           <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-2">
-            <TrendingUp className="w-6 h-6 text-primary-500" /> Recommended Tools for {region.name}
+            <TrendingUp className="w-6 h-6 text-primary-500" /> Listings for {region.name}
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {regionTools.map((tool, i) => (

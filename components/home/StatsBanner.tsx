@@ -10,7 +10,7 @@ import {
   ShieldCheck,
   Zap,
 } from "lucide-react";
-import { tools } from "@/lib/data";
+import { categories, getAvailableCountries, tools } from "@/lib/data";
 
 interface StatItem {
   label: string;
@@ -18,13 +18,6 @@ interface StatItem {
   suffix: string;
   icon: React.ElementType;
 }
-
-const stats: StatItem[] = [
-  { label: "Verified Tools", value: tools.length, suffix: "+", icon: TrendingUp },
-  { label: "Regulatory Bodies", value: 4, suffix: "+", icon: ShieldCheck },
-  { label: "Categories", value: 8, suffix: "", icon: Zap },
-  { label: "Countries", value: 13, suffix: "", icon: Globe },
-];
 
 function Counter({ target, suffix }: { target: number; suffix: string }) {
   const [count, setCount] = useState(0);
@@ -68,6 +61,13 @@ function Counter({ target, suffix }: { target: number; suffix: string }) {
 }
 
 export default function StatsBanner() {
+  const stats: StatItem[] = [
+    { label: "Listed Tools", value: tools.length, suffix: "", icon: TrendingUp },
+    { label: "Categories", value: categories.length, suffix: "", icon: Zap },
+    { label: "Regions Covered", value: getAvailableCountries().length, suffix: "", icon: Globe },
+    { label: "Fields in Record", value: Object.keys(tools[0] ?? {}).length, suffix: "", icon: ShieldCheck },
+  ];
+
   return (
     <section className="py-20 lg:py-28 relative overflow-hidden bg-gradient-to-br from-slate-900 via-slate-900 to-indigo-950">
       <div className="absolute inset-0 grid-pattern pointer-events-none" />
@@ -82,7 +82,7 @@ export default function StatsBanner() {
           className="text-center mb-14"
         >
           <span className="inline-block px-4 py-1.5 rounded-full bg-white/10 border border-white/10 text-indigo-200 text-xs font-semibold tracking-wide uppercase mb-4">
-            Trusted Worldwide
+            Directory overview
           </span>
           <h2 className="text-3xl lg:text-5xl font-black text-white tracking-tight">
             Numbers that{" "}

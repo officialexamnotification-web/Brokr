@@ -7,23 +7,23 @@ import { Shield, CheckCircle, Zap, Globe } from "lucide-react";
 const features = [
   {
     icon: Shield,
-    title: "Regulation Verified",
-    description: "Every platform is checked for FCA, SEC, SEBI, and ESMA compliance to ensure your funds are protected.",
+    title: "Regulation information",
+    description: "Review the regulatory labels listed for each tool and confirm the relevant legal entity and licence with the regulator.",
   },
   {
     icon: CheckCircle,
-    title: "Expert Analysis",
-    description: "Our team analyzes fees, platforms, and features to provide accurate, unbiased comparisons.",
+    title: "Structured comparisons",
+    description: "Compare fees, platforms, features, and availability in a consistent directory format.",
   },
   {
     icon: Zap,
-    title: "Real-Time Updates",
-    description: "Platform data is regularly updated to reflect the latest changes in fees, regulations, and features.",
+    title: "Source-aware listings",
+    description: "Each listing points users to the provider website; pricing and availability can change and should be checked before use.",
   },
   {
     icon: Globe,
-    title: "Country-Specific",
-    description: "Tailored recommendations for India, UK, US, and EU markets with local regulations.",
+    title: "Country context",
+    description: "Browse indicative availability by region while checking local restrictions and provider eligibility yourself.",
   },
 ];
 
@@ -43,11 +43,11 @@ export default function Testimonials() {
             Why Choose Us
           </span>
           <h2 className="text-3xl lg:text-5xl font-black text-slate-900 dark:text-white tracking-tight mb-4">
-            Trusted{" "}
+            Directory{" "}
             <span className="gradient-text">platform</span> verification
           </h2>
           <p className="text-lg text-slate-500 dark:text-slate-400 max-w-xl mx-auto">
-            We verify every platform's regulation, fees, and features so you can trade with confidence.
+            We organize public information so you can compare tools more easily. Brokr does not verify, endorse, or recommend financial products.
           </p>
         </motion.div>
 

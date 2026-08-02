@@ -9,18 +9,18 @@ export default function LivePrices() {
   const [forex, setForex] = useState<{ pair: string; rate: number; change: number }[]>([]);
   const [stocks, setStocks] = useState<{ symbol: string; price: number; change: number }[]>([]);
   const [loading, setLoading] = useState(true);
-  const [usingFallback, setUsingFallback] = useState(false);
+  const [dataUnavailable, setDataUnavailable] = useState(false);
 
   useEffect(() => {
     async function fetchData() {
       try {
-        const [cryptoData, forexData, stockData] = await Promise.all([
+        const [cryptoData, forexResponse, stocksResponse] = await Promise.all([
           getCryptoPrices(["bitcoin", "ethereum", "binancecoin", "solana"]),
-          fetch('/api/forex?base=USD&targets=INR,EUR,GBP,JPY').then(res => res.json()),
-          fetch('/api/stocks?symbols=AAPL,GOOGL,MSFT,TSLA,AMZN').then(res => res.json()),
+          fetch('/api/forex?base=USD&targets=INR,EUR,GBP,JPY').then(async (res) => res.ok ? res.json() : null),
+          fetch('/api/stocks?symbols=AAPL,GOOGL,MSFT,TSLA,AMZN').then(async (res) => res.ok ? res.json() : null),
         ]);
 
-        if (cryptoData) {
+        if (cryptoData && Object.keys(cryptoData).length > 0) {
           setCrypto([
             { id: "bitcoin", symbol: "BTC", inr: cryptoData.bitcoin?.inr || 0, change: cryptoData.bitcoin?.change_24h || 0 },
             { id: "ethereum", symbol: "ETH", inr: cryptoData.ethereum?.inr || 0, change: cryptoData.ethereum?.change_24h || 0 },
@@ -29,32 +29,29 @@ export default function LivePrices() {
           ]);
         }
 
-        if (forexData) {
+        if (forexResponse?.INR) {
           setForex([
-            { pair: "USD/INR", rate: Number(forexData.INR) || 0, change: 0 },
-            { pair: "EUR/INR", rate: forexData.EUR ? Number((forexData.EUR * forexData.INR).toFixed(2)) : 0, change: 0 },
-            { pair: "GBP/INR", rate: forexData.GBP ? Number((forexData.GBP * forexData.INR).toFixed(2)) : 0, change: 0 },
-            { pair: "USD/JPY", rate: Number(forexData.JPY) || 0, change: 0 },
+            { pair: "USD/INR", rate: Number(forexResponse.INR), change: 0 },
+            { pair: "EUR/INR", rate: forexResponse.EUR ? Number((forexResponse.EUR * forexResponse.INR).toFixed(2)) : 0, change: 0 },
+            { pair: "GBP/INR", rate: forexResponse.GBP ? Number((forexResponse.GBP * forexResponse.INR).toFixed(2)) : 0, change: 0 },
+            { pair: "USD/JPY", rate: Number(forexResponse.JPY) || 0, change: 0 },
           ]);
         }
 
-        if (stockData) {
+        if (stocksResponse && Object.keys(stocksResponse).length > 0) {
           setStocks([
-            { symbol: "AAPL", price: stockData.AAPL?.price || 0, change: stockData.AAPL?.changePercent || 0 },
-            { symbol: "GOOGL", price: stockData.GOOGL?.price || 0, change: stockData.GOOGL?.changePercent || 0 },
-            { symbol: "MSFT", price: stockData.MSFT?.price || 0, change: stockData.MSFT?.changePercent || 0 },
-            { symbol: "TSLA", price: stockData.TSLA?.price || 0, change: stockData.TSLA?.changePercent || 0 },
-            { symbol: "AMZN", price: stockData.AMZN?.price || 0, change: stockData.AMZN?.changePercent || 0 },
+            { symbol: "AAPL", price: stocksResponse.AAPL?.price || 0, change: stocksResponse.AAPL?.changePercent || 0 },
+            { symbol: "GOOGL", price: stocksResponse.GOOGL?.price || 0, change: stocksResponse.GOOGL?.changePercent || 0 },
+            { symbol: "MSFT", price: stocksResponse.MSFT?.price || 0, change: stocksResponse.MSFT?.changePercent || 0 },
+            { symbol: "TSLA", price: stocksResponse.TSLA?.price || 0, change: stocksResponse.TSLA?.changePercent || 0 },
+            { symbol: "AMZN", price: stocksResponse.AMZN?.price || 0, change: stocksResponse.AMZN?.changePercent || 0 },
           ]);
         }
 
-        // Check if using fallback rates (INR exactly 83.5 indicates fallback)
-        if (forexData?.INR === 83.5) {
-          setUsingFallback(true);
-        }
+        setDataUnavailable(!(cryptoData && Object.keys(cryptoData).length > 0) || !forexResponse?.INR || !(stocksResponse && Object.keys(stocksResponse).length > 0));
       } catch (e) {
         console.error("Failed to fetch live prices", e);
-        setUsingFallback(true);
+        setDataUnavailable(true);
       } finally {
         setLoading(false);
       }
@@ -71,9 +68,9 @@ export default function LivePrices() {
         <div className="text-center mb-8">
           <div className="flex items-center justify-center gap-2 mb-2">
             <Activity className="w-5 h-5 text-green-500" />
-            <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Live Market Prices</h2>
+            <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Market Data</h2>
           </div>
-          <p className="text-sm text-slate-500 dark:text-slate-400">Real-time crypto, forex, and stock prices powered by free APIs</p>
+          <p className="text-sm text-slate-500 dark:text-slate-400">External market data when available; prices may be delayed and are not trading advice.</p>
         </div>
 
         {loading ? (
@@ -165,11 +162,14 @@ export default function LivePrices() {
           </div>
         )}
 
+        {dataUnavailable && (
+          <p className="text-center mt-6 text-xs text-amber-700 dark:text-amber-400">Some market data is currently unavailable. No placeholder prices are shown.</p>
+        )}
         <div className="text-center mt-6">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
             <Activity className="w-3.5 h-3.5 text-green-500" />
             <p className="text-xs font-medium text-slate-600 dark:text-slate-400">
-              Live market data • Daily updates
+              External data - Check provider timestamps
             </p>
           </div>
         </div>

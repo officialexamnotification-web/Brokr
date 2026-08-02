@@ -79,10 +79,10 @@ export default function TermsPage() {
         <section>
           <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-4">Affiliate Relationships</h2>
           <p className="text-slate-600 dark:text-slate-400 leading-relaxed mb-4">
-            Brokr may earn commissions when you click on links to third-party websites and open accounts or make transactions in the future. This would help fund our operations and provide free content to users.
+            Affiliate partnerships and commission tracking are not currently connected in this project. If that changes, the relevant links and the Affiliate Disclosure page will be updated before they are used commercially.
           </p>
           <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
-            Our affiliate relationships do not influence our editorial content, comparisons, or recommendations. We maintain strict editorial independence and clearly disclose affiliate relationships. For detailed information, please review our Affiliate Disclosure page.
+            Provider links are informational and do not constitute endorsements or recommendations. For the current commercial-link status, please review our Affiliate Disclosure page.
           </p>
         </section>
 

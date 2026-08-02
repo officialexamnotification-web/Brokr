@@ -14,8 +14,8 @@ const footerLinks = {
     { label: "Compare Tools", href: "/compare" },
     { label: "Submit a Tool", href: "/submit" },
     { label: "Blog", href: "/blog" },
-    { label: "Latest Reviews", href: "/search?sort=latest" },
-    { label: "Top Rated", href: "/search?sort=rating" },
+    { label: "Latest Additions", href: "/search?sort=latest" },
+    { label: "Browse A–Z", href: "/search?sort=name" },
   ],
   Regions: [
     { label: "India", href: "/region/in" },
@@ -48,9 +48,8 @@ export default function Footer() {
               </span>
             </Link>
             <p className="text-sm text-slate-500 dark:text-slate-400 mb-6 leading-relaxed max-w-sm">
-              Your trusted companion for finding and comparing the best trading
-              platforms. Independent reviews, detailed comparisons and real user
-              ratings.
+              A neutral directory for discovering and comparing trading
+              platforms, exchanges, brokers, and market tools.
             </p>
             <div className="flex items-center gap-2">
               {[Twitter, Github, Mail].map((Icon, i) => (

@@ -75,8 +75,8 @@ export default function Categories() {
             <span className="gradient-text">organized</span>
           </h2>
           <p className="text-lg text-slate-500 dark:text-slate-400 max-w-xl mx-auto">
-            Browse through 8 carefully curated categories, each packed with
-            verified tools and honest reviews.
+            Browse tools by category and compare the information that matters
+            to you. Listings are informational and should be independently verified.
           </p>
         </motion.div>
 
@@ -110,7 +110,7 @@ export default function Categories() {
 
                   <div className="flex items-center justify-between">
                     <span className="text-xs font-semibold text-slate-400 dark:text-slate-500 bg-white/60 dark:bg-slate-800/60 px-2.5 py-1 rounded-full">
-                      {getToolsByCategory(category.id).length}+ tools
+                      {getToolsByCategory(category.id).length} tools
                     </span>
                     <ArrowRight className="w-4 h-4 text-slate-300 dark:text-slate-600 group-hover:text-primary-500 group-hover:translate-x-1 transition-all duration-300" />
                   </div>

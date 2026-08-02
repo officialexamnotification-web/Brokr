@@ -1,8 +1,6 @@
-"use client";
-
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import type { Metadata } from "next";
 import {
   ExternalLink,
   ChevronLeft,
@@ -25,12 +23,31 @@ import {
   Zap,
   BarChart3,
 } from "lucide-react";
-import { getToolBySlug, tools } from "@/lib/data";
+import { getToolBySlug, getToolDataStatus, getToolLastVerified, getToolSourceUrls, tools } from "@/lib/data";
 import Rating from "@/components/common/Rating";
 import Badge from "@/components/common/Badge";
 import ToolCard from "@/components/common/ToolCard";
 import QuickCompareSidebar from "@/components/common/QuickCompareSidebar";
 import RiskWarningBanner from "@/components/common/RiskWarningBanner";
+
+export function generateStaticParams() {
+  return tools.map((tool) => ({ slug: tool.slug }));
+}
+
+export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+  const tool = getToolBySlug(params.slug);
+  if (!tool) return { title: "Tool Not Found | Brokr" };
+  return {
+    title: `${tool.name} — Features, Fees & Availability | Brokr`,
+    description: `${tool.description} Review the public listing, availability, regulation labels, and provider details before using the service.`,
+    keywords: [tool.name, tool.category, "trading tools", "platform comparison"],
+    openGraph: {
+      title: `${tool.name} | Brokr Directory`,
+      description: tool.description,
+      type: "website",
+    },
+  };
+}
 
 export default function ToolDetailPage({ params }: { params: { slug: string } }) {
   const { slug } = params;
@@ -43,25 +60,11 @@ export default function ToolDetailPage({ params }: { params: { slug: string } })
   // JSON-LD Structured Data
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
+    "@type": "WebPage",
     name: tool.name,
     description: tool.longDescription,
-    applicationCategory: tool.category,
-    operatingSystem: tool.platforms.join(", "),
-    offers: {
-      "@type": "Offer",
-      price: tool.pricing,
-      priceCurrency: "USD",
-    },
-    ...(tool.rating ? {
-      aggregateRating: {
-        "@type": "AggregateRating",
-        ratingValue: tool.rating,
-        bestRating: 5,
-        worstRating: 1,
-        ratingCount: Math.floor(Math.random() * 500) + 100,
-      },
-    } : {}),
+    about: tool.category,
+    isPartOf: { "@type": "WebSite", name: "Brokr" },
     author: {
       "@type": "Organization",
       name: "Brokr",
@@ -70,7 +73,7 @@ export default function ToolDetailPage({ params }: { params: { slug: string } })
 
   const compareTools = tools.filter((t) => t.categoryId === tool.categoryId && t.id !== tool.id).slice(0, 4);
   const comparisonKeys = [
-    { label: "Rating", key: "rating" as const, format: (v: number | null) => v ? `${v}/5` : "N/A" },
+    { label: "Rating", key: "rating" as const, format: (v: number | null) => v ? `${v}/5` : "Not available" },
     { label: "Pricing", key: "pricing" as const, format: (v: string) => v },
     { label: "Founded", key: "yearFounded" as const, format: (v: number) => String(v) },
   ];
@@ -104,9 +107,20 @@ export default function ToolDetailPage({ params }: { params: { slug: string } })
                   {tool.affiliate && <Badge variant="warning">Affiliate</Badge>}
                 </div>
                 <p className="text-slate-500 dark:text-slate-400 leading-relaxed">{tool.longDescription}</p>
+                <div className="mt-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/70 dark:bg-slate-800/50 p-3 text-xs text-slate-500 dark:text-slate-400">
+                  <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+                    <span>Data status: {getToolDataStatus(tool).replace("_", " ")}</span>
+                    <span>Last verified: {getToolLastVerified(tool) ?? "Not recorded"}</span>
+                    <a href={getToolSourceUrls(tool)[0]} target="_blank" rel="noopener noreferrer" className="text-primary-600 dark:text-primary-400 hover:underline">
+                      Provider website
+                    </a>
+                  </div>
+                  <p className="mt-1">Brokr does not independently verify every listing. Confirm fees, licence details, eligibility, and availability before using a service.</p>
+                </div>
               </div>
             </div>
 
+            <p className="text-xs uppercase tracking-wide text-slate-400 dark:text-slate-500 mb-2">Catalog tags</p>
             <div className="flex flex-wrap gap-2 mb-6">
               {tool.bestFor.map((b) => (
                 <span key={b} className="px-3 py-1.5 rounded-full bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-400 text-xs font-semibold border border-emerald-200 dark:border-emerald-900">
@@ -142,12 +156,12 @@ export default function ToolDetailPage({ params }: { params: { slug: string } })
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <motion.div initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="glass-card rounded-3xl p-6 lg:p-8">
+            <div className="glass-card rounded-3xl p-6 lg:p-8">
               <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
                 <div className="w-8 h-8 rounded-lg bg-emerald-50 dark:bg-emerald-950/30 flex items-center justify-center">
                   <ThumbsUp className="w-4 h-4 text-emerald-500" />
                 </div>
-                Pros
+                Listed highlights
               </h3>
               <ul className="space-y-3">
                 {tool.pros.map((p) => (
@@ -156,13 +170,13 @@ export default function ToolDetailPage({ params }: { params: { slug: string } })
                   </li>
                 ))}
               </ul>
-            </motion.div>
-            <motion.div initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="glass-card rounded-3xl p-6 lg:p-8">
+            </div>
+            <div className="glass-card rounded-3xl p-6 lg:p-8">
               <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
                 <div className="w-8 h-8 rounded-lg bg-rose-50 dark:bg-rose-950/30 flex items-center justify-center">
                   <ThumbsDown className="w-4 h-4 text-rose-400" />
                 </div>
-                Cons
+                Listed considerations
               </h3>
               <ul className="space-y-3">
                 {tool.cons.map((c) => (
@@ -171,7 +185,7 @@ export default function ToolDetailPage({ params }: { params: { slug: string } })
                   </li>
                 ))}
               </ul>
-            </motion.div>
+            </div>
           </div>
 
           {compareTools.length > 0 && (
@@ -273,6 +287,9 @@ export default function ToolDetailPage({ params }: { params: { slug: string } })
                     <span key={r} className="px-2 py-1 text-xs rounded-lg bg-primary-50 dark:bg-primary-950/30 text-primary-700 dark:text-primary-400 font-medium">{r}</span>
                   ))}
                 </div>
+                <p className="mt-2 text-xs text-slate-400 dark:text-slate-500">
+                  Licence number and legal-entity verification: {tool.regulatoryEntities?.length ? "provided in the record" : "not recorded"}. Check the regulator directly.
+                </p>
               </div>
 
               <div className="pt-2">

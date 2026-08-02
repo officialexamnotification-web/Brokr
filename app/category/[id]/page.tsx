@@ -2,16 +2,21 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ChevronLeft, TrendingUp, ArrowRight, Sparkles, Filter, Globe } from "lucide-react";
 import type { Metadata } from "next";
-import { getCategoryById, getToolsByCategory, categories, getAvailableCountries } from "@/lib/data";
+import { getCategoryById, getCategoryBySlug, getToolsByCategory, categories, getAvailableCountries } from "@/lib/data";
 import ToolCard from "@/components/common/ToolCard";
 
 export function generateStaticParams() {
-  return categories.map((cat) => ({ id: String(cat.id) }));
+  return [
+    ...categories.map((cat) => ({ id: String(cat.id) })),
+    ...categories.map((cat) => ({ id: cat.slug })),
+  ];
 }
 
 export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
-  const categoryId = parseInt(params.id);
-  const category = getCategoryById(categoryId);
+  const categoryId = Number.parseInt(params.id, 10);
+  const category = Number.isNaN(categoryId)
+    ? getCategoryBySlug(params.id)
+    : getCategoryById(categoryId);
 
   if (!category) {
     return {
@@ -22,7 +27,7 @@ export async function generateMetadata({ params }: { params: { id: string } }): 
 
   return {
     title: `${category.name} Trading Tools & Platforms | Brokr`,
-    description: `Compare the best ${category.name.toLowerCase()} trading tools. ${category.description} Find the perfect platform for your trading needs.`,
+    description: `Compare ${category.name.toLowerCase()} trading tools using documented listing fields. ${category.description}.`,
     keywords: `${category.name}, ${category.name} trading tools, ${category.name} platforms, ${category.name} brokers, trading comparison`,
     openGraph: {
       title: `${category.name} Trading Tools | Brokr`,
@@ -43,14 +48,16 @@ export default function CategoryPage({
 }: {
   params: { id: string };
 }) {
-  const categoryId = parseInt(params.id);
-  const category = getCategoryById(categoryId);
+  const parsedCategoryId = Number.parseInt(params.id, 10);
+  const category = Number.isNaN(parsedCategoryId)
+    ? getCategoryBySlug(params.id)
+    : getCategoryById(parsedCategoryId);
 
   if (!category) {
     notFound();
   }
 
-  const categoryTools = getToolsByCategory(categoryId);
+  const categoryTools = getToolsByCategory(category.id);
   const availableCountries = getAvailableCountries(); // Already limited to 4 countries
 
   return (
@@ -86,19 +93,19 @@ export default function CategoryPage({
           {/* Quick Filters */}
           <div className="flex flex-wrap gap-3">
             <Link
-              href={`/search?category=${categoryId}&sort=trending`}
+              href={`/search?category=${category.id}&sort=trending`}
               className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-orange-50 dark:bg-orange-950/40 text-orange-700 dark:text-orange-300 text-sm font-semibold hover:bg-orange-100 dark:hover:bg-orange-950/60 transition-colors"
             >
               <TrendingUp className="w-4 h-4" /> Trending
             </Link>
             <Link
-              href={`/search?category=${categoryId}&sort=name`}
+              href={`/search?category=${category.id}&sort=name`}
               className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-primary-50 dark:bg-primary-950/40 text-primary-700 dark:text-primary-300 text-sm font-semibold hover:bg-primary-100 dark:hover:bg-primary-950/60 transition-colors"
             >
               <Sparkles className="w-4 h-4" /> A-Z
             </Link>
             <Link
-              href={`/search?category=${categoryId}`}
+              href={`/search?category=${category.id}`}
               className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-sm font-semibold hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
             >
               <Filter className="w-4 h-4" /> Advanced Filters
@@ -114,7 +121,7 @@ export default function CategoryPage({
               {availableCountries.map((country) => (
                 <Link
                   key={country}
-                  href={`/search?category=${categoryId}&country=${encodeURIComponent(country.toLowerCase())}`}
+                  href={`/search?category=${category.id}&country=${encodeURIComponent(country.toLowerCase())}`}
                   className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-50 dark:bg-slate-800/50 text-slate-600 dark:text-slate-300 text-xs font-medium hover:bg-primary-50 dark:hover:bg-primary-950/30 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
                 >
                   {country}

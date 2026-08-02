@@ -1,104 +1,18 @@
-import { MetadataRoute } from 'next'
-import { tools, categories, blogPosts } from '@/lib/data'
+import type { MetadataRoute } from "next";
+import { categories, getBlogPosts, regions, tools } from "@/lib/data";
+
+const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000").replace(/\/$/, "");
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://brokr.com'
-
-  // Static pages
-  const staticPages: MetadataRoute.Sitemap = [
-    {
-      url: baseUrl,
-      lastModified: new Date(),
-      changeFrequency: 'daily',
-      priority: 1,
-    },
-    {
-      url: `${baseUrl}/about`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/contact`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.7,
-    },
-    {
-      url: `${baseUrl}/privacy`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.5,
-    },
-    {
-      url: `${baseUrl}/terms`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.5,
-    },
-    {
-      url: `${baseUrl}/affiliate-disclosure`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.5,
-    },
-    {
-      url: `${baseUrl}/methodology`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.6,
-    },
-    {
-      url: `${baseUrl}/search`,
-      lastModified: new Date(),
-      changeFrequency: 'daily',
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/submit`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.6,
-    },
-  ]
-
-  // Tool pages
-  const toolPages: MetadataRoute.Sitemap = tools.map((tool) => ({
-    url: `${baseUrl}/tool/${tool.slug}`,
-    lastModified: new Date(),
-    changeFrequency: 'weekly',
-    priority: 0.9,
-  }))
-
-  // Category pages
-  const categoryPages: MetadataRoute.Sitemap = categories.map((category) => ({
-    url: `${baseUrl}/category/${category.slug}`,
-    lastModified: new Date(),
-    changeFrequency: 'weekly',
-    priority: 0.8,
-  }))
-
-  // Region pages
-  const regionPages: MetadataRoute.Sitemap = [
-    { url: `${baseUrl}/region/in`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.7 },
-    { url: `${baseUrl}/region/uk`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.7 },
-    { url: `${baseUrl}/region/us`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.7 },
-    { url: `${baseUrl}/region/eu`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.7 },
-  ]
-
-  // Blog pages
-  const blogPages: MetadataRoute.Sitemap = blogPosts.map((post) => ({
-    url: `${baseUrl}/blog/${post.slug}`,
-    lastModified: new Date(post.date),
-    changeFrequency: 'monthly',
-    priority: 0.7,
-  }))
-
+  const now = new Date();
   return [
-    ...staticPages,
-    ...toolPages,
-    ...categoryPages,
-    ...regionPages,
-    ...blogPages,
-  ]
+    { url: siteUrl, lastModified: now, changeFrequency: "weekly", priority: 1 },
+    { url: `${siteUrl}/search`, lastModified: now, changeFrequency: "weekly", priority: 0.8 },
+    { url: `${siteUrl}/compare`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
+    { url: `${siteUrl}/blog`, lastModified: now, changeFrequency: "weekly", priority: 0.7 },
+    ...categories.map((category) => ({ url: `${siteUrl}/category/${category.slug}`, lastModified: now, changeFrequency: "weekly" as const, priority: 0.7 })),
+    ...regions.map((region) => ({ url: `${siteUrl}/region/${region.code}`, lastModified: now, changeFrequency: "monthly" as const, priority: 0.6 })),
+    ...tools.map((tool) => ({ url: `${siteUrl}/tool/${tool.slug}`, lastModified: now, changeFrequency: "monthly" as const, priority: 0.6 })),
+    ...getBlogPosts().map((post) => ({ url: `${siteUrl}/blog/${post.slug}`, lastModified: post.date, changeFrequency: "monthly" as const, priority: 0.6 })),
+  ];
 }

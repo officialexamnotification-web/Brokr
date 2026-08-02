@@ -9,7 +9,7 @@ import { tools, categories, searchTools, getAvailableCountries } from "@/lib/dat
 import ToolCard from "@/components/common/ToolCard";
 import Badge from "@/components/common/Badge";
 
-type SortOption = "latest" | "trending" | "name";
+type SortOption = "latest" | "trending" | "name" | "rating";
 type ExperienceLevel = "all" | "beginner" | "intermediate" | "advanced";
 
 const platforms = ["Web", "iOS", "Android", "Desktop", "API"];
@@ -27,11 +27,12 @@ function SearchContent() {
   const initialQuery = searchParams.get("q") || "";
   const initialCategory = searchParams.get("category") ? Number(searchParams.get("category")) : null;
   const initialCountry = searchParams.get("country") || "";
-  const initialSort = searchParams.get("sort") as SortOption || "latest";
+  const requestedSort = searchParams.get("sort");
+  const initialSort: SortOption = requestedSort === "trending" || requestedSort === "name" || requestedSort === "rating" ? requestedSort : "latest";
 
   const [query, setQuery] = useState(initialQuery);
   const [sortBy, setSortBy] = useState<SortOption>(initialSort);
-  const [selectedCategories, setSelectedCategories] = useState<number[]>([]);
+  const [selectedCategories, setSelectedCategories] = useState<number[]>(initialCategory ? [initialCategory] : []);
   const [selectedPlatform, setSelectedPlatform] = useState<string>("");
   const [selectedRegulation, setSelectedRegulation] = useState<string>("");
   const [selectedCountry, setSelectedCountry] = useState<string>(initialCountry);
@@ -74,6 +75,11 @@ function SearchContent() {
         case "latest": return b.id - a.id;
         case "trending": return Number(b.trending) - Number(a.trending);
         case "name": return a.name.localeCompare(b.name);
+        case "rating":
+          if (a.rating === null && b.rating === null) return a.name.localeCompare(b.name);
+          if (a.rating === null) return 1;
+          if (b.rating === null) return -1;
+          return b.rating - a.rating;
         default: return 0;
       }
     });

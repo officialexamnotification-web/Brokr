@@ -65,22 +65,6 @@ export async function GET(request: Request) {
     console.error("FOREX ERROR MESSAGE:", error instanceof Error ? error.message : String(error));
     console.error("FOREX ERROR STACK:", error instanceof Error ? error.stack : "No stack trace");
     
-    // Fallback rates
-    const fallbackRates: { [key: string]: number } = {
-      INR: 83.5,
-      EUR: 0.92,
-      GBP: 0.79,
-      JPY: 149.5,
-      AUD: 1.53,
-      CAD: 1.36,
-      CHF: 0.88,
-    };
-    
-    const results = targets.reduce((acc: any, target: string) => {
-      if (fallbackRates[target]) acc[target] = fallbackRates[target];
-      return acc;
-    }, {} as typeof fallbackRates);
-    
-    return NextResponse.json(results);
+    return NextResponse.json({ error: "Foreign-exchange data is temporarily unavailable." }, { status: 503 });
   }
 }

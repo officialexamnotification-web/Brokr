@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   keywords: "trading tools comparison, broker comparison, compare trading platforms, side-by-side comparison, trading platform analysis",
   openGraph: {
     title: "Compare Trading Tools | Brokr",
-    description: "Compare trading tools and platforms side-by-side to find the best option for your trading needs.",
+    description: "Compare trading tools and platforms side-by-side using the fields available in each listing.",
     type: "website",
     locale: "en_US",
   },

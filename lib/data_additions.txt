@@ -2,7 +2,7 @@
   // === MORE OPTIONS TRADING ===
   {
     id: 69, name: "Firstrade", slug: "firstrade", logo: "FR",
-    rating: 4.2, reviews: 12000,
+    rating: null,
     description: "Commission-free options trading with $0 per contract fees.",
     longDescription: "Firstrade is a US-based discount broker founded in 1985, offering truly free options trading with $0 commission and $0 per-contract fees. The broker serves over 500,000 customers with a focus on options and active traders.",
     category: "Options Trading", categoryId: 5,
@@ -11,7 +11,7 @@
     cons: ["Basic platform", "Limited research", "US only", "Smaller broker"],
     pricing: "$0 + $0/contract", pricingDetail: "Options: $0 commission + $0 per contract. Stocks/ETFs: $0.",
     minDeposit: "$0", platforms: ["Web", "iOS", "Android"],
-    website: "https://firstrade.com", affiliate: true, trending: false, featured: false,
+    website: "https://firstrade.com", affiliate: false, trending: false, featured: false,
     yearFounded: 1985, regulation: ["SEC", "FINRA", "SIPC"],
     supportedCountries: ["United States"],
     depositMethods: ["ACH", "Wire Transfer", "Check"],
@@ -25,7 +25,7 @@
   },
   {
     id: 70, name: "Moomoo", slug: "moomoo", logo: "MO",
-    rating: 4.4, reviews: 18000,
+    rating: null,
     description: "Advanced options trading platform with free Level 2 data.",
     longDescription: "Moomoo is a trading platform by Futu Holdings, founded in 2016. Known for advanced options trading tools, free Level 2 data, and comprehensive options chains with probability analysis.",
     category: "Options Trading", categoryId: 5,
@@ -34,7 +34,7 @@
     cons: ["Newer platform", "Limited broker services", "US focus", "Complex for beginners"],
     pricing: "$0 + $0.65/contract", pricingDetail: "Options: $0 commission + $0.65/contract. Stocks: $0.",
     minDeposit: "$0", platforms: ["Web", "iOS", "Android", "Desktop"],
-    website: "https://moomoo.com", affiliate: true, trending: true, featured: false,
+    website: "https://moomoo.com", affiliate: false, trending: true, featured: false,
     yearFounded: 2016, regulation: ["SEC", "FINRA", "SIPC"],
     supportedCountries: ["United States", "Singapore", "Australia"],
     depositMethods: ["ACH", "Wire Transfer", "ACH"],
@@ -48,7 +48,7 @@
   },
   {
     id: 71, name: "Public.com", slug: "public", logo: "PU",
-    rating: 4.3, reviews: 22000,
+    rating: null,
     description: "Social investing app with thematic investing and options trading.",
     longDescription: "Public.com is a social investing platform founded in 2015, offering commission-free trading with a focus on community and thematic investing. Recently added options trading capabilities.",
     category: "Options Trading", categoryId: 5,
@@ -57,7 +57,7 @@
     cons: ["Limited options tools", "New to options", "Basic platform", "US only"],
     pricing: "$0 + $0.65/contract", pricingDetail: "Options: $0 + $0.65/contract. Stocks/Crypto: $0.",
     minDeposit: "$0", platforms: ["iOS", "Android", "Web"],
-    website: "https://public.com", affiliate: true, trending: true, featured: false,
+    website: "https://public.com", affiliate: false, trending: true, featured: false,
     yearFounded: 2015, regulation: ["SEC", "FINRA", "SIPC"],
     supportedCountries: ["United States"],
     depositMethods: ["ACH", "Wire Transfer"],
@@ -73,7 +73,7 @@
   // === MORE TRADING TOOLS ===
   {
     id: 72, name: "Finviz", slug: "finviz", logo: "FV",
-    rating: 4.6, reviews: 85000,
+    rating: null,
     description: "Stock screener and heat map for US markets. Free and Elite versions.",
     longDescription: "Finviz (Financial Visualizations) is a popular stock screening and visualization website, offering powerful stock screeners, heat maps, and market news. The free version offers basic screening, while Elite ($24.96/month) provides real-time data and advanced features.",
     category: "Trading Tools", categoryId: 7,
@@ -96,7 +96,7 @@
   },
   {
     id: 73, name: "StockCharts", slug: "stockcharts", logo: "SC",
-    rating: 4.5, reviews: 42000,
+    rating: null,
     description: "Advanced charting platform with technical indicators and market analysis.",
     longDescription: "StockCharts.com is a leading technical analysis platform founded in 1998, providing advanced charting tools, technical indicators, and market analysis for stocks, ETFs, forex, and crypto.",
     category: "Trading Tools", categoryId: 7,
@@ -119,7 +119,7 @@
   },
   {
     id: 74, name: "Benzinga", slug: "benzinga", logo: "BZ",
-    rating: 4.4, reviews: 35000,
+    rating: null,
     description: "Financial news and data platform with trading tools and education.",
     longDescription: "Benzinga is a financial media and data company founded in 2010, offering real-time news squawk, trading tools, education, and market analysis. Known for Benzinga Pro news service and extensive trading education.",
     category: "Trading Tools", categoryId: 7,
@@ -128,7 +128,7 @@
     cons: ["Premium pricing", "News-focused", "Can be overwhelming", "US-centric"],
     pricing: "$17-177/month", pricingDetail: "Benzinga Essentials: $17/month. Pro: $177/month. Unlimited: $277/month.",
     minDeposit: "N/A", platforms: ["Web", "Desktop", "Mobile App"],
-    website: "https://benzinga.com", affiliate: true, trending: true, featured: false,
+    website: "https://benzinga.com", affiliate: false, trending: true, featured: false,
     yearFounded: 2010, regulation: ["N/A (Media/Technology)"],
     supportedCountries: ["Global (US focus)"],
     depositMethods: ["N/A"],
@@ -142,7 +142,7 @@
   },
   {
     id: 75, name: "FinQuanti", slug: "finquanti", logo: "FQ",
-    rating: 4.2, reviews: 8000,
+    rating: null,
     description: "AI-powered stock analysis and screening platform.",
     longDescription: "FinQuanti is an AI-powered stock analysis platform providing quantitative analysis, factor investing tools, and advanced screening for serious investors.",
     category: "Trading Tools", categoryId: 7,
@@ -165,7 +165,7 @@
   },
   {
     id: 76, name: "Seeking Alpha", slug: "seeking-alpha", logo: "SA",
-    rating: 4.5, reviews: 95000,
+    rating: null,
     description: "Crowdsourced investment research with analyst articles and stock analysis.",
     longDescription: "Seeking Alpha is a crowdsourced investment research platform founded in 2004, featuring articles from contributors, analyst ratings, earnings analysis, and portfolio tracking tools.",
     category: "Trading Tools", categoryId: 7,
@@ -174,7 +174,7 @@
     cons: ["Paywall for premium", "Variable quality", "Opinion-based", "US-focused"],
     pricing: "Free / $239-469/year", pricingDetail: "Free: Limited articles. Premium: $239/year. Pro: $469/year with all features.",
     minDeposit: "N/A", platforms: ["Web", "iOS", "Android"],
-    website: "https://seekingalpha.com", affiliate: true, trending: true, featured: false,
+    website: "https://seekingalpha.com", affiliate: false, trending: true, featured: false,
     yearFounded: 2004, regulation: ["N/A (Media/Research)"],
     supportedCountries: ["Global (US focus)"],
     depositMethods: ["N/A"],
@@ -190,7 +190,7 @@
   // === MORE EDUCATION ===
   {
     id: 77, name: "The Trading Channel", slug: "trading-channel", logo: "TC",
-    rating: 4.5, reviews: 28000,
+    rating: null,
     description: "Free YouTube trading education with premium courses on technical analysis.",
     longDescription: "The Trading Channel is a popular YouTube channel and education platform run by Steven Hart, offering free and premium trading education focused on technical analysis, price action, and trading psychology.",
     category: "Education", categoryId: 8,
@@ -213,7 +213,7 @@
   },
   {
     id: 78, name: "Urban Forex", slug: "urban-forex", logo: "UF",
-    rating: 4.6, reviews: 45000,
+    rating: null,
     description: "Free forex education with community-driven learning approach.",
     longDescription: "Urban Forex is a forex education platform founded by Justin and Alex, offering free daily videos, market analysis, and a community-driven approach to learning forex trading.",
     category: "Education", categoryId: 8,
@@ -236,7 +236,7 @@
   },
   {
     id: 79, name: "The5%ers", slug: "the5ers", logo: "5P",
-    rating: 4.4, reviews: 15000,
+    rating: null,
     description: "Prop trading firm with funded trader programs and education.",
     longDescription: "The5%ers is a proprietary trading firm offering funded trader programs, allowing traders to trade with company capital after passing evaluation. Also provides trading education and mentorship.",
     category: "Education", categoryId: 8,
@@ -245,7 +245,7 @@
     cons: ["Evaluation fees apply", "Risk of losing funding", "Pressure to perform", "Limited to forex"],
     pricing: "$55-460 evaluation", pricingDetail: "Evaluation programs: $55-460 (one-time). Profit split: Up to 50% to trader.",
     minDeposit: "N/A (evaluation fee)", platforms: ["Web", "MT4", "MT5"],
-    website: "https://the5ers.com", affiliate: true, trending: false, featured: false,
+    website: "https://the5ers.com", affiliate: false, trending: false, featured: false,
     yearFounded: 2016, regulation: ["N/A (Prop Firm)"],
     supportedCountries: ["Global"],
     depositMethods: ["Credit Card", "Crypto", "Bank Transfer"],
@@ -259,7 +259,7 @@
   },
   {
     id: 80, name: "FTMO", slug: "ftmo", logo: "FT",
-    rating: 4.7, reviews: 55000,
+    rating: null,
     description: "Leading prop trading firm with evaluation challenges and trader funding.",
     longDescription: "FTMO is a leading proprietary trading firm founded in 2015, offering evaluation challenges that lead to funded accounts up to $2 million. Traders keep up to 90% of profits.",
     category: "Education", categoryId: 8,
@@ -268,7 +268,7 @@
     cons: ["Evaluation fees ($155-1080)", "Strict risk rules", "Can lose funding", "Forex/CFD focus"],
     pricing: "$155-1080 evaluation", pricingDetail: "Evaluation: $155-1080 (one-time). Profit split: 80-90% to trader. Free retry on first fail.",
     minDeposit: "N/A (evaluation fee)", platforms: ["MT4", "MT5", "cTrader", "DXtrade"],
-    website: "https://ftmo.com", affiliate: true, trending: true, featured: true,
+    website: "https://ftmo.com", affiliate: false, trending: true, featured: true,
     yearFounded: 2015, regulation: ["N/A (Prop Firm)"],
     supportedCountries: ["Global"],
     depositMethods: ["Credit Card", "Bank Transfer", "Crypto", "Skrill"],

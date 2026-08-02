@@ -3,7 +3,7 @@ import { ShieldCheck, Users, Target, Award } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "About Us | Brokr",
-  description: "Learn about Brokr - your trusted platform for comparing trading tools, brokers, and exchanges. Our mission is to help you make informed financial decisions.",
+  description: "Learn how Brokr organizes trading tools, brokers, exchanges, and educational resources for informational comparison.",
 };
 
 export default function AboutPage() {
@@ -19,7 +19,7 @@ export default function AboutPage() {
           About <span className="text-primary-600">Brokr</span>
         </h1>
         <p className="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
-          Your trusted companion in navigating the complex world of trading platforms, brokers, and financial tools.
+          An informational directory for discovering and comparing trading platforms, brokers, exchanges, and financial tools.
         </p>
       </div>
 
@@ -30,7 +30,7 @@ export default function AboutPage() {
             Our Mission
           </h2>
           <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
-            At Brokr, we believe everyone deserves access to clear, unbiased information when choosing financial trading platforms. Our mission is to simplify the complex landscape of brokers, exchanges, and trading tools by providing comprehensive comparisons and transparent information. We're committed to helping traders of all levels make informed decisions that align with their financial goals and risk tolerance.
+            Brokr organizes provider information into searchable listings so users can compare documented fields in one place. The site does not provide financial advice, choose a provider for a user, or guarantee that a listing is current or available in every country.
           </p>
         </section>
 
@@ -42,15 +42,15 @@ export default function AboutPage() {
           <div className="grid md:grid-cols-2 gap-6 mt-6">
             <div className="p-6 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700">
               <h3 className="font-semibold text-slate-900 dark:text-white mb-2">Transparency</h3>
-              <p className="text-sm text-slate-600 dark:text-slate-400">We clearly disclose our affiliate relationships and never let commissions influence our comparisons.</p>
+              <p className="text-sm text-slate-600 dark:text-slate-400">Provider links and any future commercial relationships are disclosed clearly.</p>
             </div>
             <div className="p-6 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700">
               <h3 className="font-semibold text-slate-900 dark:text-white mb-2">Independence</h3>
-              <p className="text-sm text-slate-600 dark:text-slate-400">Our editorial content is separate from commercial partnerships. We maintain strict editorial independence.</p>
+              <p className="text-sm text-slate-600 dark:text-slate-400">Listings use neutral comparison language and do not show user ratings or a universal winner.</p>
             </div>
             <div className="p-6 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700">
               <h3 className="font-semibold text-slate-900 dark:text-white mb-2">Accuracy</h3>
-              <p className="text-sm text-slate-600 dark:text-slate-400">We continuously update our data and verify information from official sources to ensure accuracy.</p>
+              <p className="text-sm text-slate-600 dark:text-slate-400">Each listing exposes its source and verification status when those fields are recorded.</p>
             </div>
             <div className="p-6 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700">
               <h3 className="font-semibold text-slate-900 dark:text-white mb-2">User-Centric</h3>
@@ -65,7 +65,7 @@ export default function AboutPage() {
             Who We Are
           </h2>
           <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
-            Brokr was founded by a team who recognized the need for a better way to compare trading platforms. We've experienced firsthand the frustration of navigating conflicting information, hidden fees, and biased reviews. Our team combines knowledge of financial markets with technical expertise to build tools that genuinely help traders.
+            Brokr is a software project focused on making a large set of provider listings easier to search. The directory is not operated as a broker, adviser, consultant, or investment service.
           </p>
         </section>
 
@@ -81,7 +81,7 @@ export default function AboutPage() {
               </div>
               <div>
                 <h3 className="font-semibold text-slate-900 dark:text-white">Data-Driven Comparisons</h3>
-                <p className="text-sm text-slate-600 dark:text-slate-400">We use objective criteria like regulation, fees, platforms, and asset coverage rather than subjective ratings.</p>
+                <p className="text-sm text-slate-600 dark:text-slate-400">We show fields such as regulation, fees, platforms, and asset coverage without turning incomplete data into a score.</p>
               </div>
             </div>
             <div className="flex gap-4">
@@ -90,7 +90,7 @@ export default function AboutPage() {
               </div>
               <div>
                 <h3 className="font-semibold text-slate-900 dark:text-white">Regulatory Focus</h3>
-                <p className="text-sm text-slate-600 dark:text-slate-400">We prioritize regulatory compliance and trust, helping you identify platforms that meet strict safety standards.</p>
+                <p className="text-sm text-slate-600 dark:text-slate-400">We display regulatory fields for context; users must confirm the legal entity and licence with the relevant regulator.</p>
               </div>
             </div>
             <div className="flex gap-4">
@@ -99,7 +99,7 @@ export default function AboutPage() {
               </div>
               <div>
                 <h3 className="font-semibold text-slate-900 dark:text-white">Continuous Updates</h3>
-                <p className="text-sm text-slate-600 dark:text-slate-400">Financial markets change rapidly. We regularly update our information to reflect current conditions.</p>
+                <p className="text-sm text-slate-600 dark:text-slate-400">Financial information changes rapidly. Check the provider and regulator directly, especially where a verification date is missing.</p>
               </div>
             </div>
           </div>

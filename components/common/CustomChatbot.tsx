@@ -181,7 +181,7 @@ export default function CustomChatbot() {
                   </button>
                 </div>
                 <p className="text-xs text-slate-500 dark:text-slate-400 mt-2 text-center">
-                  Powered by Brokr • 275+ Trading Tools
+                  Powered by Brokr • Informational directory
                 </p>
               </div>
             </>
