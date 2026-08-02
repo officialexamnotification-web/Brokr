@@ -1,11 +1,60 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Bell, ArrowRight, Mail, Sparkles, Shield, Zap, TrendingUp } from "lucide-react";
+import { Bell, ArrowRight, Mail, Shield, Zap, TrendingUp, CheckCircle, AlertCircle } from "lucide-react";
 
 export default function Newsletter() {
+  const [email, setEmail] = useState("");
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [message, setMessage] = useState("");
+
+  const validateEmail = (email: string) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!email.trim()) {
+      setStatus("error");
+      setMessage("Please enter your email address");
+      return;
+    }
+
+    if (!validateEmail(email)) {
+      setStatus("error");
+      setMessage("Please enter a valid email address");
+      return;
+    }
+
+    setStatus("loading");
+    setMessage("");
+
+    try {
+      const response = await fetch("/api/newsletter", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setStatus("success");
+        setMessage("Successfully subscribed!");
+        setEmail("");
+      } else {
+        setStatus("error");
+        setMessage(data.error || "Something went wrong. Please try again.");
+      }
+    } catch (error) {
+      setStatus("error");
+      setMessage("Network error. Please try again.");
+    }
+  };
   return (
     <section className="py-24 lg:py-32">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -34,25 +83,52 @@ export default function Newsletter() {
               Never miss an update
             </h2>
             <p className="text-lg text-indigo-200/80 mb-10 leading-relaxed max-w-lg mx-auto">
-              Join <span className="text-white font-semibold">25,000+</span>{" "}
-              traders who receive weekly insights, exclusive deals and the latest
-              broker reviews straight to their inbox.
+              Get updates on new tools and platform changes.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto mb-8">
+            <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto mb-8">
               <div className="flex-1 relative">
                 <Mail className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-indigo-300/60" />
                 <input
                   type="email"
                   placeholder="your@email.com"
-                  className="w-full pl-12 pr-5 py-4 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/15 text-white placeholder-indigo-300/50 focus:outline-none focus:ring-2 focus:ring-indigo-400/30 focus:border-transparent transition-all text-base"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  disabled={status === "loading"}
+                  className="w-full pl-12 pr-5 py-4 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/15 text-white placeholder-indigo-300/50 focus:outline-none focus:ring-2 focus:ring-indigo-400/30 focus:border-transparent transition-all text-base disabled:opacity-50 disabled:cursor-not-allowed"
                 />
               </div>
-              <button className="btn-primary px-8 py-4 text-base flex items-center justify-center gap-2 group">
-                Subscribe
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              <button 
+                type="submit"
+                disabled={status === "loading"}
+                className="btn-primary px-8 py-4 text-base flex items-center justify-center gap-2 group disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {status === "loading" ? "Subscribing..." : "Subscribe"}
+                {status !== "loading" && <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />}
               </button>
-            </div>
+            </form>
+
+            {status === "success" && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="mb-4 flex items-center justify-center gap-2 text-emerald-300"
+              >
+                <CheckCircle className="w-4 h-4" />
+                <span className="text-sm">{message}</span>
+              </motion.div>
+            )}
+
+            {status === "error" && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="mb-4 flex items-center justify-center gap-2 text-red-300"
+              >
+                <AlertCircle className="w-4 h-4" />
+                <span className="text-sm">{message}</span>
+              </motion.div>
+            )}
 
             <div className="flex items-center justify-center gap-6 text-indigo-200/60 text-sm">
               <span className="flex items-center gap-1.5">

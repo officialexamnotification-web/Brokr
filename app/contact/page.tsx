@@ -1,12 +1,49 @@
-import { Metadata } from "next";
-import { Mail, MessageSquare, Send } from "lucide-react";
+"use client";
 
-export const metadata: Metadata = {
-  title: "Contact Us | Brokr",
-  description: "Get in touch with the Brokr team. Have questions, feedback, or suggestions? We'd love to hear from you.",
-};
+import { useState } from "react";
+import { Mail, MessageSquare, Send, CheckCircle, AlertCircle } from "lucide-react";
 
 export default function ContactPage() {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    subject: "",
+    message: "",
+  });
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [message, setMessage] = useState("");
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setStatus("loading");
+    setMessage("");
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setStatus("success");
+        setMessage("Message sent successfully!");
+        setFormData({ name: "", email: "", subject: "", message: "" });
+      } else {
+        setStatus("error");
+        setMessage(data.error || "Something went wrong. Please try again.");
+      }
+    } catch (error) {
+      setStatus("error");
+      setMessage("Network error. Please try again.");
+    }
+  };
   return (
     <div className="relative min-h-screen bg-white dark:bg-slate-950">
       <div className="absolute inset-0 grid-pattern noise-bg pointer-events-none" />
@@ -26,7 +63,7 @@ export default function ContactPage() {
       <div className="grid lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2">
           <div className="glass-card rounded-3xl p-8">
-            <form className="space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
                   <label htmlFor="name" className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
@@ -37,7 +74,10 @@ export default function ContactPage() {
                     id="name"
                     name="name"
                     required
-                    className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-primary-500/30 transition-all"
+                    value={formData.name}
+                    onChange={handleChange}
+                    disabled={status === "loading"}
+                    className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-primary-500/30 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                     placeholder="Your name"
                   />
                 </div>
@@ -50,7 +90,10 @@ export default function ContactPage() {
                     id="email"
                     name="email"
                     required
-                    className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-primary-500/30 transition-all"
+                    value={formData.email}
+                    onChange={handleChange}
+                    disabled={status === "loading"}
+                    className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-primary-500/30 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                     placeholder="your@email.com"
                   />
                 </div>
@@ -64,7 +107,10 @@ export default function ContactPage() {
                   id="subject"
                   name="subject"
                   required
-                  className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500/30 transition-all"
+                  value={formData.subject}
+                  onChange={handleChange}
+                  disabled={status === "loading"}
+                  className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500/30 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <option value="">Select a topic</option>
                   <option value="general">General Inquiry</option>
@@ -85,19 +131,34 @@ export default function ContactPage() {
                   name="message"
                   required
                   rows={6}
-                  className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-primary-500/30 transition-all resize-none"
+                  value={formData.message}
+                  onChange={handleChange}
+                  disabled={status === "loading"}
+                  className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-primary-500/30 transition-all resize-none disabled:opacity-50 disabled:cursor-not-allowed"
                   placeholder="Your message..."
                 />
               </div>
 
               <button
                 type="submit"
-                className="w-full btn-primary flex items-center justify-center gap-2 px-6 py-3 text-sm"
+                disabled={status === "loading"}
+                className="w-full btn-primary flex items-center justify-center gap-2 px-6 py-3 text-sm disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                <Send className="w-4 h-4" />
-                Send Message
+                {status === "loading" ? "Sending..." : <><Send className="w-4 h-4" /> Send Message</>}
               </button>
             </form>
+            {status === "success" && (
+              <div className="mt-4 flex items-center gap-2 text-emerald-600 dark:text-emerald-400">
+                <CheckCircle className="w-5 h-5" />
+                <span className="text-sm font-medium">{message}</span>
+              </div>
+            )}
+            {status === "error" && (
+              <div className="mt-4 flex items-center gap-2 text-red-600 dark:text-red-400">
+                <AlertCircle className="w-5 h-5" />
+                <span className="text-sm font-medium">{message}</span>
+              </div>
+            )}
           </div>
         </div>
 
