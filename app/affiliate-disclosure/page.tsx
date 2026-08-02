@@ -50,10 +50,10 @@ export default function AffiliateDisclosurePage() {
                 Brokr is an independent comparison platform designed to help users compare trading tools efficiently without visiting multiple websites. Our primary goal is to provide unbiased comparisons that assist users in making informed decisions about trading platforms.
               </p>
               <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
-                We may include affiliate links in the future to support our operations. If and when we implement affiliate partnerships, we will clearly disclose such relationships and ensure that our comparisons remain unbiased and independent.
+                We do include affiliate links on select platforms to support our operations. These partnerships are clearly disclosed with an "Affiliate" badge on relevant listings.
               </p>
               <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
-                Any future affiliate commissions would not affect the cost to users. The pricing, fees, and terms offered by brokers would remain the same whether accessed through our site or directly.
+                Affiliate commissions do not affect the cost to users. The pricing, fees, and terms offered by brokers remain the same whether accessed through our site or directly.
               </p>
             </div>
           </section>

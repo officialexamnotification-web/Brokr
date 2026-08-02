@@ -28,7 +28,7 @@ const knowledgeBase: Record<string, ChatResponse> = {
     text: "This is Brokr - a comprehensive platform to compare trading tools and brokers. We have 275+ tools across 8 categories including Forex Brokers, Crypto Exchanges, Stock Brokers, CFD Brokers, Options Trading, Payment Systems, Trading Tools, and Education.",
   },
   "how many tools": {
-    text: "We have 275+ trading tools and brokers listed across 8 categories. Each tool is reviewed and rated by real traders.",
+    text: "We have 275+ trading tools and brokers listed across 8 categories. Each tool's info is compiled from publicly available data and kept up to date.",
   },
   "categories": {
     text: "We have 8 categories:\n\n1. **Forex Brokers** (25 tools)\n2. **Crypto Exchanges** (20 tools)\n3. **Stock Brokers** (35 tools)\n4. **CFD Brokers** (10 tools)\n5. **Options Trading** (5 tools)\n6. **Payment Systems** (12 tools)\n7. **Trading Tools** (15 tools)\n8. **Education** (15 tools)",
@@ -36,15 +36,15 @@ const knowledgeBase: Record<string, ChatResponse> = {
 
   // Forex Brokers
   "forex": {
-    text: "For forex trading, I recommend:\n\n🥇 **IC Markets** - Low spreads, ECN accounts\n🥈 **XM Group** - No minimum deposit, multiple platforms\n🥉 **Exness** - Instant withdrawals, high leverage\n\nAll support Indian traders with offshore options. Check our Forex Brokers category for detailed comparisons!",
+    text: "Popular forex trading options include:\n\n🥇 **IC Markets** - Low spreads, ECN accounts\n🥈 **XM Group** - No minimum deposit, multiple platforms\n🥉 **Exness** - Instant withdrawals, high leverage\n\nAll support Indian traders with offshore options. Check our Forex Brokers category for detailed comparisons!",
     links: [{ label: "View Forex Brokers", url: "/category/forex-brokers" }],
   },
   "best forex broker": {
-    text: "The best forex broker depends on your needs:\n\n**For Beginners**: XM Group (no minimum deposit, educational resources)\n**For Scalping**: IC Markets (tight spreads, fast execution)\n**For High Leverage**: Exness (up to 1:2000)\n**For Regulation**: Saxo Bank (multi-regulated)\n\nCompare all 25 forex brokers in our Forex Brokers section!",
+    text: "Popular forex broker options based on different needs:\n\n**For Beginners**: XM Group (no minimum deposit, educational resources)\n**For Scalping**: IC Markets (tight spreads, fast execution)\n**For High Leverage**: Exness (up to 1:2000)\n**For Regulation**: Saxo Bank (multi-regulated)\n\nCompare all forex brokers in our Forex Brokers section!",
     links: [{ label: "Compare Forex Brokers", url: "/category/forex-brokers" }],
   },
   "forex india": {
-    text: "For Indian traders, recommended forex brokers:\n\n⚠️ **Note**: RBI restricts forex trading to INR pairs only. Offshore brokers are popular but carry regulatory risks.\n\n**IC Markets** - Popular among Indian traders\n**XM Group** - Accepts Indian clients\n**Exness** - Fast withdrawals\n\nAlways check RBI guidelines before trading offshore.",
+    text: "Popular forex brokers among Indian traders:\n\n⚠️ **Note**: RBI restricts forex trading to INR pairs only. Offshore brokers are popular but carry regulatory risks.\n\n**IC Markets** - Popular among Indian traders\n**XM Group** - Accepts Indian clients\n**Exness** - Fast withdrawals\n\nAlways check RBI guidelines before trading offshore.",
     links: [{ label: "View Forex Brokers", url: "/category/forex-brokers" }],
   },
 
@@ -54,11 +54,11 @@ const knowledgeBase: Record<string, ChatResponse> = {
     links: [{ label: "View Crypto Exchanges", url: "/category/crypto-exchanges" }],
   },
   "best crypto exchange": {
-    text: "Best crypto exchange for you:\n\n**For Beginners**: Coinbase (simplest interface)\n**For Low Fees**: Binance (0.1% trading fees)\n**For Security**: Kraken Pro (advanced security)\n**For Regulation**: Gemini (US regulated)\n**For Indians**: WazirX (INR support)\n\nCompare 20+ crypto exchanges in detail!",
+    text: "Popular crypto exchange options based on different needs:\n\n**For Beginners**: Coinbase (simplest interface)\n**For Low Fees**: Binance (0.1% trading fees)\n**For Security**: Kraken Pro (advanced security)\n**For Regulation**: Gemini (US regulated)\n**For Indians**: WazirX (INR support)\n\nCompare crypto exchanges in detail!",
     links: [{ label: "Compare Crypto Exchanges", url: "/category/crypto-exchanges" }],
   },
   "bitcoin": {
-    text: "For Bitcoin trading, I recommend:\n\n**Binance** - Highest liquidity, best prices\n**Coinbase** - Easy for beginners\n**Kraken Pro** - Advanced trading features\n\nCurrent BTC price and live data available on our homepage!",
+    text: "Popular Bitcoin trading options:\n\n**Binance** - Highest liquidity, best prices\n**Coinbase** - Easy for beginners\n**Kraken Pro** - Advanced trading features\n\nCurrent BTC price and live data available on our homepage!",
   },
 
   // Stock Brokers
@@ -67,7 +67,7 @@ const knowledgeBase: Record<string, ChatResponse> = {
     links: [{ label: "View Stock Brokers", url: "/category/stock-brokers" }],
   },
   "best stock broker": {
-    text: "Best stock broker depends on your location:\n\n**US Traders**: Interactive Brokers, Robinhood, Webull\n**UK Traders**: eToro UK, Degiro, Saxo Bank\n**Indian Traders**: Zerodha, Upstax, Groww (SEBI regulated)\n\nCompare 35+ stock brokers with detailed reviews!",
+    text: "Popular stock broker options by region:\n\n**US Traders**: Interactive Brokers, Robinhood, Webull\n**UK Traders**: eToro UK, Degiro, Saxo Bank\n**Indian Traders**: Zerodha, Upstox, Groww (SEBI regulated)\n\nCompare stock brokers with detailed information!",
     links: [{ label: "Compare Stock Brokers", url: "/category/stock-brokers" }],
   },
   "stock india": {

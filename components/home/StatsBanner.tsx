@@ -10,6 +10,7 @@ import {
   ShieldCheck,
   Zap,
 } from "lucide-react";
+import { tools } from "@/lib/data";
 
 interface StatItem {
   label: string;
@@ -19,7 +20,7 @@ interface StatItem {
 }
 
 const stats: StatItem[] = [
-  { label: "Verified Tools", value: 275, suffix: "+", icon: TrendingUp },
+  { label: "Verified Tools", value: tools.length, suffix: "+", icon: TrendingUp },
   { label: "Regulatory Bodies", value: 4, suffix: "+", icon: ShieldCheck },
   { label: "Categories", value: 8, suffix: "", icon: Zap },
   { label: "Countries", value: 13, suffix: "", icon: Globe },

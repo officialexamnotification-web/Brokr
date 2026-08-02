@@ -14,7 +14,7 @@ import {
   GraduationCap,
   ArrowRight,
 } from "lucide-react";
-import { categories } from "@/lib/data";
+import { categories, getToolsByCategory } from "@/lib/data";
 
 const iconMap: Record<string, React.ElementType> = {
   TrendingUp, Bitcoin, BarChart3, LineChart,
@@ -110,7 +110,7 @@ export default function Categories() {
 
                   <div className="flex items-center justify-between">
                     <span className="text-xs font-semibold text-slate-400 dark:text-slate-500 bg-white/60 dark:bg-slate-800/60 px-2.5 py-1 rounded-full">
-                      {category.count}+ tools
+                      {getToolsByCategory(category.id).length}+ tools
                     </span>
                     <ArrowRight className="w-4 h-4 text-slate-300 dark:text-slate-600 group-hover:text-primary-500 group-hover:translate-x-1 transition-all duration-300" />
                   </div>
