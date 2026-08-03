@@ -73,6 +73,9 @@ export interface BlogPost {
   readTime: string;
   image: string;
   tags: string[];
+  lastReviewedAt?: string;
+  reviewStatus?: "editorial_reviewed" | "source_checked";
+  sourceUrls?: string[];
 }
 
 export interface Region {
@@ -137,7 +140,7 @@ export const blogPosts: BlogPost[] = [
 
 ## What is Forex Trading?
 
-Forex (Foreign Exchange) trading is the act of buying and selling currencies on the global market. With a daily trading volume exceeding $7.5 trillion, it is the largest and most liquid financial market in the world.
+Forex (Foreign Exchange) trading is the act of buying and selling currencies on the global market. It is widely described as one of the world's largest and most liquid financial markets, but published turnover estimates vary by survey date and methodology.
 
 Unlike stock markets, forex operates 24 hours a day, 5 days a week, allowing traders to participate at any time across different global sessions (Asian, European, and American).
 
@@ -163,10 +166,10 @@ Currencies are always traded in pairs. The first currency is the base currency, 
 ## How to Start Trading
 
 ### Step 1: Choose a Regulated Broker
-Always select a broker regulated by reputable authorities like FCA, CySEC, ASIC, or SEBI. Check our broker comparison tool to find the best option for your needs.
+Prefer a broker whose legal entity and authorisation can be verified with the relevant regulator, such as the FCA, CySEC, ASIC, or SEBI where applicable. Check the entity, products and country eligibility rather than relying on a universal "best" label.
 
 ### Step 2: Open a Demo Account
-Practice with virtual money before risking real capital. Most brokers offer free demo accounts with real market conditions.
+Practice with virtual money before risking real capital. Demo conditions, pricing, liquidity and execution can differ from live trading, so do not treat simulated results as a guarantee.
 
 ### Step 3: Learn Technical and Fundamental Analysis
 - **Technical Analysis**: Study price charts, patterns, and indicators
@@ -175,11 +178,11 @@ Practice with virtual money before risking real capital. Most brokers offer free
 ### Step 4: Develop a Trading Strategy
 Create a plan that includes:
 - Entry and exit rules
-- Risk management (never risk more than 1-2% per trade)
+- Risk management (some traders use a fixed percentage such as 1-2%; this is not a universal rule)
 - Trading journal to track performance
 
 ### Step 5: Start Small
-Begin with a micro account and small position sizes. Scale up only after consistent profitability over 3-6 months.
+Begin with a demo or small position size where appropriate. If you later trade live, review your risk limits regularly; past or simulated profitability does not predict future results.
 
 ## Common Mistakes to Avoid
 
@@ -191,18 +194,18 @@ Begin with a micro account and small position sizes. Scale up only after consist
 
 ## Recommended Tools
 
-- **TradingView**: Best charting platform for technical analysis
+- **TradingView**: A commonly used charting platform for technical analysis
 - **Myfxbook**: Track and analyze your trading performance
 - **Forex Factory**: Economic calendar and news
 - **Babypips**: Free forex education
 
 ## Conclusion
 
-Forex trading can be profitable, but it requires education, discipline, and patience. Start with a solid foundation, use a regulated broker, and never stop learning.`,
+Forex trading involves a substantial risk of loss and requires education, discipline, and patience. Start with a solid foundation, verify the applicable broker entity and terms, and never treat educational material as a promise of profit.`,
   },
   {
-    id: 2, slug: "crypto-exchange-comparison", title: "Top 5 Crypto Exchanges Compared: Fees, Security & Features",
-    excerpt: "We compare the best cryptocurrency exchanges side by side - Binance vs Coinbase vs Kraken vs more. Find out which exchange suits your trading style.",
+    id: 2, slug: "crypto-exchange-comparison", title: "Five Crypto Exchanges Compared: Fees, Security & Features",
+    excerpt: "A neutral framework for comparing cryptocurrency exchanges by fees, security disclosures, supported products and regional availability.",
     category: "Crypto", author: "Sarah Chen", date: "2026-07-10", readTime: "8 min",
     image: "CR", tags: ["crypto", "exchanges", "comparison"],
     content: `# Top 5 Crypto Exchanges Compared
@@ -215,28 +218,25 @@ Choosing the right cryptocurrency exchange is one of the most important decision
 
 | Feature | Binance | Coinbase | Kraken | Bybit | KuCoin |
 |---------|---------|----------|--------|-------|--------|
-| Spot Fee | 0.10% | 1.49% | 0.16% | 0.10% | 0.10% |
-| Coins | 350+ | 200+ | 200+ | 300+ | 700+ |
-| Beginner Friendly | Moderate | Excellent | Good | Moderate | Complex |
-| Security | Strong | Very Strong | Very Strong | Strong | Good |
-| KYC Required | Yes | Yes | Yes | Optional | Optional |
+| Field to check | Current fee schedule | Supported assets | Product availability | KYC/eligibility | Security disclosures |
+| Important caveat | Varies by region, tier and product | Changes over time | Derivatives and earn products may be restricted | Verify before funding | Disclosures are not guarantees |
 
 ## Detailed Analysis
 
-### 1. Binance - Best Overall
-Binance offers the lowest fees, highest liquidity, and widest range of trading products. Ideal for active traders who want advanced features like futures, margin, and staking.
+### 1. Binance - Features to compare
+Binance publishes separate schedules for spot, derivatives and other products. Fees, liquidity, product access and legal entities vary by jurisdiction and account.
 
-**Best for**: Active traders, altcoin hunters, DeFi enthusiasts
+**May suit**: Users comparing a broad product catalogue, subject to regional eligibility
 
-### 2. Coinbase - Best for Beginners
-The most user-friendly exchange with a simple interface and strong educational resources. Higher fees are offset by ease of use and regulatory compliance.
+### 2. Coinbase - Features to compare
+Coinbase offers simple and advanced trading products plus educational resources. Fees, assets, custody terms and regulatory coverage depend on the product and country.
 
-**Best for**: First-time crypto buyers, long-term investors
+**May suit**: Users comparing a simpler interface and educational resources
 
-### 3. Kraken - Best for Security
-Kraken has never been hacked and offers proof-of-reserves. Excellent for security-conscious traders with competitive fees on Kraken Pro.
+### 3. Kraken - Security disclosures to review
+Kraken publishes security and proof-of-reserves information, but no exchange can guarantee immunity from security incidents or losses. Review the scope and date of each disclosure and the terms for the applicable entity.
 
-**Best for**: Security-focused traders, institutional investors
+**May suit**: Users comparing professional trading features and public security disclosures
 
 ## Security Checklist
 - Enable 2FA (preferably hardware key)
@@ -247,14 +247,14 @@ Kraken has never been hacked and offers proof-of-reserves. Excellent for securit
 
 ## Final Verdict
 
-For most traders, we recommend starting with Coinbase for simplicity, then moving to Binance or Kraken as you gain experience. Always prioritize security over convenience.`,
+There is no single best exchange for every user. Compare the current fee schedule, supported assets, custody and withdrawal terms, legal entity, security disclosures and country eligibility before funding an account. Always prioritize independent verification over convenience.`,
   },
   {
-    id: 3, slug: "stock-brokers-zero-commission", title: "Best Zero-Commission Stock Brokers: Are They Really Free?",
+    id: 3, slug: "stock-brokers-zero-commission", title: "Zero-Commission Stock Brokers: Understanding Total Costs",
     excerpt: "Zero-commission trading sounds great, but what's the catch? We investigate the hidden costs and compare the top commission-free brokers.",
     category: "Stocks", author: "James Miller", date: "2026-07-05", readTime: "10 min",
     image: "ST", tags: ["stocks", "zero-commission", "brokers"],
-    content: `# Best Zero-Commission Stock Brokers: The Hidden Truth
+    content: `# Zero-Commission Stock Brokers: Understanding Total Costs
 
 ## The Zero-Commission Revolution
 
@@ -263,7 +263,7 @@ The rise of Robinhood in 2013 sparked a revolution in stock trading. Today, near
 ## How "Free" Brokers Make Money
 
 ### Payment for Order Flow (PFOF)
-Brokers route your orders to market makers who pay for the privilege. While this creates a small spread markup, for most retail traders the impact is minimal.
+Brokers may receive compensation for routing orders, depending on market and jurisdiction. Order routing, spreads, execution quality and disclosures vary, so an advertised commission rate is not the total cost.
 
 ### Interest on Cash
 Uninvested cash in your account earns interest for the broker. Some pass a portion to you, others keep it all.
@@ -277,39 +277,32 @@ Some brokers lend out your shares to short sellers and keep the revenue.
 ## Top Commission-Free Brokers
 
 ### 1. Interactive Brokers (IBKR Lite)
-- **True commission-free**: Yes for US stocks/ETFs
-- **Hidden costs**: Minimal, transparent pricing
-- **Best feature**: Professional-grade platform with free tier
+- **What to check**: Eligibility for $0 commissions on eligible U.S. stocks and ETFs, plus other product and regulatory charges
+- **Other comparison fields**: Routing, data, account type and regional availability
 
 ### 2. Robinhood
-- **True commission-free**: Yes
-- **Hidden costs**: PFOF revenue, wider spreads on crypto
-- **Best feature**: Clean mobile app, fractional shares
+- **What to check**: Eligible $0 commission products, spread and order-routing disclosures, and country availability
+- **Other comparison fields**: App features, account types and product-specific costs
 
 ### 3. eToro
-- **True commission-free**: Yes for stocks
-- **Hidden costs**: Withdrawal fees, currency conversion
-- **Best feature**: Social trading, CopyTrader
+- **What to check**: Regional stock commission schedule, currency conversion, withdrawal and product-specific fees
+- **Other comparison fields**: Social features, account tier and country availability
 
-## Real Cost Comparison
+## Cost Comparison Framework
 
-A $10,000 trade comparison across brokers shows the actual costs including spreads and fees:
+A meaningful comparison should use the same instrument, order size, currency, execution time and account type. The following is a framework, not a current quote:
 
-| Broker | Visible Fee | Estimated Spread Cost | Total Cost |
-|--------|-------------|----------------------|------------|
-| Interactive Brokers | $0 | ~$1.50 | ~$1.50 |
-| Robinhood | $0 | ~$3.00 | ~$3.00 |
-| eToro | $0 | ~$5.00* | ~$5.00 |
-
-*Includes implicit currency conversion costs for non-USD accounts
+| Broker | Check advertised commission | Check spread/execution | Add conversion and regulatory costs |
+|--------|-----------------------------|-----------------------|--------------------------------------|
+| Any broker | Current regional schedule | Provider disclosures and live conditions | Account/product dependent |
 
 ## Verdict
 
-Zero-commission trading is real and beneficial for most retail investors. The key is understanding the indirect costs and choosing a broker that aligns with your trading style. For active traders, execution quality matters more than the commission rate.`,
+Some brokers advertise $0 commissions for eligible products, but total cost depends on the instrument, spread, execution, conversion, market and account. Compare the current provider schedule rather than relying on a fixed table.`,
   },
   {
     id: 4, slug: "trading-risk-management", title: "Risk Management for Traders: 10 Rules to Protect Your Capital",
-    excerpt: "Professional traders focus on risk management above all else. Learn the 10 essential rules that separate successful traders from those who blow up their accounts.",
+    excerpt: "Learn practical risk-management concepts, position-sizing examples and questions to consider before placing a trade.",
     category: "Education", author: "Alex Thompson", date: "2026-07-01", readTime: "14 min",
     image: "RM", tags: ["risk-management", "education", "beginners"],
     content: `# 10 Essential Risk Management Rules for Traders
@@ -320,23 +313,23 @@ Most new traders focus entirely on finding the perfect entry strategy. But profe
 
 ## The 10 Golden Rules
 
-### Rule 1: Never Risk More Than 1-2% Per Trade
-This is the cardinal rule. If you have a $10,000 account, your maximum loss per trade should be $100-200. This ensures that even a string of losses won't destroy your account.
+### Rule 1: Define a Per-Trade Risk Limit
+A common educational framework is to risk a small fixed percentage, such as 1-2%, but there is no universal percentage. If you use an example, include fees, slippage, gaps and correlated positions in the calculation.
 
-### Rule 2: Always Use Stop Losses
-A stop loss is not optional - it is mandatory. Market conditions can change in seconds. Without a stop loss, one bad trade can wipe out months of profits.
+### Rule 2: Understand Exit and Gap Risk
+Stop orders can help manage a planned exit, but execution price is not guaranteed during gaps or fast markets. Decide in advance how you will handle exits, position size and maximum loss.
 
-### Rule 3: Maintain a Minimum Risk-Reward Ratio of 1:2
-For every $1 you risk, aim to make at least $2. This means you can be right only 40% of the time and still be profitable.
+### Rule 3: Evaluate Expected Value
+Some strategies target a 1:2 risk-reward ratio, but a ratio alone does not make a strategy profitable. Include win rate, costs, slippage and the actual distribution of outcomes.
 
-### Rule 4: Don't Risk More Than 5% Total at Any Time
-If you have multiple positions open, your total risk across all trades should not exceed 5% of your account.
+### Rule 4: Set a Total Exposure Limit
+Multiple positions can be correlated. Set a total exposure limit appropriate to your account, strategy, liquidity and tolerance for loss instead of relying on a universal 5% rule.
 
 ### Rule 5: Keep a Trading Journal
 Document every trade: entry, exit, reason, and outcome. After 100 trades, patterns will emerge showing your strengths and weaknesses.
 
-### Rule 6: Avoid Trading During Major News Events
-Economic announcements can cause extreme volatility. Unless you have a specific news trading strategy, stay flat during events like NFP, FOMC, and ECB decisions.
+### Rule 6: Account for News and Volatility
+Economic announcements can cause extreme volatility. Consider reducing exposure, widening safety margins or staying out of the market when your plan cannot handle fast conditions.
 
 ### Rule 7: Reduce Position Size After Losses
 If you lose 3 trades in a row, cut your position size in half. This prevents revenge trading and protects your capital while you regroup.
@@ -361,19 +354,19 @@ The biggest threat to your account is not the market - it is yourself. Fear, gre
 
 ## Risk Calculator
 
-Use our comparison tool to find brokers that offer:
-- Guaranteed stop losses
+Use provider terms and the comparison fields to check whether a broker offers:
+- Guaranteed-stop products where available; fees and conditions apply
 - Negative balance protection
 - Risk management tools
 - Flexible leverage options
 
 ## Conclusion
 
-Successful trading is not about being right all the time. It is about managing risk so that when you are wrong, you lose small, and when you are right, you win big.`,
+Risk management is not a guarantee of success. The aim is to define losses, position sizes and exit conditions before trading and to review whether the approach remains suitable.`,
   },
   {
-    id: 5, slug: "cfd-trading-explained", title: "CFD Trading Explained: Pros, Cons and Best Platforms for 2026",
-    excerpt: "Contracts for Difference (CFDs) let you trade price movements without owning the asset. Learn how CFDs work and which platforms offer the best conditions.",
+    id: 5, slug: "cfd-trading-explained", title: "CFD Trading Explained: Costs, Risks and Features to Compare",
+    excerpt: "Contracts for Difference (CFDs) let you trade price movements without owning the asset. Learn how CFDs work and which costs, risks and platform features to compare.",
     category: "CFD", author: "David Park", date: "2026-06-28", readTime: "11 min",
     image: "CF", tags: ["cfd", "derivatives", "leverage"],
     content: `# CFD Trading Explained: Complete Guide for 2026
@@ -412,10 +405,10 @@ When you open a CFD position, you agree to exchange the difference in the asset'
 ## Choosing a CFD Broker
 
 Key factors to consider:
-- **Regulation**: FCA, CySEC, ASIC regulated brokers offer negative balance protection
+- **Regulation**: Negative-balance protection and other safeguards depend on the legal entity, product and client classification; verify them with the regulator and provider
 - **Spreads**: Tighter spreads mean lower trading costs
 - **Platform**: MT4, MT5, cTrader, or proprietary platforms
-- **Leverage**: ESMA limits retail leverage to 30:1 for major forex pairs
+- **Leverage**: ESMA retail CFD measures have included leverage limits for many EU retail products; verify current rules and the applicable entity
 - **Instruments**: Ensure your desired markets are available
 
 ## Risk Management for CFD Trading
@@ -432,7 +425,7 @@ CFDs are suitable for experienced traders who understand leverage and risk manag
   },
   {
     id: 6, slug: "trading-psychology-mastery", title: "Trading Psychology: How to Control Emotions and Build Discipline",
-    excerpt: "Fear, greed, and hope are the biggest enemies of successful trading. Learn proven techniques to master your emotions and develop the discipline of professional traders.",
+    excerpt: "Explore practical techniques for recognizing emotions, following a process and building disciplined trading habits.",
     category: "Education", author: "Dr. Michael Chen", date: "2026-06-25", readTime: "15 min",
     image: "TP", tags: ["psychology", "discipline", "mindset"],
     content: `# Trading Psychology: Master Your Mind, Master Your Trading
@@ -492,14 +485,14 @@ Before trading:
 - Focus on process, not results
 
 ### 4. Set Realistic Expectations
-- Accept that 50-60% win rate is normal
+- Win rates vary widely by strategy, market and costs; do not treat a target win rate as normal or guaranteed
 - Understand that drawdowns are inevitable
 - Focus on long-term consistency, not daily profits
 
 ## Professional Mindset Shifts
 
 ### From "I Must Win" to "I Must Follow My Plan"
-Professional traders don't focus on winning individual trades. They focus on executing their plan consistently.
+Some experienced traders focus less on individual outcomes and more on executing a defined process consistently.
 
 ### From "The Market Is Against Me" to "The Market Is Neutral"
 The market doesn't know you exist. It simply reacts to supply and demand. Take nothing personally.
@@ -529,18 +522,18 @@ Revenge trading is the fastest way to blow up your account. Focus on protecting 
 
 ## Conclusion
 
-Trading psychology is not about eliminating emotions - it's about managing them. The most profitable traders are not the smartest, but the most disciplined.`,
+Trading psychology is not about eliminating emotions - it is about recognizing and managing them. Discipline can support a process, but it does not guarantee profitable results.`,
   },
   {
     id: 7, slug: "technical-analysis-basics", title: "Technical Analysis for Beginners: Chart Patterns and Indicators",
-    excerpt: "Learn to read charts like a pro. This comprehensive guide covers support/resistance, trend lines, candlestick patterns, and essential indicators for successful trading.",
+    excerpt: "Learn the basics of charts, support/resistance, trend lines, candlestick patterns and indicators without treating technical analysis as a prediction guarantee.",
     category: "Education", author: "Sarah Williams", date: "2026-06-20", readTime: "18 min",
     image: "TA", tags: ["technical-analysis", "charts", "indicators"],
     content: `# Technical Analysis for Beginners: Complete Guide
 
 ## What is Technical Analysis?
 
-Technical analysis is the study of historical price action to predict future price movements. Unlike fundamental analysis, which looks at company financials, technical analysis focuses solely on price charts and patterns.
+Technical analysis studies historical price and volume data to identify possible scenarios and market structure. It cannot reliably predict future price movements, and it differs from fundamental analysis, which considers financial and economic information.
 
 ## Core Concepts
 
@@ -778,20 +771,20 @@ Your broker is your gateway to the markets. A good broker provides fair executio
 ## Non-Negotiable Requirements
 
 ### 1. Regulation
-Your broker MUST be regulated by reputable authorities:
-- **FCA** (UK) - Gold standard for investor protection
-- **CySEC** (Cyprus) - EU regulation with €20k protection
-- **ASIC** (Australia) - Strong regulatory framework
-- **SEC/FINRA** (USA) - Strict oversight but limited to US residents
-- **SEBI** (India) - Required for Indian residents
+Prefer a broker whose legal entity and authorisation can be verified with the applicable regulator:
+- **FCA** (UK) - Check the legal entity, permissions and applicable protection scheme
+- **CySEC** (Cyprus) - Check the entity, product permissions and applicable compensation rules
+- **ASIC** (Australia) - Check the entity and product-specific client-money terms
+- **SEC/FINRA** (USA) - Check the applicable U.S. brokerage entity and product protections
+- **SEBI** (India) - Check the broker's current registration and permitted products
 
-**Avoid**: Unregulated brokers or those regulated in offshore jurisdictions
+Treat missing authorisation, unclear legal entities and pressure to fund as red flags. An offshore registration is not automatically equivalent to local consumer protection.
 
 ### 2. Segregated Funds
-Client funds must be kept in separate bank accounts from the broker's operating funds. This protects your money if the broker goes bankrupt.
+Check whether the applicable entity segregates client funds and what happens if the provider fails. Segregation is not the same as protection against market losses or every operational risk.
 
 ### 3. Negative Balance Protection
-Ensures you cannot lose more than your account balance, even with leverage.
+May limit losses beyond the account balance for eligible retail clients, but coverage depends on entity, product, jurisdiction and account classification.
 
 ## Fee Structure Analysis
 
@@ -818,7 +811,7 @@ Ensures you cannot lose more than your account balance, even with leverage.
 
 **Popular Platforms**:
 - MetaTrader 4/5: Industry standard for forex/CFDs
-- TradingView: Best charting platform
+- TradingView: A commonly used charting platform
 - Proprietary Platforms: Vary by broker
 
 ### Research and Education
@@ -855,7 +848,7 @@ Ensures you cannot lose more than your account balance, even with leverage.
 - **Crypto**: Instant but volatile
 
 ### Withdrawal Process
-- Processing time (should be 1-3 business days)
+- Published processing time and conditions; do not assume a universal 1-3 business-day standard
 - Withdrawal fees
 - Minimum withdrawal amount
 - Withdrawal limits
@@ -893,7 +886,7 @@ For beginners, we recommend:
 
 ## Conclusion
 
-Take your time choosing a broker. The right choice sets the foundation for successful trading. The wrong choice can lead to frustration, losses, or worse. Use our comparison tool to find brokers that meet your specific needs.`,
+Take your time choosing a broker. Compare the applicable entity, permissions, costs, execution, funding, withdrawal terms and protections, then verify them with the provider and regulator. No broker is right for every user.`,
   },
   {
     id: 10, slug: "support-resistance-trading", title: "Support and Resistance Trading: The Foundation of Technical Analysis",
@@ -996,7 +989,7 @@ Look for areas where multiple types of support/resistance align:
 - Horizontal level + moving average
 - Psychological level + previous high/low
 
-**Confluence areas provide the highest probability setups.**
+**Confluence areas may provide a stronger setup context, but they do not guarantee an outcome.**
 
 ### False Breakouts
 Price briefly breaks a level but quickly reverses. These can be powerful signals:
@@ -1034,7 +1027,7 @@ Price briefly breaks a level but quickly reverses. These can be powerful signals
 
 ## Conclusion
 
-Support and resistance are the foundation of technical analysis. Master these concepts first before moving to more complex indicators. The best traders can identify key levels at a glance and understand the psychology behind them.
+Support and resistance are common technical-analysis concepts. Practice identifying them and test how they behave in different markets; no trader can identify every level perfectly.
 
 Remember: Support and resistance are zones, not exact lines. Think in terms of areas where price is likely to react, not precise price points.`,
   },
@@ -1172,15 +1165,15 @@ Candlestick patterns are powerful tools when used correctly. They provide insigh
 Remember: The market doesn't always follow patterns. Use them as probability enhancers, not guarantees.`,
   },
   {
-    id: 12, slug: "position-sizing-guide", title: "Position Sizing: The Secret to Consistent Trading Profits",
-    excerpt: "Most traders focus on entry signals but ignore position sizing. Learn how to calculate the perfect position size for every trade to protect your capital and maximize returns.",
+    id: 12, slug: "position-sizing-guide", title: "Position Sizing: A Risk-Control Framework",
+    excerpt: "Position sizing connects account risk, stop distance and trade quantity. Learn a calculation framework without treating any percentage as a guarantee.",
     category: "Education", author: "Dr. Michael Chen", date: "2026-05-25", readTime: "14 min",
     image: "PS", tags: ["position-sizing", "risk-management", "money-management"],
     content: `# Position Sizing: The Secret to Consistent Trading Profits
 
-## The Position Sizing Problem
+## Why Position Sizing Matters
 
-Most traders spend 90% of their time finding the perfect entry and only 10% on position sizing. Professional traders do the opposite. Position sizing is the single most important factor in trading success.
+Position sizing connects account risk, stop distance, leverage, liquidity and trade quantity. It cannot eliminate losses, but a deliberate framework can help limit the size of an individual mistake.
 
 ## What is Position Sizing?
 
@@ -1188,9 +1181,9 @@ Position sizing determines how much of your account to risk on each trade. It's 
 
 ## The Golden Rule
 
-**Never risk more than 1-2% of your account on any single trade.**
+**Example framework: risk a small, predefined percentage of the account on a trade.**
 
-This means:
+For illustration only, a 1-2% framework would mean:
 - $10,000 account ? Maximum $100-200 risk per trade
 - $50,000 account ? Maximum $500-1,000 risk per trade
 - $100,000 account ? Maximum $1,000-2,000 risk per trade
@@ -1322,11 +1315,11 @@ Proper position sizing:
 
 ## Conclusion
 
-Position sizing is not exciting - it's mathematical and disciplined. But it's the difference between professional traders who survive and amateurs who blow up their accounts.
+Position sizing is mathematical and disciplined, but no sizing method eliminates market or execution risk.
 
-Focus less on finding the perfect entry and more on managing your risk. The best entry with poor position sizing can still lose money. The worst entry with perfect position sizing can still preserve your capital.
+Focus less on finding the perfect entry and more on managing your risk. Position sizing can limit exposure, but it cannot make a poor trade safe or guarantee that capital will be preserved.
 
-Remember: Protect your capital first. Profits will follow.`,
+Remember: Protect your capital first. Profits are never guaranteed.`,
   },
   {
     id: 13, slug: "trading-mistakes-avoid", title: "Top 10 Trading Mistakes Beginners Make (And How to Avoid Them)",
@@ -1413,9 +1406,9 @@ Limit yourself to 3-5 high-quality trades per day maximum.
 Focusing only on potential profits while ignoring potential losses.
 
 ### The Solution
-- Risk 1-2% maximum per trade
-- Maintain 1:2 minimum risk-reward ratio
-- Never risk more than 5% total at once
+- Consider a small, predefined risk amount per trade; no universal percentage fits every account
+- Evaluate risk-reward together with win rate, costs, slippage and actual results
+- Set a total-risk limit appropriate to correlated positions and your loss tolerance
 
 ### Action Step
 Calculate risk before every trade. If it doesn't fit your parameters, skip the trade.
@@ -1780,10 +1773,10 @@ Trade across different timeframes:
 - **No correlation (0)**: Assets move independently
 
 ### Ideal Diversification
-Combine assets with low or negative correlation:
-- Stocks + Bonds (traditionally negative correlation)
-- USD + Gold (negative correlation during crises)
-- Tech stocks + Consumer staples (low correlation)
+Consider assets with different historical drivers, but do not assume correlations remain stable:
+- Stocks and bonds can behave differently, but their relationship changes over time
+- USD and gold may respond differently to some conditions, but neither relationship is guaranteed
+- Tech stocks and consumer staples can have different exposures, yet both remain market risks
 
 ### Measuring Correlation
 Use correlation coefficient:
@@ -1795,14 +1788,14 @@ Use correlation coefficient:
 
 ## Practical Diversification Strategies
 
-### The 1% Rule
-Never risk more than 1% of total portfolio on any single trade.
+### Example Risk Limits
+A 1% per-position framework is one possible example, not a universal rule. Consider liquidity, concentration, correlation and personal risk tolerance.
 
-### The 5% Sector Rule
-Never have more than 5% of portfolio in one sector.
+### Example Sector Limit
+A 5% sector limit is an illustrative concentration check, not a fixed requirement.
 
-### The 10% Asset Rule
-Never have more than 10% of portfolio in one asset class.
+### Example Asset-Class Limit
+A 10% limit is an illustrative framework; suitable allocations depend on objectives, time horizon and risk tolerance.
 
 ### The Core-Satellite Approach
 - **Core (70-80%)**: Broad market exposure (index funds, major pairs)
@@ -8025,6 +8018,16 @@ export const tools: Tool[] = rawTools.filter(
     all.findIndex((candidate) => candidate.slug === tool.slug) === index
 );
 
+// Blog posts are educational editorial content. They are not provider fact
+// sheets, so expose a clear review status instead of implying live verification.
+const editorialBlogPosts: BlogPost[] = blogPosts.map((post) => ({
+  ...post,
+  author: "Brokr Editorial Team",
+  lastReviewedAt: "2026-08-03",
+  reviewStatus: "editorial_reviewed",
+  sourceUrls: post.sourceUrls ?? [],
+}));
+
 // Exports
 export function getToolBySlug(slug: string): Tool | undefined { return tools.find((t) => t.slug === slug); }
 export function getTrendingTools(): Tool[] { return tools.filter((t) => t.trending); }
@@ -8032,8 +8035,8 @@ export function getFeaturedTools(): Tool[] { return tools.filter((t) => t.featur
 export function getToolsByCategory(categoryId: number): Tool[] { return tools.filter((t) => t.categoryId === categoryId); }
 export function getCategoryById(id: number): Category | undefined { return categories.find((c) => c.id === id); }
 export function getCategoryBySlug(slug: string): Category | undefined { return categories.find((c) => c.slug === slug); }
-export function getBlogPosts(): BlogPost[] { return blogPosts; }
-export function getBlogPostBySlug(slug: string): BlogPost | undefined { return blogPosts.find((b) => b.slug === slug); }
+export function getBlogPosts(): BlogPost[] { return editorialBlogPosts; }
+export function getBlogPostBySlug(slug: string): BlogPost | undefined { return editorialBlogPosts.find((b) => b.slug === slug); }
 
 export function getToolSourceUrls(tool: Tool): string[] {
   return tool.sourceUrls?.filter(Boolean) ?? [tool.website];

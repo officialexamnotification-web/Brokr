@@ -57,6 +57,11 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
         <button className="flex items-center gap-1 hover:text-primary-500 transition-colors"><Share2 className="w-3.5 h-3.5" /> Share</button>
       </div>
 
+      <div className="mb-8 rounded-xl border border-amber-200 bg-amber-50/70 p-3 text-xs text-amber-800 dark:border-amber-900/50 dark:bg-amber-950/20 dark:text-amber-300">
+        <div>Editorial review: {post.lastReviewedAt ?? "Not recorded"} · {post.reviewStatus === "source_checked" ? "Source checked" : "General educational content"}</div>
+        <p className="mt-1">Fees, regulations, availability, market data and provider features can change. Verify current details with the relevant provider or regulator. This article is not financial advice.</p>
+      </div>
+
       <div className="flex flex-wrap gap-2 mb-8">
         {post.tags.map((t) => (
           <span key={t} className="px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-xs font-medium">{t}</span>
