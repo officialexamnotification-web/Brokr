@@ -19,7 +19,7 @@ export default function TermsPage() {
           Terms of <span className="text-primary-600">Service</span>
         </h1>
         <p className="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
-          Last updated: August 2026
+          Last updated: August 3, 2026
         </p>
       </div>
 
@@ -30,7 +30,7 @@ export default function TermsPage() {
             Agreement to Terms
           </h2>
           <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
-            By accessing or using Brokr ("the Service"), you agree to be bound by these Terms of Service ("Terms"). If you disagree with any part of these terms, you may not access the Service. These Terms constitute a legally binding agreement between you and Brokr.
+            By accessing or using Brokr ("the Service"), you acknowledge these Terms of Service ("Terms"). If you do not agree with them, please do not use the Service. These Terms describe the intended conditions for using this informational directory; their enforceability may depend on applicable law and the operator's actual legal details.
           </p>
         </section>
 
@@ -131,7 +131,7 @@ export default function TermsPage() {
             Intellectual Property
           </h2>
           <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
-            All content on Brokr, including text, graphics, logos, and software, is our property or the property of our licensors and is protected by copyright and other intellectual property laws. You may not use, reproduce, or distribute our content without our prior written consent, except as permitted by law.
+            Original text, software, and branding created for Brokr may be owned by Brokr or its licensors and may be protected by intellectual-property laws. Provider names, trademarks, logos, and third-party materials remain the property of their respective owners. You may not reproduce Brokr-owned content without permission, except as permitted by law.
           </p>
         </section>
 
@@ -152,7 +152,7 @@ export default function TermsPage() {
         <section>
           <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-4">Governing Law</h2>
           <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
-            These Terms shall be governed by and construed in accordance with the laws of the jurisdiction in which Brokr is established, without regard to its conflict of law provisions. Any disputes arising under these Terms shall be subject to the exclusive jurisdiction of the courts in that jurisdiction.
+            No specific governing law or court jurisdiction is stated in these draft Terms. The operator should add its actual legal name, address, and jurisdiction after obtaining appropriate legal advice before commercial launch.
           </p>
         </section>
 
@@ -166,7 +166,7 @@ export default function TermsPage() {
         <section>
           <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-4">Contact Information</h2>
           <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
-            If you have questions about these Terms of Service, please contact us at legal@brokr.com.
+            A dedicated legal contact mailbox is not currently connected to this project. Publish an operational legal contact and the operator's legal details before treating these Terms as final.
           </p>
         </section>
       </div>

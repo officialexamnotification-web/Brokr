@@ -64,7 +64,7 @@ export default function StatsBanner() {
   const stats: StatItem[] = [
     { label: "Listed Tools", value: tools.length, suffix: "", icon: TrendingUp },
     { label: "Categories", value: categories.length, suffix: "", icon: Zap },
-    { label: "Regions Covered", value: getAvailableCountries().length, suffix: "", icon: Globe },
+    { label: "Countries Covered", value: getAvailableCountries().length, suffix: "", icon: Globe },
     { label: "Fields in Record", value: Object.keys(tools[0] ?? {}).length, suffix: "", icon: ShieldCheck },
   ];
 

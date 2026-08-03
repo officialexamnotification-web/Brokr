@@ -19,7 +19,7 @@ export default function PrivacyPage() {
           Privacy <span className="text-primary-600">Policy</span>
         </h1>
         <p className="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
-          Last updated: August 2026
+          Last updated: August 3, 2026
         </p>
       </div>
 
@@ -30,7 +30,7 @@ export default function PrivacyPage() {
             Introduction
           </h2>
           <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
-            Brokr ("we," "our," or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit this website and use its services. Please read this policy carefully to understand our practices regarding your personal information.
+            Brokr ("we," "our," or "us") is an informational directory. This policy describes the website's current data practices. Some features mentioned below may be enabled only in the future; this page should be updated before any new analytics, advertising, account, or submission system is activated.
           </p>
         </section>
 
@@ -43,19 +43,15 @@ export default function PrivacyPage() {
             <div>
               <h3 className="font-semibold text-slate-900 dark:text-white mb-2">Information You Provide</h3>
               <ul className="text-slate-600 dark:text-slate-400 space-y-2 list-disc list-inside">
-                <li>Contact information (name, email address) when you submit forms</li>
-                <li>Feedback and communications you send to us</li>
-                <li>Account information if you create an account</li>
+                <li>The contact-form preview currently keeps entered values in your browser only while the page is open; it does not send or store them.</li>
+                <li>No user accounts, newsletter delivery, or submission backend is currently enabled.</li>
               </ul>
             </div>
             <div>
               <h3 className="font-semibold text-slate-900 dark:text-white mb-2">Automatically Collected Information</h3>
               <ul className="text-slate-600 dark:text-slate-400 space-y-2 list-disc list-inside">
-                <li>IP address and browser type</li>
-                <li>Operating system and device information</li>
-                <li>Referring website and pages visited</li>
-                <li>Time and date of visit</li>
-                <li>Cookies and similar tracking technologies</li>
+                <li>Hosting, CDN, or security providers may process request metadata such as IP address, browser type, device information, referring page, and request time.</li>
+                <li>Brokr currently uses local browser storage for theme and cookie-preference settings.</li>
               </ul>
             </div>
           </div>
@@ -67,7 +63,7 @@ export default function PrivacyPage() {
             Cookies and advertising
           </h2>
           <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
-            Brokr currently uses local browser storage for the cookie-preference banner and theme preference. Optional analytics and advertising should only be enabled after the relevant consent is recorded. If Google AdSense or other advertising partners are enabled, their cookies, processing, and regional consent requirements will be described here and configured before ads are served.
+            Brokr currently uses local browser storage for the cookie-preference banner and theme preference. No optional analytics or advertising scripts are currently enabled by this project. If Google AdSense or another advertising partner is added, this policy and the consent flow must be updated before those services are activated.
           </p>
         </section>
 
@@ -77,15 +73,12 @@ export default function PrivacyPage() {
             How We Use Your Information
           </h2>
           <p className="text-slate-600 dark:text-slate-400 leading-relaxed mb-4">
-            We use the information we collect for the following purposes:
+            Based on the current implementation, information may be used for the following limited purposes:
           </p>
           <ul className="text-slate-600 dark:text-slate-400 space-y-2 list-disc list-inside">
-            <li>To provide, maintain, and improve our services</li>
-            <li>To respond to your inquiries and support requests</li>
-            <li>To send you technical notices and updates</li>
-            <li>To analyze usage patterns and improve our website</li>
-            <li>To detect and prevent fraud, abuse, and security issues</li>
-            <li>To comply with legal obligations</li>
+            <li>To provide the directory and remember local preferences</li>
+            <li>To maintain website availability and security through hosting or infrastructure providers</li>
+            <li>To comply with applicable legal obligations</li>
           </ul>
         </section>
 
@@ -95,26 +88,25 @@ export default function PrivacyPage() {
             Cookies and Tracking
           </h2>
           <p className="text-slate-600 dark:text-slate-400 leading-relaxed mb-4">
-            We use cookies and similar tracking technologies to collect and track information about your activities on our website:
+            The current project uses the following storage:
           </p>
           <ul className="text-slate-600 dark:text-slate-400 space-y-2 list-disc list-inside">
-            <li><strong>Essential Cookies:</strong> Required for basic website functionality</li>
-            <li><strong>Analytics Cookies:</strong> Help us understand how visitors use our site</li>
-            <li><strong>Advertising Cookies:</strong> Used to deliver relevant advertisements</li>
+            <li><strong>Essential local storage:</strong> Stores site-preference and theme settings.</li>
+            <li><strong>Optional analytics or advertising:</strong> Not currently enabled by this project.</li>
           </ul>
           <p className="text-slate-600 dark:text-slate-400 leading-relaxed mt-4">
-            You can control cookies through your browser settings. Note that disabling certain cookies may affect website functionality.
+            You can clear local storage and control cookies through your browser settings. If optional services are added later, their consent controls and provider disclosures must be added here before activation.
           </p>
         </section>
 
         <section>
           <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-4">Information Sharing</h2>
           <p className="text-slate-600 dark:text-slate-400 leading-relaxed mb-4">
-            We do not sell your personal information. We may share your information only in the following circumstances:
+            Brokr does not sell personal information. Because the current contact and submission forms do not send or store entries, Brokr does not currently receive those form messages. Information may be processed or disclosed only as necessary for:
           </p>
           <ul className="text-slate-600 dark:text-slate-400 space-y-2 list-disc list-inside">
-            <li>With service providers who perform services on our behalf</li>
-            <li>With affiliate partners when you click on affiliate links (as disclosed)</li>
+            <li>Third-party hosting, CDN, security, or other infrastructure providers that support the website</li>
+            <li>Commercial or affiliate partners only if such links are introduced later and clearly disclosed</li>
             <li>To comply with legal requirements or court orders</li>
             <li>To protect our rights, property, or safety</li>
             <li>In connection with a business transfer or merger</li>
@@ -124,7 +116,7 @@ export default function PrivacyPage() {
         <section>
           <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-4">Data Security</h2>
           <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
-            We implement appropriate technical and organizational measures to protect your personal information against unauthorized access, alteration, disclosure, or destruction. However, no method of transmission over the internet is 100% secure, and we cannot guarantee absolute security.
+            We use reasonable technical measures for this project, but no method of transmission or storage over the internet is completely secure. We cannot guarantee absolute security.
           </p>
         </section>
 
@@ -160,7 +152,7 @@ export default function PrivacyPage() {
         <section>
           <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-4">International Data Transfers</h2>
           <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
-            Your information may be transferred to and processed in countries other than your country of residence. We ensure appropriate safeguards are in place to protect your information in accordance with this Privacy Policy.
+            Hosting, CDN, security, or other infrastructure providers may process request data in countries other than your country of residence. The applicable provider terms and safeguards should be reviewed when those services are selected or changed.
           </p>
         </section>
 
@@ -174,7 +166,7 @@ export default function PrivacyPage() {
         <section>
           <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-4">Contact Us</h2>
           <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
-            If you have questions about this Privacy Policy or our data practices, please contact us at privacy@brokr.com.
+            A dedicated privacy mailbox is not currently connected to this project. Publish an operational privacy contact before collecting personal information, enabling accounts, or activating form submissions, analytics, or advertising.
           </p>
         </section>
       </div>

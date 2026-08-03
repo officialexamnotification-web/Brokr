@@ -18,7 +18,7 @@ export default function ContactPage() {
           Contact <span className="text-primary-600">Us</span>
         </h1>
         <p className="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
-          Have questions, feedback, or suggestions? We'd love to hear from you. Fill out the form below and we'll get back to you as soon as possible.
+          This page contains a contact-form preview. Messages are not sent or stored until a mailbox backend is connected.
         </p>
       </div>
 
@@ -94,7 +94,7 @@ export default function ContactPage() {
                 className="w-full btn-primary flex items-center justify-center gap-2 px-6 py-3 text-sm"
               >
                 <Send className="w-4 h-4" />
-                Send Message
+                Preview Message
               </button>
               {status === "preview" && (
                 <p className="text-sm text-amber-700 dark:text-amber-400" role="status">
@@ -112,9 +112,9 @@ export default function ContactPage() {
                 <Mail className="w-6 h-6 text-primary-600 dark:text-primary-400" />
               </div>
               <div>
-                <h3 className="font-semibold text-slate-900 dark:text-white mb-1">Email</h3>
-                <p className="text-sm text-slate-600 dark:text-slate-400">Contact form available on this page</p>
-                <p className="text-xs text-slate-500 dark:text-slate-500 mt-1">We respond as soon as possible</p>
+                <h3 className="font-semibold text-slate-900 dark:text-white mb-1">Contact status</h3>
+                <p className="text-sm text-slate-600 dark:text-slate-400">No mailbox backend is connected yet.</p>
+                <p className="text-xs text-slate-500 dark:text-slate-500 mt-1">Do not enter passwords, payment details, or other sensitive information.</p>
               </div>
             </div>
           </div>
@@ -125,7 +125,7 @@ export default function ContactPage() {
             <ul className="text-sm text-slate-600 dark:text-slate-400 space-y-2">
               <li className="flex items-start gap-2">
                 <span className="text-primary-600 mt-1">•</span>
-                <span>Check our FAQ section for common questions</span>
+                <span>Review the tool page and its source links for provider-specific questions</span>
               </li>
               <li className="flex items-start gap-2">
                 <span className="text-primary-600 mt-1">•</span>

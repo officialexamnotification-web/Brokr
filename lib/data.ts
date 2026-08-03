@@ -8050,24 +8050,87 @@ export function getToolLastVerified(tool: Tool): string | null {
   return tool.lastVerifiedAt ?? null;
 }
 
+const canonicalCountryOptions = [
+  "Australia",
+  "Austria",
+  "Brazil",
+  "Canada",
+  "Denmark",
+  "Finland",
+  "France",
+  "Germany",
+  "Hong Kong",
+  "India",
+  "Italy",
+  "Japan",
+  "Malaysia",
+  "Mexico",
+  "Netherlands",
+  "New Zealand",
+  "Norway",
+  "Seychelles",
+  "Singapore",
+  "South Korea",
+  "Spain",
+  "Sweden",
+  "Switzerland",
+  "United Arab Emirates",
+  "United Kingdom",
+  "United States",
+] as const;
+
+const countryAliases: Record<string, string[]> = {
+  australia: ["australia"],
+  austria: ["austria"],
+  brazil: ["brazil"],
+  canada: ["canada"],
+  denmark: ["denmark"],
+  finland: ["finland"],
+  france: ["france"],
+  germany: ["germany"],
+  "hong kong": ["hong kong"],
+  india: ["india"],
+  italy: ["italy"],
+  japan: ["japan"],
+  malaysia: ["malaysia"],
+  mexico: ["mexico"],
+  netherlands: ["netherlands"],
+  "new zealand": ["new zealand"],
+  norway: ["norway"],
+  seychelles: ["seychelles"],
+  singapore: ["singapore"],
+  "south korea": ["south korea", "korea"],
+  spain: ["spain"],
+  sweden: ["sweden"],
+  switzerland: ["switzerland"],
+  "united arab emirates": ["united arab emirates", "uae"],
+  europe: ["europe", "eu", "eea"],
+  eu: ["europe", "eu", "eea"],
+  uk: ["uk", "united kingdom", "england", "scotland", "wales"],
+  "united kingdom": ["uk", "united kingdom", "england", "scotland", "wales"],
+  us: ["usa", "united states", "us"],
+  usa: ["usa", "united states", "us"],
+  "united states": ["usa", "united states", "us"],
+};
+
+function matchesCountryLabel(value: string, country: string): boolean {
+  const aliases = countryAliases[country.toLowerCase().trim()] ?? [country.toLowerCase().trim()];
+  const valueLower = value.toLowerCase().trim();
+  return aliases.some((alias) =>
+    new RegExp(`(^|[^a-z])${alias.replace(/[.*+?^${}()|[\\]\\\\]/g, "\\\\$&")}([^a-z]|$)`).test(valueLower)
+  );
+}
+
 // Country filter function - returns tools available in a specific country
 export function getToolsByCountry(country: string): Tool[] {
   const countryLower = country.toLowerCase().trim();
-  const aliases: Record<string, string[]> = {
-    india: ["india"],
-    uk: ["uk", "united kingdom", "england", "scotland", "wales"],
-    usa: ["usa", "united states", "us"],
-    us: ["usa", "united states", "us"],
-    europe: ["europe", "eu", "eea"],
-    eu: ["europe", "eu", "eea"],
-  };
-  const countryAliases = aliases[countryLower] ?? [countryLower];
+  const selectedAliases = countryAliases[countryLower] ?? [countryLower];
 
   return tools.filter((tool) => {
     return tool.supportedCountries.some((supportedCountry) => {
       const supportedLower = supportedCountry.toLowerCase().trim();
       const isGlobal = /\bglobal\b|worldwide|most countries|100\+ countries|180\+ countries/.test(supportedLower);
-      const hasAlias = countryAliases.some((alias) =>
+      const hasAlias = selectedAliases.some((alias) =>
         new RegExp(`(^|[^a-z])${alias.replace(/[.*+?^${}()|[\\]\\\\]/g, "\\\\$&")}([^a-z]|$)`).test(supportedLower)
       );
       return isGlobal || hasAlias;
@@ -8075,26 +8138,14 @@ export function getToolsByCountry(country: string): Tool[] {
   });
 }
 
-// Get available countries from all tools
+// Get clean country options from all tools. Availability notes remain on the
+// tool record instead of becoming misleading country-filter values.
 export function getAvailableCountries(): string[] {
-  const countries = new Set<string>();
-  const excludePatterns = ["Countries", "Global", "Most", "Select", "exceptions", "apply", "+", "countries", "limited", "excluding", "excl", "N/A", "Limited", "Africa", "Americas", "Asia", "Asia-Pacific", "Europe", "Latin America", "Middle East", "Nordic", "Southeast Asia", "EU/EEA"];
-  
-  tools.forEach((tool) => {
-    tool.supportedCountries.forEach((country) => {
-      // Exclude generic patterns like "100+ Countries", "Global", etc.
-      const isGeneric = excludePatterns.some(pattern => country.toLowerCase().includes(pattern.toLowerCase())) || 
-                        /^\d+/.test(country) || // Exclude entries starting with numbers
-                        country.length <= 2 || // Exclude 2-letter codes like "AU"
-                        country.includes(")") || // Exclude entries with closing parenthesis (malformed)
-                        country.includes("("); // Exclude entries with opening parenthesis (malformed)
-      if (!isGeneric) {
-        countries.add(country);
-      }
-    });
-  });
-  // Return all countries
-  return Array.from(countries).sort();
+  return canonicalCountryOptions
+    .filter((country) => tools.some((tool) =>
+      tool.supportedCountries.some((supportedCountry) => matchesCountryLabel(supportedCountry, country))
+    ))
+    .sort();
 }
 export function getRegionByCode(code: string): Region | undefined { return regions.find((r) => r.code === code); }
 export function getToolsByRegion(regionCode: string): Tool[] {
