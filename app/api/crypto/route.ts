@@ -59,16 +59,20 @@ export async function GET(request: Request) {
     }> = {};
     for (const coin of marketData) {
       if (!coin?.id || typeof coin.current_price !== "number") continue;
+      const currentInr = Math.round(coin.current_price * usdToInr);
+      const highInr = toInr(coin.high_24h);
+      const lowInr = toInr(coin.low_24h);
       result[coin.id] = {
-        inr: Math.round(coin.current_price * usdToInr),
+        inr: currentInr,
         usd: coin.current_price,
         change_24h: typeof coin.price_change_percentage_24h === "number" && Number.isFinite(coin.price_change_percentage_24h) ? coin.price_change_percentage_24h : null,
         change_7d: typeof coin.price_change_percentage_7d_in_currency === "number" ? coin.price_change_percentage_7d_in_currency : null,
         market_cap_inr: toInr(coin.market_cap),
         market_cap_rank: typeof coin.market_cap_rank === "number" ? coin.market_cap_rank : null,
         total_volume_inr: toInr(coin.total_volume),
-        high_24h_inr: toInr(coin.high_24h),
-        low_24h_inr: toInr(coin.low_24h),
+        // Do not render an impossible range when a provider response is assembled from mismatched snapshots.
+        high_24h_inr: typeof coin.high_24h === "number" && coin.high_24h >= coin.current_price ? highInr : null,
+        low_24h_inr: typeof coin.low_24h === "number" && coin.low_24h <= coin.current_price ? lowInr : null,
         last_updated: typeof coin.last_updated === "string" ? coin.last_updated : null,
       };
     }

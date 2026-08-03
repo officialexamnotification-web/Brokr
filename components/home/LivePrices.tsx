@@ -47,9 +47,11 @@ function formatInr(value: number | null) {
 }
 
 function formatCompactInr(value: number | null) {
-  return value == null
-    ? "—"
-    : `₹${new Intl.NumberFormat("en-IN", { notation: "compact", maximumFractionDigits: 1 }).format(value)}`;
+  if (value == null) return "—";
+  const crore = value / 10_000_000;
+  if (crore >= 100_000) return `₹${(crore / 100_000).toFixed(1)} lakh Cr`;
+  if (crore >= 1) return `₹${crore.toFixed(1)} Cr`;
+  return `₹${value.toLocaleString("en-IN", { maximumFractionDigits: 0 })}`;
 }
 
 function formatUsd(value: number | null) {
@@ -71,6 +73,13 @@ function changeLabel(value: number | null, label: string) {
 function changeClass(value: number | null) {
   if (value == null || !Number.isFinite(value)) return "text-slate-500 dark:text-slate-400";
   return value >= 0 ? "text-green-600 dark:text-green-400" : "text-red-500 dark:text-red-400";
+}
+
+function quoteLabel(value: string | null) {
+  if (!value) return "Trade: unavailable";
+  const timestamp = new Date(value).getTime();
+  const stale = Number.isFinite(timestamp) && Date.now() - timestamp > 48 * 60 * 60 * 1000;
+  return `${stale ? "Stale quote" : "Trade"}: ${formatDate(value)}`;
 }
 
 export default function LivePrices() {
@@ -280,7 +289,7 @@ export default function LivePrices() {
                       <span>High/Low: {formatUsd(stock.dayHigh)} / {formatUsd(stock.dayLow)}</span>
                       <span>52W: {formatUsd(stock.week52High)} / {formatUsd(stock.week52Low)}</span>
                       <span>{stock.exchange ?? stock.currency ?? "Quote"}{stock.extendedHours ? " · extended hours" : ""}</span>
-                      <span>Trade: {formatDate(stock.lastTradeTime)}</span>
+                      <span>{quoteLabel(stock.lastTradeTime)}</span>
                     </div>
                   </div>
                 ))}

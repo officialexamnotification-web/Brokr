@@ -94,9 +94,9 @@ export async function GET(request: Request) {
         data.data.forEach((quote: any) => {
           const price = quote.price;
           const previousClose = quote.previous_close_price;
-          const changePercent = typeof quote.day_change === "number" && Number.isFinite(quote.day_change)
-            ? quote.day_change
-            : typeof price === "number" && typeof previousClose === "number" && previousClose > 0 ? ((price - previousClose) / previousClose) * 100 : null;
+          const changePercent = typeof price === "number" && typeof previousClose === "number" && previousClose > 0
+            ? ((price - previousClose) / previousClose) * 100
+            : null;
           
           results[quote.ticker] = {
             price: price,

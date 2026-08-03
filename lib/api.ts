@@ -210,12 +210,11 @@ export async function getStockPrices(symbols: string[] = ["AAPL", "GOOGL", "MSFT
         data.data.forEach((quote: any) => {
           const price = quote.price;
           const previousClose = quote.previous_close_price;
-          const change = typeof quote.day_change === "number" && Number.isFinite(quote.day_change) ? quote.day_change : null;
           const changePercent = typeof price === "number" && typeof previousClose === "number" && previousClose > 0 ? ((price - previousClose) / previousClose) * 100 : null;
           
           results[quote.ticker] = {
             price: price,
-            change,
+            change: changePercent,
             changePercent: typeof changePercent === "number" && Number.isFinite(changePercent) ? changePercent : null,
           };
         });
