@@ -1,0 +1,76 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function hasOnly(fields) {
+      return request.resource.data.keys().hasOnly(fields);
+    }
+
+    function isCreatedNow() {
+      return request.resource.data.createdAt == request.time;
+    }
+
+    function validEmail(value) {
+      return value is string
+        && value.size() <= 254
+        && value.matches('^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$');
+    }
+
+    match /contactMessages/{messageId} {
+      allow create: if request.auth == null
+        && hasOnly(['name', 'email', 'subject', 'message', 'status', 'source', 'createdAt'])
+        && request.resource.data.name is string
+        && request.resource.data.name.size() > 0
+        && request.resource.data.name.size() <= 120
+        && validEmail(request.resource.data.email)
+        && request.resource.data.subject is string
+        && request.resource.data.subject.size() <= 40
+        && request.resource.data.message is string
+        && request.resource.data.message.size() > 0
+        && request.resource.data.message.size() <= 5000
+        && request.resource.data.status == 'new'
+        && request.resource.data.source == 'brokr-contact-form'
+        && isCreatedNow();
+      allow read, update, delete: if false;
+    }
+
+    match /toolSubmissions/{submissionId} {
+      allow create: if request.auth == null
+        && hasOnly(['name', 'website', 'category', 'description', 'features', 'pricing', 'email', 'status', 'source', 'createdAt'])
+        && request.resource.data.name is string
+        && request.resource.data.name.size() > 0
+        && request.resource.data.name.size() <= 160
+        && request.resource.data.website is string
+        && request.resource.data.website.size() > 0
+        && request.resource.data.website.size() <= 500
+        && request.resource.data.category is string
+        && request.resource.data.category.size() > 0
+        && request.resource.data.category.size() <= 80
+        && request.resource.data.description is string
+        && request.resource.data.description.size() > 0
+        && request.resource.data.description.size() <= 5000
+        && request.resource.data.features is string
+        && request.resource.data.features.size() <= 1000
+        && request.resource.data.pricing is string
+        && request.resource.data.pricing.size() <= 500
+        && request.resource.data.email is string
+        && request.resource.data.email.size() <= 254
+        && request.resource.data.status == 'pending-review'
+        && request.resource.data.source == 'brokr-submit-form'
+        && isCreatedNow();
+      allow read, update, delete: if false;
+    }
+
+    match /newsletterSubscriptions/{subscriptionId} {
+      allow create: if request.auth == null
+        && hasOnly(['email', 'status', 'source', 'createdAt'])
+        && validEmail(request.resource.data.email)
+        && request.resource.data.status == 'subscribed'
+        && request.resource.data.source == 'brokr-newsletter'
+        && isCreatedNow();
+      allow read, update, delete: if false;
+    }
+  }
+}
+
+

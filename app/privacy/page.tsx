@@ -30,7 +30,7 @@ export default function PrivacyPage() {
             Introduction
           </h2>
           <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
-            Brokr ("we," "our," or "us") is an informational directory. This policy describes the website's current data practices. Some features mentioned below may be enabled only in the future; this page should be updated before any new analytics, advertising, account, or submission system is activated.
+            Brokr ("we," "our," or "us") is an informational directory. This policy describes the website's current data practices. Contact, tool-submission, and newsletter storage is enabled only when the deployment's Firebase configuration and security rules are active; otherwise those forms remain previews and do not send or store entries.
           </p>
         </section>
 
@@ -43,8 +43,8 @@ export default function PrivacyPage() {
             <div>
               <h3 className="font-semibold text-slate-900 dark:text-white mb-2">Information You Provide</h3>
               <ul className="text-slate-600 dark:text-slate-400 space-y-2 list-disc list-inside">
-                <li>The contact-form preview currently keeps entered values in your browser only while the page is open; it does not send or store them.</li>
-                <li>No user accounts, newsletter delivery, or submission backend is currently enabled.</li>
+                <li>When Firebase is configured, contact messages and tool submissions are stored for review. When it is not configured, entered values remain in the browser only while the page is open and are not sent or stored.</li>
+                <li>Newsletter emails are stored only when a user submits the subscription form after Firebase has been enabled. Newsletter delivery is not connected automatically.</li>
               </ul>
             </div>
             <div>
@@ -78,6 +78,7 @@ export default function PrivacyPage() {
           <ul className="text-slate-600 dark:text-slate-400 space-y-2 list-disc list-inside">
             <li>To provide the directory and remember local preferences</li>
             <li>To maintain website availability and security through hosting or infrastructure providers</li>
+            <li>To review contact messages, tool submissions, and newsletter subscriptions when those Firebase-backed forms are enabled</li>
             <li>To comply with applicable legal obligations</li>
           </ul>
         </section>
@@ -102,7 +103,7 @@ export default function PrivacyPage() {
         <section>
           <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-4">Information Sharing</h2>
           <p className="text-slate-600 dark:text-slate-400 leading-relaxed mb-4">
-            Brokr does not sell personal information. Because the current contact and submission forms do not send or store entries, Brokr does not currently receive those form messages. Information may be processed or disclosed only as necessary for:
+            Brokr does not sell personal information. When Firebase-backed forms are enabled, the submitted fields are processed by Firebase/Google Cloud as the storage provider and by Brokr for review. Information may be processed or disclosed only as necessary for:
           </p>
           <ul className="text-slate-600 dark:text-slate-400 space-y-2 list-disc list-inside">
             <li>Third-party hosting, CDN, security, or other infrastructure providers that support the website</li>
@@ -166,7 +167,7 @@ export default function PrivacyPage() {
         <section>
           <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-4">Contact Us</h2>
           <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
-            A dedicated privacy mailbox is not currently connected to this project. Publish an operational privacy contact before collecting personal information, enabling accounts, or activating form submissions, analytics, or advertising.
+            Publish an operational privacy mailbox, retention period, and deletion process before collecting personal information at production scale. Users should not submit passwords, payment details, or other sensitive information through these forms.
           </p>
         </section>
       </div>

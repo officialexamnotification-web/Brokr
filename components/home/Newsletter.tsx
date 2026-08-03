@@ -4,9 +4,31 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { Bell, ArrowRight, Mail, Sparkles, Shield, Zap, TrendingUp } from "lucide-react";
+import { isFirebaseConfigured, saveNewsletterSubscription } from "@/lib/firebase";
 
 export default function Newsletter() {
   const [submitted, setSubmitted] = useState(false);
+  const [email, setEmail] = useState("");
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState("");
+
+  async function handleSubmit() {
+    setError("");
+    if (!isFirebaseConfigured) {
+      setSubmitted(true);
+      return;
+    }
+    setSaving(true);
+    try {
+      await saveNewsletterSubscription(email);
+      setSubmitted(true);
+      setEmail("");
+    } catch {
+      setError("We could not save your subscription. Please try again later.");
+    } finally {
+      setSaving(false);
+    }
+  }
 
   return (
     <section className="py-24 lg:py-32">
@@ -36,8 +58,9 @@ export default function Newsletter() {
               Never miss an update
             </h2>
             <p className="text-lg text-indigo-200/80 mb-10 leading-relaxed max-w-lg mx-auto">
-              Get occasional directory updates and new comparison guides. Newsletter
-              delivery is not connected yet, so no email address is currently saved.
+              Get occasional directory updates and new comparison guides. {isFirebaseConfigured
+                ? "Your email will be stored for subscription management; delivery is not connected yet."
+                : "Newsletter delivery is not connected yet, so no email address is currently saved."}
             </p>
 
             <div className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto mb-8">
@@ -45,25 +68,32 @@ export default function Newsletter() {
                 <Mail className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-indigo-300/60" />
                 <input
                   type="email"
+                  value={email}
+                  onChange={(event) => setEmail(event.target.value)}
+                  required
                   placeholder="your@email.com"
                   className="w-full pl-12 pr-5 py-4 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/15 text-white placeholder-indigo-300/50 focus:outline-none focus:ring-2 focus:ring-indigo-400/30 focus:border-transparent transition-all text-base"
                 />
               </div>
               <button
                 type="button"
-                onClick={() => setSubmitted(true)}
+                onClick={handleSubmit}
+                disabled={saving}
                 className="btn-primary px-8 py-4 text-base flex items-center justify-center gap-2 group"
               >
-                Preview signup
+                {saving ? "Saving..." : isFirebaseConfigured ? "Subscribe" : "Preview signup"}
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </button>
             </div>
 
             {submitted && (
               <p className="text-sm text-amber-200 mb-6" role="status">
-                Preview only: no subscription was created because the newsletter backend is not connected.
+                {isFirebaseConfigured
+                  ? "Subscription saved. Newsletter delivery is not connected yet."
+                  : "Preview only: no subscription was created because the newsletter backend is not connected."}
               </p>
             )}
+            {error && <p className="text-sm text-red-200 mb-6" role="alert">{error}</p>}
 
             <div className="flex items-center justify-center gap-6 text-indigo-200/60 text-sm">
               <span className="flex items-center gap-1.5">

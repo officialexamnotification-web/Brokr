@@ -1,10 +1,39 @@
 "use client";
 
 import { Mail, MessageSquare, Send } from "lucide-react";
-import { useState } from "react";
+import { FormEvent, useState } from "react";
+import { isFirebaseConfigured, saveContactMessage } from "@/lib/firebase";
 
 export default function ContactPage() {
-  const [status, setStatus] = useState<"idle" | "preview">("idle");
+  const [status, setStatus] = useState<"idle" | "saving" | "success" | "preview" | "error">("idle");
+  const [error, setError] = useState("");
+
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setError("");
+    const form = event.currentTarget;
+
+    if (!isFirebaseConfigured) {
+      setStatus("preview");
+      return;
+    }
+
+    const values = new FormData(form);
+    setStatus("saving");
+    try {
+      await saveContactMessage({
+        name: String(values.get("name") || ""),
+        email: String(values.get("email") || ""),
+        subject: String(values.get("subject") || ""),
+        message: String(values.get("message") || ""),
+      });
+      form.reset();
+      setStatus("success");
+    } catch {
+      setStatus("error");
+      setError("We could not save your message. Please try again later.");
+    }
+  }
 
   return (
     <div className="relative min-h-screen bg-white dark:bg-slate-950">
@@ -18,14 +47,16 @@ export default function ContactPage() {
           Contact <span className="text-primary-600">Us</span>
         </h1>
         <p className="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
-          This page contains a contact-form preview. Messages are not sent or stored until a mailbox backend is connected.
+          {isFirebaseConfigured
+            ? "Messages are securely stored for review. No automatic email reply is sent."
+            : "This page contains a contact-form preview. Messages are not sent or stored until the Firebase backend is connected."}
         </p>
       </div>
 
       <div className="grid lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2">
           <div className="glass-card rounded-3xl p-8">
-            <form className="space-y-6" onSubmit={(event) => { event.preventDefault(); setStatus("preview"); }}>
+            <form className="space-y-6" onSubmit={handleSubmit}>
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
                   <label htmlFor="name" className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
@@ -94,11 +125,13 @@ export default function ContactPage() {
                 className="w-full btn-primary flex items-center justify-center gap-2 px-6 py-3 text-sm"
               >
                 <Send className="w-4 h-4" />
-                Preview Message
+                {status === "saving" ? "Saving..." : isFirebaseConfigured ? "Send Message" : "Preview Message"}
               </button>
-              {status === "preview" && (
+              {(status === "preview" || status === "success" || status === "error") && (
                 <p className="text-sm text-amber-700 dark:text-amber-400" role="status">
-                  This form is currently a preview. No message was sent or saved because a mailbox backend has not been connected yet.
+                  {status === "preview" && "This form is currently a preview. No message was sent or saved because Firebase is not configured yet."}
+                  {status === "success" && "Your message was saved for review. No automatic email reply was sent."}
+                  {status === "error" && error}
                 </p>
               )}
             </form>
@@ -113,7 +146,7 @@ export default function ContactPage() {
               </div>
               <div>
                 <h3 className="font-semibold text-slate-900 dark:text-white mb-1">Contact status</h3>
-                <p className="text-sm text-slate-600 dark:text-slate-400">No mailbox backend is connected yet.</p>
+                <p className="text-sm text-slate-600 dark:text-slate-400">{isFirebaseConfigured ? "Firebase storage is connected for review." : "No form backend is connected yet."}</p>
                 <p className="text-xs text-slate-500 dark:text-slate-500 mt-1">Do not enter passwords, payment details, or other sensitive information.</p>
               </div>
             </div>

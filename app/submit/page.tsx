@@ -12,9 +12,12 @@ import {
   Check,
 } from "lucide-react";
 import { categories } from "@/lib/data";
+import { isFirebaseConfigured, saveToolSubmission } from "@/lib/firebase";
 
 export default function SubmitPage() {
   const [submitted, setSubmitted] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState("");
   const [formData, setFormData] = useState({
     name: "",
     website: "",
@@ -25,9 +28,23 @@ export default function SubmitPage() {
     email: "",
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setSubmitted(true);
+    setError("");
+    if (!isFirebaseConfigured) {
+      setSubmitted(true);
+      return;
+    }
+
+    setSaving(true);
+    try {
+      await saveToolSubmission(formData);
+      setSubmitted(true);
+    } catch {
+      setError("We could not save this submission. Please try again later.");
+    } finally {
+      setSaving(false);
+    }
   };
 
   const handleChange = (
@@ -48,8 +65,9 @@ export default function SubmitPage() {
           Submission Preview
         </h1>
         <p className="text-slate-500 dark:text-slate-400 mb-8">
-          This form is currently a preview. Your information was not sent or
-          saved because the directory submission backend has not been connected yet.
+          {isFirebaseConfigured
+            ? "Your submission was saved for editorial review. It is not published automatically."
+            : "This form is currently a preview. Your information was not sent or saved because the Firebase backend has not been connected yet."}
         </p>
         <Link
           href="/"
@@ -78,7 +96,9 @@ export default function SubmitPage() {
         </h1>
         <p className="text-slate-500 dark:text-slate-400">
           Help our community grow by submitting a trading tool or broker that is
-          not yet listed on Brokr.
+          not yet listed on Brokr. {isFirebaseConfigured
+            ? "Submissions are stored for editorial review and are not published automatically."
+            : "This is a preview until the submission backend is connected; no information is sent or saved."}
         </p>
       </div>
 
@@ -209,9 +229,10 @@ export default function SubmitPage() {
             className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-primary-500 to-primary-600 text-white rounded-xl font-medium hover:from-primary-600 hover:to-primary-700 transition-all hover:shadow-lg hover:shadow-primary-500/25"
           >
             <Send className="w-4 h-4" />
-            Submit Tool
+            {saving ? "Saving..." : isFirebaseConfigured ? "Submit for Review" : "Preview Submission"}
           </button>
         </div>
+        {error && <p className="text-sm text-red-600 dark:text-red-400" role="alert">{error}</p>}
       </form>
     </div>
   );
