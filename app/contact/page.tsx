@@ -144,9 +144,10 @@ export default function ContactPage() {
               <div className="w-12 h-12 rounded-xl bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center flex-shrink-0">
                 <Mail className="w-6 h-6 text-primary-600 dark:text-primary-400" />
               </div>
-              <div>
+              <div className="min-w-0">
                 <h3 className="font-semibold text-slate-900 dark:text-white mb-1">Contact status</h3>
-                <p className="text-sm text-slate-600 dark:text-slate-400">{isFirebaseConfigured ? "Firebase storage is connected for review." : "No form backend is connected yet."}</p>
+                <p className="text-sm text-slate-600 dark:text-slate-400">Email: <a href="mailto:contact.officialbrokr@gmail.com" className="text-primary-600 hover:underline break-all">contact.officialbrokr@gmail.com</a></p>
+                <p className="text-xs text-slate-500 dark:text-slate-500 mt-1">{isFirebaseConfigured ? "Form storage is connected for review." : "The form backend is not connected yet."}</p>
                 <p className="text-xs text-slate-500 dark:text-slate-500 mt-1">Do not enter passwords, payment details, or other sensitive information.</p>
               </div>
             </div>

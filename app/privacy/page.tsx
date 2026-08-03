@@ -167,7 +167,7 @@ export default function PrivacyPage() {
         <section>
           <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-4">Contact Us</h2>
           <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
-            Publish an operational privacy mailbox, retention period, and deletion process before collecting personal information at production scale. Users should not submit passwords, payment details, or other sensitive information through these forms.
+            Privacy questions and deletion requests can be sent to <a href="mailto:contact.officialbrokr@gmail.com" className="text-primary-600 hover:underline">contact.officialbrokr@gmail.com</a>. Publish a clear retention period and deletion process before collecting personal information at production scale. Users should not submit passwords, payment details, or other sensitive information through these forms.
           </p>
         </section>
       </div>

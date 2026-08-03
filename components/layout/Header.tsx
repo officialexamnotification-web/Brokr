@@ -27,6 +27,7 @@ import {
   BookOpen,
   Globe,
   MessageCircle,
+  Calculator,
 } from "lucide-react";
 
 interface NavChild {
@@ -51,6 +52,7 @@ const navLinks = [
   { label: "Home", href: "/" },
   { label: "Categories", href: "#", mega: "Categories" },
   { label: "Compare", href: "/compare", icon: GitCompare },
+  { label: "Calculators", href: "/calculators", icon: Calculator },
   { label: "Blog", href: "/blog", icon: BookOpen },
   { label: "Submit", href: "/submit", icon: PlusCircle },
 ];

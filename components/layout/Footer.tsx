@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import { TrendingUp, Twitter, Github, Mail, Heart, ArrowUpRight } from "lucide-react";
+import { TrendingUp, Mail, ArrowUpRight } from "lucide-react";
 
 const footerLinks = {
   Categories: [
@@ -12,6 +12,7 @@ const footerLinks = {
   ],
   Features: [
     { label: "Compare Tools", href: "/compare" },
+    { label: "Calculators", href: "/calculators" },
     { label: "Submit a Tool", href: "/submit" },
     { label: "Blog", href: "/blog" },
     { label: "Latest Additions", href: "/search?sort=latest" },
@@ -52,15 +53,14 @@ export default function Footer() {
               platforms, exchanges, brokers, and market tools.
             </p>
             <div className="flex items-center gap-2">
-              {[Twitter, Github, Mail].map((Icon, i) => (
-                <a
-                  key={i}
-                  href="#"
-                  className="p-2.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-400 hover:text-primary-500 hover:border-primary-200 dark:hover:border-primary-800 transition-all"
-                >
-                  <Icon className="w-4 h-4" />
-                </a>
-              ))}
+              <a
+                href="mailto:contact.officialbrokr@gmail.com"
+                aria-label="Email Brokr"
+                title="Email Brokr"
+                className="p-2.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-400 hover:text-primary-500 hover:border-primary-200 dark:hover:border-primary-800 transition-all"
+              >
+                <Mail className="w-4 h-4" />
+              </a>
             </div>
           </div>
 
