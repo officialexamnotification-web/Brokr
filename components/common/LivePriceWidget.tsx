@@ -28,7 +28,7 @@ export default function LivePriceWidget({ currentTool }: LivePriceWidgetProps) {
           fetch('/api/stocks?symbols=AAPL,GOOGL,MSFT,TSLA,AMZN').then(res => res.json()),
         ]);
         setCryptoPrices(crypto);
-        setForexRates(forexResponse);
+        setForexRates(forexResponse?.rates ?? null);
         setStockPrices(stocksResponse);
       } catch (error) {
         console.error("Failed to fetch live prices:", error);
@@ -70,7 +70,7 @@ export default function LivePriceWidget({ currentTool }: LivePriceWidgetProps) {
           <>
             {cryptoPrices && (
               <div className="col-span-full mb-2">
-                <div className="text-xs font-semibold text-slate-500 dark:text-slate-400 mb-2">Crypto Prices (Live)</div>
+                <div className="text-xs font-semibold text-slate-500 dark:text-slate-400 mb-2">Crypto Prices (external data)</div>
                 <div className="grid grid-cols-2 md:grid-cols-5 gap-2">
                   {Object.entries(cryptoPrices).map(([coin, data]) => (
                     <div key={coin} className="bg-slate-50 dark:bg-slate-800/50 rounded-lg p-2">
@@ -87,7 +87,7 @@ export default function LivePriceWidget({ currentTool }: LivePriceWidgetProps) {
             )}
             {stockPrices && (
               <div className="col-span-full mb-2">
-                <div className="text-xs font-semibold text-slate-500 dark:text-slate-400 mb-2">Stock Prices (Live)</div>
+                <div className="text-xs font-semibold text-slate-500 dark:text-slate-400 mb-2">Stock Prices (external data)</div>
                 <div className="grid grid-cols-2 md:grid-cols-5 gap-2">
                   {Object.entries(stockPrices).map(([symbol, data]) => (
                     <div key={symbol} className="bg-slate-50 dark:bg-slate-800/50 rounded-lg p-2">
@@ -103,7 +103,7 @@ export default function LivePriceWidget({ currentTool }: LivePriceWidgetProps) {
             )}
             {forexRates && (
               <div className="col-span-full mb-2">
-                <div className="text-xs font-semibold text-slate-500 dark:text-slate-400 mb-2">Forex Rates (Live)</div>
+                <div className="text-xs font-semibold text-slate-500 dark:text-slate-400 mb-2">Forex Reference Rates</div>
                 <div className="grid grid-cols-3 gap-2">
                   {Object.entries(forexRates).map(([currency, rate]) => (
                     <div key={currency} className="bg-slate-50 dark:bg-slate-800/50 rounded-lg p-2">
@@ -121,9 +121,9 @@ export default function LivePriceWidget({ currentTool }: LivePriceWidgetProps) {
       <div className="mt-4 flex items-center justify-between">
         <div className="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
           <Clock className="w-3.5 h-3.5" />
-          <span>Pricing updated in real-time</span>
+          <span>External data; timing varies</span>
           <Award className="w-3.5 h-3.5 ml-1" />
-          <span>Best price guarantee</span>
+          <span>Compare provider terms directly</span>
         </div>
         <Link
           href={`/compare?tools=${[currentTool.slug, ...sameCategory.map((t) => t.slug).slice(0, 3)].join(",")}`}

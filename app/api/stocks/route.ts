@@ -6,7 +6,24 @@ const STOCKDATA_BASE = "https://api.stockdata.org/v1";
 
 // Cache implementation (in-memory for server-side)
 const cache = new Map();
-const CACHE_DURATION = 15 * 60 * 1000; // 15 minutes
+const CACHE_DURATION = 60 * 60 * 1000; // 1 hour; protects the 100-request free plan
+
+type StockQuote = {
+  price: number;
+  changePercent: number;
+  name: string | null;
+  currency: string | null;
+  exchange: string | null;
+  dayOpen: number | null;
+  dayHigh: number | null;
+  dayLow: number | null;
+  previousClose: number | null;
+  volume: number | null;
+  week52High: number | null;
+  week52Low: number | null;
+  lastTradeTime: string | null;
+  extendedHours: boolean | null;
+};
 
 function getCached<T>(key: string, duration: number): T | null {
   const item = cache.get(key);
@@ -28,7 +45,7 @@ export async function GET(request: Request) {
     console.log("Stock API request for symbols:", symbols);
     
     const cacheKey = `stock:${symbols.join(",")}`;
-    const cached = getCached<{ [key: string]: { price: number; change: number; changePercent: number } }>(cacheKey, CACHE_DURATION);
+    const cached = getCached<Record<string, StockQuote>>(cacheKey, CACHE_DURATION);
     if (cached) {
       console.log("Returning cached stock data");
       return NextResponse.json(cached);
@@ -45,7 +62,7 @@ export async function GET(request: Request) {
       throw new Error("StockData.org API key not provided");
     }
     
-    const results: { [key: string]: { price: number; change: number; changePercent: number } } = {};
+    const results: Record<string, StockQuote> = {};
     
     // StockData.org free plan allows only 3 symbols per request
     // Process symbols in batches of 3
@@ -56,7 +73,7 @@ export async function GET(request: Request) {
       console.log(`Fetching batch ${i/batchSize + 1}:`, batch);
       
       const res = await fetch(`${STOCKDATA_BASE}/data/quote?symbols=${batch.join(",")}&api_token=${apiKey}`, {
-        next: { revalidate: 900 }, // 15 minutes
+        next: { revalidate: 3600 }, // 1 hour
       });
       const data = await res.json();
       
@@ -66,13 +83,25 @@ export async function GET(request: Request) {
         data.data.forEach((quote: any) => {
           const price = quote.price;
           const previousClose = quote.previous_close_price;
-          const change = quote.day_change;
-          const changePercent = previousClose ? ((price - previousClose) / previousClose) * 100 : 0;
+          const changePercent = typeof quote.day_change === "number"
+            ? quote.day_change
+            : previousClose ? ((price - previousClose) / previousClose) * 100 : 0;
           
           results[quote.ticker] = {
             price: price,
-            change: change || 0,
             changePercent: changePercent || 0,
+            name: typeof quote.name === "string" ? quote.name : null,
+            currency: typeof quote.currency === "string" ? quote.currency : null,
+            exchange: typeof quote.exchange_short === "string" ? quote.exchange_short : null,
+            dayOpen: typeof quote.day_open === "number" ? quote.day_open : null,
+            dayHigh: typeof quote.day_high === "number" ? quote.day_high : null,
+            dayLow: typeof quote.day_low === "number" ? quote.day_low : null,
+            previousClose: typeof previousClose === "number" ? previousClose : null,
+            volume: typeof quote.volume === "number" ? quote.volume : null,
+            week52High: typeof quote["52_week_high"] === "number" ? quote["52_week_high"] : null,
+            week52Low: typeof quote["52_week_low"] === "number" ? quote["52_week_low"] : null,
+            lastTradeTime: typeof quote.last_trade_time === "string" ? quote.last_trade_time : null,
+            extendedHours: typeof quote.is_extended_hours_price === "boolean" ? quote.is_extended_hours_price : null,
           };
         });
       }

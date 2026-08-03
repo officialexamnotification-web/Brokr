@@ -9,7 +9,7 @@ const cache = new Map();
 const CACHE_DURATION = {
   crypto: 2 * 60 * 1000, // 2 minutes
   forex: 60 * 60 * 1000, // 1 hour
-  stock: 15 * 60 * 1000, // 15 minutes (StockData.org has 100 requests/day limit)
+  stock: 60 * 60 * 1000, // 1 hour (StockData.org has 100 requests/day limit)
 };
 
 function getCached<T>(key: string, duration: number): T | null {
@@ -202,7 +202,7 @@ export async function getStockPrices(symbols: string[] = ["AAPL", "GOOGL", "MSFT
       const batch = symbols.slice(i, i + batchSize);
       
       const res = await fetch(`${STOCKDATA_BASE}/data/quote?symbols=${batch.join(",")}&api_token=${apiKey}`, {
-        next: { revalidate: 900 }, // 15 minutes
+        next: { revalidate: 3600 }, // 1 hour
       });
       const data = await res.json();
       

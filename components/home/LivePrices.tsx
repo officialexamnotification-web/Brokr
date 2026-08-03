@@ -4,10 +4,76 @@ import React, { useEffect, useState } from "react";
 import { getCryptoPrices } from "@/lib/api";
 import { TrendingUp, TrendingDown, Activity, Bitcoin, DollarSign, BarChart3 } from "lucide-react";
 
+type CryptoMarket = {
+  id: string;
+  symbol: string;
+  inr: number;
+  change24h: number;
+  change7d: number | null;
+  marketCapInr: number | null;
+  marketCapRank: number | null;
+  volumeInr: number | null;
+  high24hInr: number | null;
+  low24hInr: number | null;
+  lastUpdated: string | null;
+};
+
+type ForexMarket = {
+  pair: string;
+  rate: number;
+  change: number | null;
+};
+
+type StockMarket = {
+  symbol: string;
+  name: string | null;
+  price: number;
+  changePercent: number;
+  currency: string | null;
+  exchange: string | null;
+  dayOpen: number | null;
+  dayHigh: number | null;
+  dayLow: number | null;
+  previousClose: number | null;
+  volume: number | null;
+  week52High: number | null;
+  week52Low: number | null;
+  lastTradeTime: string | null;
+  extendedHours: boolean | null;
+};
+
+function formatInr(value: number | null) {
+  return value == null ? "—" : `₹${value.toLocaleString("en-IN")}`;
+}
+
+function formatCompactInr(value: number | null) {
+  return value == null
+    ? "—"
+    : `₹${new Intl.NumberFormat("en-IN", { notation: "compact", maximumFractionDigits: 1 }).format(value)}`;
+}
+
+function formatUsd(value: number | null) {
+  return value == null ? "—" : `$${value.toLocaleString("en-US", { maximumFractionDigits: 2 })}`;
+}
+
+function formatDate(value: string | null | undefined) {
+  if (!value) return "Unavailable";
+  if (/^\d{4}-\d{2}-\d{2}$/.test(value)) return value;
+  const date = new Date(value);
+  return Number.isNaN(date.getTime()) ? value : date.toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "short" });
+}
+
+function changeLabel(value: number | null, label: string) {
+  if (value == null || !Number.isFinite(value)) return `${label}: unavailable`;
+  return `${label}: ${value >= 0 ? "+" : ""}${value.toFixed(2)}%`;
+}
+
 export default function LivePrices() {
-  const [crypto, setCrypto] = useState<{ id: string; symbol: string; inr: number; change: number }[]>([]);
-  const [forex, setForex] = useState<{ pair: string; rate: number; change: number }[]>([]);
-  const [stocks, setStocks] = useState<{ symbol: string; price: number; change: number }[]>([]);
+  const [crypto, setCrypto] = useState<CryptoMarket[]>([]);
+  const [forex, setForex] = useState<ForexMarket[]>([]);
+  const [forexDate, setForexDate] = useState<string | null>(null);
+  const [forexPreviousDate, setForexPreviousDate] = useState<string | null>(null);
+  const [stocks, setStocks] = useState<StockMarket[]>([]);
   const [loading, setLoading] = useState(true);
   const [dataUnavailable, setDataUnavailable] = useState(false);
 
@@ -22,45 +88,85 @@ export default function LivePrices() {
       try {
         const [cryptoResult, forexResult, stocksResult] = await Promise.allSettled([
           getCryptoPrices(["bitcoin", "ethereum", "binancecoin", "solana"]),
-          fetch('/api/forex?base=USD&targets=INR,EUR,GBP,JPY').then(async (res) => res.ok ? res.json() : null),
-          fetch('/api/stocks?symbols=AAPL,GOOGL,MSFT,TSLA,AMZN').then(async (res) => res.ok ? res.json() : null),
+          fetch("/api/forex?base=USD&targets=INR,EUR,GBP,JPY").then(async (res) => res.ok ? res.json() : null),
+          fetch("/api/stocks?symbols=AAPL,GOOGL,MSFT,TSLA,AMZN").then(async (res) => res.ok ? res.json() : null),
         ]);
 
-        const cryptoData = cryptoResult.status === "fulfilled" ? cryptoResult.value : {};
+        const cryptoData = cryptoResult.status === "fulfilled" ? cryptoResult.value : null;
         const forexResponse = forexResult.status === "fulfilled" ? forexResult.value : null;
         const stocksResponse = stocksResult.status === "fulfilled" ? stocksResult.value : null;
 
-        if (cryptoData && Object.keys(cryptoData).length > 0) {
-          setCrypto([
-            { id: "bitcoin", symbol: "BTC", inr: cryptoData.bitcoin?.inr || 0, change: cryptoData.bitcoin?.change_24h || 0 },
-            { id: "ethereum", symbol: "ETH", inr: cryptoData.ethereum?.inr || 0, change: cryptoData.ethereum?.change_24h || 0 },
-            { id: "binancecoin", symbol: "BNB", inr: cryptoData.binancecoin?.inr || 0, change: cryptoData.binancecoin?.change_24h || 0 },
-            { id: "solana", symbol: "SOL", inr: cryptoData.solana?.inr || 0, change: cryptoData.solana?.change_24h || 0 },
-          ]);
+        const cryptoEntries = [
+          ["bitcoin", "BTC"],
+          ["ethereum", "ETH"],
+          ["binancecoin", "BNB"],
+          ["solana", "SOL"],
+        ] as const;
+        const cryptoItems = cryptoEntries
+          .map(([id, symbol]) => {
+            const item = cryptoData?.[id];
+            if (!item || typeof item.inr !== "number") return null;
+            return {
+              id,
+              symbol,
+              inr: item.inr,
+              change24h: typeof item.change_24h === "number" ? item.change_24h : 0,
+              change7d: typeof item.change_7d === "number" ? item.change_7d : null,
+              marketCapInr: typeof item.market_cap_inr === "number" ? item.market_cap_inr : null,
+              marketCapRank: typeof item.market_cap_rank === "number" ? item.market_cap_rank : null,
+              volumeInr: typeof item.total_volume_inr === "number" ? item.total_volume_inr : null,
+              high24hInr: typeof item.high_24h_inr === "number" ? item.high_24h_inr : null,
+              low24hInr: typeof item.low_24h_inr === "number" ? item.low_24h_inr : null,
+              lastUpdated: typeof item.last_updated === "string" ? item.last_updated : null,
+            } as CryptoMarket;
+          })
+          .filter((item): item is CryptoMarket => item !== null);
+        setCrypto(cryptoItems);
+
+        const currentRates = forexResponse?.rates;
+        const previousRates = forexResponse?.previousRates;
+        if (currentRates?.INR) {
+          const percentageChange = (current: number, previous: number | undefined) =>
+            typeof previous === "number" && previous > 0 ? ((current - previous) / previous) * 100 : null;
+          const pairs = [
+            { pair: "USD/INR", rate: Number(currentRates.INR), previousRate: previousRates?.INR },
+            { pair: "EUR/INR", rate: Number(currentRates.EUR) * Number(currentRates.INR), previousRate: previousRates?.EUR && previousRates?.INR ? previousRates.EUR * previousRates.INR : undefined },
+            { pair: "GBP/INR", rate: Number(currentRates.GBP) * Number(currentRates.INR), previousRate: previousRates?.GBP && previousRates?.INR ? previousRates.GBP * previousRates.INR : undefined },
+            { pair: "USD/JPY", rate: Number(currentRates.JPY), previousRate: previousRates?.JPY },
+          ]
+            .filter((item) => Number.isFinite(item.rate) && item.rate > 0)
+            .map((item) => ({ pair: item.pair, rate: Number(item.rate), change: percentageChange(item.rate, item.previousRate) }));
+          setForex(pairs);
+          setForexDate(typeof forexResponse.date === "string" ? forexResponse.date : null);
+          setForexPreviousDate(typeof forexResponse.previousDate === "string" ? forexResponse.previousDate : null);
+        } else {
+          setForex([]);
+          setForexDate(null);
+          setForexPreviousDate(null);
         }
 
-        if (forexResponse?.INR) {
-          setForex([
-            { pair: "USD/INR", rate: Number(forexResponse.INR), change: 0 },
-            { pair: "EUR/INR", rate: forexResponse.EUR ? Number((forexResponse.EUR * forexResponse.INR).toFixed(2)) : 0, change: 0 },
-            { pair: "GBP/INR", rate: forexResponse.GBP ? Number((forexResponse.GBP * forexResponse.INR).toFixed(2)) : 0, change: 0 },
-            { pair: "USD/JPY", rate: Number(forexResponse.JPY) || 0, change: 0 },
-          ]);
-        }
+        const stockEntries = stocksResponse && !stocksResponse.error ? Object.entries(stocksResponse) : [];
+        setStocks(stockEntries
+          .filter(([, item]: [string, any]) => typeof item?.price === "number")
+          .map(([symbol, item]: [string, any]) => ({
+            symbol,
+            name: typeof item.name === "string" ? item.name : null,
+            price: item.price,
+            changePercent: typeof item.changePercent === "number" ? item.changePercent : 0,
+            currency: typeof item.currency === "string" ? item.currency : null,
+            exchange: typeof item.exchange === "string" ? item.exchange : null,
+            dayOpen: typeof item.dayOpen === "number" ? item.dayOpen : null,
+            dayHigh: typeof item.dayHigh === "number" ? item.dayHigh : null,
+            dayLow: typeof item.dayLow === "number" ? item.dayLow : null,
+            previousClose: typeof item.previousClose === "number" ? item.previousClose : null,
+            volume: typeof item.volume === "number" ? item.volume : null,
+            week52High: typeof item.week52High === "number" ? item.week52High : null,
+            week52Low: typeof item.week52Low === "number" ? item.week52Low : null,
+            lastTradeTime: typeof item.lastTradeTime === "string" ? item.lastTradeTime : null,
+            extendedHours: typeof item.extendedHours === "boolean" ? item.extendedHours : null,
+          })));
 
-        if (stocksResponse && Object.keys(stocksResponse).length > 0) {
-          setStocks([
-            { symbol: "AAPL", price: stocksResponse.AAPL?.price || 0, change: stocksResponse.AAPL?.changePercent || 0 },
-            { symbol: "GOOGL", price: stocksResponse.GOOGL?.price || 0, change: stocksResponse.GOOGL?.changePercent || 0 },
-            { symbol: "MSFT", price: stocksResponse.MSFT?.price || 0, change: stocksResponse.MSFT?.changePercent || 0 },
-            { symbol: "TSLA", price: stocksResponse.TSLA?.price || 0, change: stocksResponse.TSLA?.changePercent || 0 },
-            { symbol: "AMZN", price: stocksResponse.AMZN?.price || 0, change: stocksResponse.AMZN?.changePercent || 0 },
-          ]);
-        }
-
-        // Stock data is optional until its provider key is configured. Crypto
-        // and forex availability should not depend on the stock request.
-        setDataUnavailable(!(cryptoData && Object.keys(cryptoData).length > 0) || !forexResponse?.INR);
+        setDataUnavailable(cryptoItems.length === 0 || !currentRates?.INR);
       } catch {
         setDataUnavailable(true);
       } finally {
@@ -69,7 +175,7 @@ export default function LivePrices() {
     }
 
     fetchData();
-    const interval = setInterval(fetchData, 120000); // Refresh every 2 min
+    const interval = setInterval(fetchData, 60 * 60 * 1000);
     return () => clearInterval(interval);
   }, []);
 
@@ -81,90 +187,95 @@ export default function LivePrices() {
             <Activity className="w-5 h-5 text-green-500" />
             <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Market Data</h2>
           </div>
-          <p className="text-sm text-slate-500 dark:text-slate-400">External market data when available; prices may be delayed and are not trading advice.</p>
+          <p className="text-sm text-slate-500 dark:text-slate-400">External reference and market data; timestamps vary, prices may be delayed, and this is not trading advice.</p>
         </div>
 
         {loading ? (
           <div className="flex items-center justify-center gap-2 text-slate-400 py-8">
             <Activity className="w-5 h-5 animate-pulse" />
-            <span>Loading live prices...</span>
+            <span>Loading market data...</span>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {/* Crypto */}
             <div className="glass-card rounded-2xl p-6">
-              <div className="flex items-center gap-2 mb-4">
+              <div className="flex items-center gap-2 mb-1">
                 <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-orange-400 to-yellow-500 flex items-center justify-center">
                   <Bitcoin className="w-4 h-4 text-white" />
                 </div>
                 <h3 className="text-lg font-bold text-slate-900 dark:text-white">Cryptocurrency</h3>
               </div>
+              <p className="text-[11px] text-slate-500 dark:text-slate-400 mb-4">INR · 24h/7d market data · CoinGecko</p>
               <div className="space-y-3">
                 {crypto.length === 0 ? <Unavailable label="Cryptocurrency data" /> : crypto.map((coin) => (
-                  <div key={coin.id} className="flex items-center justify-between p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50">
-                    <div className="flex items-center gap-2">
+                  <div key={coin.id} className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50">
+                    <div className="flex items-center justify-between">
                       <span className="text-sm font-bold text-slate-700 dark:text-slate-200">{coin.symbol}</span>
+                      <span className="text-sm font-semibold text-slate-900 dark:text-white">{formatInr(coin.inr)}</span>
                     </div>
-                    <div className="text-right">
-                      <div className="text-sm font-semibold text-slate-900 dark:text-white">₹{coin.inr.toLocaleString("en-IN")}</div>
-                      <div
-                        className={`text-xs flex items-center gap-0.5 ${coin.change >= 0 ? "text-green-600 dark:text-green-400" : "text-red-500 dark:text-red-400"}`}
-                      >
-                        {coin.change >= 0 ? <TrendingUp className="w-3 h-3" /> : <TrendingDown className="w-3 h-3" />}
-                        {Math.abs(coin.change).toFixed(2)}%
-                      </div>
+                    <div className="mt-2 grid grid-cols-2 gap-x-3 gap-y-1 text-[11px] text-slate-500 dark:text-slate-400">
+                      <span className={coin.change24h >= 0 ? "text-green-600 dark:text-green-400" : "text-red-500 dark:text-red-400"}>{changeLabel(coin.change24h, "24h")}</span>
+                      <span>{changeLabel(coin.change7d, "7d")}</span>
+                      <span>Market cap: {formatCompactInr(coin.marketCapInr)}</span>
+                      <span>Rank: {coin.marketCapRank ? `#${coin.marketCapRank}` : "—"}</span>
+                      <span>Volume: {formatCompactInr(coin.volumeInr)}</span>
+                      <span>High: {formatInr(coin.high24hInr)}</span>
+                      <span>Low: {formatInr(coin.low24hInr)}</span>
+                      <span className="col-span-2">Updated: {formatDate(coin.lastUpdated)}</span>
                     </div>
                   </div>
                 ))}
               </div>
             </div>
 
-            {/* Forex */}
             <div className="glass-card rounded-2xl p-6">
-              <div className="flex items-center gap-2 mb-4">
+              <div className="flex items-center gap-2 mb-1">
                 <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-green-400 to-emerald-600 flex items-center justify-center">
                   <DollarSign className="w-4 h-4 text-white" />
                 </div>
-                <h3 className="text-lg font-bold text-slate-900 dark:text-white">Forex Rates</h3>
+                <h3 className="text-lg font-bold text-slate-900 dark:text-white">Forex Reference Rates</h3>
               </div>
+              <p className="text-[11px] text-slate-500 dark:text-slate-400 mb-4">Frankfurter/ECB · Rate date: {forexDate ?? "unavailable"}</p>
               <div className="space-y-3">
-                {forex.length === 0 ? <Unavailable label="Forex rates" /> : forex.map((fx) => (
+                {forex.length === 0 ? <Unavailable label="Forex reference rates" /> : forex.map((fx) => (
                   <div key={fx.pair} className="flex items-center justify-between p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50">
                     <span className="text-sm font-bold text-slate-700 dark:text-slate-200">{fx.pair}</span>
                     <div className="text-right">
-                      <div className="text-sm font-semibold text-slate-900 dark:text-white">{Number(fx.rate).toFixed(4)}</div>
-                      <div
-                        className={`text-xs flex items-center gap-0.5 ${fx.change >= 0 ? "text-green-600 dark:text-green-400" : "text-red-500 dark:text-red-400"}`}
-                      >
-                        {fx.change >= 0 ? <TrendingUp className="w-3 h-3" /> : <TrendingDown className="w-3 h-3" />}
-                        {Math.abs(fx.change).toFixed(2)}%
-                      </div>
+                      <div className="text-sm font-semibold text-slate-900 dark:text-white">{fx.rate.toFixed(4)}</div>
+                      <div className="text-[11px] text-slate-500 dark:text-slate-400">{changeLabel(fx.change, "Daily reference")}</div>
                     </div>
                   </div>
                 ))}
               </div>
+              <p className="mt-4 text-[11px] text-slate-500 dark:text-slate-400">Comparison date: {forexPreviousDate ?? "unavailable"}. These are reference rates, not bid/ask quotes.</p>
             </div>
 
-            {/* Stocks: shown only after a provider returns real data */}
             {stocks.length > 0 && <div className="glass-card rounded-2xl p-6">
-              <div className="flex items-center gap-2 mb-4">
+              <div className="flex items-center gap-2 mb-1">
                 <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-400 to-indigo-600 flex items-center justify-center">
                   <BarChart3 className="w-4 h-4 text-white" />
                 </div>
                 <h3 className="text-lg font-bold text-slate-900 dark:text-white">Stock Prices</h3>
               </div>
+              <p className="text-[11px] text-slate-500 dark:text-slate-400 mb-4">StockData.org · US-listed quotes · delayed data possible</p>
               <div className="space-y-3">
-                {stocks.length === 0 ? <Unavailable label="Stock prices" /> : stocks.map((stock) => (
-                  <div key={stock.symbol} className="flex items-center justify-between p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50">
-                    <span className="text-sm font-bold text-slate-700 dark:text-slate-200">{stock.symbol}</span>
-                    <div className="text-right">
-                      <div className="text-sm font-semibold text-slate-900 dark:text-white">${stock.price.toLocaleString()}</div>
-                      <div
-                        className={`text-xs flex items-center gap-0.5 ${stock.change >= 0 ? "text-green-600 dark:text-green-400" : "text-red-500 dark:text-red-400"}`}
-                      >
-                        {stock.change >= 0 ? <TrendingUp className="w-3 h-3" /> : <TrendingDown className="w-3 h-3" />}
-                        {Math.abs(stock.change).toFixed(2)}%
+                {stocks.map((stock) => (
+                  <div key={stock.symbol} className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <span className="text-sm font-bold text-slate-700 dark:text-slate-200">{stock.symbol}</span>
+                        {stock.name && <span className="ml-2 text-[11px] text-slate-500 dark:text-slate-400">{stock.name}</span>}
                       </div>
+                      <span className="text-sm font-semibold text-slate-900 dark:text-white">{formatUsd(stock.price)}</span>
+                    </div>
+                    <div className="mt-2 grid grid-cols-2 gap-x-3 gap-y-1 text-[11px] text-slate-500 dark:text-slate-400">
+                      <span className={stock.changePercent >= 0 ? "text-green-600 dark:text-green-400" : "text-red-500 dark:text-red-400"}>{changeLabel(stock.changePercent, "Day")}</span>
+                      <span>Prev close: {formatUsd(stock.previousClose)}</span>
+                      <span>Open: {formatUsd(stock.dayOpen)}</span>
+                      <span>Volume: {stock.volume == null ? "—" : stock.volume.toLocaleString("en-IN")}</span>
+                      <span>High/Low: {formatUsd(stock.dayHigh)} / {formatUsd(stock.dayLow)}</span>
+                      <span>52W: {formatUsd(stock.week52High)} / {formatUsd(stock.week52Low)}</span>
+                      <span>{stock.exchange ?? stock.currency ?? "Quote"}{stock.extendedHours ? " · extended hours" : ""}</span>
+                      <span>Trade: {formatDate(stock.lastTradeTime)}</span>
                     </div>
                   </div>
                 ))}
@@ -185,9 +296,7 @@ export default function LivePrices() {
         <div className="text-center mt-6">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
             <Activity className="w-3.5 h-3.5 text-green-500" />
-            <p className="text-xs font-medium text-slate-600 dark:text-slate-400">
-              External data - Check provider timestamps
-            </p>
+            <p className="text-xs font-medium text-slate-600 dark:text-slate-400">External data · check the displayed source and date</p>
           </div>
         </div>
       </div>
