@@ -11,14 +11,24 @@ export default function LivePrices() {
   const [loading, setLoading] = useState(true);
   const [dataUnavailable, setDataUnavailable] = useState(false);
 
+  const Unavailable = ({ label }: { label: string }) => (
+    <p className="py-6 text-sm text-slate-500 dark:text-slate-400">
+      {label} is currently unavailable. No placeholder prices are shown.
+    </p>
+  );
+
   useEffect(() => {
     async function fetchData() {
       try {
-        const [cryptoData, forexResponse, stocksResponse] = await Promise.all([
+        const [cryptoResult, forexResult, stocksResult] = await Promise.allSettled([
           getCryptoPrices(["bitcoin", "ethereum", "binancecoin", "solana"]),
           fetch('/api/forex?base=USD&targets=INR,EUR,GBP,JPY').then(async (res) => res.ok ? res.json() : null),
           fetch('/api/stocks?symbols=AAPL,GOOGL,MSFT,TSLA,AMZN').then(async (res) => res.ok ? res.json() : null),
         ]);
+
+        const cryptoData = cryptoResult.status === "fulfilled" ? cryptoResult.value : {};
+        const forexResponse = forexResult.status === "fulfilled" ? forexResult.value : null;
+        const stocksResponse = stocksResult.status === "fulfilled" ? stocksResult.value : null;
 
         if (cryptoData && Object.keys(cryptoData).length > 0) {
           setCrypto([
@@ -48,9 +58,10 @@ export default function LivePrices() {
           ]);
         }
 
-        setDataUnavailable(!(cryptoData && Object.keys(cryptoData).length > 0) || !forexResponse?.INR || !(stocksResponse && Object.keys(stocksResponse).length > 0));
-      } catch (e) {
-        console.error("Failed to fetch live prices", e);
+        // Stock data is optional until its provider key is configured. Crypto
+        // and forex availability should not depend on the stock request.
+        setDataUnavailable(!(cryptoData && Object.keys(cryptoData).length > 0) || !forexResponse?.INR);
+      } catch {
         setDataUnavailable(true);
       } finally {
         setLoading(false);
@@ -89,7 +100,7 @@ export default function LivePrices() {
                 <h3 className="text-lg font-bold text-slate-900 dark:text-white">Cryptocurrency</h3>
               </div>
               <div className="space-y-3">
-                {crypto.map((coin) => (
+                {crypto.length === 0 ? <Unavailable label="Cryptocurrency data" /> : crypto.map((coin) => (
                   <div key={coin.id} className="flex items-center justify-between p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50">
                     <div className="flex items-center gap-2">
                       <span className="text-sm font-bold text-slate-700 dark:text-slate-200">{coin.symbol}</span>
@@ -117,7 +128,7 @@ export default function LivePrices() {
                 <h3 className="text-lg font-bold text-slate-900 dark:text-white">Forex Rates</h3>
               </div>
               <div className="space-y-3">
-                {forex.map((fx) => (
+                {forex.length === 0 ? <Unavailable label="Forex rates" /> : forex.map((fx) => (
                   <div key={fx.pair} className="flex items-center justify-between p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50">
                     <span className="text-sm font-bold text-slate-700 dark:text-slate-200">{fx.pair}</span>
                     <div className="text-right">
@@ -134,8 +145,8 @@ export default function LivePrices() {
               </div>
             </div>
 
-            {/* Stocks */}
-            <div className="glass-card rounded-2xl p-6">
+            {/* Stocks: shown only after a provider returns real data */}
+            {stocks.length > 0 && <div className="glass-card rounded-2xl p-6">
               <div className="flex items-center gap-2 mb-4">
                 <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-400 to-indigo-600 flex items-center justify-center">
                   <BarChart3 className="w-4 h-4 text-white" />
@@ -143,7 +154,7 @@ export default function LivePrices() {
                 <h3 className="text-lg font-bold text-slate-900 dark:text-white">Stock Prices</h3>
               </div>
               <div className="space-y-3">
-                {stocks.map((stock) => (
+                {stocks.length === 0 ? <Unavailable label="Stock prices" /> : stocks.map((stock) => (
                   <div key={stock.symbol} className="flex items-center justify-between p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50">
                     <span className="text-sm font-bold text-slate-700 dark:text-slate-200">{stock.symbol}</span>
                     <div className="text-right">
@@ -158,8 +169,14 @@ export default function LivePrices() {
                   </div>
                 ))}
               </div>
-            </div>
+            </div>}
           </div>
+        )}
+
+        {!loading && stocks.length === 0 && (
+          <p className="text-center mt-6 text-xs text-slate-500 dark:text-slate-400">
+            Stock prices will appear after the stock-data provider key is configured.
+          </p>
         )}
 
         {dataUnavailable && (

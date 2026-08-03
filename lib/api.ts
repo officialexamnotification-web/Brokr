@@ -32,6 +32,18 @@ function setCache<T>(key: string, data: T) {
 // ============ CRYPTO ============
 
 export async function getCryptoPrices(coins: string[] = ["bitcoin", "ethereum", "binancecoin"]) {
+  // Browser requests use our same-origin route so provider CORS rules do not
+  // prevent the directory from loading market data.
+  if (typeof window !== "undefined") {
+    try {
+      const res = await fetch(`/api/crypto?coins=${encodeURIComponent(coins.join(","))}`);
+      if (!res.ok) return {};
+      return await res.json();
+    } catch {
+      return {};
+    }
+  }
+
   const cacheKey = `crypto:${coins.join(",")}`;
   const cached = getCached<{ [key: string]: { inr: number; usd: number; change_24h: number } }>(cacheKey, CACHE_DURATION.crypto);
   if (cached) return cached;

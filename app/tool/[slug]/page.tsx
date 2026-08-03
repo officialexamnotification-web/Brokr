@@ -29,6 +29,7 @@ import Badge from "@/components/common/Badge";
 import ToolCard from "@/components/common/ToolCard";
 import QuickCompareSidebar from "@/components/common/QuickCompareSidebar";
 import RiskWarningBanner from "@/components/common/RiskWarningBanner";
+import { getRelevantTools } from "@/lib/tool-relevance";
 
 export function generateStaticParams() {
   return tools.map((tool) => ({ slug: tool.slug }));
@@ -38,7 +39,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   const tool = getToolBySlug(params.slug);
   if (!tool) return { title: "Tool Not Found | Brokr" };
   return {
-    title: `${tool.name} — Features, Fees & Availability | Brokr`,
+    title: `${tool.name} - Features, Fees & Availability | Brokr`,
     description: `${tool.description} Review the public listing, availability, regulation labels, and provider details before using the service.`,
     keywords: [tool.name, tool.category, "trading tools", "platform comparison"],
     openGraph: {
@@ -55,7 +56,7 @@ export default function ToolDetailPage({ params }: { params: { slug: string } })
 
   if (!tool) notFound();
 
-  const relatedTools = tools.filter((t) => t.categoryId === tool.categoryId && t.id !== tool.id).slice(0, 3);
+  const relatedTools = getRelevantTools(tool, tools, 3);
 
   // JSON-LD Structured Data
   const jsonLd = {
@@ -71,7 +72,7 @@ export default function ToolDetailPage({ params }: { params: { slug: string } })
     },
   };
 
-  const compareTools = tools.filter((t) => t.categoryId === tool.categoryId && t.id !== tool.id).slice(0, 4);
+  const compareTools = getRelevantTools(tool, tools, 4);
   const comparisonKeys = [
     { label: "Rating", key: "rating" as const, format: (v: number | null) => v ? `${v}/5` : "Not available" },
     { label: "Pricing", key: "pricing" as const, format: (v: string) => v },
