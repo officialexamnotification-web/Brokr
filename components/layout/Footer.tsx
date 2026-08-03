@@ -53,14 +53,14 @@ export default function Footer() {
               platforms, exchanges, brokers, and market tools.
             </p>
             <div className="flex items-center gap-2">
-              <a
-                href="mailto:contact.officialbrokr@gmail.com"
-                aria-label="Email Brokr"
-                title="Email Brokr"
+              <Link
+                href="/contact"
+                aria-label="Contact Brokr"
+                title="Contact Brokr"
                 className="p-2.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-400 hover:text-primary-500 hover:border-primary-200 dark:hover:border-primary-800 transition-all"
               >
                 <Mail className="w-4 h-4" />
-              </a>
+              </Link>
             </div>
           </div>
 
