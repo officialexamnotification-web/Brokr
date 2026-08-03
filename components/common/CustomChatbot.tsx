@@ -49,6 +49,7 @@ export default function CustomChatbot() {
         text: response.text,
         sender: "bot",
         timestamp: new Date(),
+        links: response.links,
       };
       setMessages((prev) => [...prev, botMessage]);
       setIsTyping(false);
@@ -129,7 +130,7 @@ export default function CustomChatbot() {
                       <p className="text-sm whitespace-pre-wrap">{message.text}</p>
                       {message.sender === "bot" && (
                         <div className="mt-2 space-y-1">
-                          {getChatResponse(message.text).links?.map((link, index) => (
+                          {message.links?.map((link, index) => (
                             <a
                               key={index}
                               href={link.url}

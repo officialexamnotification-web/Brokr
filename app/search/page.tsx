@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo, Suspense } from "react";
+import React, { useState, useMemo, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
@@ -27,6 +27,8 @@ function SearchContent() {
   const initialQuery = searchParams.get("q") || "";
   const initialCategory = searchParams.get("category") ? Number(searchParams.get("category")) : null;
   const initialCountry = searchParams.get("country") || "";
+  const availableCountries = useMemo(() => getAvailableCountries(), []);
+  const normalizedInitialCountry = availableCountries.find((country) => country.toLowerCase() === initialCountry.toLowerCase()) ?? "";
   const requestedSort = searchParams.get("sort");
   const initialSort: SortOption = requestedSort === "trending" || requestedSort === "name" || requestedSort === "rating" ? requestedSort : "latest";
 
@@ -35,10 +37,15 @@ function SearchContent() {
   const [selectedCategories, setSelectedCategories] = useState<number[]>(initialCategory ? [initialCategory] : []);
   const [selectedPlatform, setSelectedPlatform] = useState<string>("");
   const [selectedRegulation, setSelectedRegulation] = useState<string>("");
-  const [selectedCountry, setSelectedCountry] = useState<string>(initialCountry);
+  const [selectedCountry, setSelectedCountry] = useState<string>(normalizedInitialCountry);
   const [experience, setExperience] = useState<ExperienceLevel>("all");
   const [showFilters, setShowFilters] = useState(false);
-  const availableCountries = getAvailableCountries();
+  useEffect(() => {
+    const currentCountry = searchParams.get("country") || "";
+    const canonicalCountry = availableCountries.find((country) => country.toLowerCase() === currentCountry.toLowerCase()) ?? "";
+    setQuery(searchParams.get("q") || "");
+    setSelectedCountry(canonicalCountry);
+  }, [searchParams, availableCountries]);
 
   const filteredTools = useMemo(() => {
     let results = searchTools(query, {
@@ -248,6 +255,7 @@ function SearchContent() {
               <option value="latest">Latest Added</option>
               <option value="trending">Trending</option>
               <option value="name">Alphabetical</option>
+              <option value="rating">Rating (where available)</option>
             </select>
           </div>
           <div className="flex items-center gap-2">

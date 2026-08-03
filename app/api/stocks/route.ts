@@ -1,8 +1,11 @@
 import { NextResponse } from 'next/server';
+import { allowPublicRequest } from "@/lib/public-rate-limit";
 
 export const dynamic = "force-dynamic";
 
 const STOCKDATA_BASE = "https://api.stockdata.org/v1";
+const DEFAULT_SYMBOLS = ["AAPL", "GOOGL", "MSFT", "TSLA", "AMZN"];
+const ALLOWED_SYMBOLS = new Set(DEFAULT_SYMBOLS);
 
 // Cache implementation (in-memory for server-side)
 const cache = new Map();
@@ -10,7 +13,7 @@ const CACHE_DURATION = 60 * 60 * 1000; // 1 hour; protects the 100-request free 
 
 type StockQuote = {
   price: number;
-  changePercent: number;
+  changePercent: number | null;
   name: string | null;
   currency: string | null;
   exchange: string | null;
@@ -38,8 +41,16 @@ function setCache<T>(key: string, data: T) {
 }
 
 export async function GET(request: Request) {
+  const rateLimit = allowPublicRequest(request, "stocks", 10);
+  if (!rateLimit.allowed) {
+    return NextResponse.json({ error: "Market-data request limit reached. Please try again shortly." }, { status: 429, headers: { "Retry-After": String(rateLimit.retryAfter) } });
+  }
   const { searchParams } = new URL(request.url);
-  const symbols = searchParams.get('symbols')?.split(',') || ["AAPL", "GOOGL", "MSFT", "TSLA", "AMZN"];
+  const requestedSymbols = searchParams.get('symbols')?.split(',').map((symbol) => symbol.trim().toUpperCase()).filter(Boolean);
+  const symbols = Array.from(new Set((requestedSymbols?.length ? requestedSymbols : DEFAULT_SYMBOLS).filter((symbol) => ALLOWED_SYMBOLS.has(symbol)))).slice(0, 5);
+  if (symbols.length === 0) {
+    return NextResponse.json({ error: "Unsupported stock selection." }, { status: 400 });
+  }
   
   try {
     console.log("Stock API request for symbols:", symbols);
@@ -83,13 +94,13 @@ export async function GET(request: Request) {
         data.data.forEach((quote: any) => {
           const price = quote.price;
           const previousClose = quote.previous_close_price;
-          const changePercent = typeof quote.day_change === "number"
+          const changePercent = typeof quote.day_change === "number" && Number.isFinite(quote.day_change)
             ? quote.day_change
-            : previousClose ? ((price - previousClose) / previousClose) * 100 : 0;
+            : typeof price === "number" && typeof previousClose === "number" && previousClose > 0 ? ((price - previousClose) / previousClose) * 100 : null;
           
           results[quote.ticker] = {
             price: price,
-            changePercent: changePercent || 0,
+            changePercent: typeof changePercent === "number" && Number.isFinite(changePercent) ? changePercent : null,
             name: typeof quote.name === "string" ? quote.name : null,
             currency: typeof quote.currency === "string" ? quote.currency : null,
             exchange: typeof quote.exchange_short === "string" ? quote.exchange_short : null,

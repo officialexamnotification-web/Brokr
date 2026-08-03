@@ -1,8 +1,10 @@
 import { NextResponse } from 'next/server';
+import { allowPublicRequest } from "@/lib/public-rate-limit";
 
 export const dynamic = "force-dynamic";
 
 const FRANKFURTER_BASE = "https://api.frankfurter.app";
+const ALLOWED_CURRENCIES = new Set(["USD", "INR", "EUR", "GBP", "JPY", "AUD", "CAD", "CHF", "SGD"]);
 
 // Cache implementation (in-memory for server-side)
 const cache = new Map();
@@ -29,9 +31,21 @@ function setCache<T>(key: string, data: T) {
 }
 
 export async function GET(request: Request) {
+  const rateLimit = allowPublicRequest(request, "forex", 15);
+  if (!rateLimit.allowed) {
+    return NextResponse.json({ error: "Market-data request limit reached. Please try again shortly." }, { status: 429, headers: { "Retry-After": String(rateLimit.retryAfter) } });
+  }
   const { searchParams } = new URL(request.url);
-  const base = searchParams.get('base') || "USD";
-  const targets = searchParams.get('targets')?.split(',') || ["INR", "EUR", "GBP", "JPY"];
+  const requestedBase = (searchParams.get('base') || "USD").trim().toUpperCase();
+  const requestedTargets = searchParams.get('targets')?.split(',').map((target) => target.trim().toUpperCase()).filter(Boolean);
+  if (!ALLOWED_CURRENCIES.has(requestedBase)) {
+    return NextResponse.json({ error: "Unsupported base currency." }, { status: 400 });
+  }
+  const base = requestedBase;
+  const targets = Array.from(new Set((requestedTargets?.length ? requestedTargets : ["INR", "EUR", "GBP", "JPY"]).filter((target) => ALLOWED_CURRENCIES.has(target) && target !== base))).slice(0, 8);
+  if (targets.length === 0) {
+    return NextResponse.json({ error: "Unsupported currency selection." }, { status: 400 });
+  }
   
   try {
     console.log("Forex API request:", { base, targets });
@@ -43,9 +57,9 @@ export async function GET(request: Request) {
       return NextResponse.json(cached);
     }
 
-    let url = `${FRANKFURTER_BASE}/latest?from=${base}`;
+    let url = `${FRANKFURTER_BASE}/latest?from=${encodeURIComponent(base)}`;
     if (targets?.length) {
-      url += `&to=${targets.join(",")}`;
+      url += `&to=${encodeURIComponent(targets.join(","))}`;
     }
 
     console.log("Fetching Forex API:", url);
@@ -75,7 +89,7 @@ export async function GET(request: Request) {
       const candidate = new Date(latestDateValue);
       candidate.setUTCDate(candidate.getUTCDate() - offset);
       const candidateDate = candidate.toISOString().slice(0, 10);
-      const previousUrl = `${FRANKFURTER_BASE}/${candidateDate}?from=${base}&to=${targets.join(",")}`;
+      const previousUrl = `${FRANKFURTER_BASE}/${candidateDate}?from=${encodeURIComponent(base)}&to=${encodeURIComponent(targets.join(","))}`;
       const previousResponse = await fetch(previousUrl, {
         next: { revalidate: 86400 },
         headers: { 'User-Agent': 'Brokr informational directory' },

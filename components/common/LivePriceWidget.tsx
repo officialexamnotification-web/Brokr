@@ -14,9 +14,9 @@ interface LivePriceWidgetProps {
 }
 
 export default function LivePriceWidget({ currentTool }: LivePriceWidgetProps) {
-  const [cryptoPrices, setCryptoPrices] = useState<{ [key: string]: { inr: number; usd: number; change_24h: number } } | null>(null);
+  const [cryptoPrices, setCryptoPrices] = useState<{ [key: string]: { inr: number; usd: number; change_24h: number | null } } | null>(null);
   const [forexRates, setForexRates] = useState<{ [key: string]: number } | null>(null);
-  const [stockPrices, setStockPrices] = useState<{ [key: string]: { price: number; change: number; changePercent: number } } | null>(null);
+  const [stockPrices, setStockPrices] = useState<{ [key: string]: { price: number; change: number | null; changePercent: number | null } } | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -55,12 +55,8 @@ export default function LivePriceWidget({ currentTool }: LivePriceWidgetProps) {
           <TrendingDown className="w-4 h-4 text-white" />
         </div>
         <h3 className="text-sm font-bold text-slate-900 dark:text-white">
-          Live Price Comparison
+          Market Data Snapshot
         </h3>
-        <span className="relative flex h-2 w-2">
-          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
-          <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500" />
-        </span>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3">
@@ -77,8 +73,8 @@ export default function LivePriceWidget({ currentTool }: LivePriceWidgetProps) {
                       <div className="text-xs font-medium text-slate-700 dark:text-slate-300 capitalize">{coin}</div>
                       <div className="text-xs text-slate-500">${data.usd.toLocaleString()}</div>
                       <div className="text-xs text-slate-500">₹{data.inr.toLocaleString()}</div>
-                      <div className={`text-xs ${data.change_24h >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                        {data.change_24h >= 0 ? '+' : ''}{data.change_24h.toFixed(2)}%
+                      <div className={`text-xs ${data.change_24h == null ? 'text-slate-500' : data.change_24h >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                        {data.change_24h == null ? '24h: unavailable' : `${data.change_24h >= 0 ? '+' : ''}${data.change_24h.toFixed(2)}%`}
                       </div>
                     </div>
                   ))}
@@ -93,8 +89,8 @@ export default function LivePriceWidget({ currentTool }: LivePriceWidgetProps) {
                     <div key={symbol} className="bg-slate-50 dark:bg-slate-800/50 rounded-lg p-2">
                       <div className="text-xs font-medium text-slate-700 dark:text-slate-300">{symbol}</div>
                       <div className="text-xs text-slate-500">${data.price.toLocaleString()}</div>
-                      <div className={`text-xs ${data.changePercent >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                        {data.changePercent >= 0 ? '+' : ''}{data.changePercent.toFixed(2)}%
+                      <div className={`text-xs ${data.changePercent == null ? 'text-slate-500' : data.changePercent >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                        {data.changePercent == null ? 'Day: unavailable' : `${data.changePercent >= 0 ? '+' : ''}${data.changePercent.toFixed(2)}%`}
                       </div>
                     </div>
                   ))}

@@ -8,7 +8,7 @@ type CryptoMarket = {
   id: string;
   symbol: string;
   inr: number;
-  change24h: number;
+  change24h: number | null;
   change7d: number | null;
   marketCapInr: number | null;
   marketCapRank: number | null;
@@ -28,7 +28,7 @@ type StockMarket = {
   symbol: string;
   name: string | null;
   price: number;
-  changePercent: number;
+  changePercent: number | null;
   currency: string | null;
   exchange: string | null;
   dayOpen: number | null;
@@ -66,6 +66,11 @@ function formatDate(value: string | null | undefined) {
 function changeLabel(value: number | null, label: string) {
   if (value == null || !Number.isFinite(value)) return `${label}: unavailable`;
   return `${label}: ${value >= 0 ? "+" : ""}${value.toFixed(2)}%`;
+}
+
+function changeClass(value: number | null) {
+  if (value == null || !Number.isFinite(value)) return "text-slate-500 dark:text-slate-400";
+  return value >= 0 ? "text-green-600 dark:text-green-400" : "text-red-500 dark:text-red-400";
 }
 
 export default function LivePrices() {
@@ -110,7 +115,7 @@ export default function LivePrices() {
               id,
               symbol,
               inr: item.inr,
-              change24h: typeof item.change_24h === "number" ? item.change_24h : 0,
+              change24h: typeof item.change_24h === "number" && Number.isFinite(item.change_24h) ? item.change_24h : null,
               change7d: typeof item.change_7d === "number" ? item.change_7d : null,
               marketCapInr: typeof item.market_cap_inr === "number" ? item.market_cap_inr : null,
               marketCapRank: typeof item.market_cap_rank === "number" ? item.market_cap_rank : null,
@@ -130,8 +135,8 @@ export default function LivePrices() {
             typeof previous === "number" && previous > 0 ? ((current - previous) / previous) * 100 : null;
           const pairs = [
             { pair: "USD/INR", rate: Number(currentRates.INR), previousRate: previousRates?.INR },
-            { pair: "EUR/INR", rate: Number(currentRates.EUR) * Number(currentRates.INR), previousRate: previousRates?.EUR && previousRates?.INR ? previousRates.EUR * previousRates.INR : undefined },
-            { pair: "GBP/INR", rate: Number(currentRates.GBP) * Number(currentRates.INR), previousRate: previousRates?.GBP && previousRates?.INR ? previousRates.GBP * previousRates.INR : undefined },
+            { pair: "EUR/INR", rate: Number(currentRates.INR) / Number(currentRates.EUR), previousRate: previousRates?.EUR && previousRates?.INR ? previousRates.INR / previousRates.EUR : undefined },
+            { pair: "GBP/INR", rate: Number(currentRates.INR) / Number(currentRates.GBP), previousRate: previousRates?.GBP && previousRates?.INR ? previousRates.INR / previousRates.GBP : undefined },
             { pair: "USD/JPY", rate: Number(currentRates.JPY), previousRate: previousRates?.JPY },
           ]
             .filter((item) => Number.isFinite(item.rate) && item.rate > 0)
@@ -152,7 +157,7 @@ export default function LivePrices() {
             symbol,
             name: typeof item.name === "string" ? item.name : null,
             price: item.price,
-            changePercent: typeof item.changePercent === "number" ? item.changePercent : 0,
+            changePercent: typeof item.changePercent === "number" && Number.isFinite(item.changePercent) ? item.changePercent : null,
             currency: typeof item.currency === "string" ? item.currency : null,
             exchange: typeof item.exchange === "string" ? item.exchange : null,
             dayOpen: typeof item.dayOpen === "number" ? item.dayOpen : null,
@@ -213,7 +218,7 @@ export default function LivePrices() {
                       <span className="text-sm font-semibold text-slate-900 dark:text-white">{formatInr(coin.inr)}</span>
                     </div>
                     <div className="mt-2 grid grid-cols-2 gap-x-3 gap-y-1 text-[11px] text-slate-500 dark:text-slate-400">
-                      <span className={coin.change24h >= 0 ? "text-green-600 dark:text-green-400" : "text-red-500 dark:text-red-400"}>{changeLabel(coin.change24h, "24h")}</span>
+                      <span className={changeClass(coin.change24h)}>{changeLabel(coin.change24h, "24h")}</span>
                       <span>{changeLabel(coin.change7d, "7d")}</span>
                       <span>Market cap: {formatCompactInr(coin.marketCapInr)}</span>
                       <span>Rank: {coin.marketCapRank ? `#${coin.marketCapRank}` : "—"}</span>
@@ -268,7 +273,7 @@ export default function LivePrices() {
                       <span className="text-sm font-semibold text-slate-900 dark:text-white">{formatUsd(stock.price)}</span>
                     </div>
                     <div className="mt-2 grid grid-cols-2 gap-x-3 gap-y-1 text-[11px] text-slate-500 dark:text-slate-400">
-                      <span className={stock.changePercent >= 0 ? "text-green-600 dark:text-green-400" : "text-red-500 dark:text-red-400"}>{changeLabel(stock.changePercent, "Day")}</span>
+                      <span className={changeClass(stock.changePercent)}>{changeLabel(stock.changePercent, "Day")}</span>
                       <span>Prev close: {formatUsd(stock.previousClose)}</span>
                       <span>Open: {formatUsd(stock.dayOpen)}</span>
                       <span>Volume: {stock.volume == null ? "—" : stock.volume.toLocaleString("en-IN")}</span>

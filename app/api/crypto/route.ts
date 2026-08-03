@@ -1,18 +1,26 @@
 import { NextResponse } from "next/server";
+import { allowPublicRequest } from "@/lib/public-rate-limit";
 
 export const dynamic = "force-dynamic";
 
 const COINGECKO_BASE = "https://api.coingecko.com/api/v3";
 const FRANKFURTER_BASE = "https://api.frankfurter.app";
+const DEFAULT_COINS = ["bitcoin", "ethereum", "binancecoin", "solana"];
+const ALLOWED_COINS = new Set([...DEFAULT_COINS, "ripple", "cardano", "dogecoin", "avalanche-2", "chainlink", "polkadot"]);
 
 export async function GET(request: Request) {
+  const rateLimit = allowPublicRequest(request, "crypto", 30);
+  if (!rateLimit.allowed) {
+    return NextResponse.json({ error: "Market-data request limit reached. Please try again shortly." }, { status: 429, headers: { "Retry-After": String(rateLimit.retryAfter) } });
+  }
   const { searchParams } = new URL(request.url);
-  const coins = searchParams.get("coins")?.split(",").filter(Boolean) ?? [
-    "bitcoin",
-    "ethereum",
-    "binancecoin",
-    "solana",
-  ];
+  const requestedCoins = searchParams.get("coins")?.split(",").map((coin) => coin.trim().toLowerCase()).filter(Boolean);
+  const coins = (requestedCoins?.length ? requestedCoins : DEFAULT_COINS)
+    .filter((coin, index, all) => ALLOWED_COINS.has(coin) && all.indexOf(coin) === index)
+    .slice(0, 10);
+  if (coins.length === 0) {
+    return NextResponse.json({ error: "Unsupported cryptocurrency selection." }, { status: 400 });
+  }
 
   try {
     const marketResponse = await fetch(
@@ -40,7 +48,7 @@ export async function GET(request: Request) {
     const result: Record<string, {
       inr: number;
       usd: number;
-      change_24h: number;
+      change_24h: number | null;
       change_7d: number | null;
       market_cap_inr: number | null;
       market_cap_rank: number | null;
@@ -54,7 +62,7 @@ export async function GET(request: Request) {
       result[coin.id] = {
         inr: Math.round(coin.current_price * usdToInr),
         usd: coin.current_price,
-        change_24h: typeof coin.price_change_percentage_24h === "number" ? coin.price_change_percentage_24h : 0,
+        change_24h: typeof coin.price_change_percentage_24h === "number" && Number.isFinite(coin.price_change_percentage_24h) ? coin.price_change_percentage_24h : null,
         change_7d: typeof coin.price_change_percentage_7d_in_currency === "number" ? coin.price_change_percentage_7d_in_currency : null,
         market_cap_inr: toInr(coin.market_cap),
         market_cap_rank: typeof coin.market_cap_rank === "number" ? coin.market_cap_rank : null,

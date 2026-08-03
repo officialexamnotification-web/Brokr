@@ -1,8 +1,9 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { ChevronLeft, Clock, ArrowLeft, Share2 } from "lucide-react";
+import { ChevronLeft, Clock, ArrowLeft } from "lucide-react";
 import { getBlogPostBySlug, getBlogPosts } from "@/lib/data";
 import Badge from "@/components/common/Badge";
+import ShareButton from "@/components/common/ShareButton";
 import type { Metadata } from "next";
 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
@@ -54,13 +55,22 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
       <h1 className="text-3xl lg:text-4xl font-black text-slate-900 dark:text-white mb-3 tracking-tight leading-tight">{post.title}</h1>
       <div className="flex items-center gap-4 mb-8 text-sm text-slate-500">
         <span>By {post.author}</span>
-        <button className="flex items-center gap-1 hover:text-primary-500 transition-colors"><Share2 className="w-3.5 h-3.5" /> Share</button>
+        <ShareButton title={post.title} />
       </div>
 
       <div className="mb-8 rounded-xl border border-amber-200 bg-amber-50/70 p-3 text-xs text-amber-800 dark:border-amber-900/50 dark:bg-amber-950/20 dark:text-amber-300">
         <div>Editorial review: {post.lastReviewedAt ?? "Not recorded"} · {post.reviewStatus === "source_checked" ? "Source checked" : "General educational content"}</div>
         <p className="mt-1">Fees, regulations, availability, market data and provider features can change. Verify current details with the relevant provider or regulator. This article is not financial advice.</p>
       </div>
+
+      {post.sourceUrls && post.sourceUrls.length > 0 && (
+        <div className="mb-8 rounded-xl border border-slate-200 bg-slate-50/70 p-4 text-xs text-slate-600 dark:border-slate-800 dark:bg-slate-900/50 dark:text-slate-400">
+          <h2 className="font-semibold text-slate-800 dark:text-slate-200 mb-2">Sources to verify</h2>
+          <ul className="space-y-1.5 list-disc pl-4">
+            {post.sourceUrls.map((url) => <li key={url}><a href={url} target="_blank" rel="noreferrer" className="text-primary-600 hover:underline break-all">{url}</a></li>)}
+          </ul>
+        </div>
+      )}
 
       <div className="flex flex-wrap gap-2 mb-8">
         {post.tags.map((t) => (

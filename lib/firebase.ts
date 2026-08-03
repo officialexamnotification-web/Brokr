@@ -1,5 +1,6 @@
 import { addDoc, collection, getFirestore, serverTimestamp } from "firebase/firestore";
 import { getApp, getApps, initializeApp } from "firebase/app";
+import { initializeAppCheck, ReCaptchaV3Provider } from "firebase/app-check";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -20,12 +21,26 @@ const requiredConfig = [
 ];
 
 export const isFirebaseConfigured = requiredConfig.every(Boolean);
+const appCheckSiteKey = process.env.NEXT_PUBLIC_FIREBASE_APPCHECK_SITE_KEY;
+export const isFirebaseAppCheckConfigured = Boolean(appCheckSiteKey);
+export const isFirebaseReady = isFirebaseConfigured && isFirebaseAppCheckConfigured;
 
 const firebaseApp = isFirebaseConfigured
   ? getApps().length
     ? getApp()
     : initializeApp(firebaseConfig)
   : null;
+
+if (firebaseApp && typeof window !== "undefined" && appCheckSiteKey) {
+  try {
+    initializeAppCheck(firebaseApp, {
+      provider: new ReCaptchaV3Provider(appCheckSiteKey),
+      isTokenAutoRefreshEnabled: true,
+    });
+  } catch {
+    // Firebase may already be initialized during client-side hot reload.
+  }
+}
 
 const firestore = firebaseApp ? getFirestore(firebaseApp) : null;
 
@@ -40,12 +55,23 @@ function clean(value: string, maxLength: number) {
   return value.trim().slice(0, maxLength);
 }
 
+function enforceClientCooldown(bucket: string) {
+  if (typeof window === "undefined") return;
+  const key = `brokr-last-submit:${bucket}`;
+  const lastSubmitted = Number(window.localStorage.getItem(key) || 0);
+  if (Date.now() - lastSubmitted < 15_000) {
+    throw new Error("Please wait before submitting again.");
+  }
+  window.localStorage.setItem(key, String(Date.now()));
+}
+
 export async function saveContactMessage(input: {
   name: string;
   email: string;
   subject: string;
   message: string;
 }) {
+  enforceClientCooldown("contact");
   await addDoc(collection(requireFirestore(), "contactMessages"), {
     name: clean(input.name, 120),
     email: clean(input.email, 254).toLowerCase(),
@@ -66,6 +92,7 @@ export async function saveToolSubmission(input: {
   pricing: string;
   email: string;
 }) {
+  enforceClientCooldown("tool");
   await addDoc(collection(requireFirestore(), "toolSubmissions"), {
     name: clean(input.name, 160),
     website: clean(input.website, 500),
@@ -81,6 +108,7 @@ export async function saveToolSubmission(input: {
 }
 
 export async function saveNewsletterSubscription(email: string) {
+  enforceClientCooldown("newsletter");
   await addDoc(collection(requireFirestore(), "newsletterSubscriptions"), {
     email: clean(email, 254).toLowerCase(),
     status: "subscribed",
@@ -88,5 +116,3 @@ export async function saveNewsletterSubscription(email: string) {
     createdAt: serverTimestamp(),
   });
 }
-
-

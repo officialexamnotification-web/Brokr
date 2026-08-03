@@ -45,7 +45,7 @@ export async function getCryptoPrices(coins: string[] = ["bitcoin", "ethereum", 
   }
 
   const cacheKey = `crypto:${coins.join(",")}`;
-  const cached = getCached<{ [key: string]: { inr: number; usd: number; change_24h: number } }>(cacheKey, CACHE_DURATION.crypto);
+  const cached = getCached<{ [key: string]: { inr: number; usd: number; change_24h: number | null } }>(cacheKey, CACHE_DURATION.crypto);
   if (cached) return cached;
 
   try {
@@ -65,12 +65,12 @@ export async function getCryptoPrices(coins: string[] = ["bitcoin", "ethereum", 
     const usdToInr = forexRates?.INR;
     if (!usdToInr) throw new Error("USD/INR data unavailable");
 
-    const result: { [key: string]: { inr: number; usd: number; change_24h: number } } = {};
+    const result: { [key: string]: { inr: number; usd: number; change_24h: number | null } } = {};
     data.forEach((coin: any) => {
       result[coin.id] = {
         inr: Math.round(coin.current_price * usdToInr),
         usd: coin.current_price,
-        change_24h: coin.price_change_percentage_24h,
+        change_24h: typeof coin.price_change_percentage_24h === "number" && Number.isFinite(coin.price_change_percentage_24h) ? coin.price_change_percentage_24h : null,
       };
     });
 
@@ -179,7 +179,7 @@ export async function getPopularPairs() {
 
 export async function getStockPrices(symbols: string[] = ["AAPL", "GOOGL", "MSFT", "TSLA", "AMZN"]) {
   const cacheKey = `stock:${symbols.join(",")}`;
-  const cached = getCached<{ [key: string]: { price: number; change: number; changePercent: number } }>(cacheKey, CACHE_DURATION.stock);
+  const cached = getCached<{ [key: string]: { price: number; change: number | null; changePercent: number | null } }>(cacheKey, CACHE_DURATION.stock);
   if (cached) return cached;
 
   try {
@@ -193,7 +193,7 @@ export async function getStockPrices(symbols: string[] = ["AAPL", "GOOGL", "MSFT
       throw new Error("StockData.org API key not provided");
     }
     
-    const results: { [key: string]: { price: number; change: number; changePercent: number } } = {};
+    const results: { [key: string]: { price: number; change: number | null; changePercent: number | null } } = {};
     
     // StockData.org free plan allows only 3 symbols per request
     // Process symbols in batches of 3
@@ -210,13 +210,13 @@ export async function getStockPrices(symbols: string[] = ["AAPL", "GOOGL", "MSFT
         data.data.forEach((quote: any) => {
           const price = quote.price;
           const previousClose = quote.previous_close_price;
-          const change = quote.day_change;
-          const changePercent = previousClose ? ((price - previousClose) / previousClose) * 100 : 0;
+          const change = typeof quote.day_change === "number" && Number.isFinite(quote.day_change) ? quote.day_change : null;
+          const changePercent = typeof price === "number" && typeof previousClose === "number" && previousClose > 0 ? ((price - previousClose) / previousClose) * 100 : null;
           
           results[quote.ticker] = {
             price: price,
-            change: change || 0,
-            changePercent: changePercent || 0,
+            change,
+            changePercent: typeof changePercent === "number" && Number.isFinite(changePercent) ? changePercent : null,
           };
         });
       }

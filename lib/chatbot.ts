@@ -6,6 +6,7 @@ export interface ChatMessage {
   text: string;
   sender: "user" | "bot";
   timestamp: Date;
+  links?: { label: string; url: string }[];
 }
 
 export interface ChatResponse {
@@ -44,7 +45,7 @@ const knowledgeBase: Record<string, ChatResponse> = {
   regulated: response("A regulatory label is not a guarantee of returns or suitability. Confirm the exact legal entity, licence number, jurisdiction, and product permission with the relevant regulator."),
   fees: response("Common costs include spreads, commissions, platform fees, withdrawal fees, inactivity fees, financing, taxes, and currency conversion. Compare the full schedule, not just the headline rate."),
   compare: response("Use the Compare page to select up to four listings side by side. Brokr provides information and does not make personalised recommendations.", "/compare", "Compare Listings"),
-  contact: response("The contact page is available for feedback and data corrections. The form is currently a preview and is not connected to a mailbox.", "/contact", "Open Contact"),
+  contact: response("The contact page accepts feedback and data corrections. Depending on deployment configuration, messages may be stored for review; do not submit passwords, payment details, or other sensitive information.", "/contact", "Open Contact"),
   support: response("For account or transaction issues, contact the provider directly. Brokr can help you browse public directory information.")
 };
 

@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { Bell, ArrowRight, Mail, Sparkles, Shield, Zap, TrendingUp } from "lucide-react";
-import { isFirebaseConfigured, saveNewsletterSubscription } from "@/lib/firebase";
+import { isFirebaseReady, saveNewsletterSubscription } from "@/lib/firebase";
 
 export default function Newsletter() {
   const [submitted, setSubmitted] = useState(false);
@@ -14,7 +14,7 @@ export default function Newsletter() {
 
   async function handleSubmit() {
     setError("");
-    if (!isFirebaseConfigured) {
+    if (!isFirebaseReady) {
       setSubmitted(true);
       return;
     }
@@ -58,7 +58,7 @@ export default function Newsletter() {
               Never miss an update
             </h2>
             <p className="text-lg text-indigo-200/80 mb-10 leading-relaxed max-w-lg mx-auto">
-              Get occasional directory updates and new comparison guides. {isFirebaseConfigured
+              Get occasional directory updates and new comparison guides. {isFirebaseReady
                 ? "Your email will be stored for subscription management; delivery is not connected yet."
                 : "Newsletter delivery is not connected yet, so no email address is currently saved."}
             </p>
@@ -81,14 +81,14 @@ export default function Newsletter() {
                 disabled={saving}
                 className="btn-primary px-8 py-4 text-base flex items-center justify-center gap-2 group"
               >
-                {saving ? "Saving..." : isFirebaseConfigured ? "Subscribe" : "Preview signup"}
+                {saving ? "Saving..." : isFirebaseReady ? "Subscribe" : "Preview signup"}
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </button>
             </div>
 
             {submitted && (
               <p className="text-sm text-amber-200 mb-6" role="status">
-                {isFirebaseConfigured
+                {isFirebaseReady
                   ? "Subscription saved. Newsletter delivery is not connected yet."
                   : "Preview only: no subscription was created because the newsletter backend is not connected."}
               </p>

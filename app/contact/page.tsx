@@ -2,7 +2,7 @@
 
 import { Mail, MessageSquare, Send } from "lucide-react";
 import { FormEvent, useState } from "react";
-import { isFirebaseConfigured, saveContactMessage } from "@/lib/firebase";
+import { isFirebaseReady, saveContactMessage } from "@/lib/firebase";
 
 export default function ContactPage() {
   const [status, setStatus] = useState<"idle" | "saving" | "success" | "preview" | "error">("idle");
@@ -13,12 +13,13 @@ export default function ContactPage() {
     setError("");
     const form = event.currentTarget;
 
-    if (!isFirebaseConfigured) {
+    if (!isFirebaseReady) {
       setStatus("preview");
       return;
     }
 
     const values = new FormData(form);
+    if (String(values.get("company") || "").trim()) return;
     setStatus("saving");
     try {
       await saveContactMessage({
@@ -47,7 +48,7 @@ export default function ContactPage() {
           Contact <span className="text-primary-600">Us</span>
         </h1>
         <p className="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
-          {isFirebaseConfigured
+          {isFirebaseReady
             ? "Messages are securely stored for review. No automatic email reply is sent."
             : "This page contains a contact-form preview. Messages are not sent or stored until the Firebase backend is connected."}
         </p>
@@ -57,6 +58,7 @@ export default function ContactPage() {
         <div className="lg:col-span-2">
           <div className="glass-card rounded-3xl p-8">
             <form className="space-y-6" onSubmit={handleSubmit}>
+              <input name="company" tabIndex={-1} autoComplete="off" aria-hidden="true" className="hidden" />
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
                   <label htmlFor="name" className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
@@ -125,7 +127,7 @@ export default function ContactPage() {
                 className="w-full btn-primary flex items-center justify-center gap-2 px-6 py-3 text-sm"
               >
                 <Send className="w-4 h-4" />
-                {status === "saving" ? "Saving..." : isFirebaseConfigured ? "Send Message" : "Preview Message"}
+                {status === "saving" ? "Saving..." : isFirebaseReady ? "Send Message" : "Preview Message"}
               </button>
               {(status === "preview" || status === "success" || status === "error") && (
                 <p className="text-sm text-amber-700 dark:text-amber-400" role="status">
@@ -147,7 +149,7 @@ export default function ContactPage() {
               <div className="min-w-0">
                 <h3 className="font-semibold text-slate-900 dark:text-white mb-1">Contact status</h3>
                 <p className="text-sm text-slate-600 dark:text-slate-400">Email: <a href="mailto:contact.officialbrokr@gmail.com" className="text-primary-600 hover:underline break-all">contact.officialbrokr@gmail.com</a></p>
-                <p className="text-xs text-slate-500 dark:text-slate-500 mt-1">{isFirebaseConfigured ? "Form storage is connected for review." : "The form backend is not connected yet."}</p>
+                <p className="text-xs text-slate-500 dark:text-slate-500 mt-1">{isFirebaseReady ? "Form storage and anti-spam protection are connected for review." : "The form backend and anti-spam protection are not fully configured yet."}</p>
                 <p className="text-xs text-slate-500 dark:text-slate-500 mt-1">Do not enter passwords, payment details, or other sensitive information.</p>
               </div>
             </div>

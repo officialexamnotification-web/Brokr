@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useTheme } from "./ThemeProvider";
 import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from "framer-motion";
 import {
@@ -59,6 +59,7 @@ const navLinks = [
 
 export default function Header() {
   const { theme, toggleTheme } = useTheme();
+  const pathname = usePathname();
   const router = useRouter();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [megaOpen, setMegaOpen] = useState<string | null>(null);
@@ -82,11 +83,7 @@ export default function Header() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      setActiveLink(window.location.pathname);
-    }
-  }, []);
+  useEffect(() => setActiveLink(pathname), [pathname]);
 
   useEffect(() => {
     if (searchOpen && searchInputRef.current) {
@@ -186,6 +183,10 @@ export default function Header() {
                       onMouseLeave={handleMegaLeave}
                     >
                       <button
+                        type="button"
+                        aria-expanded={megaOpen === link.mega}
+                        aria-haspopup="true"
+                        onClick={() => setMegaOpen(megaOpen === link.mega ? null : link.mega!)}
                         className={`relative flex items-center gap-1.5 px-4 py-2 text-sm font-semibold rounded-xl transition-all duration-200 ${
                           megaOpen === link.mega
                             ? "text-primary-600 dark:text-primary-400 bg-primary-50/80 dark:bg-primary-950/50"
@@ -301,13 +302,13 @@ export default function Header() {
                 </kbd>
               </button>
 
-              {/* Chatbot indicator - Tawk.to widget loads automatically */}
+              {/* Directory assistant indicator; this is not live customer support. */}
               <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-emerald-50/50 dark:bg-emerald-950/30 border border-emerald-200/50 dark:border-emerald-800/50">
                 <span className="relative flex h-2 w-2">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
                 </span>
-                <span className="text-xs font-medium text-emerald-700 dark:text-emerald-400">Support</span>
+                <span className="text-xs font-medium text-emerald-700 dark:text-emerald-400">Directory help</span>
               </div>
 
               <motion.button
@@ -373,7 +374,7 @@ export default function Header() {
                     />
                   </div>
                 </form>
-                {navLinks.map((link) => (
+                {navLinks.filter((link) => !link.mega).map((link) => (
                   <Link
                     key={link.label}
                     href={link.href}

@@ -10,6 +10,10 @@ service cloud.firestore {
       return request.resource.data.createdAt == request.time;
     }
 
+    function hasAppCheck() {
+      return request.app != null;
+    }
+
     function validEmail(value) {
       return value is string
         && value.size() <= 254
@@ -18,6 +22,7 @@ service cloud.firestore {
 
     match /contactMessages/{messageId} {
       allow create: if request.auth == null
+        && hasAppCheck()
         && hasOnly(['name', 'email', 'subject', 'message', 'status', 'source', 'createdAt'])
         && request.resource.data.name is string
         && request.resource.data.name.size() > 0
@@ -36,6 +41,7 @@ service cloud.firestore {
 
     match /toolSubmissions/{submissionId} {
       allow create: if request.auth == null
+        && hasAppCheck()
         && hasOnly(['name', 'website', 'category', 'description', 'features', 'pricing', 'email', 'status', 'source', 'createdAt'])
         && request.resource.data.name is string
         && request.resource.data.name.size() > 0
@@ -63,6 +69,7 @@ service cloud.firestore {
 
     match /newsletterSubscriptions/{subscriptionId} {
       allow create: if request.auth == null
+        && hasAppCheck()
         && hasOnly(['email', 'status', 'source', 'createdAt'])
         && validEmail(request.resource.data.email)
         && request.resource.data.status == 'subscribed'
@@ -72,5 +79,3 @@ service cloud.firestore {
     }
   }
 }
-
-
