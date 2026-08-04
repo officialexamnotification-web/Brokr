@@ -23,8 +23,8 @@ const knowledgeBase: Record<string, ChatResponse> = {
   hello: response("Hello! I can help you browse trading tools, brokers, exchanges, and education resources."),
   hi: response("Hi! Ask me about a category, country, fees, platforms, or how to compare listings."),
   help: response("I can help you browse categories, compare listings, understand common fee fields, and find country filters. I cannot provide financial advice or tell you what to buy."),
-  "what is this website": response("Brokr is an informational directory for discovering and comparing trading platforms, brokers, exchanges, and market tools. Listings are not endorsements."),
-  "how many tools": response("Brokr lists tools across eight categories. The catalog is informational; ratings and independent user reviews are not currently available."),
+  "what is this website": response("Tradivex is an informational directory for discovering and comparing trading platforms, brokers, exchanges, and market tools. Listings are not endorsements."),
+  "how many tools": response("Tradivex lists tools across eight categories. The catalog is informational; ratings and independent user reviews are not currently available."),
   categories: response("The directory includes forex brokers, crypto exchanges, stock brokers, CFD brokers, options tools, payment systems, trading tools, and education resources."),
   forex: response("Compare forex platforms by jurisdiction, regulation, spreads, platforms, and support. Availability and legality vary by country; verify the provider and local rules before using a service.", "/category/forex-brokers", "Browse Forex Brokers"),
   "forex india": response("For Indian users, check RBI and SEBI rules and confirm that a platform is authorised for the relevant product. Do not assume an offshore platform is permitted merely because it accepts Indian visitors.", "/region/in", "View India listings"),
@@ -44,9 +44,9 @@ const knowledgeBase: Record<string, ChatResponse> = {
   safe: response("To research a platform, verify its legal entity and licence on the regulator's website, read the current fee schedule, check withdrawal terms, and never risk money you cannot afford to lose."),
   regulated: response("A regulatory label is not a guarantee of returns or suitability. Confirm the exact legal entity, licence number, jurisdiction, and product permission with the relevant regulator."),
   fees: response("Common costs include spreads, commissions, platform fees, withdrawal fees, inactivity fees, financing, taxes, and currency conversion. Compare the full schedule, not just the headline rate."),
-  compare: response("Use the Compare page to select up to four listings side by side. Brokr provides information and does not make personalised recommendations.", "/compare", "Compare Listings"),
+  compare: response("Use the Compare page to select up to four listings side by side. Tradivex provides information and does not make personalised recommendations.", "/compare", "Compare Listings"),
   contact: response("The contact page accepts feedback and data corrections. Depending on deployment configuration, messages may be stored for review; do not submit passwords, payment details, or other sensitive information.", "/contact", "Open Contact"),
-  support: response("For account or transaction issues, contact the provider directly. Brokr can help you browse public directory information.")
+  support: response("For account or transaction issues, contact the provider directly. Tradivex can help you browse public directory information.")
 };
 
 export function getChatResponse(userMessage: string): ChatResponse {

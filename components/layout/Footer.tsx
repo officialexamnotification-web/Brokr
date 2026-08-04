@@ -45,7 +45,7 @@ export default function Footer() {
                 <TrendingUp className="w-5 h-5 text-white" />
               </div>
               <span className="text-xl font-black text-slate-900 dark:text-white">
-                Brokr
+                Tradivex
               </span>
             </Link>
             <p className="text-sm text-slate-500 dark:text-slate-400 mb-6 leading-relaxed max-w-sm">
@@ -55,8 +55,8 @@ export default function Footer() {
             <div className="flex items-center gap-2">
               <Link
                 href="/contact"
-                aria-label="Contact Brokr"
-                title="Contact Brokr"
+                aria-label="Contact Tradivex"
+                title="Contact Tradivex"
                 className="p-2.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-400 hover:text-primary-500 hover:border-primary-200 dark:hover:border-primary-800 transition-all"
               >
                 <Mail className="w-4 h-4" />
@@ -88,7 +88,7 @@ export default function Footer() {
 
         <div className="pt-8 border-t border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-sm text-slate-400 dark:text-slate-500">
-            &copy; {new Date().getFullYear()} Brokr. All rights reserved.
+            &copy; {new Date().getFullYear()} Tradivex. All rights reserved.
           </p>
           <p className="text-xs text-slate-400 dark:text-slate-500 max-w-md">
             Disclaimer: This website is for informational purposes only and does not constitute financial advice. Trading involves significant risk of loss. Please consult a licensed financial advisor before making investment decisions.

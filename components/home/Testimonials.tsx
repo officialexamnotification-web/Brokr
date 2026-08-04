@@ -47,7 +47,7 @@ export default function Testimonials() {
             <span className="gradient-text">platform</span> verification
           </h2>
           <p className="text-lg text-slate-500 dark:text-slate-400 max-w-xl mx-auto">
-            We organize public information so you can compare tools more easily. Brokr does not verify, endorse, or recommend financial products.
+            We organize public information so you can compare tools more easily. Tradivex does not verify, endorse, or recommend financial products.
           </p>
         </motion.div>
 

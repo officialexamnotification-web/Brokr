@@ -8022,7 +8022,7 @@ export const tools: Tool[] = rawTools.filter(
 // sheets, so expose a clear review status instead of implying live verification.
 const editorialBlogPosts: BlogPost[] = blogPosts.map((post) => ({
   ...post,
-  author: "Brokr Editorial Team",
+  author: "Tradivex Editorial Team",
   lastReviewedAt: "2026-08-03",
   reviewStatus: "editorial_reviewed",
   sourceUrls: post.sourceUrls ?? [],
@@ -8177,6 +8177,5 @@ export function searchTools(query: string, filters?: { category?: number; minRat
   }
   return results;
 }
-
 
 

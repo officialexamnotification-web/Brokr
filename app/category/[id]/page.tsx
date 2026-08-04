@@ -20,24 +20,24 @@ export async function generateMetadata({ params }: { params: { id: string } }): 
 
   if (!category) {
     return {
-      title: "Category Not Found | Brokr",
+      title: "Category Not Found | Tradivex",
       description: "The category you are looking for could not be found.",
     };
   }
 
   return {
-    title: `${category.name} Trading Tools & Platforms | Brokr`,
+    title: `${category.name} Trading Tools & Platforms | Tradivex`,
     description: `Compare ${category.name.toLowerCase()} trading tools using documented listing fields. ${category.description}.`,
     keywords: `${category.name}, ${category.name} trading tools, ${category.name} platforms, ${category.name} brokers, trading comparison`,
     openGraph: {
-      title: `${category.name} Trading Tools | Brokr`,
+      title: `${category.name} Trading Tools | Tradivex`,
       description: category.description,
       type: "website",
       locale: "en_US",
     },
     twitter: {
       card: "summary_large_image",
-      title: `${category.name} Trading Tools | Brokr`,
+      title: `${category.name} Trading Tools | Tradivex`,
       description: category.description,
     },
   };

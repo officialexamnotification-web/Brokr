@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 
-const STORAGE_KEY = "brokr-cookie-choice";
+const STORAGE_KEY = "tradivex-cookie-choice";
 
 export default function CookieConsent() {
   const [visible, setVisible] = useState(false);

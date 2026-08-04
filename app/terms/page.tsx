@@ -2,8 +2,8 @@ import { Metadata } from "next";
 import { FileText, AlertTriangle, Scale, Gavel } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Terms of Service | Brokr",
-  description: "Brokr's Terms of Service - Read our terms and conditions for using our website and services. By using Brokr, you agree to these terms.",
+  title: "Terms of Service | Tradivex",
+  description: "Tradivex's Terms of Service - Read our terms and conditions for using our website and services. By using Tradivex, you agree to these terms.",
 };
 
 export default function TermsPage() {
@@ -30,7 +30,7 @@ export default function TermsPage() {
             Agreement to Terms
           </h2>
           <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
-            By accessing or using Brokr ("the Service"), you acknowledge these Terms of Service ("Terms"). If you do not agree with them, please do not use the Service. These Terms describe the intended conditions for using this informational directory; their enforceability may depend on applicable law and the operator's actual legal details.
+            By accessing or using Tradivex ("the Service"), you acknowledge these Terms of Service ("Terms"). If you do not agree with them, please do not use the Service. These Terms describe the intended conditions for using this informational directory; their enforceability may depend on applicable law and the operator's actual legal details.
           </p>
         </section>
 
@@ -42,7 +42,7 @@ export default function TermsPage() {
           <div className="p-6 rounded-3xl bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-950/30 dark:to-orange-950/30 border border-amber-200 dark:border-amber-800 mb-4">
             <p className="text-slate-800 dark:text-slate-200 font-semibold mb-2">IMPORTANT NOTICE</p>
             <p className="text-slate-700 dark:text-slate-300 text-sm leading-relaxed">
-              Brokr is an informational and comparison platform only. We do NOT provide financial advice, investment recommendations, or brokerage services. All content on this website is for informational purposes only and should not be construed as professional financial advice.
+              Tradivex is an informational and comparison platform only. We do NOT provide financial advice, investment recommendations, or brokerage services. All content on this website is for informational purposes only and should not be construed as professional financial advice.
             </p>
           </div>
           <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
@@ -56,7 +56,7 @@ export default function TermsPage() {
             Nature of Service
           </h2>
           <p className="text-slate-600 dark:text-slate-400 leading-relaxed mb-4">
-            Brokr provides:
+            Tradivex provides:
           </p>
           <ul className="text-slate-600 dark:text-slate-400 space-y-2 list-disc list-inside">
             <li>Comparisons of trading platforms, brokers, and exchanges</li>
@@ -65,7 +65,7 @@ export default function TermsPage() {
             <li>Links to third-party financial service providers</li>
           </ul>
           <p className="text-slate-600 dark:text-slate-400 leading-relaxed mt-4">
-            We do not execute trades, hold client funds, or provide investment management services. Any transactions you make are directly with third-party brokers or exchanges, not with Brokr.
+            We do not execute trades, hold client funds, or provide investment management services. Any transactions you make are directly with third-party brokers or exchanges, not with Tradivex.
           </p>
         </section>
 
@@ -89,7 +89,7 @@ export default function TermsPage() {
         <section>
           <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-4">User Responsibilities</h2>
           <p className="text-slate-600 dark:text-slate-400 leading-relaxed mb-4">
-            As a user of Brokr, you agree to:
+            As a user of Tradivex, you agree to:
           </p>
           <ul className="text-slate-600 dark:text-slate-400 space-y-2 list-disc list-inside">
             <li>Use the Service for lawful purposes only</li>
@@ -111,7 +111,7 @@ export default function TermsPage() {
         <section>
           <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-4">Limitation of Liability</h2>
           <p className="text-slate-600 dark:text-slate-400 leading-relaxed mb-4">
-            To the maximum extent permitted by law, Brokr shall not be liable for:
+            To the maximum extent permitted by law, Tradivex shall not be liable for:
           </p>
           <ul className="text-slate-600 dark:text-slate-400 space-y-2 list-disc list-inside">
             <li>Any indirect, incidental, special, or consequential damages</li>
@@ -131,14 +131,14 @@ export default function TermsPage() {
             Intellectual Property
           </h2>
           <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
-            Original text, software, and branding created for Brokr may be owned by Brokr or its licensors and may be protected by intellectual-property laws. Provider names, trademarks, logos, and third-party materials remain the property of their respective owners. You may not reproduce Brokr-owned content without permission, except as permitted by law.
+            Original text, software, and branding created for Tradivex may be owned by Tradivex or its licensors and may be protected by intellectual-property laws. Provider names, trademarks, logos, and third-party materials remain the property of their respective owners. You may not reproduce Tradivex-owned content without permission, except as permitted by law.
           </p>
         </section>
 
         <section>
           <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-4">Indemnification</h2>
           <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
-            You agree to indemnify and hold harmless Brokr, its officers, directors, employees, and agents from any claims, damages, or expenses arising from your use of the Service, your violation of these Terms, or your violation of any rights of another party.
+            You agree to indemnify and hold harmless Tradivex, its officers, directors, employees, and agents from any claims, damages, or expenses arising from your use of the Service, your violation of these Terms, or your violation of any rights of another party.
           </p>
         </section>
 

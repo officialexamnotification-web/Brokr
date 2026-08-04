@@ -92,7 +92,7 @@ export async function GET(request: Request) {
       const previousUrl = `${FRANKFURTER_BASE}/${candidateDate}?from=${encodeURIComponent(base)}&to=${encodeURIComponent(targets.join(","))}`;
       const previousResponse = await fetch(previousUrl, {
         next: { revalidate: 86400 },
-        headers: { 'User-Agent': 'Brokr informational directory' },
+        headers: { 'User-Agent': 'Tradivex informational directory' },
       });
       if (!previousResponse.ok) continue;
       const previousData = await previousResponse.json();

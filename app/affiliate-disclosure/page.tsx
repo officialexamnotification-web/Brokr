@@ -2,8 +2,8 @@ import { Metadata } from "next";
 import { AlertTriangle, ExternalLink, Shield } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Affiliate Disclosure | Brokr",
-  description: "Brokr’s current affiliate status and how commercial links will be disclosed if they are added.",
+  title: "Affiliate Disclosure | Tradivex",
+  description: "Tradivex’s current affiliate status and how commercial links will be disclosed if they are added.",
 };
 
 export default function AffiliateDisclosurePage() {
@@ -36,7 +36,7 @@ export default function AffiliateDisclosurePage() {
               <h2 className="text-2xl font-bold text-slate-900 dark:text-white">What this means</h2>
             </div>
             <ul className="space-y-3 text-slate-600 dark:text-slate-400">
-              <li>Brokr is an informational directory, not a broker, adviser, or financial service provider.</li>
+              <li>Tradivex is an informational directory, not a broker, adviser, or financial service provider.</li>
               <li>Listings are not endorsements, recommendations, or guarantees of safety, legality, pricing, or availability.</li>
               <li>If commercial links are added later, each relevant page will identify them near the link and this disclosure will be updated.</li>
             </ul>

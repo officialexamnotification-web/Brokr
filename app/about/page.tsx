@@ -2,8 +2,8 @@ import { Metadata } from "next";
 import { ShieldCheck, Users, Target, Award } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "About Us | Brokr",
-  description: "Learn how Brokr organizes trading tools, brokers, exchanges, and educational resources for informational comparison.",
+  title: "About Us | Tradivex",
+  description: "Learn how Tradivex organizes trading tools, brokers, exchanges, and calculators for informational comparison.",
 };
 
 export default function AboutPage() {
@@ -16,7 +16,7 @@ export default function AboutPage() {
       <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
       <div className="text-center mb-16">
         <h1 className="text-4xl lg:text-5xl font-black text-slate-900 dark:text-white mb-6">
-          About <span className="text-primary-600">Brokr</span>
+          About <span className="text-primary-600">Tradivex</span>
         </h1>
         <p className="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
           An informational directory for discovering and comparing trading platforms, brokers, exchanges, and financial tools.
@@ -30,7 +30,7 @@ export default function AboutPage() {
             Our Mission
           </h2>
           <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
-            Brokr organizes provider information into searchable listings so users can compare documented fields in one place. The site does not provide financial advice, choose a provider for a user, or guarantee that a listing is current or available in every country.
+            Tradivex organizes provider information into searchable listings so users can compare documented fields in one place. The site does not provide financial advice, choose a provider for a user, or guarantee that a listing is current or available in every country.
           </p>
         </section>
 
@@ -65,7 +65,7 @@ export default function AboutPage() {
             Who We Are
           </h2>
           <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
-            Brokr is a software project focused on making a large set of provider listings easier to search. The directory is not operated as a broker, adviser, consultant, or investment service.
+            Tradivex is a software project focused on making a large set of provider listings easier to search. The directory is not operated as a broker, adviser, consultant, or investment service.
           </p>
         </section>
 
@@ -108,7 +108,7 @@ export default function AboutPage() {
         <section className="p-8 rounded-3xl bg-gradient-to-br from-primary-50 to-indigo-50 dark:from-primary-950/30 dark:to-indigo-950/30 border border-primary-200 dark:border-primary-800">
           <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-4">Disclaimer</h2>
           <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
-            Brokr is an informational and comparison platform only. We do not provide financial advice, investment recommendations, or brokerage services. Trading financial instruments involves significant risk and may result in the loss of your invested capital. You should always conduct your own research and consult with qualified financial advisors before making investment decisions. While we strive for accuracy, we cannot guarantee the completeness or timeliness of information presented on this platform.
+            Tradivex is an informational and comparison platform only. We do not provide financial advice, investment recommendations, or brokerage services. Trading financial instruments involves significant risk and may result in the loss of your invested capital. You should always conduct your own research and consult with qualified financial advisors before making investment decisions. While we strive for accuracy, we cannot guarantee the completeness or timeliness of information presented on this platform.
           </p>
         </section>
       </div>

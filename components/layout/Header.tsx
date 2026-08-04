@@ -168,7 +168,7 @@ export default function Header() {
                   <TrendingUp className="w-5 h-5 text-white relative z-10" />
                 </motion.div>
                 <span className="text-xl font-black text-slate-900 dark:text-white tracking-tight">
-                  Brokr
+                  Tradivex
                 </span>
               </Link>
 

@@ -7,9 +7,9 @@ import CustomChatbot from "@/components/common/CustomChatbot";
 import CookieConsent from "@/components/layout/CookieConsent";
 
 export const metadata: Metadata = {
-  title: "Brokr - Trading Tools Directory",
+  title: "Tradivex - Trading Tools, Comparisons & Calculators",
   description:
-    "A neutral directory for discovering and comparing trading platforms, brokers, exchanges, education resources and market tools.",
+    "Tradivex is a neutral directory for comparing trading platforms, brokers, exchanges, market tools, and calculators.",
   keywords: "trading tools directory, broker comparison, forex brokers, crypto exchanges, stock brokers, trading platforms",
 };
 

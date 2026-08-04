@@ -12,11 +12,11 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: { params: { code: string } }): Promise<Metadata> {
   const region = getRegionByCode(params.code);
-  if (!region) return { title: "Region Not Found | Brokr" };
+  if (!region) return { title: "Region Not Found | Tradivex" };
   return {
-    title: `Trading Tools in ${region.name} | Brokr Directory`,
+    title: `Trading Tools in ${region.name} | Tradivex Directory`,
     description: `Browse informational listings for trading tools and platforms available in or relevant to ${region.name}. Verify local eligibility and current terms before use.`,
-    openGraph: { title: `Trading Tools in ${region.name} | Brokr`, description: region.description, type: "website" },
+    openGraph: { title: `Trading Tools in ${region.name} | Tradivex`, description: region.description, type: "website" },
   };
 }
 

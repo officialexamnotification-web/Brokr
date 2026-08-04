@@ -37,13 +37,13 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   const tool = getToolBySlug(params.slug);
-  if (!tool) return { title: "Tool Not Found | Brokr" };
+  if (!tool) return { title: "Tool Not Found | Tradivex" };
   return {
-    title: `${tool.name} - Features, Fees & Availability | Brokr`,
+    title: `${tool.name} - Features, Fees & Availability | Tradivex`,
     description: `${tool.description} Review the public listing, availability, regulation labels, and provider details before using the service.`,
     keywords: [tool.name, tool.category, "trading tools", "platform comparison"],
     openGraph: {
-      title: `${tool.name} | Brokr Directory`,
+      title: `${tool.name} | Tradivex Directory`,
       description: tool.description,
       type: "website",
     },
@@ -65,10 +65,10 @@ export default function ToolDetailPage({ params }: { params: { slug: string } })
     name: tool.name,
     description: tool.longDescription,
     about: tool.category,
-    isPartOf: { "@type": "WebSite", name: "Brokr" },
+    isPartOf: { "@type": "WebSite", name: "Tradivex" },
     author: {
       "@type": "Organization",
-      name: "Brokr",
+      name: "Tradivex",
     },
   };
 
@@ -116,7 +116,7 @@ export default function ToolDetailPage({ params }: { params: { slug: string } })
                       Provider website
                     </a>
                   </div>
-                  <p className="mt-1">Brokr does not independently verify every listing. Confirm fees, licence details, eligibility, and availability before using a service.</p>
+                  <p className="mt-1">Tradivex does not independently verify every listing. Confirm fees, licence details, eligibility, and availability before using a service.</p>
                 </div>
               </div>
             </div>

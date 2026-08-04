@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Trading Calculators | Brokr",
+  title: "Trading Calculators | Tradivex",
   description: "Free educational calculators for forex pip value, position size, P&L, margin, options payoff, brokerage costs, and pivot points.",
 };
 

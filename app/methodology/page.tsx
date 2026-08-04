@@ -2,8 +2,8 @@ import { Metadata } from "next";
 import { Database, ExternalLink, Scale, ShieldCheck } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Methodology and Data Status | Brokr",
-  description: "How Brokr structures trading-tool listings, sources, comparison fields, and verification status.",
+  title: "Methodology and Data Status | Tradivex",
+  description: "How Tradivex structures trading-tool listings, sources, comparison fields, and verification status.",
 };
 
 export default function MethodologyPage() {
@@ -15,7 +15,7 @@ export default function MethodologyPage() {
         <div className="mb-10">
           <h1 className="text-4xl font-bold text-slate-900 dark:text-white mb-4">Methodology and Data Status</h1>
           <p className="text-lg text-slate-600 dark:text-slate-400">
-            Brokr is an informational directory. It organizes provider information for discovery and comparison; it does not rank, endorse, or independently verify every listing.
+            Tradivex is an informational directory. It organizes provider information for discovery and comparison; it does not rank, endorse, or independently verify every listing.
           </p>
         </div>
 
@@ -64,7 +64,7 @@ export default function MethodologyPage() {
               <h2 className="text-xl font-bold text-slate-900 dark:text-white">Comparison language</h2>
             </div>
             <p className="text-slate-600 dark:text-slate-400">
-              Brokr uses neutral labels such as “related listing” and “available fields.” It does not present a universal winner because the right choice depends on the user’s jurisdiction, needs, and risk tolerance.
+              Tradivex uses neutral labels such as “related listing” and “available fields.” It does not present a universal winner because the right choice depends on the user’s jurisdiction, needs, and risk tolerance.
             </p>
           </section>
         </div>

@@ -34,7 +34,7 @@ service cloud.firestore {
         && request.resource.data.message.size() > 0
         && request.resource.data.message.size() <= 5000
         && request.resource.data.status == 'new'
-        && request.resource.data.source == 'brokr-contact-form'
+        && request.resource.data.source == 'tradivex-contact-form'
         && isCreatedNow();
       allow read, update, delete: if false;
     }
@@ -62,7 +62,7 @@ service cloud.firestore {
         && request.resource.data.email is string
         && request.resource.data.email.size() <= 254
         && request.resource.data.status == 'pending-review'
-        && request.resource.data.source == 'brokr-submit-form'
+        && request.resource.data.source == 'tradivex-submit-form'
         && isCreatedNow();
       allow read, update, delete: if false;
     }
@@ -73,7 +73,7 @@ service cloud.firestore {
         && hasOnly(['email', 'status', 'source', 'createdAt'])
         && validEmail(request.resource.data.email)
         && request.resource.data.status == 'subscribed'
-        && request.resource.data.source == 'brokr-newsletter'
+        && request.resource.data.source == 'tradivex-newsletter'
         && isCreatedNow();
       allow read, update, delete: if false;
     }

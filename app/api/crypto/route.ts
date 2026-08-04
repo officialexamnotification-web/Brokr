@@ -27,7 +27,7 @@ export async function GET(request: Request) {
       `${COINGECKO_BASE}/coins/markets?vs_currency=usd&ids=${encodeURIComponent(coins.join(","))}&order=market_cap_desc&per_page=50&page=1&sparkline=false&price_change_percentage=7d`,
       {
         next: { revalidate: 120 },
-        headers: { "User-Agent": "Brokr informational directory" },
+        headers: { "User-Agent": "Tradivex informational directory" },
       }
     );
 
@@ -37,7 +37,7 @@ export async function GET(request: Request) {
 
     const fxResponse = await fetch(`${FRANKFURTER_BASE}/latest?from=USD&to=INR`, {
       next: { revalidate: 3600 },
-      headers: { "User-Agent": "Brokr informational directory" },
+      headers: { "User-Agent": "Tradivex informational directory" },
     });
     if (!fxResponse.ok) throw new Error(`Frankfurter API failed: ${fxResponse.status}`);
     const fxData = await fxResponse.json();

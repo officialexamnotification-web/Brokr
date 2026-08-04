@@ -98,7 +98,7 @@ export default function SubmitPage() {
         </h1>
         <p className="text-slate-500 dark:text-slate-400">
           Help our community grow by submitting a trading tool or broker that is
-          not yet listed on Brokr. {isFirebaseReady
+          not yet listed on Tradivex. {isFirebaseReady
             ? "Submissions are stored for editorial review and are not published automatically."
             : "This is a preview until the submission backend is connected; no information is sent or saved."}
         </p>

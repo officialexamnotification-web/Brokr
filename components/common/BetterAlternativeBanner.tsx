@@ -1,7 +1,7 @@
 import { Tool } from "@/lib/data";
 
 /**
- * Kept as a compatibility component for existing imports. Brokr no longer
+ * Kept as a compatibility component for existing imports. Tradivex no longer
  * labels one financial product as a "better" alternative without verified,
  * user-specific criteria.
  */

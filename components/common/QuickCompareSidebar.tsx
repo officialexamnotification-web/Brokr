@@ -63,7 +63,7 @@ export default function QuickCompareSidebar({ currentTool }: QuickCompareSidebar
                     <button type="button" onClick={() => { setDismissed(true); setVisible(false); }} aria-label="Close related listings" className="p-1.5 rounded-lg text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800"><X className="w-4 h-4" /></button>
                   </div>
                 </div>
-                <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">Compare the public fields yourself; Brokr does not select a winner.</p>
+                <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">Compare the public fields yourself; Tradivex does not select a winner.</p>
               </div>
               <div className="divide-y divide-slate-100 dark:divide-slate-800">
                 {relatedTools.map((tool) => (

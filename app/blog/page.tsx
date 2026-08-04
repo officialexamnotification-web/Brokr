@@ -5,18 +5,18 @@ import Badge from "@/components/common/Badge";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Trading Guides & Educational Articles | Brokr",
+  title: "Trading Guides & Educational Articles | Tradivex",
   description: "Educational trading guides and market explainers covering forex, crypto, stocks, and financial tools.",
   keywords: "trading guides, forex education, crypto tutorials, stock market analysis, trading strategies, trading blog",
   openGraph: {
-    title: "Trading Guides & Insights | Brokr",
+    title: "Trading Guides & Insights | Tradivex",
     description: "Educational articles with practical explanations of trading tools and markets.",
     type: "website",
     locale: "en_US",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Trading Guides | Brokr",
+    title: "Trading Guides | Tradivex",
     description: "Learn trading concepts and market context from explanatory articles and guides.",
   },
 };

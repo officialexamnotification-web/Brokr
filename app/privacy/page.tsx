@@ -2,8 +2,8 @@ import { Metadata } from "next";
 import { Shield, Eye, Lock, Cookie } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy | Brokr",
-  description: "Brokr's Privacy Policy - Learn how we collect, use, and protect your personal information. Your privacy is important to us.",
+  title: "Privacy Policy | Tradivex",
+  description: "Tradivex's Privacy Policy - Learn how we collect, use, and protect your personal information. Your privacy is important to us.",
 };
 
 export default function PrivacyPage() {
@@ -30,7 +30,7 @@ export default function PrivacyPage() {
             Introduction
           </h2>
           <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
-            Brokr ("we," "our," or "us") is an informational directory. This policy describes the website's current data practices. Contact, tool-submission, and newsletter storage is enabled only when the deployment's Firebase configuration and security rules are active; otherwise those forms remain previews and do not send or store entries.
+            Tradivex ("we," "our," or "us") is an informational directory. This policy describes the website's current data practices. Contact, tool-submission, and newsletter storage is enabled only when the deployment's Firebase configuration and security rules are active; otherwise those forms remain previews and do not send or store entries.
           </p>
         </section>
 
@@ -51,7 +51,7 @@ export default function PrivacyPage() {
               <h3 className="font-semibold text-slate-900 dark:text-white mb-2">Automatically Collected Information</h3>
               <ul className="text-slate-600 dark:text-slate-400 space-y-2 list-disc list-inside">
                 <li>Hosting, CDN, or security providers may process request metadata such as IP address, browser type, device information, referring page, and request time.</li>
-                <li>Brokr currently uses local browser storage for theme and cookie-preference settings.</li>
+                <li>Tradivex currently uses local browser storage for theme and cookie-preference settings.</li>
               </ul>
             </div>
           </div>
@@ -63,7 +63,7 @@ export default function PrivacyPage() {
             Cookies and advertising
           </h2>
           <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
-            Brokr currently uses local browser storage for the cookie-preference banner and theme preference. No optional analytics or advertising scripts are currently enabled by this project. If Google AdSense or another advertising partner is added, this policy and the consent flow must be updated before those services are activated.
+            Tradivex currently uses local browser storage for the cookie-preference banner and theme preference. No optional analytics or advertising scripts are currently enabled by this project. If Google AdSense or another advertising partner is added, this policy and the consent flow must be updated before those services are activated.
           </p>
         </section>
 
@@ -103,7 +103,7 @@ export default function PrivacyPage() {
         <section>
           <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-4">Information Sharing</h2>
           <p className="text-slate-600 dark:text-slate-400 leading-relaxed mb-4">
-            Brokr does not sell personal information. When Firebase-backed forms are enabled, the submitted fields are processed by Firebase/Google Cloud as the storage provider and by Brokr for review. Information may be processed or disclosed only as necessary for:
+            Tradivex does not sell personal information. When Firebase-backed forms are enabled, the submitted fields are processed by Firebase/Google Cloud as the storage provider and by Tradivex for review. Information may be processed or disclosed only as necessary for:
           </p>
           <ul className="text-slate-600 dark:text-slate-400 space-y-2 list-disc list-inside">
             <li>Third-party hosting, CDN, security, or other infrastructure providers that support the website</li>

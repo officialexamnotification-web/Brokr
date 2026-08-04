@@ -11,13 +11,13 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   
   if (!post) {
     return {
-      title: "Blog Post Not Found | Brokr",
+      title: "Blog Post Not Found | Tradivex",
       description: "The blog post you are looking for could not be found.",
     };
   }
 
   return {
-    title: `${post.title} | ${post.category} Guide | Brokr`,
+    title: `${post.title} | ${post.category} Guide | Tradivex`,
     description: post.excerpt,
     keywords: `${post.tags.join(", ")}, ${post.category}, trading guide, ${post.title}`,
     openGraph: {

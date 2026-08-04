@@ -9,8 +9,8 @@ export function generateStaticParams() {
 
 export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
   const calculator = getCalculatorDefinition(params.slug);
-  if (!calculator) return { title: "Calculator not found | Brokr" };
-  return { title: `${calculator.title} | Brokr`, description: calculator.description };
+  if (!calculator) return { title: "Calculator not found | Tradivex" };
+  return { title: `${calculator.title} | Tradivex`, description: calculator.description };
 }
 
 export default function CalculatorPage({ params }: { params: { slug: string } }) {
