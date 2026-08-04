@@ -16,6 +16,7 @@ export async function generateMetadata({ params }: { params: { code: string } })
   return {
     title: `Trading Tools in ${region.name} | Tradivex Directory`,
     description: `Browse informational listings for trading tools and platforms available in or relevant to ${region.name}. Verify local eligibility and current terms before use.`,
+    alternates: { canonical: `/region/${region.code}` },
     openGraph: { title: `Trading Tools in ${region.name} | Tradivex`, description: region.description, type: "website" },
   };
 }

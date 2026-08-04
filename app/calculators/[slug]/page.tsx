@@ -10,7 +10,16 @@ export function generateStaticParams() {
 export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
   const calculator = getCalculatorDefinition(params.slug);
   if (!calculator) return { title: "Calculator not found | Tradivex" };
-  return { title: `${calculator.title} | Tradivex`, description: calculator.description };
+  return {
+    title: `${calculator.title} | Tradivex`,
+    description: `${calculator.description} Enter your own assumptions to generate an educational estimate; results are not financial advice.`,
+    alternates: { canonical: `/calculators/${calculator.slug}` },
+    openGraph: {
+      title: `${calculator.title} | Tradivex`,
+      description: calculator.description,
+      type: "website",
+    },
+  };
 }
 
 export default function CalculatorPage({ params }: { params: { slug: string } }) {

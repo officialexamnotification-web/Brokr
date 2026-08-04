@@ -8,6 +8,7 @@ import CompareClient from "./CompareClient";
 export const metadata: Metadata = {
   title: "Compare Trading Tools & Brokers Side-by-Side | Tradivex",
   description: "Compare trading tools, brokers, and platforms side-by-side. Analyze features, pricing, regulation, and more to make informed trading decisions.",
+  robots: { index: false, follow: true },
   keywords: "trading tools comparison, broker comparison, compare trading platforms, side-by-side comparison, trading platform analysis",
   openGraph: {
     title: "Compare Trading Tools | Tradivex",

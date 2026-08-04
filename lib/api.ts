@@ -77,10 +77,6 @@ export async function getCryptoPrices(coins: string[] = ["bitcoin", "ethereum", 
     setCache(cacheKey, result);
     return result;
   } catch (error) {
-    console.error("CRYPTO ERROR DETAILS:", error);
-    console.error("CRYPTO ERROR TYPE:", error instanceof Error ? error.constructor.name : typeof error);
-    console.error("CRYPTO ERROR MESSAGE:", error instanceof Error ? error.message : String(error));
-    console.error("CRYPTO ERROR STACK:", error instanceof Error ? error.stack : "No stack trace");
     return {};
   }
 }
@@ -115,7 +111,6 @@ export async function getForexRates(base = "USD", targets?: string[]) {
       url += `&to=${targets.join(",")}`;
     }
 
-    console.log("Fetching Forex API:", url);
     const res = await fetch(url, {
       next: { revalidate: 3600 }, // ISR: revalidate every 1 hour
       headers: {
@@ -125,17 +120,12 @@ export async function getForexRates(base = "USD", targets?: string[]) {
     if (!res.ok) throw new Error(`Frankfurter API failed: ${res.status}`);
     const data = await res.json();
 
-    console.log("Forex API response:", data);
     
     if (!data.rates) throw new Error("Invalid API response");
     
     setCache(cacheKey, data.rates);
     return data.rates as { [key: string]: number };
   } catch (error) {
-    console.error("FOREX ERROR DETAILS:", error);
-    console.error("FOREX ERROR TYPE:", error instanceof Error ? error.constructor.name : typeof error);
-    console.error("FOREX ERROR MESSAGE:", error instanceof Error ? error.message : String(error));
-    console.error("FOREX ERROR STACK:", error instanceof Error ? error.stack : "No stack trace");
     return {};
   }
 }
@@ -186,8 +176,6 @@ export async function getStockPrices(symbols: string[] = ["AAPL", "GOOGL", "MSFT
     // Using StockData.org API with environment variable
     const apiKey = process.env.STOCKDATA_API_KEY || "";
     
-    console.log("StockData API Key present:", !!apiKey);
-    console.log("API Key length:", apiKey.length);
     
     if (!apiKey) {
       throw new Error("StockData.org API key not provided");

@@ -1,4 +1,4 @@
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import Link from "next/link";
 import { ChevronLeft, TrendingUp, ArrowRight, Sparkles, Filter, Globe } from "lucide-react";
 import type { Metadata } from "next";
@@ -28,6 +28,7 @@ export async function generateMetadata({ params }: { params: { id: string } }): 
   return {
     title: `${category.name} Trading Tools & Platforms | Tradivex`,
     description: `Compare ${category.name.toLowerCase()} trading tools using documented listing fields. ${category.description}.`,
+    alternates: { canonical: `/category/${category.slug}` },
     keywords: `${category.name}, ${category.name} trading tools, ${category.name} platforms, ${category.name} brokers, trading comparison`,
     openGraph: {
       title: `${category.name} Trading Tools | Tradivex`,
@@ -55,6 +56,10 @@ export default function CategoryPage({
 
   if (!category) {
     notFound();
+  }
+
+  if (!Number.isNaN(parsedCategoryId)) {
+    redirect(`/category/${category.slug}`);
   }
 
   const categoryTools = getToolsByCategory(category.id);

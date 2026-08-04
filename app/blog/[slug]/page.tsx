@@ -6,6 +6,8 @@ import Badge from "@/components/common/Badge";
 import ShareButton from "@/components/common/ShareButton";
 import type { Metadata } from "next";
 
+const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || "https://www.tradivex.com").replace(/\/$/, "");
+
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   const post = getBlogPostBySlug(params.slug);
   
@@ -20,11 +22,17 @@ export async function generateMetadata({ params }: { params: { slug: string } })
     title: `${post.title} | ${post.category} Guide | Tradivex`,
     description: post.excerpt,
     keywords: `${post.tags.join(", ")}, ${post.category}, trading guide, ${post.title}`,
+    alternates: { canonical: `/blog/${post.slug}` },
     openGraph: {
       title: post.title,
       description: post.excerpt,
       type: "article",
       locale: "en_US",
+      url: `/blog/${post.slug}`,
+      publishedTime: post.date,
+      authors: [post.author],
+      section: post.category,
+      tags: post.tags,
     },
     twitter: {
       card: "summary_large_image",
@@ -34,14 +42,32 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   };
 }
 
+export function generateStaticParams() {
+  return getBlogPosts().map((post) => ({ slug: post.slug }));
+}
+
 export default function BlogPostPage({ params }: { params: { slug: string } }) {
   const post = getBlogPostBySlug(params.slug);
   if (!post) notFound();
 
   const relatedPosts = getBlogPosts().filter((p) => p.slug !== post.slug && p.category === post.category).slice(0, 2);
+  const articleJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: post.title,
+    description: post.excerpt,
+    datePublished: post.date,
+    dateModified: post.lastReviewedAt ?? post.date,
+    author: { "@type": "Organization", name: post.author },
+    publisher: { "@type": "Organization", name: "Tradivex" },
+    mainEntityOfPage: { "@type": "WebPage", "@id": `${siteUrl}/blog/${post.slug}` },
+    keywords: post.tags.join(", "),
+  };
 
   return (
-    <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }} />
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <Link href="/blog" className="inline-flex items-center gap-1.5 text-sm text-slate-500 dark:text-slate-400 hover:text-primary-600 mb-8 transition-colors">
         <ArrowLeft className="w-4 h-4" /> All Guides
       </Link>
@@ -123,6 +149,7 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
           </div>
         </div>
       )}
-    </div>
+      </div>
+    </>
   );
 }

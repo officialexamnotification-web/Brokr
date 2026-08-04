@@ -148,7 +148,7 @@ export default function ContactPage() {
               </div>
               <div className="min-w-0">
                 <h3 className="font-semibold text-slate-900 dark:text-white mb-1">Contact status</h3>
-                <p className="text-sm text-slate-600 dark:text-slate-400">Email: <a href="mailto:contact.officialbrokr@gmail.com" className="text-primary-600 hover:underline break-all">contact.officialbrokr@gmail.com</a></p>
+                <p className="text-sm text-slate-600 dark:text-slate-400">Email: <a href="mailto:contact@tradivex.com" className="text-primary-600 hover:underline break-all">contact@tradivex.com</a></p>
                 <p className="text-xs text-slate-500 dark:text-slate-500 mt-1">{isFirebaseReady ? "Form storage and anti-spam protection are connected for review." : "The form backend and anti-spam protection are not fully configured yet."}</p>
                 <p className="text-xs text-slate-500 dark:text-slate-500 mt-1">Do not enter passwords, payment details, or other sensitive information.</p>
               </div>

@@ -48,12 +48,10 @@ export async function GET(request: Request) {
   }
   
   try {
-    console.log("Forex API request:", { base, targets });
     
     const cacheKey = `forex:${base}:${targets.join(",")}`;
     const cached = getCached<ForexSnapshot>(cacheKey, CACHE_DURATION);
     if (cached) {
-      console.log("Returning cached forex data");
       return NextResponse.json(cached);
     }
 
@@ -62,7 +60,6 @@ export async function GET(request: Request) {
       url += `&to=${encodeURIComponent(targets.join(","))}`;
     }
 
-    console.log("Fetching Forex API:", url);
     const res = await fetch(url, {
       next: { revalidate: 3600 }, // ISR: revalidate every 1 hour
       headers: {
@@ -70,7 +67,6 @@ export async function GET(request: Request) {
       },
     });
     
-    console.log("Forex API response status:", res.status);
     
     if (!res.ok) throw new Error(`Frankfurter API failed: ${res.status}`);
     const data = await res.json();

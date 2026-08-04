@@ -166,7 +166,7 @@ export default function TermsPage() {
         <section>
           <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-4">Contact Information</h2>
           <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
-            For questions about these Terms, contact <a href="mailto:contact.officialbrokr@gmail.com" className="text-primary-600 hover:underline">contact.officialbrokr@gmail.com</a>. The operator should still add its actual legal name, address, and jurisdiction after obtaining appropriate legal advice before treating these Terms as final.
+            For questions about these Terms, contact <a href="mailto:contact@tradivex.com" className="text-primary-600 hover:underline">contact@tradivex.com</a>. The operator should still add its actual legal name, address, and jurisdiction after obtaining appropriate legal advice before treating these Terms as final.
           </p>
         </section>
       </div>

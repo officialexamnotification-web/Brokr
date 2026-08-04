@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState, useRef } from "react";
+import React from "react";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import {
   Users,
@@ -20,41 +20,9 @@ interface StatItem {
 }
 
 function Counter({ target, suffix }: { target: number; suffix: string }) {
-  const [count, setCount] = useState(0);
-  const ref = useRef<HTMLSpanElement>(null);
-  const [inView, setInView] = useState(false);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) setInView(true); },
-      { threshold: 0.3 }
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
-
-  useEffect(() => {
-    if (!inView) return;
-    const duration = 2000;
-    const step = target / (duration / 16);
-    let current = 0;
-    const timer = setInterval(() => {
-      current += step;
-      if (current >= target) {
-        setCount(target);
-        clearInterval(timer);
-      } else {
-        setCount(Math.floor(current));
-      }
-    }, 16);
-    return () => clearInterval(timer);
-  }, [inView, target]);
-
   return (
-    <span ref={ref} className="stat-counter">
-      {count}
+    <span className="stat-counter">
+      {target}
       {suffix}
     </span>
   );

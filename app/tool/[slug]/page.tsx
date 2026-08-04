@@ -41,11 +41,13 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   return {
     title: `${tool.name} - Features, Fees & Availability | Tradivex`,
     description: `${tool.description} Review the public listing, availability, regulation labels, and provider details before using the service.`,
+    alternates: { canonical: `/tool/${tool.slug}` },
     keywords: [tool.name, tool.category, "trading tools", "platform comparison"],
     openGraph: {
       title: `${tool.name} | Tradivex Directory`,
       description: tool.description,
       type: "website",
+      url: `/tool/${tool.slug}`,
     },
   };
 }
