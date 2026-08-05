@@ -98,7 +98,7 @@ export default function LivePrices() {
     async function fetchData() {
       try {
         const [cryptoResult, forexResult, stocksResult] = await Promise.allSettled([
-          getCryptoPrices(["bitcoin", "ethereum", "binancecoin", "solana"]),
+          getCryptoPrices(["bitcoin", "ethereum", "binancecoin", "solana", "ripple"]),
           fetch("/api/forex?base=USD&targets=EUR,GBP,JPY,CHF,AUD,CAD,SGD,INR").then(async (res) => res.ok ? res.json() : null),
           fetch("/api/stocks?symbols=AAPL,GOOGL,MSFT,TSLA,AMZN").then(async (res) => res.ok ? res.json() : null),
         ]);
@@ -112,6 +112,7 @@ export default function LivePrices() {
           ["ethereum", "ETH"],
           ["binancecoin", "BNB"],
           ["solana", "SOL"],
+          ["ripple", "XRP"],
         ] as const;
         const cryptoItems = cryptoEntries
           .map(([id, symbol]) => {
