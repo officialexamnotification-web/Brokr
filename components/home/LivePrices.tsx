@@ -99,7 +99,7 @@ export default function LivePrices() {
       try {
         const [cryptoResult, forexResult, stocksResult] = await Promise.allSettled([
           getCryptoPrices(["bitcoin", "ethereum", "binancecoin", "solana"]),
-          fetch("/api/forex?base=USD&targets=INR,EUR,GBP,JPY").then(async (res) => res.ok ? res.json() : null),
+          fetch("/api/forex?base=USD&targets=EUR,GBP,JPY,CHF,AUD,CAD,SGD,INR").then(async (res) => res.ok ? res.json() : null),
           fetch("/api/stocks?symbols=AAPL,GOOGL,MSFT,TSLA,AMZN").then(async (res) => res.ok ? res.json() : null),
         ]);
 
@@ -142,16 +142,31 @@ export default function LivePrices() {
 
         const currentRates = forexResponse?.rates;
         const previousRates = forexResponse?.previousRates;
-        if (currentRates?.INR) {
+        if (currentRates?.EUR) {
+          const num = (v: unknown) => (typeof v === "number" ? v : typeof v === "string" ? Number(v) : NaN);
           const percentageChange = (current: number, previous: number | undefined) =>
-            typeof previous === "number" && previous > 0 ? ((current - previous) / previous) * 100 : null;
+            typeof previous === "number" && Number.isFinite(previous) && previous > 0 ? ((current - previous) / previous) * 100 : null;
+          // EUR/GBP/AUD come back from the API as "units per 1 USD", so they're
+          // inverted to the conventional EUR/USD, GBP/USD, AUD/USD quoting
+          // direction. JPY/CHF/CAD/SGD/INR are already quoted the conventional
+          // way (units per 1 USD). Cross pairs (EUR/GBP, EUR/JPY, GBP/JPY) are
+          // derived from the same USD-based rates without any extra API calls.
+          const invert = (v: unknown) => { const n = num(v); return Number.isFinite(n) && n > 0 ? 1 / n : undefined; };
+          const cross = (base: unknown, quote: unknown) => { const b = num(base), q = num(quote); return Number.isFinite(b) && b > 0 && Number.isFinite(q) ? q / b : undefined; };
           const pairs = [
-            { pair: "USD/INR", rate: Number(currentRates.INR), previousRate: previousRates?.INR },
-            { pair: "EUR/INR", rate: Number(currentRates.INR) / Number(currentRates.EUR), previousRate: previousRates?.EUR && previousRates?.INR ? previousRates.INR / previousRates.EUR : undefined },
-            { pair: "GBP/INR", rate: Number(currentRates.INR) / Number(currentRates.GBP), previousRate: previousRates?.GBP && previousRates?.INR ? previousRates.INR / previousRates.GBP : undefined },
-            { pair: "USD/JPY", rate: Number(currentRates.JPY), previousRate: previousRates?.JPY },
+            { pair: "EUR/USD", rate: invert(currentRates.EUR), previousRate: invert(previousRates?.EUR) },
+            { pair: "GBP/USD", rate: invert(currentRates.GBP), previousRate: invert(previousRates?.GBP) },
+            { pair: "AUD/USD", rate: invert(currentRates.AUD), previousRate: invert(previousRates?.AUD) },
+            { pair: "USD/JPY", rate: num(currentRates.JPY), previousRate: num(previousRates?.JPY) },
+            { pair: "USD/CHF", rate: num(currentRates.CHF), previousRate: num(previousRates?.CHF) },
+            { pair: "USD/CAD", rate: num(currentRates.CAD), previousRate: num(previousRates?.CAD) },
+            { pair: "USD/SGD", rate: num(currentRates.SGD), previousRate: num(previousRates?.SGD) },
+            { pair: "USD/INR", rate: num(currentRates.INR), previousRate: num(previousRates?.INR) },
+            { pair: "EUR/GBP", rate: cross(currentRates.EUR, currentRates.GBP), previousRate: cross(previousRates?.EUR, previousRates?.GBP) },
+            { pair: "EUR/JPY", rate: cross(currentRates.EUR, currentRates.JPY), previousRate: cross(previousRates?.EUR, previousRates?.JPY) },
+            { pair: "GBP/JPY", rate: cross(currentRates.GBP, currentRates.JPY), previousRate: cross(previousRates?.GBP, previousRates?.JPY) },
           ]
-            .filter((item) => Number.isFinite(item.rate) && item.rate > 0)
+            .filter((item): item is { pair: string; rate: number; previousRate: number | undefined } => Number.isFinite(item.rate) && (item.rate as number) > 0)
             .map((item) => ({ pair: item.pair, rate: Number(item.rate), change: percentageChange(item.rate, item.previousRate) }));
           setForex(pairs);
           setForexDate(typeof forexResponse.date === "string" ? forexResponse.date : null);
@@ -183,7 +198,7 @@ export default function LivePrices() {
             extendedHours: typeof item.extendedHours === "boolean" ? item.extendedHours : null,
           })));
 
-        setDataUnavailable(cryptoItems.length === 0 || !currentRates?.INR);
+        setDataUnavailable(cryptoItems.length === 0 || !currentRates?.EUR);
       } catch {
         setDataUnavailable(true);
       } finally {
