@@ -7,14 +7,14 @@ import { TrendingUp, TrendingDown, Activity, Bitcoin, DollarSign, BarChart3 } fr
 type CryptoMarket = {
   id: string;
   symbol: string;
-  inr: number;
+  usd: number;
   change24h: number | null;
   change7d: number | null;
-  marketCapInr: number | null;
+  marketCapUsd: number | null;
   marketCapRank: number | null;
-  volumeInr: number | null;
-  high24hInr: number | null;
-  low24hInr: number | null;
+  volumeUsd: number | null;
+  high24hUsd: number | null;
+  low24hUsd: number | null;
   lastUpdated: string | null;
 };
 
@@ -42,27 +42,24 @@ type StockMarket = {
   extendedHours: boolean | null;
 };
 
-function formatInr(value: number | null) {
-  return value == null ? "—" : `₹${value.toLocaleString("en-IN")}`;
-}
-
-function formatCompactInr(value: number | null) {
-  if (value == null) return "—";
-  const crore = value / 10_000_000;
-  if (crore >= 100_000) return `₹${(crore / 100_000).toFixed(1)} lakh Cr`;
-  if (crore >= 1) return `₹${crore.toFixed(1)} Cr`;
-  return `₹${value.toLocaleString("en-IN", { maximumFractionDigits: 0 })}`;
-}
-
 function formatUsd(value: number | null) {
   return value == null ? "—" : `$${value.toLocaleString("en-US", { maximumFractionDigits: 2 })}`;
+}
+
+function formatCompactUsd(value: number | null) {
+  if (value == null) return "—";
+  const abs = Math.abs(value);
+  if (abs >= 1_000_000_000) return `$${(value / 1_000_000_000).toFixed(1)}B`;
+  if (abs >= 1_000_000) return `$${(value / 1_000_000).toFixed(1)}M`;
+  if (abs >= 1_000) return `$${(value / 1_000).toFixed(1)}K`;
+  return `$${value.toLocaleString("en-US", { maximumFractionDigits: 0 })}`;
 }
 
 function formatDate(value: string | null | undefined) {
   if (!value) return "Unavailable";
   if (/^\d{4}-\d{2}-\d{2}$/.test(value)) return value;
   const date = new Date(value);
-  return Number.isNaN(date.getTime()) ? value : date.toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "short" });
+  return Number.isNaN(date.getTime()) ? value : date.toLocaleString("en-US", { dateStyle: "medium", timeStyle: "short" });
 }
 
 function changeLabel(value: number | null, label: string) {
@@ -119,18 +116,24 @@ export default function LivePrices() {
         const cryptoItems = cryptoEntries
           .map(([id, symbol]) => {
             const item = cryptoData?.[id];
-            if (!item || typeof item.inr !== "number") return null;
+            if (!item || typeof item.usd !== "number") return null;
+            // The API returns INR-denominated market cap/volume/high/low alongside a
+            // matching USD spot price. Derive a USD conversion ratio from those two
+            // so every figure in this widget is shown in USD without needing INR at all.
+            const ratio = typeof item.inr === "number" && item.inr > 0 ? item.usd / item.inr : null;
+            const toUsd = (inrValue: unknown) =>
+              ratio != null && typeof inrValue === "number" ? inrValue * ratio : null;
             return {
               id,
               symbol,
-              inr: item.inr,
+              usd: item.usd,
               change24h: typeof item.change_24h === "number" && Number.isFinite(item.change_24h) ? item.change_24h : null,
               change7d: typeof item.change_7d === "number" ? item.change_7d : null,
-              marketCapInr: typeof item.market_cap_inr === "number" ? item.market_cap_inr : null,
+              marketCapUsd: toUsd(item.market_cap_inr),
               marketCapRank: typeof item.market_cap_rank === "number" ? item.market_cap_rank : null,
-              volumeInr: typeof item.total_volume_inr === "number" ? item.total_volume_inr : null,
-              high24hInr: typeof item.high_24h_inr === "number" ? item.high_24h_inr : null,
-              low24hInr: typeof item.low_24h_inr === "number" ? item.low_24h_inr : null,
+              volumeUsd: toUsd(item.total_volume_inr),
+              high24hUsd: toUsd(item.high_24h_inr),
+              low24hUsd: toUsd(item.low_24h_inr),
               lastUpdated: typeof item.last_updated === "string" ? item.last_updated : null,
             } as CryptoMarket;
           })
@@ -218,22 +221,22 @@ export default function LivePrices() {
                 </div>
                 <h3 className="text-lg font-bold text-slate-900 dark:text-white">Cryptocurrency</h3>
               </div>
-              <p className="text-[11px] text-slate-500 dark:text-slate-400 mb-4">INR Â· 24h/7d market data Â· CoinGecko</p>
+              <p className="text-[11px] text-slate-500 dark:text-slate-400 mb-4">USD · 24h/7d market data · CoinGecko</p>
               <div className="space-y-3">
                 {crypto.length === 0 ? <Unavailable label="Cryptocurrency data" /> : crypto.map((coin) => (
                   <div key={coin.id} className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50">
                     <div className="flex items-center justify-between">
                       <span className="text-sm font-bold text-slate-700 dark:text-slate-200">{coin.symbol}</span>
-                      <span className="text-sm font-semibold text-slate-900 dark:text-white">{formatInr(coin.inr)}</span>
+                      <span className="text-sm font-semibold text-slate-900 dark:text-white">{formatUsd(coin.usd)}</span>
                     </div>
                     <div className="mt-2 grid grid-cols-2 gap-x-3 gap-y-1 text-[11px] text-slate-500 dark:text-slate-400">
                       <span className={changeClass(coin.change24h)}>{changeLabel(coin.change24h, "24h")}</span>
                       <span>{changeLabel(coin.change7d, "7d")}</span>
-                      <span>Market cap: {formatCompactInr(coin.marketCapInr)}</span>
+                      <span>Market cap: {formatCompactUsd(coin.marketCapUsd)}</span>
                       <span>Rank: {coin.marketCapRank ? `#${coin.marketCapRank}` : "—"}</span>
-                      <span>Volume: {formatCompactInr(coin.volumeInr)}</span>
-                      <span>High: {formatInr(coin.high24hInr)}</span>
-                      <span>Low: {formatInr(coin.low24hInr)}</span>
+                      <span>Volume: {formatCompactUsd(coin.volumeUsd)}</span>
+                      <span>High: {formatUsd(coin.high24hUsd)}</span>
+                      <span>Low: {formatUsd(coin.low24hUsd)}</span>
                       <span className="col-span-2">Updated: {formatDate(coin.lastUpdated)}</span>
                     </div>
                   </div>
@@ -248,7 +251,7 @@ export default function LivePrices() {
                 </div>
                 <h3 className="text-lg font-bold text-slate-900 dark:text-white">Forex Reference Rates</h3>
               </div>
-              <p className="text-[11px] text-slate-500 dark:text-slate-400 mb-4">Frankfurter/ECB Â· Rate date: {forexDate ?? "unavailable"}</p>
+              <p className="text-[11px] text-slate-500 dark:text-slate-400 mb-4">Frankfurter/ECB · Rate date: {forexDate ?? "unavailable"}</p>
               <div className="space-y-3">
                 {forex.length === 0 ? <Unavailable label="Forex reference rates" /> : forex.map((fx) => (
                   <div key={fx.pair} className="flex items-center justify-between p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50">
@@ -270,7 +273,7 @@ export default function LivePrices() {
                 </div>
                 <h3 className="text-lg font-bold text-slate-900 dark:text-white">Stock Prices</h3>
               </div>
-              <p className="text-[11px] text-slate-500 dark:text-slate-400 mb-4">StockData.org Â· US-listed quotes Â· delayed data possible</p>
+              <p className="text-[11px] text-slate-500 dark:text-slate-400 mb-4">StockData.org · US-listed quotes · delayed data possible</p>
               <div className="space-y-3">
                 {stocks.map((stock) => (
                   <div key={stock.symbol} className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50">
@@ -285,10 +288,10 @@ export default function LivePrices() {
                       <span className={changeClass(stock.changePercent)}>{changeLabel(stock.changePercent, "Day")}</span>
                       <span>Prev close: {formatUsd(stock.previousClose)}</span>
                       <span>Open: {formatUsd(stock.dayOpen)}</span>
-                      <span>Volume: {stock.volume == null ? "—" : stock.volume.toLocaleString("en-IN")}</span>
+                      <span>Volume: {stock.volume == null ? "—" : stock.volume.toLocaleString("en-US")}</span>
                       <span>High/Low: {formatUsd(stock.dayHigh)} / {formatUsd(stock.dayLow)}</span>
                       <span>52W: {formatUsd(stock.week52High)} / {formatUsd(stock.week52Low)}</span>
-                      <span>{stock.exchange ?? stock.currency ?? "Quote"}{stock.extendedHours ? " Â· extended hours" : ""}</span>
+                      <span>{stock.exchange ?? stock.currency ?? "Quote"}{stock.extendedHours ? " · extended hours" : ""}</span>
                       <span>{quoteLabel(stock.lastTradeTime)}</span>
                     </div>
                   </div>
@@ -310,13 +313,10 @@ export default function LivePrices() {
         <div className="text-center mt-6">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
             <Activity className="w-3.5 h-3.5 text-green-500" />
-            <p className="text-xs font-medium text-slate-600 dark:text-slate-400">External data Â· check the displayed source and date</p>
+            <p className="text-xs font-medium text-slate-600 dark:text-slate-400">External data · check the displayed source and date</p>
           </div>
         </div>
       </div>
     </section>
   );
 }
-
-
-
