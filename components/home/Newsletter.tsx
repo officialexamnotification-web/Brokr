@@ -23,7 +23,8 @@ export default function Newsletter() {
       await saveNewsletterSubscription(email);
       setSubmitted(true);
       setEmail("");
-    } catch {
+    } catch (err) {
+      console.error("NEWSLETTER SUBSCRIPTION ERROR:", err);
       setError("We could not save your subscription. Please try again later.");
     } finally {
       setSaving(false);
@@ -112,5 +113,3 @@ export default function Newsletter() {
     </section>
   );
 }
-
-
