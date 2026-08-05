@@ -59,8 +59,8 @@ export default function Newsletter() {
             </h2>
             <p className="text-lg text-indigo-200/80 mb-10 leading-relaxed max-w-lg mx-auto">
               Get occasional directory updates and new comparison guides. {isFirebaseReady
-                ? "Your email will be stored for subscription management; delivery is not connected yet."
-                : "Newsletter delivery is not connected yet, so no email address is currently saved."}
+                ? "Your email will be stored for subscription management. Delivery is not connected yet."
+                : "Newsletter delivery is not connected yet, so no email address is stored."}
             </p>
 
             <div className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto mb-8">
@@ -112,3 +112,5 @@ export default function Newsletter() {
     </section>
   );
 }
+
+

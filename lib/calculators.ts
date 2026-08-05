@@ -65,6 +65,30 @@ export const calculatorDefinitions = [
     shortTitle: "Drawdown Recovery",
     description: "Measure account drawdown and the percentage return needed to recover it.",
   },
+  {
+    slug: "currency-correlation",
+    title: "Currency Correlation Calculator",
+    shortTitle: "Currency Correlation",
+    description: "Measure the Pearson correlation between two matching currency-return series.",
+  },
+  {
+    slug: "currency-strength",
+    title: "Currency Strength Calculator",
+    shortTitle: "Currency Strength",
+    description: "Compare live reference-rate moves against USD using the available daily reference data.",
+  },
+  {
+    slug: "market-hours",
+    title: "Forex Market Hours Calculator",
+    shortTitle: "Market Hours",
+    description: "See the current local time and open or closed status for major forex sessions.",
+  },
+  {
+    slug: "economic-calendar",
+    title: "Economic Calendar",
+    shortTitle: "Economic Calendar",
+    description: "View scheduled economic events when a verified calendar provider is connected.",
+  },
 ] as const;
 
 export type CalculatorSlug = (typeof calculatorDefinitions)[number]["slug"];

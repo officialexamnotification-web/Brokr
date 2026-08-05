@@ -16,7 +16,7 @@ const footerLinks = {
     { label: "Submit a Tool", href: "/submit" },
     { label: "Blog", href: "/blog" },
     { label: "Latest Additions", href: "/search?sort=latest" },
-    { label: "Browse A–Z", href: "/search?sort=name" },
+    { label: "Browse A-Z", href: "/search?sort=name" },
   ],
   Regions: [
     { label: "India", href: "/region/in" },
@@ -98,3 +98,4 @@ export default function Footer() {
     </footer>
   );
 }
+

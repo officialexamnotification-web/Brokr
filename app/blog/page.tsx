@@ -39,8 +39,8 @@ export default function BlogListPage() {
       <h1 className="text-3xl lg:text-5xl font-black text-slate-900 dark:text-white mb-3 tracking-tight">
         Trading <span className="gradient-text">Guides</span> &amp; Insights
       </h1>
-      <p className="text-lg text-slate-500 dark:text-slate-400 mb-3">Educational articles to help you understand trading tools and markets.</p>
-      <p className="text-xs text-slate-500 dark:text-slate-400 mb-12">Editorial education only. Market facts, fees, regulations and provider features can change; verify current details with official sources.</p>
+      <p className="text-lg text-slate-500 dark:text-slate-400 mb-3">Educational articles that explain trading tools, markets, and comparison context.</p>
+      <p className="text-xs text-slate-500 dark:text-slate-400 mb-12">Editorial education only. Market facts, fees, regulations, and provider features can change, so always verify current details with official sources.</p>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {posts.map((post) => {
           const Icon = categoryIcons[post.category] || BookOpen;
@@ -80,3 +80,4 @@ export default function BlogListPage() {
     </div>
   );
 }
+

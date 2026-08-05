@@ -30,7 +30,7 @@ export default function Hero() {
               <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500" />
             </span>
             <span className="text-sm font-medium bg-gradient-to-r from-emerald-600 to-teal-600 dark:from-emerald-400 dark:to-teal-400 bg-clip-text text-transparent">
-              Informational directory for trading tools
+              A neutral directory for comparing trading tools
             </span>
           </motion.div>
 
@@ -53,7 +53,7 @@ export default function Hero() {
           >
               Discover and compare trading platforms, exchanges, brokers, and
               market tools in one place. Review the available information and
-              verify important details with each provider before using a tool.
+              confirm key details with each provider before using a tool.
           </motion.p>
 
           <motion.div
@@ -101,3 +101,4 @@ export default function Hero() {
     </section>
   );
 }
+

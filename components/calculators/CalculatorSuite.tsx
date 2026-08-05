@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { ReactNode } from "react";
 import { calculatorDefinitions, type CalculatorSlug } from "@/lib/calculators";
 
@@ -33,6 +33,15 @@ function SelectField({ label, value, onChange, options }: { label: string; value
   );
 }
 
+function TextField({ label, value, onChange, placeholder }: { label: string; value: string; onChange: (value: string) => void; placeholder?: string }) {
+  return (
+    <label className="block">
+      <span className={labelClass}>{label}</span>
+      <input type="text" value={value} placeholder={placeholder} onChange={(event) => onChange(event.target.value)} className={inputClass} />
+    </label>
+  );
+}
+
 function Result({ label, value, note }: { label: string; value: string; note?: string }) {
   return <div className="rounded-2xl bg-slate-50 dark:bg-slate-950/70 border border-slate-200 dark:border-slate-800 p-5"><p className="text-xs uppercase tracking-wider text-slate-500 dark:text-slate-400">{label}</p><p className="mt-2 text-2xl font-bold text-slate-900 dark:text-white break-words">{value}</p>{note && <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">{note}</p>}</div>;
 }
@@ -44,6 +53,138 @@ function formatNumber(value: number, digits = 2) {
 
 function Notice({ children }: { children: ReactNode }) {
   return <div className="mt-5 rounded-2xl border border-amber-200 bg-amber-50 px-5 py-4 text-sm leading-relaxed text-amber-900 dark:border-amber-900/60 dark:bg-amber-950/30 dark:text-amber-200">{children}</div>;
+}
+
+function CurrencyCorrelationCalculator() {
+  const [currencyA, setCurrencyA] = useState([0.4, -0.8, 1.1, -0.2, 0.7, -1]);
+  const [currencyB, setCurrencyB] = useState([0.2, -0.5, 0.9, 0.1, 0.5, -0.7]);
+  const [labelA, setLabelA] = useState("Currency A");
+  const [labelB, setLabelB] = useState("Currency B");
+  const pairs = currencyA.map((value, index) => ({ a: value, b: currencyB[index] }));
+  const meanA = currencyA.reduce((sum, value) => sum + value, 0) / currencyA.length;
+  const meanB = currencyB.reduce((sum, value) => sum + value, 0) / currencyB.length;
+  const numerator = pairs.reduce((sum, pair) => sum + (pair.a - meanA) * (pair.b - meanB), 0);
+  const denominator = Math.sqrt(
+    currencyA.reduce((sum, value) => sum + (value - meanA) ** 2, 0)
+      * currencyB.reduce((sum, value) => sum + (value - meanB) ** 2, 0)
+  );
+  const correlation = denominator > 0 ? numerator / denominator : NaN;
+  const relationship = !Number.isFinite(correlation)
+    ? "Not enough variation"
+    : correlation >= 0.7
+      ? "Strong positive relationship"
+      : correlation >= 0.3
+        ? "Moderate positive relationship"
+        : correlation <= -0.7
+          ? "Strong inverse relationship"
+          : correlation <= -0.3
+            ? "Moderate inverse relationship"
+            : "Weak or no linear relationship";
+
+  return <>
+    <div className="grid gap-5 md:grid-cols-2">
+      <TextField label="Currency A label" value={labelA} onChange={setLabelA} placeholder="Example: EUR/USD" />
+      <TextField label="Currency B label" value={labelB} onChange={setLabelB} placeholder="Example: GBP/USD" />
+      {pairs.map((pair, index) => <div key={index} className="contents">
+        <NumberField label={`Period ${index + 1} - ${labelA || "Currency A"} return`} value={pair.a} onChange={(value) => setCurrencyA((current) => current.map((item, itemIndex) => itemIndex === index ? value : item))} step="0.01" suffix="%" />
+        <NumberField label={`Period ${index + 1} - ${labelB || "Currency B"} return`} value={pair.b} onChange={(value) => setCurrencyB((current) => current.map((item, itemIndex) => itemIndex === index ? value : item))} step="0.01" suffix="%" />
+      </div>)}
+    </div>
+    <div className="mt-6 grid gap-4 sm:grid-cols-2"><Result label="Pearson correlation" value={formatNumber(correlation, 3)} /><Result label="Interpretation" value={relationship} /></div>
+    <Notice>Enter matching-period percentage returns, not price levels. The result is a mathematical Pearson correlation from your inputs; it is not a stable relationship, forecast, or trade signal.</Notice>
+  </>;
+}
+
+type ForexReferenceResponse = {
+  base: string;
+  date: string;
+  rates: Record<string, number>;
+  previousDate: string | null;
+  previousRates: Record<string, number> | null;
+};
+
+const strengthCurrencies = ["EUR", "GBP", "JPY", "INR", "AUD", "CAD", "CHF", "SGD"];
+
+function CurrencyStrengthCalculator() {
+  const [snapshot, setSnapshot] = useState<ForexReferenceResponse | null>(null);
+  const [error, setError] = useState(false);
+
+  useEffect(() => {
+    let active = true;
+    fetch(`/api/forex?base=USD&targets=${strengthCurrencies.join(",")}`)
+      .then((response) => { if (!response.ok) throw new Error("Reference data unavailable"); return response.json() as Promise<ForexReferenceResponse>; })
+      .then((data) => { if (active) setSnapshot(data); })
+      .catch(() => { if (active) setError(true); });
+    return () => { active = false; };
+  }, []);
+
+  const rows = snapshot ? strengthCurrencies.map((currency) => {
+    const rate = snapshot.rates[currency];
+    const previous = snapshot.previousRates?.[currency] ?? null;
+    let move: number | null = null;
+    if (typeof previous === "number" && previous > 0 && Number.isFinite(previous) && Number.isFinite(rate)) {
+      move = (rate - previous) / previous * 100;
+    }
+    const direction = move === null ? "Unavailable" : move < 0 ? "Stronger vs USD" : move > 0 ? "Weaker vs USD" : "Flat vs USD";
+    return { currency, rate, move, direction };
+  }) : [];
+
+  return <>
+    {error ? <div className="rounded-2xl border border-red-200 bg-red-50 p-5 text-sm text-red-800 dark:border-red-900/60 dark:bg-red-950/30 dark:text-red-200">The reference-rate provider is temporarily unavailable. No strength values are fabricated.</div> : !snapshot ? <div className="rounded-2xl border border-slate-200 p-5 text-sm text-slate-600 dark:border-slate-800 dark:text-slate-400">Loading the latest available reference rates...</div> : <>
+      <div className="overflow-x-auto rounded-2xl border border-slate-200 dark:border-slate-800"><table className="w-full min-w-[520px] text-left text-sm"><thead className="bg-slate-50 text-xs uppercase tracking-wide text-slate-500 dark:bg-slate-900 dark:text-slate-400"><tr><th className="px-4 py-3">Currency</th><th className="px-4 py-3">USD to currency</th><th className="px-4 py-3">Reference move</th><th className="px-4 py-3">Direction</th></tr></thead><tbody>{rows.map((row) => <tr key={row.currency} className="border-t border-slate-200 dark:border-slate-800"><td className="px-4 py-3 font-semibold text-slate-900 dark:text-white">{row.currency}</td><td className="px-4 py-3 text-slate-700 dark:text-slate-300">{formatNumber(row.rate, 4)}</td><td className="px-4 py-3 text-slate-700 dark:text-slate-300">{row.move === null ? "Unavailable" : `${row.move >= 0 ? "+" : ""}${formatNumber(row.move, 2)}%`}</td><td className="px-4 py-3 text-slate-700 dark:text-slate-300">{row.direction}</td></tr>)}</tbody></table></div>
+      <p className="mt-4 text-xs text-slate-500 dark:text-slate-400">Reference date: {snapshot.date}. Previous available reference date: {snapshot.previousDate || "unavailable"}.</p>
+    </>}
+    <Notice>This is a USD-relative reference-rate comparison, not a full multi-pair currency-strength index. A higher USD-to-currency rate means one USD buys more of that currency, so the target currency is shown as weaker versus USD. Reference rates may be delayed and do not represent tradable bid/ask quotes.</Notice>
+  </>;
+}
+
+type MarketSession = { name: string; timeZone: string; openHour: number; closeHour: number };
+const marketSessions: MarketSession[] = [
+  { name: "Sydney", timeZone: "Australia/Sydney", openHour: 8, closeHour: 17 },
+  { name: "Tokyo", timeZone: "Asia/Tokyo", openHour: 9, closeHour: 18 },
+  { name: "London", timeZone: "Europe/London", openHour: 8, closeHour: 17 },
+  { name: "New York", timeZone: "America/New_York", openHour: 8, closeHour: 17 },
+];
+
+function getSessionParts(date: Date, timeZone: string) {
+  const parts = new Intl.DateTimeFormat("en-US", { timeZone, weekday: "short", hour: "2-digit", minute: "2-digit", hourCycle: "h23" }).formatToParts(date);
+  const get = (type: string) => parts.find((part) => part.type === type)?.value || "";
+  return { weekday: get("weekday"), hour: Number(get("hour")), minute: Number(get("minute")), label: new Intl.DateTimeFormat("en-US", { timeZone, hour: "2-digit", minute: "2-digit", hour12: false }).format(date) };
+}
+
+function MarketHoursCalculator() {
+  const [now, setNow] = useState<Date | null>(null);
+  useEffect(() => {
+    const update = () => setNow(new Date());
+    update();
+    const timer = window.setInterval(update, 30000);
+    return () => window.clearInterval(timer);
+  }, []);
+
+  return <>
+    {!now ? <div className="rounded-2xl border border-slate-200 p-5 text-sm text-slate-600 dark:border-slate-800 dark:text-slate-400">Loading current session times...</div> : <div className="grid gap-4 md:grid-cols-2">{marketSessions.map((session) => { const parts = getSessionParts(now, session.timeZone); const isWeekday = ["Mon", "Tue", "Wed", "Thu", "Fri"].includes(parts.weekday); const minutes = parts.hour * 60 + parts.minute; const isOpen = isWeekday && minutes >= session.openHour * 60 && minutes < session.closeHour * 60; return <div key={session.name} className="rounded-2xl border border-slate-200 p-5 dark:border-slate-800"><div className="flex items-center justify-between gap-3"><h2 className="font-bold text-slate-900 dark:text-white">{session.name}</h2><span className={`rounded-full px-3 py-1 text-xs font-bold ${isOpen ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-300" : "bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400"}`}>{isOpen ? "Open" : "Closed"}</span></div><p className="mt-3 text-sm text-slate-600 dark:text-slate-400">Local time: {parts.label}</p><p className="mt-1 text-xs text-slate-500 dark:text-slate-500">Typical weekday hours: {String(session.openHour).padStart(2, "0")}:00-{String(session.closeHour).padStart(2, "0")}:00 local</p></div>; })}</div>}
+    <Notice>Session status uses local exchange-city hours and automatically follows the browser&apos;s current date. Public holidays, extraordinary closures, broker hours, and brief liquidity pauses are not included. Forex trading is commonly closed over the weekend, but confirm hours with your provider.</Notice>
+  </>;
+}
+
+type EconomicEvent = { id: string; title: string; country: string; currency: string | null; date: string; impact: string | null; actual: string | null; forecast: string | null; previous: string | null };
+
+function EconomicCalendarCalculator() {
+  const [events, setEvents] = useState<EconomicEvent[]>([]);
+  const [error, setError] = useState(false);
+  useEffect(() => {
+    let active = true;
+    fetch("/api/economic-calendar")
+      .then((response) => { if (!response.ok) throw new Error("Calendar provider unavailable"); return response.json() as Promise<{ events: EconomicEvent[] }>; })
+      .then((data) => { if (active) setEvents(Array.isArray(data.events) ? data.events : []); })
+      .catch(() => { if (active) setError(true); });
+    return () => { active = false; };
+  }, []);
+
+  return <>
+    {error ? <div className="rounded-2xl border border-amber-200 bg-amber-50 p-5 text-sm leading-relaxed text-amber-900 dark:border-amber-900/60 dark:bg-amber-950/30 dark:text-amber-200">Live economic events are not connected yet. No event dates, impact labels, forecasts, or actual values are invented. Add a verified provider through the server-side <code>ECONOMIC_CALENDAR_API_URL</code> setting before publishing live calendar data.</div> : events.length === 0 ? <div className="rounded-2xl border border-slate-200 p-5 text-sm text-slate-600 dark:border-slate-800 dark:text-slate-400">No calendar events were returned by the connected provider.</div> : <div className="space-y-3">{events.slice(0, 20).map((event) => <div key={event.id} className="rounded-2xl border border-slate-200 p-4 dark:border-slate-800"><div className="flex flex-wrap items-center justify-between gap-2"><h2 className="font-bold text-slate-900 dark:text-white">{event.title}</h2><span className="text-xs text-slate-500 dark:text-slate-400">{event.impact || "Impact unavailable"}</span></div><p className="mt-1 text-sm text-slate-600 dark:text-slate-400">{event.country}{event.currency ? ` - ${event.currency}` : ""} - {new Date(event.date).toLocaleString()}</p><p className="mt-2 text-xs text-slate-500 dark:text-slate-400">Actual: {event.actual || "-"} | Forecast: {event.forecast || "-"} | Previous: {event.previous || "-"}</p></div>)}</div>}
+    <Notice>Calendar entries depend on the connected provider&apos;s publication schedule and timezone. Confirm important releases with the original official source. This page is informational and does not provide a trading signal or recommendation.</Notice>
+  </>;
 }
 
 function PipValueCalculator() {
@@ -241,6 +382,10 @@ const calculatorComponents: Record<CalculatorSlug, () => ReactNode> = {
   "compound-returns": CompoundReturnsCalculator,
   "dca-average-price": DcaAveragePriceCalculator,
   "drawdown-recovery": DrawdownRecoveryCalculator,
+  "currency-correlation": CurrencyCorrelationCalculator,
+  "currency-strength": CurrencyStrengthCalculator,
+  "market-hours": MarketHoursCalculator,
+  "economic-calendar": EconomicCalendarCalculator,
 };
 
 export default function CalculatorSuite({ slug }: Props) {

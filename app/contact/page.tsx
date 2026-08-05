@@ -50,7 +50,7 @@ export default function ContactPage() {
         <p className="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
           {isFirebaseReady
             ? "Messages are securely stored for review. No automatic email reply is sent."
-            : "This page contains a contact-form preview. Messages are not sent or stored until the Firebase backend is connected."}
+            : "This form is available in preview mode. Messages are not sent or stored until the backend is connected."}
         </p>
       </div>
 
@@ -158,19 +158,10 @@ export default function ContactPage() {
 
           <div className="glass-card rounded-3xl p-6">
             <h3 className="font-semibold text-slate-900 dark:text-white mb-3">Before Contacting Us</h3>
-            <ul className="text-sm text-slate-600 dark:text-slate-400 space-y-2">
-              <li className="flex items-start gap-2">
-                <span className="text-primary-600 mt-1">•</span>
-                <span>Review the tool page and its source links for provider-specific questions</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-primary-600 mt-1">•</span>
-                <span>Review our Methodology page for comparison details</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-primary-600 mt-1">•</span>
-                <span>Read our Affiliate Disclosure for transparency info</span>
-              </li>
+            <ul className="list-disc pl-5 text-sm text-slate-600 dark:text-slate-400 space-y-2 marker:text-primary-600">
+              <li>Review the tool page and its source links for provider-specific questions</li>
+              <li>Review our Methodology page for comparison details</li>
+              <li>Read our Affiliate Disclosure for transparency info</li>
             </ul>
           </div>
 
@@ -186,3 +177,4 @@ export default function ContactPage() {
     </div>
   );
 }
+

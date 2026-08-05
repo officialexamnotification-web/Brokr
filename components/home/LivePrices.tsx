@@ -201,7 +201,7 @@ export default function LivePrices() {
             <Activity className="w-5 h-5 text-green-500" />
             <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Market Data</h2>
           </div>
-          <p className="text-sm text-slate-500 dark:text-slate-400">External reference and market data; timestamps vary, prices may be delayed, and this is not trading advice.</p>
+          <p className="text-sm text-slate-500 dark:text-slate-400">External reference and market data. Timestamps vary, prices may be delayed, and this is not trading advice.</p>
         </div>
 
         {loading ? (
@@ -218,7 +218,7 @@ export default function LivePrices() {
                 </div>
                 <h3 className="text-lg font-bold text-slate-900 dark:text-white">Cryptocurrency</h3>
               </div>
-              <p className="text-[11px] text-slate-500 dark:text-slate-400 mb-4">INR · 24h/7d market data · CoinGecko</p>
+              <p className="text-[11px] text-slate-500 dark:text-slate-400 mb-4">INR Â· 24h/7d market data Â· CoinGecko</p>
               <div className="space-y-3">
                 {crypto.length === 0 ? <Unavailable label="Cryptocurrency data" /> : crypto.map((coin) => (
                   <div key={coin.id} className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50">
@@ -248,7 +248,7 @@ export default function LivePrices() {
                 </div>
                 <h3 className="text-lg font-bold text-slate-900 dark:text-white">Forex Reference Rates</h3>
               </div>
-              <p className="text-[11px] text-slate-500 dark:text-slate-400 mb-4">Frankfurter/ECB · Rate date: {forexDate ?? "unavailable"}</p>
+              <p className="text-[11px] text-slate-500 dark:text-slate-400 mb-4">Frankfurter/ECB Â· Rate date: {forexDate ?? "unavailable"}</p>
               <div className="space-y-3">
                 {forex.length === 0 ? <Unavailable label="Forex reference rates" /> : forex.map((fx) => (
                   <div key={fx.pair} className="flex items-center justify-between p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50">
@@ -270,7 +270,7 @@ export default function LivePrices() {
                 </div>
                 <h3 className="text-lg font-bold text-slate-900 dark:text-white">Stock Prices</h3>
               </div>
-              <p className="text-[11px] text-slate-500 dark:text-slate-400 mb-4">StockData.org · US-listed quotes · delayed data possible</p>
+              <p className="text-[11px] text-slate-500 dark:text-slate-400 mb-4">StockData.org Â· US-listed quotes Â· delayed data possible</p>
               <div className="space-y-3">
                 {stocks.map((stock) => (
                   <div key={stock.symbol} className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50">
@@ -288,7 +288,7 @@ export default function LivePrices() {
                       <span>Volume: {stock.volume == null ? "—" : stock.volume.toLocaleString("en-IN")}</span>
                       <span>High/Low: {formatUsd(stock.dayHigh)} / {formatUsd(stock.dayLow)}</span>
                       <span>52W: {formatUsd(stock.week52High)} / {formatUsd(stock.week52Low)}</span>
-                      <span>{stock.exchange ?? stock.currency ?? "Quote"}{stock.extendedHours ? " · extended hours" : ""}</span>
+                      <span>{stock.exchange ?? stock.currency ?? "Quote"}{stock.extendedHours ? " Â· extended hours" : ""}</span>
                       <span>{quoteLabel(stock.lastTradeTime)}</span>
                     </div>
                   </div>
@@ -310,10 +310,13 @@ export default function LivePrices() {
         <div className="text-center mt-6">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
             <Activity className="w-3.5 h-3.5 text-green-500" />
-            <p className="text-xs font-medium text-slate-600 dark:text-slate-400">External data · check the displayed source and date</p>
+            <p className="text-xs font-medium text-slate-600 dark:text-slate-400">External data Â· check the displayed source and date</p>
           </div>
         </div>
       </div>
     </section>
   );
 }
+
+
+

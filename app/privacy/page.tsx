@@ -19,7 +19,7 @@ export default function PrivacyPage() {
           Privacy <span className="text-primary-600">Policy</span>
         </h1>
         <p className="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
-          Last updated: August 3, 2026
+          Last updated: August 5, 2026
         </p>
       </div>
 
@@ -30,7 +30,7 @@ export default function PrivacyPage() {
             Introduction
           </h2>
           <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
-            Tradivex ("we," "our," or "us") is an informational directory. This policy describes the website's current data practices. Contact, tool-submission, and newsletter storage is enabled only when the deployment's Firebase configuration and security rules are active; otherwise those forms remain previews and do not send or store entries.
+            Tradivex ("we," "our," or "us") is an informational directory. This policy explains how the website handles data, storage, and user-submitted information.
           </p>
         </section>
 
@@ -43,8 +43,8 @@ export default function PrivacyPage() {
             <div>
               <h3 className="font-semibold text-slate-900 dark:text-white mb-2">Information You Provide</h3>
               <ul className="text-slate-600 dark:text-slate-400 space-y-2 list-disc list-inside">
-                <li>When Firebase is configured, contact messages and tool submissions are stored for review. When it is not configured, entered values remain in the browser only while the page is open and are not sent or stored.</li>
-                <li>Newsletter emails are stored only when a user submits the subscription form after Firebase has been enabled. Newsletter delivery is not connected automatically.</li>
+                <li>Contact messages and tool submissions may be stored for review when the form workflow is connected to the live backend.</li>
+                <li>Newsletter emails are stored only when a user submits the subscription form. Newsletter delivery is not connected automatically.</li>
               </ul>
             </div>
             <div>
@@ -60,10 +60,10 @@ export default function PrivacyPage() {
         <section>
           <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
             <Cookie className="w-6 h-6 text-primary-600" />
-            Cookies and advertising
+            Cookies and Advertising
           </h2>
           <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
-            Tradivex currently uses local browser storage for the cookie-preference banner and theme preference. No optional analytics or advertising scripts are currently enabled by this project. If Google AdSense or another advertising partner is added, this policy and the consent flow must be updated before those services are activated.
+            Tradivex uses local browser storage for the cookie-preference banner and theme preference. No optional analytics or advertising scripts are currently enabled. If Google AdSense or another advertising partner is added, this policy and the consent flow must be updated before those services are activated.
           </p>
         </section>
 
@@ -73,7 +73,7 @@ export default function PrivacyPage() {
             How We Use Your Information
           </h2>
           <p className="text-slate-600 dark:text-slate-400 leading-relaxed mb-4">
-            Based on the current implementation, information may be used for the following limited purposes:
+            Information may be used for the following limited purposes:
           </p>
           <ul className="text-slate-600 dark:text-slate-400 space-y-2 list-disc list-inside">
             <li>To provide the directory and remember local preferences</li>
@@ -89,7 +89,7 @@ export default function PrivacyPage() {
             Cookies and Tracking
           </h2>
           <p className="text-slate-600 dark:text-slate-400 leading-relaxed mb-4">
-            The current project uses the following storage:
+            Tradivex currently uses the following storage:
           </p>
           <ul className="text-slate-600 dark:text-slate-400 space-y-2 list-disc list-inside">
             <li><strong>Essential local storage:</strong> Stores site-preference and theme settings.</li>
@@ -117,7 +117,7 @@ export default function PrivacyPage() {
         <section>
           <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-4">Data Security</h2>
           <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
-            We use reasonable technical measures for this project, but no method of transmission or storage over the internet is completely secure. We cannot guarantee absolute security.
+            We use reasonable technical measures to help protect data, but no method of transmission or storage over the internet is completely secure. Absolute security cannot be guaranteed.
           </p>
         </section>
 
@@ -167,7 +167,7 @@ export default function PrivacyPage() {
         <section>
           <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-4">Contact Us</h2>
           <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
-            Privacy questions and deletion requests can be sent to <a href="mailto:contact@tradivex.com" className="text-primary-600 hover:underline">contact@tradivex.com</a>. Publish a clear retention period and deletion process before collecting personal information at production scale. Users should not submit passwords, payment details, or other sensitive information through these forms.
+            Privacy questions and deletion requests can be sent to <a href="mailto:contact@tradivex.com" className="text-primary-600 hover:underline">contact@tradivex.com</a>. Users should not submit passwords, payment details, or other sensitive information through these forms.
           </p>
         </section>
       </div>
@@ -175,3 +175,6 @@ export default function PrivacyPage() {
     </div>
   );
 }
+
+
+

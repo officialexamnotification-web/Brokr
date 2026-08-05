@@ -19,7 +19,7 @@ export default function TermsPage() {
           Terms of <span className="text-primary-600">Service</span>
         </h1>
         <p className="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
-          Last updated: August 3, 2026
+          Last updated: August 5, 2026
         </p>
       </div>
 
@@ -30,7 +30,7 @@ export default function TermsPage() {
             Agreement to Terms
           </h2>
           <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
-            By accessing or using Tradivex ("the Service"), you acknowledge these Terms of Service ("Terms"). If you do not agree with them, please do not use the Service. These Terms describe the intended conditions for using this informational directory; their enforceability may depend on applicable law and the operator's actual legal details.
+            By accessing or using Tradivex ("the Service"), you acknowledge these Terms of Service ("Terms"). If you do not agree with them, please do not use the Service. These Terms set out the current conditions for using this informational directory and may be updated as the site evolves.
           </p>
         </section>
 
@@ -79,7 +79,7 @@ export default function TermsPage() {
         <section>
           <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-4">Affiliate Relationships</h2>
           <p className="text-slate-600 dark:text-slate-400 leading-relaxed mb-4">
-            Affiliate partnerships and commission tracking are not currently connected in this project. If that changes, the relevant links and the Affiliate Disclosure page will be updated before they are used commercially.
+            Affiliate partnerships and commission tracking are not currently active. If that changes, the relevant links and the Affiliate Disclosure page will be updated before they are used commercially.
           </p>
           <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
             Provider links are informational and do not constitute endorsements or recommendations. For the current commercial-link status, please review our Affiliate Disclosure page.
@@ -152,7 +152,7 @@ export default function TermsPage() {
         <section>
           <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-4">Governing Law</h2>
           <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
-            No specific governing law or court jurisdiction is stated in these draft Terms. The operator should add its actual legal name, address, and jurisdiction after obtaining appropriate legal advice before commercial launch.
+            These Terms are governed by the laws of India. Any dispute arising from or relating to the Service will be subject to the courts in India, unless mandatory law requires otherwise.
           </p>
         </section>
 
@@ -166,7 +166,7 @@ export default function TermsPage() {
         <section>
           <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-4">Contact Information</h2>
           <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
-            For questions about these Terms, contact <a href="mailto:contact@tradivex.com" className="text-primary-600 hover:underline">contact@tradivex.com</a>. The operator should still add its actual legal name, address, and jurisdiction after obtaining appropriate legal advice before treating these Terms as final.
+            For questions about these Terms, contact <a href="mailto:contact@tradivex.com" className="text-primary-600 hover:underline">contact@tradivex.com</a>. We may update these Terms as the website and its disclosures evolve.
           </p>
         </section>
       </div>
@@ -174,3 +174,6 @@ export default function TermsPage() {
     </div>
   );
 }
+
+
+
