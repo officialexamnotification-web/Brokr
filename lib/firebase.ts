@@ -78,7 +78,7 @@ export async function saveContactMessage(input: {
     subject: clean(input.subject, 40),
     message: clean(input.message, 5000),
     status: "new",
-    source: "brokr-contact-form",
+    source: "tradivex-contact-form",
     createdAt: serverTimestamp(),
   });
 }
@@ -102,7 +102,7 @@ export async function saveToolSubmission(input: {
     pricing: clean(input.pricing, 500),
     email: clean(input.email, 254).toLowerCase(),
     status: "pending-review",
-    source: "brokr-submit-form",
+    source: "tradivex-submit-form",
     createdAt: serverTimestamp(),
   });
 }
@@ -112,7 +112,7 @@ export async function saveNewsletterSubscription(email: string) {
   await addDoc(collection(requireFirestore(), "newsletterSubscriptions"), {
     email: clean(email, 254).toLowerCase(),
     status: "subscribed",
-    source: "brokr-newsletter",
+    source: "tradivex-newsletter",
     createdAt: serverTimestamp(),
   });
 }
