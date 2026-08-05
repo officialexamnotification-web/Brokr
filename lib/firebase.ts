@@ -1,6 +1,6 @@
 import { addDoc, collection, getFirestore, serverTimestamp } from "firebase/firestore";
 import { getApp, getApps, initializeApp } from "firebase/app";
-import { initializeAppCheck, ReCaptchaV3Provider } from "firebase/app-check";
+import { initializeAppCheck, ReCaptchaV3Provider, getToken, type AppCheck } from "firebase/app-check";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -31,9 +31,11 @@ const firebaseApp = isFirebaseConfigured
     : initializeApp(firebaseConfig)
   : null;
 
+let appCheckInstance: AppCheck | null = null;
+
 if (firebaseApp && typeof window !== "undefined" && appCheckSiteKey) {
   try {
-    initializeAppCheck(firebaseApp, {
+    appCheckInstance = initializeAppCheck(firebaseApp, {
       provider: new ReCaptchaV3Provider(appCheckSiteKey),
       isTokenAutoRefreshEnabled: true,
     });
@@ -42,7 +44,19 @@ if (firebaseApp && typeof window !== "undefined" && appCheckSiteKey) {
   }
 }
 
+// TEMPORARY DEBUG HELPER — remove after diagnosing the App Check issue.
+export async function debugAppCheckToken() {
+  if (!appCheckInstance) return { ok: false, reason: "App Check was never initialized (no instance)." };
+  try {
+    const result = await getToken(appCheckInstance, false);
+    return { ok: true, tokenPreview: result.token.slice(0, 20) + "..." };
+  } catch (err) {
+    return { ok: false, reason: String(err) };
+  }
+}
+
 const firestore = firebaseApp ? getFirestore(firebaseApp) : null;
+
 
 function requireFirestore() {
   if (!firestore) {
