@@ -30,7 +30,8 @@ export default function ContactPage() {
       });
       form.reset();
       setStatus("success");
-    } catch {
+    } catch (err) {
+      console.error("CONTACT FORM ERROR:", err);
       setStatus("error");
       setError("We could not save your message. Please try again later.");
     }
@@ -177,4 +178,3 @@ export default function ContactPage() {
     </div>
   );
 }
-
