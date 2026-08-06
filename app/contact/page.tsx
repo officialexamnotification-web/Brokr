@@ -20,13 +20,22 @@ export default function ContactPage() {
 
     const values = new FormData(form);
     if (String(values.get("company") || "").trim()) return;
+    const name = String(values.get("name") || "").trim();
+    const email = String(values.get("email") || "").trim();
+    const subject = String(values.get("subject") || "").trim();
+    const message = String(values.get("message") || "").trim();
+    if (!name || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email) || !subject || !message) {
+      setStatus("error");
+      setError("Please complete all required fields with a valid email address.");
+      return;
+    }
     setStatus("saving");
     try {
       await saveContactMessage({
-        name: String(values.get("name") || ""),
-        email: String(values.get("email") || ""),
-        subject: String(values.get("subject") || ""),
-        message: String(values.get("message") || ""),
+        name,
+        email,
+        subject,
+        message,
       });
       form.reset();
       setStatus("success");

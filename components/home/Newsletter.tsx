@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { Bell, ArrowRight, Mail, Sparkles, Shield, Zap, TrendingUp } from "lucide-react";
-import { isFirebaseReady, saveNewsletterSubscription, debugAppCheckToken } from "@/lib/firebase";
+import { isFirebaseReady, saveNewsletterSubscription } from "@/lib/firebase";
 
 export default function Newsletter() {
   const [submitted, setSubmitted] = useState(false);
@@ -14,13 +14,15 @@ export default function Newsletter() {
 
   async function handleSubmit() {
     setError("");
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email.trim())) {
+      setError("Please enter a valid email address.");
+      return;
+    }
     if (!isFirebaseReady) {
       setSubmitted(true);
       return;
     }
     setSaving(true);
-    const debugInfo = await debugAppCheckToken();
-    console.log("APP CHECK DEBUG:", debugInfo);
     try {
       await saveNewsletterSubscription(email);
       setSubmitted(true);

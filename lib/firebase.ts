@@ -1,4 +1,4 @@
-import { addDoc, collection, getFirestore, serverTimestamp } from "firebase/firestore";
+import { addDoc, collection, getFirestore, serverTimestamp, type Firestore } from "firebase/firestore";
 import { getApp, getApps, initializeApp } from "firebase/app";
 import { initializeAppCheck, ReCaptchaV3Provider, getToken, type AppCheck } from "firebase/app-check";
 
@@ -33,6 +33,11 @@ const firebaseApp = isFirebaseConfigured
 
 let appCheckInstance: AppCheck | null = null;
 
+if (typeof window !== "undefined" && process.env.NODE_ENV !== "production" && process.env.NEXT_PUBLIC_FIREBASE_APPCHECK_DEBUG_TOKEN) {
+  const debugWindow = window as typeof window & { FIREBASE_APPCHECK_DEBUG_TOKEN?: string };
+  debugWindow.FIREBASE_APPCHECK_DEBUG_TOKEN = process.env.NEXT_PUBLIC_FIREBASE_APPCHECK_DEBUG_TOKEN;
+}
+
 if (firebaseApp && typeof window !== "undefined" && appCheckSiteKey) {
   try {
     appCheckInstance = initializeAppCheck(firebaseApp, {
@@ -45,23 +50,22 @@ if (firebaseApp && typeof window !== "undefined" && appCheckSiteKey) {
 }
 
 // TEMPORARY DEBUG HELPER — remove after diagnosing the App Check issue.
-export async function debugAppCheckToken() {
-  if (!appCheckInstance) return { ok: false, reason: "App Check was never initialized (no instance)." };
-  try {
-    const result = await getToken(appCheckInstance, false);
-    return { ok: true, tokenPreview: result.token.slice(0, 20) + "..." };
-  } catch (err) {
-    return { ok: false, reason: String(err) };
+async function ensureAppCheckToken() {
+  if (!appCheckInstance) {
+    throw new Error("Firebase App Check is not initialized for this deployment.");
   }
+
+  // Ensure the provider has a current token before Firestore evaluates rules.
+  await getToken(appCheckInstance, true);
 }
 
-const firestore = firebaseApp ? getFirestore(firebaseApp) : null;
-
+let firestore: Firestore | null = null;
 
 function requireFirestore() {
-  if (!firestore) {
+  if (!firebaseApp) {
     throw new Error("Firebase is not configured for this deployment.");
   }
+  if (!firestore) firestore = getFirestore(firebaseApp);
   return firestore;
 }
 
@@ -76,7 +80,16 @@ function enforceClientCooldown(bucket: string) {
   if (Date.now() - lastSubmitted < 15_000) {
     throw new Error("Please wait before submitting again.");
   }
-  window.localStorage.setItem(key, String(Date.now()));
+}
+
+function markClientSubmission(bucket: string) {
+  if (typeof window !== "undefined") {
+    window.localStorage.setItem(`tradivex-last-submit:${bucket}`, String(Date.now()));
+  }
+}
+
+function isValidEmail(value: string) {
+  return /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(value) && value.length <= 254;
 }
 
 export async function saveContactMessage(input: {
@@ -86,15 +99,21 @@ export async function saveContactMessage(input: {
   message: string;
 }) {
   enforceClientCooldown("contact");
+  const email = clean(input.email, 254).toLowerCase();
+  if (!clean(input.name, 120) || !isValidEmail(email) || !clean(input.message, 5000)) {
+    throw new Error("Please provide a valid name, email address, and message.");
+  }
+  await ensureAppCheckToken();
   await addDoc(collection(requireFirestore(), "contactMessages"), {
     name: clean(input.name, 120),
-    email: clean(input.email, 254).toLowerCase(),
+    email,
     subject: clean(input.subject, 40),
     message: clean(input.message, 5000),
     status: "new",
     source: "tradivex-contact-form",
     createdAt: serverTimestamp(),
   });
+  markClientSubmission("contact");
 }
 
 export async function saveToolSubmission(input: {
@@ -107,6 +126,12 @@ export async function saveToolSubmission(input: {
   email: string;
 }) {
   enforceClientCooldown("tool");
+  const email = clean(input.email, 254).toLowerCase();
+  if (!clean(input.name, 160) || !clean(input.website, 500) || !clean(input.category, 80)
+    || !clean(input.description, 5000) || !isValidEmail(email)) {
+    throw new Error("Please complete the required fields with valid values.");
+  }
+  await ensureAppCheckToken();
   await addDoc(collection(requireFirestore(), "toolSubmissions"), {
     name: clean(input.name, 160),
     website: clean(input.website, 500),
@@ -114,19 +139,26 @@ export async function saveToolSubmission(input: {
     description: clean(input.description, 5000),
     features: clean(input.features, 1000),
     pricing: clean(input.pricing, 500),
-    email: clean(input.email, 254).toLowerCase(),
+    email,
     status: "pending-review",
     source: "tradivex-submit-form",
     createdAt: serverTimestamp(),
   });
+  markClientSubmission("tool");
 }
 
 export async function saveNewsletterSubscription(email: string) {
   enforceClientCooldown("newsletter");
+  const normalizedEmail = clean(email, 254).toLowerCase();
+  if (!isValidEmail(normalizedEmail)) {
+    throw new Error("Please enter a valid email address.");
+  }
+  await ensureAppCheckToken();
   await addDoc(collection(requireFirestore(), "newsletterSubscriptions"), {
-    email: clean(email, 254).toLowerCase(),
+    email: normalizedEmail,
     status: "subscribed",
     source: "tradivex-newsletter",
     createdAt: serverTimestamp(),
   });
+  markClientSubmission("newsletter");
 }
