@@ -73,7 +73,7 @@ export default function Newsletter() {
             </h2>
             <p className="text-lg text-indigo-200/80 mb-10 leading-relaxed max-w-lg mx-auto">
               Get occasional directory updates and new comparison guides. {newsletterBackendReady
-                ? "Your email will be stored for subscription management. Delivery is not connected yet."
+                ? "Your email will be stored for subscription management."
                 : "Newsletter delivery is not connected yet, so no email address is stored."}
             </p>
 
@@ -103,7 +103,7 @@ export default function Newsletter() {
             {submitted && (
               <p className="text-sm text-amber-200 mb-6" role="status">
                 {newsletterBackendReady
-                  ? "Subscription saved. Newsletter delivery is not connected yet."
+                  ? "Subscription saved."
                   : "Preview only: no subscription was created because the newsletter backend is not connected."}
               </p>
             )}
