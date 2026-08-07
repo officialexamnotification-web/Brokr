@@ -109,8 +109,13 @@ export default function NewsFeed() {
         </div>
 
         {loading ? (
-          <div className="text-center py-12">
-            <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"></div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-6xl mx-auto" aria-busy="true" aria-label="Loading market news">
+            {Array.from({ length: 6 }).map((_, index) => (
+              <div
+                key={index}
+                className="h-[260px] rounded-2xl bg-white/70 dark:bg-slate-900/70 border border-slate-200/60 dark:border-slate-800/60 animate-pulse"
+              />
+            ))}
           </div>
         ) : news.length === 0 ? (
           <div className="text-center py-12 text-slate-500 dark:text-slate-400">
@@ -137,7 +142,7 @@ export default function NewsFeed() {
                     <div className="mt-auto pt-4">
                       {item.slug && (
                         <a href={`/news/${item.slug}?category=${encodeURIComponent(category)}`} className="mb-4 inline-flex items-center text-sm font-bold text-primary-600 dark:text-primary-400 hover:underline">
-                          Read more
+                          Read more<span className="sr-only">: {item.headline}</span>
                         </a>
                       )}
                       <div className="flex items-center justify-between gap-3">
@@ -161,6 +166,7 @@ export default function NewsFeed() {
                   </div>
                   <a
                     href={item.url}
+                    aria-label={`Open original article: ${item.headline}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex-shrink-0 p-2 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-primary-600 hover:text-white transition-all duration-300"

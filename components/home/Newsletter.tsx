@@ -4,7 +4,15 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { Bell, ArrowRight, Mail, Sparkles, Shield, Zap, TrendingUp } from "lucide-react";
-import { isFirebaseReady, saveNewsletterSubscription } from "@/lib/firebase";
+
+const newsletterBackendReady = Boolean(
+  process.env.NEXT_PUBLIC_FIREBASE_API_KEY &&
+  process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN &&
+  process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID &&
+  process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID &&
+  process.env.NEXT_PUBLIC_FIREBASE_APP_ID &&
+  process.env.NEXT_PUBLIC_FIREBASE_APPCHECK_SITE_KEY
+);
 
 export default function Newsletter() {
   const [submitted, setSubmitted] = useState(false);
@@ -18,12 +26,13 @@ export default function Newsletter() {
       setError("Please enter a valid email address.");
       return;
     }
-    if (!isFirebaseReady) {
+    if (!newsletterBackendReady) {
       setSubmitted(true);
       return;
     }
     setSaving(true);
     try {
+      const { saveNewsletterSubscription } = await import("@/lib/firebase");
       await saveNewsletterSubscription(email);
       setSubmitted(true);
       setEmail("");
@@ -63,7 +72,7 @@ export default function Newsletter() {
               Never miss an update
             </h2>
             <p className="text-lg text-indigo-200/80 mb-10 leading-relaxed max-w-lg mx-auto">
-              Get occasional directory updates and new comparison guides. {isFirebaseReady
+              Get occasional directory updates and new comparison guides. {newsletterBackendReady
                 ? "Your email will be stored for subscription management. Delivery is not connected yet."
                 : "Newsletter delivery is not connected yet, so no email address is stored."}
             </p>
@@ -86,14 +95,14 @@ export default function Newsletter() {
                 disabled={saving}
                 className="btn-primary px-8 py-4 text-base flex items-center justify-center gap-2 group"
               >
-                {saving ? "Saving..." : isFirebaseReady ? "Subscribe" : "Preview signup"}
+                {saving ? "Saving..." : newsletterBackendReady ? "Subscribe" : "Preview signup"}
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </button>
             </div>
 
             {submitted && (
               <p className="text-sm text-amber-200 mb-6" role="status">
-                {isFirebaseReady
+                {newsletterBackendReady
                   ? "Subscription saved. Newsletter delivery is not connected yet."
                   : "Preview only: no subscription was created because the newsletter backend is not connected."}
               </p>

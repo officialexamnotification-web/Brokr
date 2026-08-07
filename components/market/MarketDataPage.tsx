@@ -98,7 +98,7 @@ function percent(value: number | null | undefined) {
 
 function percentClass(value: number | null | undefined) {
   if (value == null || !Number.isFinite(value)) return "text-slate-500 dark:text-slate-400";
-  return value >= 0 ? "text-green-600 dark:text-green-400" : "text-red-500 dark:text-red-400";
+  return value >= 0 ? "text-green-700 dark:text-green-400" : "text-red-600 dark:text-red-400";
 }
 
 function dateLabel(value: string | null | undefined) {

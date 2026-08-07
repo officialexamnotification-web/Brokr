@@ -333,6 +333,7 @@ export default function Header() {
 
               <motion.button
                 onClick={() => setMobileOpen(!mobileOpen)}
+                aria-label={mobileOpen ? "Close menu" : "Open menu"}
                 whileTap={{ scale: 0.9 }}
                 className="lg:hidden p-2.5 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100/60 dark:hover:bg-slate-800/60 transition-all relative"
               >

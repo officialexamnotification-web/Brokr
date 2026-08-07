@@ -1,6 +1,6 @@
 import { addDoc, collection, getFirestore, serverTimestamp, type Firestore } from "firebase/firestore";
 import { getApp, getApps, initializeApp } from "firebase/app";
-import { initializeAppCheck, ReCaptchaV3Provider, getToken, type AppCheck } from "firebase/app-check";
+import type { AppCheck } from "firebase/app-check";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -38,24 +38,30 @@ if (typeof window !== "undefined" && process.env.NODE_ENV !== "production" && pr
   debugWindow.FIREBASE_APPCHECK_DEBUG_TOKEN = process.env.NEXT_PUBLIC_FIREBASE_APPCHECK_DEBUG_TOKEN;
 }
 
-if (firebaseApp && typeof window !== "undefined" && appCheckSiteKey) {
-  try {
-    appCheckInstance = initializeAppCheck(firebaseApp, {
-      provider: new ReCaptchaV3Provider(appCheckSiteKey),
-      isTokenAutoRefreshEnabled: true,
-    });
-  } catch {
-    // Firebase may already be initialized during client-side hot reload.
-  }
-}
-
 // TEMPORARY DEBUG HELPER — remove after diagnosing the App Check issue.
 async function ensureAppCheckToken() {
   if (!appCheckInstance) {
-    throw new Error("Firebase App Check is not initialized for this deployment.");
+    if (!firebaseApp || !appCheckSiteKey) {
+      throw new Error("Firebase App Check is not configured for this deployment.");
+    }
+
+    const { initializeAppCheck, ReCaptchaV3Provider } = await import("firebase/app-check");
+    try {
+      appCheckInstance = initializeAppCheck(firebaseApp, {
+        provider: new ReCaptchaV3Provider(appCheckSiteKey),
+        isTokenAutoRefreshEnabled: true,
+      });
+    } catch {
+      // Firebase may already be initialized during client-side hot reload.
+    }
+  }
+
+  if (!appCheckInstance) {
+    throw new Error("Firebase App Check could not be initialized.");
   }
 
   // Ensure the provider has a current token before Firestore evaluates rules.
+  const { getToken } = await import("firebase/app-check");
   await getToken(appCheckInstance, true);
 }
 
