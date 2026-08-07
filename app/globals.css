@@ -27,6 +27,12 @@ body {
 .scrollbar-hide::-webkit-scrollbar { display: none; }
 .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
 
+/* Temporarily hide provider fields that are not populated by the current stock quote endpoint. */
+.market-stocks-page table th:nth-child(8),
+.market-stocks-page table td:nth-child(8),
+.market-stocks-page table th:nth-child(9),
+.market-stocks-page table td:nth-child(9) { display: none; }
+
 @layer utilities {
   .text-balance { text-wrap: balance; }
 }

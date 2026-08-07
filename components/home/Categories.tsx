@@ -90,10 +90,11 @@ export default function Categories() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: i * 0.06 }}
+                className="h-full"
               >
                 <Link
                   href={`/category/${category.id}`}
-                  className={`group relative block p-5 lg:p-7 rounded-3xl bg-gradient-to-br ${categoryColors[i]} border border-slate-200/60 dark:border-slate-800/60 hover-lift overflow-hidden card-3d`}
+                  className={`group relative flex h-full min-h-[215px] flex-col p-5 lg:p-7 rounded-3xl bg-gradient-to-br ${categoryColors[i]} border border-slate-200/60 dark:border-slate-800/60 hover-lift overflow-hidden card-3d`}
                 >
                   <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-white/40 to-transparent dark:from-white/5 rounded-bl-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
@@ -108,7 +109,7 @@ export default function Categories() {
                     {category.description}
                   </p>
 
-                  <div className="flex items-center justify-between">
+                  <div className="mt-auto flex items-center justify-between">
                     <span className="text-xs font-semibold text-slate-400 dark:text-slate-500 bg-white/60 dark:bg-slate-800/60 px-2.5 py-1 rounded-full">
                       {getToolsByCategory(category.id).length} tools
                     </span>

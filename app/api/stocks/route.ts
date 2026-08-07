@@ -4,8 +4,70 @@ import { allowPublicRequest } from "@/lib/public-rate-limit";
 export const dynamic = "force-dynamic";
 
 const STOCKDATA_BASE = "https://api.stockdata.org/v1";
+const FINNHUB_BASE = "https://finnhub.io/api/v1";
 const DEFAULT_SYMBOLS = ["AAPL", "GOOGL", "MSFT", "TSLA", "AMZN"];
+const FULL_SYMBOL_LIST = [
+  "AAPL", "MSFT", "GOOGL", "AMZN", "NVDA", "META", "TSLA", "BRK.B", "AVGO", "WMT",
+  "JPM", "LLY", "V", "ORCL", "MA", "XOM", "COST", "JNJ", "HD", "PG",
+  "NFLX", "AMD", "CRM", "ADBE", "QCOM", "INTC", "CSCO", "IBM", "UBER", "DIS",
+  "KO", "PEP", "MCD", "NKE", "BA", "CAT", "GE", "UNH", "MRK", "PFE",
+  "CVX", "TMO", "AMGN", "GS", "MS", "LIN", "RTX", "LOW", "SBUX", "PLTR",
+];
 const ALLOWED_SYMBOLS = new Set(DEFAULT_SYMBOLS);
+FULL_SYMBOL_LIST.forEach((symbol) => ALLOWED_SYMBOLS.add(symbol));
+
+const STOCK_INFO: Record<string, { name: string; exchange: string; currency: string }> = {
+  AAPL: { name: "Apple Inc.", exchange: "NASDAQ", currency: "USD" },
+  MSFT: { name: "Microsoft Corporation", exchange: "NASDAQ", currency: "USD" },
+  GOOGL: { name: "Alphabet Inc.", exchange: "NASDAQ", currency: "USD" },
+  AMZN: { name: "Amazon.com, Inc.", exchange: "NASDAQ", currency: "USD" },
+  NVDA: { name: "NVIDIA Corporation", exchange: "NASDAQ", currency: "USD" },
+  META: { name: "Meta Platforms, Inc.", exchange: "NASDAQ", currency: "USD" },
+  TSLA: { name: "Tesla, Inc.", exchange: "NASDAQ", currency: "USD" },
+  "BRK.B": { name: "Berkshire Hathaway Inc.", exchange: "NYSE", currency: "USD" },
+  AVGO: { name: "Broadcom Inc.", exchange: "NASDAQ", currency: "USD" },
+  WMT: { name: "Walmart Inc.", exchange: "NYSE", currency: "USD" },
+  JPM: { name: "JPMorgan Chase & Co.", exchange: "NYSE", currency: "USD" },
+  LLY: { name: "Eli Lilly and Company", exchange: "NYSE", currency: "USD" },
+  V: { name: "Visa Inc.", exchange: "NYSE", currency: "USD" },
+  ORCL: { name: "Oracle Corporation", exchange: "NYSE", currency: "USD" },
+  MA: { name: "Mastercard Incorporated", exchange: "NYSE", currency: "USD" },
+  XOM: { name: "Exxon Mobil Corporation", exchange: "NYSE", currency: "USD" },
+  COST: { name: "Costco Wholesale Corporation", exchange: "NASDAQ", currency: "USD" },
+  JNJ: { name: "Johnson & Johnson", exchange: "NYSE", currency: "USD" },
+  HD: { name: "The Home Depot, Inc.", exchange: "NYSE", currency: "USD" },
+  PG: { name: "The Procter & Gamble Company", exchange: "NYSE", currency: "USD" },
+  NFLX: { name: "Netflix, Inc.", exchange: "NASDAQ", currency: "USD" },
+  AMD: { name: "Advanced Micro Devices, Inc.", exchange: "NASDAQ", currency: "USD" },
+  CRM: { name: "Salesforce, Inc.", exchange: "NYSE", currency: "USD" },
+  ADBE: { name: "Adobe Inc.", exchange: "NASDAQ", currency: "USD" },
+  QCOM: { name: "QUALCOMM Incorporated", exchange: "NASDAQ", currency: "USD" },
+  INTC: { name: "Intel Corporation", exchange: "NASDAQ", currency: "USD" },
+  CSCO: { name: "Cisco Systems, Inc.", exchange: "NASDAQ", currency: "USD" },
+  IBM: { name: "International Business Machines Corporation", exchange: "NYSE", currency: "USD" },
+  UBER: { name: "Uber Technologies, Inc.", exchange: "NYSE", currency: "USD" },
+  DIS: { name: "The Walt Disney Company", exchange: "NYSE", currency: "USD" },
+  KO: { name: "The Coca-Cola Company", exchange: "NYSE", currency: "USD" },
+  PEP: { name: "PepsiCo, Inc.", exchange: "NASDAQ", currency: "USD" },
+  MCD: { name: "McDonald's Corporation", exchange: "NYSE", currency: "USD" },
+  NKE: { name: "NIKE, Inc.", exchange: "NYSE", currency: "USD" },
+  BA: { name: "The Boeing Company", exchange: "NYSE", currency: "USD" },
+  CAT: { name: "Caterpillar Inc.", exchange: "NYSE", currency: "USD" },
+  GE: { name: "GE Aerospace", exchange: "NYSE", currency: "USD" },
+  UNH: { name: "UnitedHealth Group Incorporated", exchange: "NYSE", currency: "USD" },
+  MRK: { name: "Merck & Co., Inc.", exchange: "NYSE", currency: "USD" },
+  PFE: { name: "Pfizer Inc.", exchange: "NYSE", currency: "USD" },
+  CVX: { name: "Chevron Corporation", exchange: "NYSE", currency: "USD" },
+  TMO: { name: "Thermo Fisher Scientific Inc.", exchange: "NYSE", currency: "USD" },
+  AMGN: { name: "Amgen Inc.", exchange: "NASDAQ", currency: "USD" },
+  GS: { name: "The Goldman Sachs Group, Inc.", exchange: "NYSE", currency: "USD" },
+  MS: { name: "Morgan Stanley", exchange: "NYSE", currency: "USD" },
+  LIN: { name: "Linde plc", exchange: "NASDAQ", currency: "USD" },
+  RTX: { name: "RTX Corporation", exchange: "NYSE", currency: "USD" },
+  LOW: { name: "Lowe's Companies, Inc.", exchange: "NYSE", currency: "USD" },
+  SBUX: { name: "Starbucks Corporation", exchange: "NASDAQ", currency: "USD" },
+  PLTR: { name: "Palantir Technologies Inc.", exchange: "NASDAQ", currency: "USD" },
+};
 
 // Cache implementation (in-memory for server-side)
 const cache = new Map();
@@ -47,7 +109,7 @@ export async function GET(request: Request) {
   }
   const { searchParams } = new URL(request.url);
   const requestedSymbols = searchParams.get('symbols')?.split(',').map((symbol) => symbol.trim().toUpperCase()).filter(Boolean);
-  const symbols = Array.from(new Set((requestedSymbols?.length ? requestedSymbols : DEFAULT_SYMBOLS).filter((symbol) => ALLOWED_SYMBOLS.has(symbol)))).slice(0, 5);
+  const symbols = Array.from(new Set((requestedSymbols?.length ? requestedSymbols : DEFAULT_SYMBOLS).filter((symbol) => ALLOWED_SYMBOLS.has(symbol)))).slice(0, 50);
   if (symbols.length === 0) {
     return NextResponse.json({ error: "Unsupported stock selection." }, { status: 400 });
   }
@@ -64,13 +126,51 @@ export async function GET(request: Request) {
     const apiKey = process.env.STOCKDATA_API_KEY || "";
     
     
+    const results: Record<string, StockQuote> = {};
+
+    const addFinnhubQuotes = async () => {
+      const finnhubKey = process.env.FINNHUB_API_KEY || "";
+      if (!finnhubKey) return;
+      const responses = await Promise.allSettled(symbols.map(async (symbol) => {
+        const response = await fetch(`${FINNHUB_BASE}/quote?symbol=${encodeURIComponent(symbol)}&token=${encodeURIComponent(finnhubKey)}`, {
+          next: { revalidate: 3600 },
+        });
+        if (!response.ok) throw new Error(`Finnhub quote failed for ${symbol}`);
+        const quote = await response.json();
+        const price = typeof quote?.c === "number" ? quote.c : null;
+        if (price == null || price <= 0) return;
+        const previousClose = typeof quote?.pc === "number" ? quote.pc : null;
+        const info = STOCK_INFO[symbol];
+        results[symbol] = {
+          price,
+          changePercent: typeof quote?.dp === "number" ? quote.dp : previousClose ? ((price - previousClose) / previousClose) * 100 : null,
+          name: info?.name ?? null,
+          currency: info?.currency ?? "USD",
+          exchange: info?.exchange ?? null,
+          dayOpen: typeof quote?.o === "number" ? quote.o : null,
+          dayHigh: typeof quote?.h === "number" ? quote.h : null,
+          dayLow: typeof quote?.l === "number" ? quote.l : null,
+          previousClose,
+          volume: null,
+          week52High: null,
+          week52Low: null,
+          lastTradeTime: typeof quote?.t === "number" ? new Date(quote.t * 1000).toISOString() : null,
+          extendedHours: null,
+        };
+      }));
+      return responses;
+    };
+
     if (!apiKey) {
-      throw new Error("StockData.org API key not provided");
+      await addFinnhubQuotes();
+      if (Object.keys(results).length > 0) {
+        setCache(cacheKey, results);
+        return NextResponse.json(results);
+      }
+      throw new Error("No stock quote provider key configured");
     }
     
-    const results: Record<string, StockQuote> = {};
-    
-    // StockData.org free plan allows only 3 symbols per request
+    // StockData.org free plan allows only 3 symbols per request.
     // Process symbols in batches of 3
     const batchSize = 3;
     for (let i = 0; i < symbols.length; i += batchSize) {

@@ -1,8 +1,10 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import Link from "next/link";
 import { getCryptoPrices } from "@/lib/api";
-import { TrendingUp, TrendingDown, Activity, Bitcoin, DollarSign, BarChart3 } from "lucide-react";
+import { fetchForexMarketData } from "@/lib/forex-market";
+import { Activity, Bitcoin, DollarSign, BarChart3, ArrowUpRight } from "lucide-react";
 
 type CryptoMarket = {
   id: string;
@@ -16,6 +18,7 @@ type CryptoMarket = {
   high24hUsd: number | null;
   low24hUsd: number | null;
   lastUpdated: string | null;
+  source?: "live" | "offline";
 };
 
 type ForexMarket = {
@@ -45,7 +48,6 @@ type StockMarket = {
 function formatUsd(value: number | null) {
   return value == null ? "—" : `$${value.toLocaleString("en-US", { maximumFractionDigits: 2 })}`;
 }
-
 function formatCompactUsd(value: number | null) {
   if (value == null) return "—";
   const abs = Math.abs(value);
@@ -54,7 +56,6 @@ function formatCompactUsd(value: number | null) {
   if (abs >= 1_000) return `$${(value / 1_000).toFixed(1)}K`;
   return `$${value.toLocaleString("en-US", { maximumFractionDigits: 0 })}`;
 }
-
 function formatDate(value: string | null | undefined) {
   if (!value) return "Unavailable";
   if (/^\d{4}-\d{2}-\d{2}$/.test(value)) return value;
@@ -81,9 +82,11 @@ function quoteLabel(value: string | null) {
 
 export default function LivePrices() {
   const [crypto, setCrypto] = useState<CryptoMarket[]>([]);
+  const [cryptoReference, setCryptoReference] = useState(false);
   const [forex, setForex] = useState<ForexMarket[]>([]);
   const [forexDate, setForexDate] = useState<string | null>(null);
   const [forexPreviousDate, setForexPreviousDate] = useState<string | null>(null);
+  const [forexReference, setForexReference] = useState(false);
   const [stocks, setStocks] = useState<StockMarket[]>([]);
   const [loading, setLoading] = useState(true);
   const [dataUnavailable, setDataUnavailable] = useState(false);
@@ -99,7 +102,7 @@ export default function LivePrices() {
       try {
         const [cryptoResult, forexResult, stocksResult] = await Promise.allSettled([
           getCryptoPrices(["bitcoin", "ethereum", "binancecoin", "solana", "ripple"]),
-          fetch("/api/forex?base=USD&targets=EUR,GBP,JPY,CHF,AUD,CAD,SGD,INR").then(async (res) => res.ok ? res.json() : null),
+          fetchForexMarketData("USD", ["EUR", "GBP", "JPY", "CHF", "AUD", "CAD", "SGD", "INR"]),
           fetch("/api/stocks?symbols=AAPL,GOOGL,MSFT,TSLA,AMZN").then(async (res) => res.ok ? res.json() : null),
         ]);
 
@@ -130,16 +133,18 @@ export default function LivePrices() {
               usd: item.usd,
               change24h: typeof item.change_24h === "number" && Number.isFinite(item.change_24h) ? item.change_24h : null,
               change7d: typeof item.change_7d === "number" ? item.change_7d : null,
-              marketCapUsd: toUsd(item.market_cap_inr),
+              marketCapUsd: typeof item.market_cap_usd === "number" ? item.market_cap_usd : toUsd(item.market_cap_inr),
               marketCapRank: typeof item.market_cap_rank === "number" ? item.market_cap_rank : null,
-              volumeUsd: toUsd(item.total_volume_inr),
-              high24hUsd: toUsd(item.high_24h_inr),
-              low24hUsd: toUsd(item.low_24h_inr),
+              volumeUsd: typeof item.total_volume_usd === "number" ? item.total_volume_usd : toUsd(item.total_volume_inr),
+              high24hUsd: typeof item.high_24h_usd === "number" ? item.high_24h_usd : toUsd(item.high_24h_inr),
+              low24hUsd: typeof item.low_24h_usd === "number" ? item.low_24h_usd : toUsd(item.low_24h_inr),
               lastUpdated: typeof item.last_updated === "string" ? item.last_updated : null,
+              source: item.source === "offline" ? "offline" : "live",
             } as CryptoMarket;
           })
           .filter((item): item is CryptoMarket => item !== null);
         setCrypto(cryptoItems);
+        setCryptoReference(cryptoItems.some((item) => item.source === "offline"));
 
         const currentRates = forexResponse?.rates;
         const previousRates = forexResponse?.previousRates;
@@ -170,8 +175,9 @@ export default function LivePrices() {
             .filter((item): item is { pair: string; rate: number; previousRate: number | undefined } => Number.isFinite(item.rate) && (item.rate as number) > 0)
             .map((item) => ({ pair: item.pair, rate: Number(item.rate), change: percentageChange(item.rate, item.previousRate) }));
           setForex(pairs);
-          setForexDate(typeof forexResponse.date === "string" ? forexResponse.date : null);
-          setForexPreviousDate(typeof forexResponse.previousDate === "string" ? forexResponse.previousDate : null);
+          setForexReference(forexResponse?.source === "offline");
+          setForexDate(typeof forexResponse?.date === "string" ? forexResponse.date : null);
+          setForexPreviousDate(typeof forexResponse?.previousDate === "string" ? forexResponse.previousDate : null);
         } else {
           setForex([]);
           setForexDate(null);
@@ -213,7 +219,7 @@ export default function LivePrices() {
   }, []);
 
   return (
-    <section className="py-12 bg-slate-50 dark:bg-slate-900">
+    <section id="market-data" className="py-12 bg-slate-50 dark:bg-slate-900">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-8">
           <div className="flex items-center justify-center gap-2 mb-2">
@@ -231,13 +237,16 @@ export default function LivePrices() {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <div className="glass-card rounded-2xl p-6">
-              <div className="flex items-center gap-2 mb-1">
-                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-orange-400 to-yellow-500 flex items-center justify-center">
-                  <Bitcoin className="w-4 h-4 text-white" />
+              <div className="flex items-center justify-between gap-3 mb-1">
+                <div className="flex items-center gap-2">
+                  <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-orange-400 to-yellow-500 flex items-center justify-center">
+                    <Bitcoin className="w-4 h-4 text-white" />
+                  </div>
+                  <h3 className="text-lg font-bold text-slate-900 dark:text-white">Cryptocurrency</h3>
                 </div>
-                <h3 className="text-lg font-bold text-slate-900 dark:text-white">Cryptocurrency</h3>
+                <Link href="/market/crypto" className="inline-flex items-center gap-1 text-xs font-bold text-primary-600 dark:text-primary-400 hover:underline whitespace-nowrap">View All <ArrowUpRight className="w-3.5 h-3.5" /></Link>
               </div>
-              <p className="text-[11px] text-slate-500 dark:text-slate-400 mb-4">USD · 24h/7d market data · CoinGecko</p>
+              <p className="text-[11px] text-slate-500 dark:text-slate-400 mb-4">{cryptoReference ? "Offline reference snapshot · live provider unavailable" : "USD · 24h/7d market data · CoinGecko"}</p>
               <div className="space-y-3">
                 {crypto.length === 0 ? <Unavailable label="Cryptocurrency data" /> : crypto.map((coin) => (
                   <div key={coin.id} className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50">
@@ -245,7 +254,7 @@ export default function LivePrices() {
                       <span className="text-sm font-bold text-slate-700 dark:text-slate-200">{coin.symbol}</span>
                       <span className="text-sm font-semibold text-slate-900 dark:text-white">{formatUsd(coin.usd)}</span>
                     </div>
-                    <div className="mt-2 grid grid-cols-2 gap-x-3 gap-y-1 text-[11px] text-slate-500 dark:text-slate-400">
+                    <div className="mt-2 grid grid-cols-2 gap-x-3 gap-y-1 text-[11px] text-slate-500 dark:text-slate-400 [&>span:nth-child(4)]:hidden [&>span:nth-child(6)]:hidden">
                       <span className={changeClass(coin.change24h)}>{changeLabel(coin.change24h, "24h")}</span>
                       <span>{changeLabel(coin.change7d, "7d")}</span>
                       <span>Market cap: {formatCompactUsd(coin.marketCapUsd)}</span>
@@ -261,13 +270,16 @@ export default function LivePrices() {
             </div>
 
             <div className="glass-card rounded-2xl p-6">
-              <div className="flex items-center gap-2 mb-1">
-                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-green-400 to-emerald-600 flex items-center justify-center">
-                  <DollarSign className="w-4 h-4 text-white" />
+              <div className="flex items-center justify-between gap-3 mb-1">
+                <div className="flex items-center gap-2">
+                  <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-green-400 to-emerald-600 flex items-center justify-center">
+                    <DollarSign className="w-4 h-4 text-white" />
+                  </div>
+                  <h3 className="text-lg font-bold text-slate-900 dark:text-white">Forex Reference Rates</h3>
                 </div>
-                <h3 className="text-lg font-bold text-slate-900 dark:text-white">Forex Reference Rates</h3>
+                <Link href="/market/forex" className="inline-flex items-center gap-1 text-xs font-bold text-primary-600 dark:text-primary-400 hover:underline whitespace-nowrap">View All <ArrowUpRight className="w-3.5 h-3.5" /></Link>
               </div>
-              <p className="text-[11px] text-slate-500 dark:text-slate-400 mb-4">Frankfurter/ECB · Rate date: {forexDate ?? "unavailable"}</p>
+              <p className="text-[11px] text-slate-500 dark:text-slate-400 mb-4">{forexReference ? "Offline reference snapshot · live provider unavailable" : `Frankfurter/ECB · Rate date: ${forexDate ?? "unavailable"}`}</p>
               <div className="space-y-3">
                 {forex.length === 0 ? <Unavailable label="Forex reference rates" /> : forex.map((fx) => (
                   <div key={fx.pair} className="flex items-center justify-between p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50">
@@ -283,11 +295,14 @@ export default function LivePrices() {
             </div>
 
             {stocks.length > 0 && <div className="glass-card rounded-2xl p-6">
-              <div className="flex items-center gap-2 mb-1">
-                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-400 to-indigo-600 flex items-center justify-center">
-                  <BarChart3 className="w-4 h-4 text-white" />
+              <div className="flex items-center justify-between gap-3 mb-1">
+                <div className="flex items-center gap-2">
+                  <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-400 to-indigo-600 flex items-center justify-center">
+                    <BarChart3 className="w-4 h-4 text-white" />
+                  </div>
+                  <h3 className="text-lg font-bold text-slate-900 dark:text-white">Stock Prices</h3>
                 </div>
-                <h3 className="text-lg font-bold text-slate-900 dark:text-white">Stock Prices</h3>
+                <Link href="/market/stocks" className="inline-flex items-center gap-1 text-xs font-bold text-primary-600 dark:text-primary-400 hover:underline whitespace-nowrap">View All <ArrowUpRight className="w-3.5 h-3.5" /></Link>
               </div>
               <p className="text-[11px] text-slate-500 dark:text-slate-400 mb-4">StockData.org · US-listed quotes · delayed data possible</p>
               <div className="space-y-3">

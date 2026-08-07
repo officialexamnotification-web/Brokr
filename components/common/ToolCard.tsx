@@ -43,7 +43,7 @@ export default function ToolCard({ tool, variant = "default", index = 0 }: ToolC
       >
         <Link
           href={`/tool/${tool.slug}`}
-          className="group block glass-card rounded-2xl p-5 overflow-hidden relative hover-lift"
+          className="group flex h-full min-h-[315px] flex-col glass-card rounded-2xl p-5 overflow-hidden relative hover-lift"
         >
           <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-bl from-primary-500/8 to-purple-500/8 rounded-bl-[60px] -translate-y-4 translate-x-4 group-hover:scale-150 transition-transform duration-700" />
           <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-cyan-500/8 to-transparent rounded-tr-[40px]" />
@@ -68,7 +68,7 @@ export default function ToolCard({ tool, variant = "default", index = 0 }: ToolC
               {tool.description}
             </p>
 
-            <div className="flex items-center gap-2 mb-4 flex-wrap">
+            <div className="mt-auto flex items-center gap-2 mb-4 flex-wrap">
               {tool.features.slice(0, 3).map((f) => (
                 <span key={f} className="px-2 py-0.5 text-xs rounded-md bg-slate-100/80 dark:bg-slate-800/80 text-slate-600 dark:text-slate-400 font-medium">
                   {f}
@@ -97,7 +97,7 @@ export default function ToolCard({ tool, variant = "default", index = 0 }: ToolC
     >
       <Link
         href={`/tool/${tool.slug}`}
-        className="group block glass-card rounded-2xl p-5 overflow-hidden relative hover-lift"
+        className="group flex h-full min-h-[315px] flex-col glass-card rounded-2xl p-5 overflow-hidden relative hover-lift"
       >
         <div className="flex items-start gap-4 mb-4">
           <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-primary-500/10 to-purple-500/10 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform ring-1 ring-primary-100/50 dark:ring-primary-900/50">
@@ -118,7 +118,7 @@ export default function ToolCard({ tool, variant = "default", index = 0 }: ToolC
           {tool.description}
         </p>
 
-        <div className="flex items-center gap-2 mb-4 flex-wrap">
+        <div className="mt-auto flex items-center gap-2 mb-4 flex-wrap">
           {tool.features.slice(0, 3).map((f) => (
             <span key={f} className="px-2 py-0.5 text-xs rounded-md bg-slate-100/80 dark:bg-slate-800/80 text-slate-600 dark:text-slate-400 font-medium">
               {f}

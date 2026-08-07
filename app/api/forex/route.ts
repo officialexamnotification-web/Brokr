@@ -4,7 +4,7 @@ import { allowPublicRequest } from "@/lib/public-rate-limit";
 export const dynamic = "force-dynamic";
 
 const FRANKFURTER_BASE = "https://api.frankfurter.app";
-const ALLOWED_CURRENCIES = new Set(["USD", "INR", "EUR", "GBP", "JPY", "AUD", "CAD", "CHF", "SGD"]);
+const ALLOWED_CURRENCIES = new Set(["USD", "INR", "EUR", "GBP", "JPY", "AUD", "CAD", "CHF", "SGD", "NZD", "SEK", "NOK", "DKK", "HKD"]);
 
 // Cache implementation (in-memory for server-side)
 const cache = new Map();
@@ -16,7 +16,18 @@ type ForexSnapshot = {
   rates: Record<string, number>;
   previousDate: string | null;
   previousRates: Record<string, number> | null;
+  source?: "live" | "offline";
 };
+
+const OFFLINE_USD_RATES: Record<string, number> = {
+  USD: 1, EUR: 0.92, GBP: 0.79, JPY: 150, AUD: 1.53, CAD: 1.36, CHF: 0.88, SGD: 1.34, INR: 83.5, NZD: 1.67, SEK: 10.5, NOK: 10.6, DKK: 6.85, HKD: 7.8,
+};
+
+function offlineSnapshot(base: string, targets: string[]): ForexSnapshot {
+  const baseRate = OFFLINE_USD_RATES[base] || 1;
+  const rates = Object.fromEntries(targets.map((target) => [target, (OFFLINE_USD_RATES[target] || 1) / baseRate]));
+  return { base, date: "Offline reference", rates, previousDate: null, previousRates: null, source: "offline" };
+}
 
 function getCached<T>(key: string, duration: number): T | null {
   const item = cache.get(key);
@@ -42,7 +53,7 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: "Unsupported base currency." }, { status: 400 });
   }
   const base = requestedBase;
-  const targets = Array.from(new Set((requestedTargets?.length ? requestedTargets : ["INR", "EUR", "GBP", "JPY"]).filter((target) => ALLOWED_CURRENCIES.has(target) && target !== base))).slice(0, 8);
+  const targets = Array.from(new Set((requestedTargets?.length ? requestedTargets : ["INR", "EUR", "GBP", "JPY"]).filter((target) => ALLOWED_CURRENCIES.has(target) && target !== base))).slice(0, 13);
   if (targets.length === 0) {
     return NextResponse.json({ error: "Unsupported currency selection." }, { status: 400 });
   }
@@ -105,6 +116,7 @@ export async function GET(request: Request) {
       rates: data.rates,
       previousDate,
       previousRates,
+      source: "live",
     };
     setCache(cacheKey, snapshot);
     return NextResponse.json(snapshot);
@@ -114,6 +126,6 @@ export async function GET(request: Request) {
     console.error("FOREX ERROR MESSAGE:", error instanceof Error ? error.message : String(error));
     console.error("FOREX ERROR STACK:", error instanceof Error ? error.stack : "No stack trace");
     
-    return NextResponse.json({ error: "Foreign-exchange data is temporarily unavailable." }, { status: 503 });
+    return NextResponse.json(offlineSnapshot(base, targets), { headers: { "X-Market-Data-Source": "offline-reference" } });
   }
 }

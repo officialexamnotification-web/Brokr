@@ -3,10 +3,12 @@ import { categories, getBlogPosts, regions, tools } from "@/lib/data";
 import { calculatorDefinitions } from "@/lib/calculators";
 
 const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || "https://www.tradivex.com").replace(/\/$/, "");
-
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticPages = [
     { path: "", changeFrequency: "weekly" as const, priority: 1 },
+    { path: "/market/crypto", changeFrequency: "hourly" as const, priority: 0.8 },
+    { path: "/market/forex", changeFrequency: "hourly" as const, priority: 0.8 },
+    { path: "/market/stocks", changeFrequency: "hourly" as const, priority: 0.8 },
     { path: "/calculators", changeFrequency: "weekly" as const, priority: 0.8 },
     { path: "/blog", changeFrequency: "weekly" as const, priority: 0.7 },
     { path: "/about", changeFrequency: "monthly" as const, priority: 0.4 },

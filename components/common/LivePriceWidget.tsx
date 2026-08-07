@@ -14,7 +14,7 @@ interface LivePriceWidgetProps {
 }
 
 export default function LivePriceWidget({ currentTool }: LivePriceWidgetProps) {
-  const [cryptoPrices, setCryptoPrices] = useState<{ [key: string]: { inr: number; usd: number; change_24h: number | null } } | null>(null);
+  const [cryptoPrices, setCryptoPrices] = useState<{ [key: string]: { inr: number | null; usd: number; change_24h: number | null } } | null>(null);
   const [forexRates, setForexRates] = useState<{ [key: string]: number } | null>(null);
   const [stockPrices, setStockPrices] = useState<{ [key: string]: { price: number; change: number | null; changePercent: number | null } } | null>(null);
   const [loading, setLoading] = useState(true);
@@ -72,7 +72,7 @@ export default function LivePriceWidget({ currentTool }: LivePriceWidgetProps) {
                     <div key={coin} className="bg-slate-50 dark:bg-slate-800/50 rounded-lg p-2">
                       <div className="text-xs font-medium text-slate-700 dark:text-slate-300 capitalize">{coin}</div>
                       <div className="text-xs text-slate-500">${data.usd.toLocaleString()}</div>
-                      <div className="text-xs text-slate-500">₹{data.inr.toLocaleString()}</div>
+                      <div className="text-xs text-slate-500">{data.inr == null ? "INR: unavailable" : `₹${data.inr.toLocaleString()}`}</div>
                       <div className={`text-xs ${data.change_24h == null ? 'text-slate-500' : data.change_24h >= 0 ? 'text-green-600' : 'text-red-600'}`}>
                         {data.change_24h == null ? '24h: unavailable' : `${data.change_24h >= 0 ? '+' : ''}${data.change_24h.toFixed(2)}%`}
                       </div>

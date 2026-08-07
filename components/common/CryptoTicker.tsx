@@ -15,8 +15,8 @@ export default function CryptoTicker({ coins = ["bitcoin", "ethereum", "binancec
       id: string;
       symbol: string;
       name: string;
-      inr: number;
-      change: number;
+      inr: number | null;
+      change: number | null;
     }[]
   >([]);
   const [loading, setLoading] = useState(true);
@@ -48,7 +48,7 @@ export default function CryptoTicker({ coins = ["bitcoin", "ethereum", "binancec
                 change: data.change_24h,
               };
             })
-            .filter(Boolean) as { id: string; symbol: string; name: string; inr: number; change: number }[];
+            .filter(Boolean) as { id: string; symbol: string; name: string; inr: number | null; change: number | null }[];
           setPrices(formatted);
         }
       } catch (e) {
@@ -83,12 +83,11 @@ export default function CryptoTicker({ coins = ["bitcoin", "ethereum", "binancec
             <span className="text-xs font-bold text-slate-600 dark:text-slate-300">{coin.symbol}</span>
           </div>
           <div className="text-right">
-            <div className="text-xs font-semibold text-slate-900 dark:text-white">₹{coin.inr.toLocaleString("en-IN")}</div>
+            <div className="text-xs font-semibold text-slate-900 dark:text-white">{coin.inr == null ? "INR unavailable" : `₹${coin.inr.toLocaleString("en-IN")}`}</div>
             <div
-              className={`text-[10px] flex items-center gap-0.5 ${coin.change >= 0 ? "text-green-600 dark:text-green-400" : "text-red-500 dark:text-red-400"}`}
+              className={`text-[10px] flex items-center gap-0.5 ${coin.change == null ? "text-slate-500 dark:text-slate-400" : coin.change >= 0 ? "text-green-600 dark:text-green-400" : "text-red-500 dark:text-red-400"}`}
             >
-              {coin.change >= 0 ? <TrendingUp className="w-2.5 h-2.5" /> : <TrendingDown className="w-2.5 h-2.5" />}
-              {Math.abs(coin.change).toFixed(2)}%
+              {coin.change == null ? "24h unavailable" : <>{coin.change >= 0 ? <TrendingUp className="w-2.5 h-2.5" /> : <TrendingDown className="w-2.5 h-2.5" />}{Math.abs(coin.change).toFixed(2)}%</>}
             </div>
           </div>
         </div>
