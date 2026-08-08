@@ -19,7 +19,13 @@ import Badge from "@/components/common/Badge";
 function CompareClient() {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const initialTools = Array.from(new Set(searchParams.get("tools")?.split(",").filter((slug) => tools.some((tool) => tool.slug === slug)) || [])).slice(0, 4);
+  const requestedSlugs = Array.from(new Set(searchParams.get("tools")?.split(",").filter((slug) => tools.some((tool) => tool.slug === slug)) || []));
+  const requestedCategory = requestedSlugs
+    .map((slug) => tools.find((tool) => tool.slug === slug)?.category)
+    .find(Boolean);
+  const initialTools = requestedSlugs
+    .filter((slug) => tools.find((tool) => tool.slug === slug)?.category === requestedCategory)
+    .slice(0, 4);
 
   const [selectedSlugs, setSelectedSlugs] = useState<string[]>(initialTools);
   const [searchOpen, setSearchOpen] = useState(false);
@@ -35,17 +41,22 @@ function CompareClient() {
   );
 
   const availableTools = useMemo(() => {
+    const comparisonCategory = selectedTools[0]?.category;
     return tools.filter(
       (t) =>
         !selectedSlugs.includes(t.slug) &&
+        (!comparisonCategory || t.category === comparisonCategory) &&
         (searchQuery === "" ||
           t.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
           t.category.toLowerCase().includes(searchQuery.toLowerCase()))
     );
-  }, [selectedSlugs, searchQuery]);
+  }, [selectedSlugs, selectedTools, searchQuery]);
 
   const addTool = (slug: string) => {
     if (selectedSlugs.length >= 4) return;
+    const tool = tools.find((item) => item.slug === slug);
+    const comparisonCategory = selectedTools[0]?.category;
+    if (!tool || (comparisonCategory && tool.category !== comparisonCategory)) return;
     const newSlugs = [...selectedSlugs, slug];
     setSelectedSlugs(newSlugs);
     setSearchOpen(false);
@@ -160,7 +171,7 @@ function CompareClient() {
             Compare Tools
           </h1>
           <p className="text-slate-500 dark:text-slate-400">
-            Side-by-side comparison of trading platforms and tools
+            Side-by-side comparison of tools from the same category
           </p>
         </div>
       </div>
@@ -336,8 +347,8 @@ function CompareClient() {
             Select tools to compare
           </h2>
           <p className="text-slate-500 dark:text-slate-400 max-w-md mx-auto">
-            Use the &quot;Add Tool&quot; button above to select up to 4 trading
-            tools or brokers for side-by-side comparison.
+            Use the &quot;Add Tool&quot; button above to select up to 4 tools from
+            the same category for side-by-side comparison.
           </p>
         </div>
       )}
