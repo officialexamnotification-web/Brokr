@@ -89,6 +89,36 @@ export const calculatorDefinitions = [
     shortTitle: "Economic Calendar",
     description: "View scheduled economic events when a verified calendar provider is connected.",
   },
+  {
+    slug: "stock-profit",
+    title: "US Stock & ETF Profit Calculator",
+    shortTitle: "Stock Profit",
+    description: "Calculate stock or ETF profit, loss, return, and break-even from your trade inputs and costs.",
+  },
+  {
+    slug: "options-strategy",
+    title: "Options Strategy, Greeks & IV Calculator",
+    shortTitle: "Options Strategy",
+    description: "Model up to four option legs with theoretical value, expiry payoff, implied volatility, and Greeks.",
+  },
+  {
+    slug: "dividend-drip",
+    title: "Dividend & DRIP Calculator",
+    shortTitle: "Dividend & DRIP",
+    description: "Estimate dividend income and reinvested portfolio growth from your own yield and growth assumptions.",
+  },
+  {
+    slug: "futures-position",
+    title: "Futures Tick Value & Position Size Calculator",
+    shortTitle: "Futures Position",
+    description: "Calculate whole-contract futures position size from account risk, stop distance, tick value, and costs.",
+  },
+  {
+    slug: "us-capital-gains",
+    title: "US Capital Gains Estimate Calculator",
+    shortTitle: "US Capital Gains",
+    description: "Estimate federal capital-gains tax from cost basis, holding period, income, and filing status inputs.",
+  },
 ] as const;
 
 export type CalculatorSlug = (typeof calculatorDefinitions)[number]["slug"];

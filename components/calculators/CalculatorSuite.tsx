@@ -370,6 +370,340 @@ function DrawdownRecoveryCalculator() {
   </>;
 }
 
+function StockProfitCalculator() {
+  const [buyPrice, setBuyPrice] = useState(100);
+  const [sellPrice, setSellPrice] = useState(115);
+  const [shares, setShares] = useState(10);
+  const [buyFees, setBuyFees] = useState(0);
+  const [sellFees, setSellFees] = useState(0);
+  const [otherCosts, setOtherCosts] = useState(0);
+  const grossProfit = (sellPrice - buyPrice) * shares;
+  const totalCosts = buyFees + sellFees + otherCosts;
+  const netProfit = grossProfit - totalCosts;
+  const invested = buyPrice * shares + buyFees;
+  const returnPercent = invested > 0 ? netProfit / invested * 100 : NaN;
+  const breakEvenSellPrice = shares > 0 ? (buyPrice * shares + totalCosts) / shares : NaN;
+
+  return <>
+    <div className="grid gap-5 md:grid-cols-2">
+      <NumberField label="Buy price per share" value={buyPrice} onChange={setBuyPrice} step="0.01" />
+      <NumberField label="Sell price per share" value={sellPrice} onChange={setSellPrice} step="0.01" />
+      <NumberField label="Number of shares" value={shares} onChange={setShares} step="0.000001" />
+      <NumberField label="Buy-side fees" value={buyFees} onChange={setBuyFees} step="0.01" />
+      <NumberField label="Sell-side fees" value={sellFees} onChange={setSellFees} step="0.01" />
+      <NumberField label="Other trading costs" value={otherCosts} onChange={setOtherCosts} step="0.01" />
+    </div>
+    <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <Result label="Gross P&L" value={formatNumber(grossProfit)} />
+      <Result label="Net P&L" value={formatNumber(netProfit)} />
+      <Result label="Return on invested amount" value={`${formatNumber(returnPercent)}%`} />
+      <Result label="Break-even sell price" value={formatNumber(breakEvenSellPrice)} />
+    </div>
+    <Notice>The prefilled figures are example inputs, not live quotes. Replace them with verified broker data. This is an arithmetic estimate; taxes, dividends, currency conversion, spread, slippage, wash-sale rules, and broker-specific charges are excluded.</Notice>
+  </>;
+}
+
+type OptionType = "call" | "put";
+type OptionPosition = "long" | "short";
+type OptionLeg = { enabled: boolean; type: OptionType; position: OptionPosition; strike: number; premium: number; contracts: number };
+
+function normalPdf(value: number) {
+  return Math.exp(-0.5 * value * value) / Math.sqrt(2 * Math.PI);
+}
+
+function normalCdf(value: number) {
+  const sign = value < 0 ? -1 : 1;
+  const absolute = Math.abs(value);
+  const t = 1 / (1 + 0.2316419 * absolute);
+  const polynomial = t * (0.319381530 + t * (-0.356563782 + t * (1.781477937 + t * (-1.821255978 + t * 1.330274429))));
+  return 0.5 * (1 + sign * (1 - normalPdf(absolute) * polynomial));
+}
+
+type OptionModel = { price: number; delta: number; gamma: number; theta: number; vega: number; rho: number };
+
+function optionModel(type: OptionType, spot: number, strike: number, days: number, volatility: number, rate: number, dividendYield: number): OptionModel {
+  const time = Math.max(days, 0) / 365;
+  const sigma = Math.max(volatility, 0) / 100;
+  const riskFree = rate / 100;
+  const dividend = dividendYield / 100;
+  if (!(spot > 0) || !(strike > 0) || !Number.isFinite(time) || !Number.isFinite(sigma)) {
+    return { price: NaN, delta: NaN, gamma: NaN, theta: NaN, vega: NaN, rho: NaN };
+  }
+  const intrinsic = type === "call" ? Math.max(spot - strike, 0) : Math.max(strike - spot, 0);
+  if (time === 0 || sigma === 0) {
+    return { price: intrinsic, delta: type === "call" ? (spot > strike ? 1 : 0) : (spot < strike ? -1 : 0), gamma: 0, theta: 0, vega: 0, rho: 0 };
+  }
+  const rootTime = Math.sqrt(time);
+  const d1 = (Math.log(spot / strike) + (riskFree - dividend + 0.5 * sigma * sigma) * time) / (sigma * rootTime);
+  const d2 = d1 - sigma * rootTime;
+  const discountRate = Math.exp(-riskFree * time);
+  const discountDividend = Math.exp(-dividend * time);
+  const price = type === "call"
+    ? spot * discountDividend * normalCdf(d1) - strike * discountRate * normalCdf(d2)
+    : strike * discountRate * normalCdf(-d2) - spot * discountDividend * normalCdf(-d1);
+  const delta = type === "call" ? discountDividend * normalCdf(d1) : discountDividend * (normalCdf(d1) - 1);
+  const gamma = discountDividend * normalPdf(d1) / (spot * sigma * rootTime);
+  const thetaBase = -(spot * discountDividend * normalPdf(d1) * sigma) / (2 * rootTime);
+  const theta = type === "call"
+    ? thetaBase - riskFree * strike * discountRate * normalCdf(d2) + dividend * spot * discountDividend * normalCdf(d1)
+    : thetaBase + riskFree * strike * discountRate * normalCdf(-d2) - dividend * spot * discountDividend * normalCdf(-d1);
+  const vega = spot * discountDividend * normalPdf(d1) * rootTime / 100;
+  const rho = type === "call" ? strike * time * discountRate * normalCdf(d2) / 100 : -strike * time * discountRate * normalCdf(-d2) / 100;
+  return { price, delta, gamma, theta: theta / 365, vega, rho };
+}
+
+function OptionsStrategyCalculator() {
+  const [spot, setSpot] = useState(100);
+  const [targetSpot, setTargetSpot] = useState(110);
+  const [days, setDays] = useState(45);
+  const [volatility, setVolatility] = useState(30);
+  const [rate, setRate] = useState(4.5);
+  const [dividendYield, setDividendYield] = useState(0);
+  const [legs, setLegs] = useState<OptionLeg[]>([
+    { enabled: true, type: "call", position: "long", strike: 100, premium: 3, contracts: 1 },
+    { enabled: false, type: "call", position: "short", strike: 110, premium: 1, contracts: 1 },
+    { enabled: false, type: "put", position: "long", strike: 90, premium: 2, contracts: 1 },
+    { enabled: false, type: "put", position: "short", strike: 80, premium: 1, contracts: 1 },
+  ]);
+
+  function updateLeg<K extends keyof OptionLeg>(index: number, key: K, value: OptionLeg[K]) {
+    setLegs((current) => current.map((leg, legIndex) => legIndex === index ? { ...leg, [key]: value } : leg));
+  }
+
+  const stats = legs.filter((leg) => leg.enabled).map((leg) => {
+    const model = optionModel(leg.type, spot, leg.strike, days, volatility, rate, dividendYield);
+    const direction = leg.position === "long" ? 1 : -1;
+    const multiplier = leg.contracts * 100 * direction;
+    const intrinsic = leg.type === "call" ? Math.max(targetSpot - leg.strike, 0) : Math.max(leg.strike - targetSpot, 0);
+    return {
+      currentPnl: (model.price - leg.premium) * multiplier,
+      expiryPnl: (intrinsic - leg.premium) * multiplier,
+      delta: model.delta * multiplier,
+      gamma: model.gamma * multiplier,
+      theta: model.theta * multiplier,
+      vega: model.vega * multiplier,
+      rho: model.rho * multiplier,
+    };
+  });
+  const total = stats.reduce((sum, item) => ({
+    currentPnl: sum.currentPnl + item.currentPnl,
+    expiryPnl: sum.expiryPnl + item.expiryPnl,
+    delta: sum.delta + item.delta,
+    gamma: sum.gamma + item.gamma,
+    theta: sum.theta + item.theta,
+    vega: sum.vega + item.vega,
+    rho: sum.rho + item.rho,
+  }), { currentPnl: 0, expiryPnl: 0, delta: 0, gamma: 0, theta: 0, vega: 0, rho: 0 });
+
+  return <>
+    <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+      <NumberField label="Current underlying price" value={spot} onChange={setSpot} step="0.01" />
+      <NumberField label="Target price at expiry" value={targetSpot} onChange={setTargetSpot} step="0.01" />
+      <NumberField label="Days to expiry" value={days} onChange={setDays} step="1" />
+      <NumberField label="Implied volatility assumption" value={volatility} onChange={setVolatility} step="0.1" suffix="%" />
+      <NumberField label="Risk-free rate assumption" value={rate} onChange={setRate} step="0.01" suffix="%" />
+      <NumberField label="Dividend yield assumption" value={dividendYield} onChange={setDividendYield} step="0.01" suffix="%" />
+    </div>
+    <div className="mt-6 space-y-4">
+      {legs.map((leg, index) => <div key={index} className="rounded-2xl border border-slate-200 p-4 dark:border-slate-800">
+        <label className="mb-4 flex items-center gap-2 text-sm font-bold text-slate-700 dark:text-slate-300">
+          <input type="checkbox" checked={leg.enabled} onChange={(event) => updateLeg(index, "enabled", event.target.checked)} />
+          Use leg {index + 1}
+        </label>
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-5">
+          <SelectField label="Type" value={leg.type} onChange={(value) => updateLeg(index, "type", value as OptionType)} options={[{ label: "Call", value: "call" }, { label: "Put", value: "put" }]} />
+          <SelectField label="Position" value={leg.position} onChange={(value) => updateLeg(index, "position", value as OptionPosition)} options={[{ label: "Long", value: "long" }, { label: "Short", value: "short" }]} />
+          <NumberField label="Strike" value={leg.strike} onChange={(value) => updateLeg(index, "strike", value)} step="0.01" />
+          <NumberField label="Premium per unit" value={leg.premium} onChange={(value) => updateLeg(index, "premium", value)} step="0.01" />
+          <NumberField label="Contracts" value={leg.contracts} onChange={(value) => updateLeg(index, "contracts", value)} step="1" />
+        </div>
+      </div>)}
+    </div>
+    <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <Result label="Theoretical P&L now" value={formatNumber(total.currentPnl)} />
+      <Result label="Expiry P&L at target" value={formatNumber(total.expiryPnl)} />
+      <Result label="Net delta" value={formatNumber(total.delta, 4)} />
+      <Result label="Net gamma" value={formatNumber(total.gamma, 4)} />
+      <Result label="Net theta / day" value={formatNumber(total.theta)} />
+      <Result label="Net vega / 1% IV" value={formatNumber(total.vega)} />
+      <Result label="Net rho / 1% rate" value={formatNumber(total.rho)} />
+    </div>
+    <Notice>The prefilled figures are example inputs, not live quotes. Black–Scholes is a theoretical model using a 100-share contract multiplier. Enter the current option premium and IV from your broker for a closer estimate. It does not fetch live option-chain data, predict future IV, model early exercise, American exercise, assignment, bid/ask spread, or fees. Greeks and expiry P&L are estimates, not a probability or trading signal.</Notice>
+  </>;
+}
+
+function DividendDripCalculator() {
+  const [initial, setInitial] = useState(10000);
+  const [price, setPrice] = useState(100);
+  const [dividendPerShare, setDividendPerShare] = useState(3);
+  const [dividendGrowth, setDividendGrowth] = useState(4);
+  const [priceGrowth, setPriceGrowth] = useState(5);
+  const [contribution, setContribution] = useState(250);
+  const [years, setYears] = useState(10);
+  const [frequency, setFrequency] = useState("12");
+  const [reinvest, setReinvest] = useState(true);
+  const periodsPerYear = Number(frequency);
+  const periods = Math.max(0, Math.floor(years * periodsPerYear));
+  let shares = price > 0 ? initial / price : 0;
+  let currentPrice = price;
+  let currentDividend = dividendPerShare;
+  let cashDividends = 0;
+  let totalContributed = initial;
+  for (let period = 1; period <= periods; period += 1) {
+    const dividend = shares * currentDividend / periodsPerYear;
+    cashDividends += dividend;
+    if (reinvest && currentPrice > 0) shares += dividend / currentPrice;
+    if (contribution > 0 && currentPrice > 0) {
+      shares += contribution / currentPrice;
+      totalContributed += contribution;
+    }
+    if (period % periodsPerYear === 0) {
+      currentPrice *= 1 + priceGrowth / 100;
+      currentDividend *= 1 + dividendGrowth / 100;
+    }
+  }
+  const endingValue = shares * currentPrice + (reinvest ? 0 : cashDividends);
+  const annualIncome = shares * currentDividend;
+
+  return <>
+    <div className="grid gap-5 md:grid-cols-2">
+      <NumberField label="Initial investment" value={initial} onChange={setInitial} step="0.01" />
+      <NumberField label="Starting share price" value={price} onChange={setPrice} step="0.01" />
+      <NumberField label="Annual dividend per share" value={dividendPerShare} onChange={setDividendPerShare} step="0.0001" />
+      <NumberField label="Dividend growth assumption" value={dividendGrowth} onChange={setDividendGrowth} step="0.1" min="-100" suffix="% / year" />
+      <NumberField label="Share-price growth assumption" value={priceGrowth} onChange={setPriceGrowth} step="0.1" min="-100" suffix="% / year" />
+      <NumberField label="Regular contribution" value={contribution} onChange={setContribution} step="0.01" />
+      <NumberField label="Time period" value={years} onChange={setYears} step="1" suffix="years" />
+      <SelectField label="Dividend/contribution frequency" value={frequency} onChange={setFrequency} options={[{ label: "Monthly", value: "12" }, { label: "Quarterly", value: "4" }, { label: "Annually", value: "1" }]} />
+    </div>
+    <label className="mt-5 flex items-center gap-2 text-sm font-semibold text-slate-700 dark:text-slate-300"><input type="checkbox" checked={reinvest} onChange={(event) => setReinvest(event.target.checked)} /> Reinvest dividends</label>
+    <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <Result label="Ending portfolio value" value={formatNumber(endingValue)} />
+      <Result label="Ending shares" value={formatNumber(shares, 6)} />
+      <Result label="Annual dividend at end" value={formatNumber(annualIncome)} />
+      <Result label="Total contributed" value={formatNumber(totalContributed)} />
+    </div>
+    <Notice>This is a deterministic projection using constant user assumptions and end-of-period contributions. It excludes taxes, withholding, fees, dividend cuts, price volatility, splits, and currency conversion. Returns are not guaranteed.</Notice>
+  </>;
+}
+
+function FuturesPositionCalculator() {
+  const [account, setAccount] = useState(25000);
+  const [riskPercent, setRiskPercent] = useState(1);
+  const [entry, setEntry] = useState(5000);
+  const [stop, setStop] = useState(4950);
+  const [tickSize, setTickSize] = useState(0.25);
+  const [tickValue, setTickValue] = useState(12.5);
+  const [pointValue, setPointValue] = useState(50);
+  const [roundTripFees, setRoundTripFees] = useState(0);
+  const [marginPerContract, setMarginPerContract] = useState(15000);
+  const riskAmount = Math.max(account, 0) * Math.max(riskPercent, 0) / 100;
+  const stopTicks = tickSize > 0 ? Math.abs(entry - stop) / tickSize : NaN;
+  const riskPerContract = Number.isFinite(stopTicks) ? stopTicks * Math.max(tickValue, 0) + Math.max(roundTripFees, 0) : NaN;
+  const contracts = riskPerContract > 0 ? Math.floor(riskAmount / riskPerContract) : NaN;
+  const notional = Number.isFinite(contracts) ? contracts * Math.abs(entry) * Math.max(pointValue, 0) : NaN;
+  const margin = Number.isFinite(contracts) ? contracts * Math.max(marginPerContract, 0) : NaN;
+
+  return <>
+    <div className="grid gap-5 md:grid-cols-2">
+      <NumberField label="Account balance" value={account} onChange={setAccount} step="0.01" />
+      <NumberField label="Risk per trade" value={riskPercent} onChange={setRiskPercent} step="0.1" suffix="%" />
+      <NumberField label="Entry price" value={entry} onChange={setEntry} step="0.01" />
+      <NumberField label="Stop price" value={stop} onChange={setStop} step="0.01" />
+      <NumberField label="Tick size" value={tickSize} onChange={setTickSize} step="0.000001" />
+      <NumberField label="Tick value per contract" value={tickValue} onChange={setTickValue} step="0.01" />
+      <NumberField label="Point value per contract" value={pointValue} onChange={setPointValue} step="0.01" />
+      <NumberField label="Round-trip fees per contract" value={roundTripFees} onChange={setRoundTripFees} step="0.01" />
+      <NumberField label="Margin per contract" value={marginPerContract} onChange={setMarginPerContract} step="0.01" />
+    </div>
+    <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <Result label="Risk budget" value={formatNumber(riskAmount)} />
+      <Result label="Risk per contract" value={formatNumber(riskPerContract)} />
+      <Result label="Whole contracts" value={Number.isFinite(contracts) ? contracts.toString() : "—"} />
+      <Result label="Stop distance" value={`${formatNumber(stopTicks, 2)} ticks`} />
+      <Result label="Position notional" value={formatNumber(notional)} />
+      <Result label="Estimated margin" value={formatNumber(margin)} />
+    </div>
+    <Notice>Uses whole contracts and your entered tick/point specifications; the prefilled contract values are examples only. Confirm the exact contract specification, intraday/overnight margin, fees, slippage, price limits, and liquidation rules with your futures broker or exchange.</Notice>
+  </>;
+}
+
+type FilingStatus = "single" | "mfj" | "mfs" | "hoh";
+const ordinaryBrackets2026: Record<FilingStatus, Array<[number, number]>> = {
+  single: [[12400, 0.10], [50400, 0.12], [105700, 0.22], [201775, 0.24], [256225, 0.32], [640600, 0.35], [Infinity, 0.37]],
+  mfj: [[24800, 0.10], [100800, 0.12], [211400, 0.22], [403550, 0.24], [512450, 0.32], [768700, 0.35], [Infinity, 0.37]],
+  mfs: [[12400, 0.10], [50400, 0.12], [105700, 0.22], [201775, 0.24], [256225, 0.32], [384350, 0.35], [Infinity, 0.37]],
+  hoh: [[17700, 0.10], [67450, 0.12], [105700, 0.22], [201750, 0.24], [256200, 0.32], [640600, 0.35], [Infinity, 0.37]],
+};
+const capitalGainsThresholds2026: Record<FilingStatus, { zero: number; fifteen: number; niit: number }> = {
+  single: { zero: 49450, fifteen: 545500, niit: 200000 },
+  mfj: { zero: 98900, fifteen: 613700, niit: 250000 },
+  mfs: { zero: 49450, fifteen: 306850, niit: 125000 },
+  hoh: { zero: 66200, fifteen: 579600, niit: 200000 },
+};
+
+function taxFromBrackets(income: number, brackets: Array<[number, number]>) {
+  let previous = 0;
+  let total = 0;
+  for (const [upper, rate] of brackets) {
+    const taxable = Math.max(0, Math.min(income, upper) - previous);
+    total += taxable * rate;
+    previous = upper;
+    if (income <= upper) break;
+  }
+  return total;
+}
+
+function taxOnLongTermGain(start: number, end: number, zeroThreshold: number, fifteenThreshold: number) {
+  const zeroPortion = Math.max(0, Math.min(end, zeroThreshold) - Math.min(start, zeroThreshold));
+  const fifteenPortion = Math.max(0, Math.min(end, fifteenThreshold) - Math.max(start, zeroThreshold));
+  const twentyPortion = Math.max(0, end - Math.max(start, fifteenThreshold));
+  return zeroPortion * 0 + fifteenPortion * 0.15 + twentyPortion * 0.20;
+}
+
+function USCapitalGainsCalculator() {
+  const [filingStatus, setFilingStatus] = useState<FilingStatus>("single");
+  const [holdingPeriod, setHoldingPeriod] = useState("long");
+  const [proceeds, setProceeds] = useState(25000);
+  const [basis, setBasis] = useState(15000);
+  const [sellingCosts, setSellingCosts] = useState(0);
+  const [lossOffset, setLossOffset] = useState(0);
+  const [taxableIncome, setTaxableIncome] = useState(100000);
+  const [stateRate, setStateRate] = useState(0);
+  const [includeNiit, setIncludeNiit] = useState(false);
+  const gainBeforeLosses = proceeds - basis - sellingCosts;
+  const netGain = Math.max(0, gainBeforeLosses - Math.max(lossOffset, 0));
+  const thresholds = capitalGainsThresholds2026[filingStatus];
+  const federalTax = holdingPeriod === "long"
+    ? taxOnLongTermGain(Math.max(0, taxableIncome), Math.max(0, taxableIncome) + netGain, thresholds.zero, thresholds.fifteen)
+    : taxFromBrackets(Math.max(0, taxableIncome) + netGain, ordinaryBrackets2026[filingStatus]) - taxFromBrackets(Math.max(0, taxableIncome), ordinaryBrackets2026[filingStatus]);
+  const stateTax = netGain * Math.max(stateRate, 0) / 100;
+  const niitBase = Math.min(netGain, Math.max(0, taxableIncome + netGain - thresholds.niit));
+  const niit = includeNiit ? niitBase * 0.038 : 0;
+
+  return <>
+    <div className="grid gap-5 md:grid-cols-2">
+      <SelectField label="Filing status" value={filingStatus} onChange={(value) => setFilingStatus(value as FilingStatus)} options={[{ label: "Single", value: "single" }, { label: "Married filing jointly", value: "mfj" }, { label: "Married filing separately", value: "mfs" }, { label: "Head of household", value: "hoh" }]} />
+      <SelectField label="Holding period" value={holdingPeriod} onChange={setHoldingPeriod} options={[{ label: "Long-term: more than 1 year", value: "long" }, { label: "Short-term: 1 year or less", value: "short" }]} />
+      <NumberField label="Sale proceeds" value={proceeds} onChange={setProceeds} step="0.01" />
+      <NumberField label="Cost basis" value={basis} onChange={setBasis} step="0.01" />
+      <NumberField label="Selling costs" value={sellingCosts} onChange={setSellingCosts} step="0.01" />
+      <NumberField label="Losses used to offset gain" value={lossOffset} onChange={setLossOffset} step="0.01" />
+      <NumberField label="Taxable income before this gain" value={taxableIncome} onChange={setTaxableIncome} step="0.01" />
+      <NumberField label="Estimated state tax rate" value={stateRate} onChange={setStateRate} step="0.01" suffix="%" />
+    </div>
+    <label className="mt-5 flex items-center gap-2 text-sm font-semibold text-slate-700 dark:text-slate-300"><input type="checkbox" checked={includeNiit} onChange={(event) => setIncludeNiit(event.target.checked)} /> Include 3.8% Net Investment Income Tax if applicable</label>
+    <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <Result label="Realized gain / loss" value={formatNumber(gainBeforeLosses)} />
+      <Result label="Taxable gain after offsets" value={formatNumber(netGain)} />
+      <Result label="Estimated federal tax" value={formatNumber(federalTax)} />
+      <Result label="Estimated state tax" value={formatNumber(stateTax)} />
+      <Result label="Estimated total tax" value={formatNumber(federalTax + stateTax + niit)} />
+    </div>
+    <Notice>Uses 2026 federal reference thresholds from IRS guidance and your taxable-income input. State tax, deductions, qualified dividends, AMT, wash sales, collectibles, depreciation recapture, NIIT eligibility, and special asset rules can change the result. The tax year is fixed to 2026 and must be updated when new IRS tables apply. This is an estimate, not tax advice or a filing calculation.</Notice>
+  </>;
+}
+
 const calculatorComponents: Record<CalculatorSlug, () => ReactNode> = {
   "pip-value": PipValueCalculator,
   "position-size": PositionSizeCalculator,
@@ -386,6 +720,11 @@ const calculatorComponents: Record<CalculatorSlug, () => ReactNode> = {
   "currency-strength": CurrencyStrengthCalculator,
   "market-hours": MarketHoursCalculator,
   "economic-calendar": EconomicCalendarCalculator,
+  "stock-profit": StockProfitCalculator,
+  "options-strategy": OptionsStrategyCalculator,
+  "dividend-drip": DividendDripCalculator,
+  "futures-position": FuturesPositionCalculator,
+  "us-capital-gains": USCapitalGainsCalculator,
 };
 
 export default function CalculatorSuite({ slug }: Props) {
