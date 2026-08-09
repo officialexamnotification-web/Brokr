@@ -4,6 +4,7 @@ import { ChevronLeft, TrendingUp, ArrowRight, Sparkles, Filter, Globe } from "lu
 import type { Metadata } from "next";
 import { getCategoryById, getCategoryBySlug, getToolsByCategory, categories, getAvailableCountries } from "@/lib/data";
 import ToolCard from "@/components/common/ToolCard";
+import { ManagedToolGrid } from "@/components/content/ManagedContent";
 
 export function generateStaticParams() {
   return [
@@ -156,6 +157,7 @@ export default function CategoryPage({
           </Link>
         </div>
       )}
+      <ManagedToolGrid categoryId={category.id} />
     </div>
   );
 }

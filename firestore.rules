@@ -2,6 +2,11 @@ rules_version = '2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
+    function isAdmin() {
+      return request.auth != null
+        && request.auth.token.email == 'admin@tradivex.com';
+    }
+
     function hasOnly(fields) {
       return request.resource.data.keys().hasOnly(fields);
     }
@@ -31,7 +36,7 @@ service cloud.firestore {
         && request.resource.data.status == 'new'
         && request.resource.data.source == 'tradivex-contact-form'
         && isCreatedNow();
-      allow read, update, delete: if false;
+      allow read, update, delete: if isAdmin();
     }
 
     match /toolSubmissions/{submissionId} {
@@ -58,7 +63,7 @@ service cloud.firestore {
         && request.resource.data.status == 'pending-review'
         && request.resource.data.source == 'tradivex-submit-form'
         && isCreatedNow();
-      allow read, update, delete: if false;
+      allow read, update, delete: if isAdmin();
     }
 
     match /newsletterSubscriptions/{subscriptionId} {
@@ -68,7 +73,28 @@ service cloud.firestore {
         && request.resource.data.status == 'subscribed'
         && request.resource.data.source == 'tradivex-newsletter'
         && isCreatedNow();
-      allow read, update, delete: if false;
+      allow read, update, delete: if isAdmin();
+    }
+
+    // Admin allowlist documents are created manually in the Firebase console
+    // or through a trusted server. They must never be writable from the web app.
+    match /admins/{adminEmail} {
+      allow read: if request.auth != null && request.auth.token.email == adminEmail;
+      allow write: if false;
+    }
+
+    // Content managed from the private console. Public reads must always be
+    // filtered to published records by the client query.
+    match /managedTools/{toolId} {
+      allow get: if request.auth != null || resource.data.status == 'published';
+      allow list: if request.auth != null || resource.data.status == 'published';
+      allow create, update, delete: if request.auth != null;
+    }
+
+    match /managedBlogs/{blogId} {
+      allow get: if request.auth != null || resource.data.status == 'published';
+      allow list: if request.auth != null || resource.data.status == 'published';
+      allow create, update, delete: if request.auth != null;
     }
   }
 }

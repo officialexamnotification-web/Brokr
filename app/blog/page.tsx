@@ -3,6 +3,7 @@ import { ChevronLeft, Clock, ArrowRight, BookOpen, TrendingUp, DollarSign, Shiel
 import { getBlogPosts, getBlogPostBySlug, blogPosts } from "@/lib/data";
 import Badge from "@/components/common/Badge";
 import type { Metadata } from "next";
+import { ManagedBlogList } from "@/components/content/ManagedContent";
 
 export const metadata: Metadata = {
   title: "Trading Guides & Educational Articles | Tradivex",
@@ -77,7 +78,7 @@ export default function BlogListPage() {
           );
         })}
       </div>
+      <ManagedBlogList />
     </div>
   );
 }
-

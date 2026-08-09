@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import { TrendingUp, Mail, ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Facebook, Linkedin, Mail, MessageCircle, TrendingUp } from "lucide-react";
 
 const footerLinks = {
   Categories: [
@@ -34,6 +34,14 @@ const footerLinks = {
   ],
 };
 
+const socialLinks = [
+  { label: "X", href: "https://x.com/tradivex_", icon: "x" },
+  { label: "Facebook", href: "https://www.facebook.com/tradivex", icon: Facebook },
+  { label: "Quora", href: "https://www.quora.com/profile/Tradivex", icon: "quora" },
+  { label: "Reddit", href: "https://www.reddit.com/user/Tradivex/", icon: MessageCircle },
+  { label: "LinkedIn", href: "https://www.linkedin.com/in/tradivex", icon: Linkedin },
+] as const;
+
 export default function Footer() {
   return (
     <footer className="relative bg-slate-50 dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800">
@@ -52,7 +60,7 @@ export default function Footer() {
               A neutral directory for discovering and comparing trading
               platforms, exchanges, brokers, and market tools.
             </p>
-            <div className="flex items-center gap-2">
+            <div className="flex flex-wrap items-center gap-2">
               <Link
                 href="/contact"
                 aria-label="Contact Tradivex"
@@ -61,6 +69,26 @@ export default function Footer() {
               >
                 <Mail className="w-4 h-4" />
               </Link>
+              {socialLinks.map((social) => {
+                const Icon = social.icon;
+                return (
+                  <a
+                    key={social.label}
+                    href={social.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`Tradivex on ${social.label}`}
+                    title={`Tradivex on ${social.label}`}
+                    className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-400 transition-all hover:border-primary-200 hover:text-primary-500 dark:border-slate-800 dark:bg-slate-900 dark:hover:border-primary-800"
+                  >
+                    {typeof Icon === "string" ? (
+                      <span className="text-sm font-black" aria-hidden="true">{Icon === "x" ? "𝕏" : "Q"}</span>
+                    ) : (
+                      <Icon className="h-4 w-4" aria-hidden="true" />
+                    )}
+                  </a>
+                );
+              })}
             </div>
           </div>
 
@@ -98,4 +126,3 @@ export default function Footer() {
     </footer>
   );
 }
-

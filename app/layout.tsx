@@ -1,10 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
-import Header from "@/components/layout/Header";
-import Footer from "@/components/layout/Footer";
-import CustomChatbot from "@/components/common/CustomChatbot";
-import CookieConsent from "@/components/layout/CookieConsent";
+import SiteChrome from "@/components/layout/SiteChrome";
 
 const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || "https://www.tradivex.com").replace(/\/$/, "");
 
@@ -38,13 +35,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className="antialiased">
         <ThemeProvider>
-          <div className="flex flex-col min-h-screen">
-            <Header />
-            <main className="flex-1">{children}</main>
-            <Footer />
-          </div>
-          <CustomChatbot />
-          <CookieConsent />
+          <SiteChrome>{children}</SiteChrome>
         </ThemeProvider>
       </body>
     </html>

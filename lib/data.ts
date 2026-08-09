@@ -13213,8 +13213,8 @@ export function getToolsByRegion(regionCode: string): Tool[] {
     .filter((t) => region.popularCategories.includes(t.categoryId) && getToolsByCountry(regionCountry).some((countryTool) => countryTool.slug === t.slug))
     .slice(0, 25);
 }
-export function searchTools(query: string, filters?: { category?: number; minRating?: number; platform?: string; regulation?: string; categories?: number[] }): Tool[] {
-  let results = [...tools];
+export function searchTools(query: string, filters?: { category?: number; minRating?: number; platform?: string; regulation?: string; categories?: number[] }, source: Tool[] = tools): Tool[] {
+  let results = [...source];
   const q = query.toLowerCase();
   if (q) {
     results = results.filter(

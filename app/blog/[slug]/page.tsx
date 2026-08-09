@@ -1,10 +1,10 @@
-import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ChevronLeft, Clock, ArrowLeft } from "lucide-react";
 import { getBlogPostBySlug, getBlogPosts } from "@/lib/data";
 import Badge from "@/components/common/Badge";
 import ShareButton from "@/components/common/ShareButton";
 import type { Metadata } from "next";
+import { ManagedBlogPage } from "@/components/content/ManagedContent";
 
 const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || "https://www.tradivex.com").replace(/\/$/, "");
 
@@ -48,7 +48,7 @@ export function generateStaticParams() {
 
 export default function BlogPostPage({ params }: { params: { slug: string } }) {
   const post = getBlogPostBySlug(params.slug);
-  if (!post) notFound();
+  if (!post) return <ManagedBlogPage slug={params.slug} />;
 
   const relatedPosts = getBlogPosts().filter((p) => p.slug !== post.slug && p.category === post.category).slice(0, 2);
   const articleJsonLd = {

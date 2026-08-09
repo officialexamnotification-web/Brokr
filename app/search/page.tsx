@@ -8,6 +8,7 @@ import { Search as SearchIcon, X, Filter, SlidersHorizontal, Star, Globe, Smartp
 import { tools, categories, searchTools, getAvailableCountries } from "@/lib/data";
 import ToolCard from "@/components/common/ToolCard";
 import Badge from "@/components/common/Badge";
+import { usePublishedTools } from "@/components/content/ManagedContent";
 
 type SortOption = "latest" | "trending" | "name" | "rating";
 type ExperienceLevel = "all" | "beginner" | "intermediate" | "advanced";
@@ -23,6 +24,8 @@ const experienceMap: Record<ExperienceLevel, string[]> = {
 };
 
 function SearchContent() {
+  const managedTools = usePublishedTools();
+  const catalogTools = useMemo(() => [...tools, ...managedTools], [managedTools]);
   const searchParams = useSearchParams();
   const initialQuery = searchParams.get("q") || "";
   const initialCategory = searchParams.get("category") ? Number(searchParams.get("category")) : null;
@@ -52,7 +55,7 @@ function SearchContent() {
       categories: selectedCategories.length > 0 ? selectedCategories : undefined,
       platform: selectedPlatform || undefined,
       regulation: selectedRegulation || undefined,
-    });
+    }, catalogTools);
 
     if (experience !== "all") {
       results = results.filter((t) => t.bestFor?.some((b) => experienceMap[experience].includes(b)));
@@ -91,7 +94,7 @@ function SearchContent() {
       }
     });
     return results;
-  }, [query, sortBy, selectedCategories, selectedPlatform, selectedRegulation, experience, selectedCountry]);
+  }, [query, sortBy, selectedCategories, selectedPlatform, selectedRegulation, experience, selectedCountry, catalogTools]);
 
   const hasFilters = query || selectedCategories.length > 0 || selectedPlatform || selectedRegulation || experience !== "all" || selectedCountry;
   const clearFilters = () => {

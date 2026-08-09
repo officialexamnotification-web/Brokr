@@ -1,4 +1,3 @@
-import { notFound } from "next/navigation";
 import Link from "next/link";
 import type { Metadata } from "next";
 import {
@@ -30,6 +29,7 @@ import ToolCard from "@/components/common/ToolCard";
 import QuickCompareSidebar from "@/components/common/QuickCompareSidebar";
 import RiskWarningBanner from "@/components/common/RiskWarningBanner";
 import { getRelevantTools } from "@/lib/tool-relevance";
+import { ManagedToolPage } from "@/components/content/ManagedContent";
 
 export function generateStaticParams() {
   return tools.map((tool) => ({ slug: tool.slug }));
@@ -56,7 +56,7 @@ export default function ToolDetailPage({ params }: { params: { slug: string } })
   const { slug } = params;
   const tool = getToolBySlug(slug);
 
-  if (!tool) notFound();
+  if (!tool) return <ManagedToolPage slug={slug} />;
 
   const relatedTools = getRelevantTools(tool, tools, 3);
 
