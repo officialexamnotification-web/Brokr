@@ -2,8 +2,11 @@ import Link from "next/link";
 import { ArrowLeft, ExternalLink, Newspaper } from "lucide-react";
 import { notFound } from "next/navigation";
 import { getFinancialNews } from "@/lib/api";
+import type { Metadata } from "next";
 
 export const dynamic = "force-dynamic";
+
+const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || "https://www.tradivex.com").replace(/\/$/, "");
 
 function decodeSlug(slug: string) {
   try {
@@ -22,6 +25,23 @@ function cleanText(value: string | undefined) {
     .replace(/&lt;/g, "<")
     .replace(/&gt;/g, ">")
     .trim();
+}
+
+export async function generateMetadata({ params, searchParams }: { params: { slug: string }; searchParams: { category?: string } }): Promise<Metadata> {
+  const category = typeof searchParams.category === "string" ? searchParams.category.toLowerCase() : "general";
+  const items = await getFinancialNews(category);
+  const url = decodeSlug(params.slug);
+  const article = items.find((item: any) => item.slug === params.slug || item.url === url);
+  if (!article) return { title: "Market News | Tradivex", robots: { index: false, follow: true } };
+  const headline = cleanText(article.headline);
+  const summary = cleanText(article.summary);
+  return {
+    title: `${headline} | Market News | Tradivex`,
+    description: summary || `Latest ${category} market news from the original publisher.`,
+    alternates: { canonical: `/news/${params.slug}?category=${encodeURIComponent(category)}` },
+    robots: { index: false, follow: true },
+    openGraph: { title: headline, description: summary, type: "article", url: `${siteUrl}/news/${params.slug}?category=${encodeURIComponent(category)}` },
+  };
 }
 
 export default async function NewsArticlePage({

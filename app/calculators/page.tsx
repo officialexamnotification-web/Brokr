@@ -5,6 +5,13 @@ import { calculatorDefinitions } from "@/lib/calculators";
 export const metadata: Metadata = {
   title: "Trading Calculators | Tradivex",
   description: "Explore Tradivex's free, input-driven trading calculators for forex, options, brokerage costs, and technical levels.",
+  alternates: { canonical: "/calculators" },
+  openGraph: {
+    title: "Trading Calculators | Tradivex",
+    description: "Free input-driven calculators for trading risk, costs, options, forex, stocks, futures, and portfolio planning.",
+    type: "website",
+    url: "/calculators",
+  },
 };
 
 export default function CalculatorsPage() {
@@ -27,6 +34,9 @@ export default function CalculatorsPage() {
         </div>
         <div className="mt-10 rounded-2xl border border-amber-200 bg-amber-50 p-5 text-sm leading-relaxed text-amber-900 dark:border-amber-900/60 dark:bg-amber-950/30 dark:text-amber-200">
           Always verify current broker fees, leverage, contract specifications, taxes, and execution conditions directly with the applicable provider. A calculator output is not a prediction or a recommendation.
+        </div>
+        <div className="mt-8 rounded-2xl border border-slate-200 bg-slate-50 p-5 text-sm leading-relaxed text-slate-600 dark:border-slate-800 dark:bg-slate-900/60 dark:text-slate-300">
+          Want the concepts behind the numbers? Read the <Link href="/blog" className="font-semibold text-primary-600 hover:underline dark:text-primary-400">Tradivex trading guides</Link> or review our <Link href="/methodology" className="font-semibold text-primary-600 hover:underline dark:text-primary-400">data and methodology</Link> before relying on any estimate.
         </div>
       </div>
     </main>

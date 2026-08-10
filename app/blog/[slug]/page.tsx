@@ -6,8 +6,21 @@ import ShareButton from "@/components/common/ShareButton";
 import type { Metadata } from "next";
 import { ManagedBlogPage } from "@/components/content/ManagedContent";
 import { getPublishedManagedBlog } from "@/lib/managed-blog-server";
+import { calculatorDefinitions, type CalculatorSlug } from "@/lib/calculators";
 
 const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || "https://www.tradivex.com").replace(/\/$/, "");
+
+const calculatorLinksByCategory: Record<string, string[]> = {
+  "Risk Management": ["risk-reward", "position-size", "drawdown-recovery", "net-trading-cost"],
+  Forex: ["pip-value", "position-size", "forex-pnl", "forex-margin"],
+  Options: ["options-payoff", "options-strategy", "options-probability"],
+  Stocks: ["stock-profit", "dividend-drip", "us-capital-gains"],
+  Crypto: ["crypto-liquidation", "dca-average-price", "net-trading-cost"],
+};
+
+function getRelatedCalculatorSlugs(category: string) {
+  return calculatorLinksByCategory[category] ?? ["position-size", "risk-reward", "net-trading-cost"];
+}
 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   const post = getBlogPostBySlug(params.slug);
@@ -57,6 +70,10 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
   }
 
   const relatedPosts = getBlogPosts().filter((p) => p.slug !== post.slug && p.category === post.category).slice(0, 2);
+  const calculatorBySlug = new Map(calculatorDefinitions.map((calculator) => [calculator.slug, calculator]));
+  const relatedCalculators = getRelatedCalculatorSlugs(post.category)
+    .map((slug) => calculatorBySlug.get(slug as CalculatorSlug))
+    .filter((calculator): calculator is (typeof calculatorDefinitions)[number] => Boolean(calculator));
   const articleJsonLd = {
     "@context": "https://schema.org",
     "@type": "Article",
@@ -136,6 +153,19 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
           return <p key={i} className="text-slate-600 dark:text-slate-400 leading-relaxed mb-4">{line}</p>;
         })}
       </article>
+
+      {relatedCalculators.length > 0 && (
+        <div className="mt-12 rounded-2xl border border-primary-200 bg-primary-50/60 p-5 dark:border-primary-900/60 dark:bg-primary-950/20">
+          <h2 className="text-lg font-bold text-slate-900 dark:text-white">Useful calculators for this topic</h2>
+          <div className="mt-3 flex flex-wrap gap-2">
+            {relatedCalculators.map((calculator) => (
+              <Link key={calculator.slug} href={`/calculators/${calculator.slug}`} className="rounded-xl bg-white px-3 py-2 text-sm font-semibold text-primary-700 shadow-sm hover:underline dark:bg-slate-900 dark:text-primary-300">
+                {calculator.shortTitle}
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
 
       {relatedPosts.length > 0 && (
         <div className="mt-16 pt-8 border-t border-slate-200 dark:border-slate-800">

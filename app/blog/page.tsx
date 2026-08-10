@@ -8,12 +8,14 @@ import { ManagedBlogList } from "@/components/content/ManagedContent";
 export const metadata: Metadata = {
   title: "Trading Guides & Educational Articles | Tradivex",
   description: "Educational trading guides and market explainers covering forex, crypto, stocks, and financial tools.",
+  alternates: { canonical: "/blog" },
   keywords: "trading guides, forex education, crypto tutorials, stock market analysis, trading strategies, trading blog",
   openGraph: {
     title: "Trading Guides & Insights | Tradivex",
     description: "Educational articles with practical explanations of trading tools and markets.",
     type: "website",
     locale: "en_US",
+    url: "/blog",
   },
   twitter: {
     card: "summary_large_image",
@@ -42,6 +44,9 @@ export default function BlogListPage() {
       </h1>
       <p className="text-lg text-slate-500 dark:text-slate-400 mb-3">Educational articles that explain trading tools, markets, and comparison context.</p>
       <p className="text-xs text-slate-500 dark:text-slate-400 mb-12">Editorial education only. Market facts, fees, regulations, and provider features can change, so always verify current details with official sources.</p>
+      <div className="mb-8 rounded-2xl border border-primary-200 bg-primary-50/70 p-5 text-sm leading-relaxed text-primary-900 dark:border-primary-900/60 dark:bg-primary-950/20 dark:text-primary-200">
+        Looking for an interactive estimate? Browse the <Link href="/calculators" className="font-semibold underline">free trading calculators</Link> and read the assumptions shown below each tool.
+      </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {posts.map((post) => {
           const Icon = categoryIcons[post.category] || BookOpen;
