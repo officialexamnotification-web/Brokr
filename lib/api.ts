@@ -4,7 +4,6 @@ import type { CryptoMarketRecord } from "@/lib/crypto-market";
 
 const COINGECKO_BASE = "https://api.coingecko.com/api/v3";
 const FRANKFURTER_BASE = "https://api.frankfurter.app";
-const STOCKDATA_BASE = "https://api.stockdata.org/v1";
 const FINNHUB_BASE = "https://finnhub.io/api/v1";
 import { fetchCryptoMarketData } from "@/lib/crypto-market";
 
@@ -13,7 +12,6 @@ const cache = new Map();
 const CACHE_DURATION = {
   crypto: 2 * 60 * 1000, // 2 minutes
   forex: 60 * 60 * 1000, // 1 hour
-  stock: 60 * 60 * 1000, // 1 hour (StockData.org has 100 requests/day limit)
   news: 5 * 60 * 1000, // 5 minutes for news
 };
 
@@ -90,23 +88,6 @@ export async function getCryptoPrices(coins: string[] = ["bitcoin", "ethereum", 
   }
 }
 
-export async function getCryptoPrice(coinId: string) {
-  const prices = await getCryptoPrices([coinId]);
-  return prices?.[coinId] || null;
-}
-
-export async function getTopCryptos(limit = 10) {
-  try {
-    const res = await fetch(`${COINGECKO_BASE}/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=${limit}&page=1&sparkline=false`, {
-      next: { revalidate: 300 }, // 5 minutes
-    });
-    if (!res.ok) return [];
-    return await res.json();
-  } catch {
-    return [];
-  }
-}
-
 // ============ FOREX ============
 
 export async function getForexRates(base = "USD", targets?: string[]) {
@@ -137,111 +118,6 @@ export async function getForexRates(base = "USD", targets?: string[]) {
   } catch (error) {
     return {};
   }
-}
-
-export async function convertCurrency(amount: number, from: string, to: string) {
-  const rates = await getForexRates(from, [to]);
-  if (!rates?.[to]) return null;
-  return amount * rates[to];
-}
-
-export async function getForexHistory(base: string, target: string, days = 30) {
-  try {
-    const endDate = new Date();
-    const startDate = new Date(Date.now() - days * 24 * 60 * 60 * 1000);
-    const url = `${FRANKFURTER_BASE}/${startDate.toISOString().split("T")[0]}..${endDate.toISOString().split("T")[0]}?from=${base}&to=${target}`;
-
-    const res = await fetch(url, { next: { revalidate: 86400 } }); // 24 hours
-    if (!res.ok) return [];
-    const data = await res.json();
-    return Object.entries(data.rates).map(([date, rates]: [string, any]) => ({
-      date,
-      rate: rates[target] || 0,
-    }));
-  } catch {
-    return [];
-  }
-}
-
-// ============ POPULAR PAIRS ============
-
-export async function getPopularPairs() {
-  const [crypto, forex] = await Promise.all([
-    getCryptoPrices(["bitcoin", "ethereum", "binancecoin", "ripple", "solana"]),
-    getForexRates("USD", ["INR", "EUR", "GBP"]),
-  ]);
-
-  return { crypto, forex };
-}
-
-// ============ STOCKS ============
-
-export async function getStockPrices(symbols: string[] = ["AAPL", "GOOGL", "MSFT", "TSLA", "AMZN"]) {
-  const cacheKey = `stock:${symbols.join(",")}`;
-  const cached = getCached<{ [key: string]: { price: number; change: number | null; changePercent: number | null } }>(cacheKey, CACHE_DURATION.stock);
-  if (cached) return cached;
-
-  try {
-    // Using StockData.org API with environment variable
-    const apiKey = process.env.STOCKDATA_API_KEY || "";
-    
-    
-    if (!apiKey) {
-      throw new Error("StockData.org API key not provided");
-    }
-    
-    const results: { [key: string]: { price: number; change: number | null; changePercent: number | null } } = {};
-    
-    // StockData.org free plan allows only 3 symbols per request
-    // Process symbols in batches of 3
-    const batchSize = 3;
-    for (let i = 0; i < symbols.length; i += batchSize) {
-      const batch = symbols.slice(i, i + batchSize);
-      
-      const res = await fetch(`${STOCKDATA_BASE}/data/quote?symbols=${batch.join(",")}&api_token=${apiKey}`, {
-        next: { revalidate: 3600 }, // 1 hour
-      });
-      const data = await res.json();
-      
-      if (data && Array.isArray(data.data)) {
-        data.data.forEach((quote: any) => {
-          const price = quote.price;
-          const previousClose = quote.previous_close_price;
-          const changePercent = typeof price === "number" && typeof previousClose === "number" && previousClose > 0 ? ((price - previousClose) / previousClose) * 100 : null;
-          
-          results[quote.ticker] = {
-            price: price,
-            change: changePercent,
-            changePercent: typeof changePercent === "number" && Number.isFinite(changePercent) ? changePercent : null,
-          };
-        });
-      }
-      
-      // Add small delay between batches
-      if (i + batchSize < symbols.length) {
-        await new Promise(resolve => setTimeout(resolve, 500));
-      }
-    }
-
-    if (Object.keys(results).length > 0) {
-      setCache(cacheKey, results);
-      return results;
-    }
-
-    throw new Error("No valid stock data received");
-  } catch (error) {
-    console.warn("Stock API unavailable:", error instanceof Error ? error.message : error);
-    return {};
-  }
-}
-
-export async function getStockPrice(symbol: string) {
-  const prices = await getStockPrices([symbol]);
-  return prices?.[symbol] || null;
-}
-
-export async function getPopularStocks() {
-  return getStockPrices(["AAPL", "GOOGL", "MSFT", "TSLA", "AMZN", "META", "NVDA", "JPM"]);
 }
 
 // ============ NEWS ============

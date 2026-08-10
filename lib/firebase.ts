@@ -57,7 +57,6 @@ if (typeof window !== "undefined" && process.env.NODE_ENV !== "production" && pr
   debugWindow.FIREBASE_APPCHECK_DEBUG_TOKEN = process.env.NEXT_PUBLIC_FIREBASE_APPCHECK_DEBUG_TOKEN;
 }
 
-// TEMPORARY DEBUG HELPER — remove after diagnosing the App Check issue.
 async function ensureAppCheckToken() {
   // App Check is an additional production hardening layer. Firestore rules
   // still validate the shape and size of every public submission, while the

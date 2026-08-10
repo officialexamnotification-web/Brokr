@@ -4,7 +4,8 @@ service cloud.firestore {
   match /databases/{database}/documents {
     function isAdmin() {
       return request.auth != null
-        && request.auth.token.email == 'admin@tradivex.com';
+        && request.auth.token.email != null
+        && get(/databases/$(database)/documents/admins/$(request.auth.token.email)).data.enabled == true;
     }
 
     function hasOnly(fields) {
@@ -86,15 +87,15 @@ service cloud.firestore {
     // Content managed from the private console. Public reads must always be
     // filtered to published records by the client query.
     match /managedTools/{toolId} {
-      allow get: if request.auth != null || resource.data.status == 'published';
-      allow list: if request.auth != null || resource.data.status == 'published';
-      allow create, update, delete: if request.auth != null;
+      allow get: if isAdmin() || resource.data.status == 'published';
+      allow list: if isAdmin() || resource.data.status == 'published';
+      allow create, update, delete: if isAdmin();
     }
 
     match /managedBlogs/{blogId} {
-      allow get: if request.auth != null || resource.data.status == 'published';
-      allow list: if request.auth != null || resource.data.status == 'published';
-      allow create, update, delete: if request.auth != null;
+      allow get: if isAdmin() || resource.data.status == 'published';
+      allow list: if isAdmin() || resource.data.status == 'published';
+      allow create, update, delete: if isAdmin();
     }
   }
 }
