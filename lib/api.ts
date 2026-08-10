@@ -355,7 +355,7 @@ function selectNews(items: any[], category: string) {
     unique.set(key, { ...item, _score: score });
   }
   return Array.from(unique.values())
-    .sort((a, b) => (b._score - a._score) || (Number(b.datetime) - Number(a.datetime)))
+    .sort((a, b) => (Number(b.datetime) - Number(a.datetime)) || (b._score - a._score))
     .map(({ _score, ...item }) => ({
       ...item,
       slug: Buffer.from(String(item.url), "utf8").toString("base64url"),

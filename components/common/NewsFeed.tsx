@@ -53,7 +53,7 @@ export default function NewsFeed() {
         
         // If no results with filter, show all news
         const newsToShow = filteredNews.length > 0 ? filteredNews : cleanedData;
-        setNews(newsToShow.slice(0, 6));
+        setNews(newsToShow.sort((a, b) => Number(b.datetime) - Number(a.datetime)).slice(0, 6));
       } catch (error) {
         console.error("News fetch error:", error);
         setNews([]);
