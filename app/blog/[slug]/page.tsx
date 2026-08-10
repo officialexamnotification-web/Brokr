@@ -5,39 +5,42 @@ import Badge from "@/components/common/Badge";
 import ShareButton from "@/components/common/ShareButton";
 import type { Metadata } from "next";
 import { ManagedBlogPage } from "@/components/content/ManagedContent";
+import { getPublishedManagedBlog } from "@/lib/managed-blog-server";
 
 const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || "https://www.tradivex.com").replace(/\/$/, "");
 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   const post = getBlogPostBySlug(params.slug);
-  
-  if (!post) {
+  const managedPost = post ? null : await getPublishedManagedBlog(params.slug);
+  const resolvedPost = post ?? managedPost;
+
+  if (!resolvedPost) {
     return {
-      title: "Blog Post Not Found | Tradivex",
-      description: "The blog post you are looking for could not be found.",
+      title: "Trading Article | Tradivex",
+      description: "Educational trading articles and market explainers from Tradivex.",
     };
   }
 
   return {
-    title: `${post.title} | ${post.category} Guide | Tradivex`,
-    description: post.excerpt,
-    keywords: `${post.tags.join(", ")}, ${post.category}, trading guide, ${post.title}`,
-    alternates: { canonical: `/blog/${post.slug}` },
+    title: `${resolvedPost.title} | ${resolvedPost.category} Guide | Tradivex`,
+    description: resolvedPost.excerpt,
+    keywords: `${resolvedPost.tags.join(", ")}, ${resolvedPost.category}, trading guide, ${resolvedPost.title}`,
+    alternates: { canonical: `/blog/${resolvedPost.slug}` },
     openGraph: {
-      title: post.title,
-      description: post.excerpt,
+      title: resolvedPost.title,
+      description: resolvedPost.excerpt,
       type: "article",
       locale: "en_US",
-      url: `/blog/${post.slug}`,
-      publishedTime: post.date,
-      authors: [post.author],
-      section: post.category,
-      tags: post.tags,
+      url: `/blog/${resolvedPost.slug}`,
+      publishedTime: resolvedPost.date,
+      authors: [resolvedPost.author],
+      section: resolvedPost.category,
+      tags: resolvedPost.tags,
     },
     twitter: {
       card: "summary_large_image",
-      title: post.title,
-      description: post.excerpt,
+      title: resolvedPost.title,
+      description: resolvedPost.excerpt,
     },
   };
 }
@@ -46,9 +49,12 @@ export function generateStaticParams() {
   return getBlogPosts().map((post) => ({ slug: post.slug }));
 }
 
-export default function BlogPostPage({ params }: { params: { slug: string } }) {
+export default async function BlogPostPage({ params }: { params: { slug: string } }) {
   const post = getBlogPostBySlug(params.slug);
-  if (!post) return <ManagedBlogPage slug={params.slug} />;
+  if (!post) {
+    const managedPost = await getPublishedManagedBlog(params.slug);
+    return <ManagedBlogPage slug={params.slug} initialPost={managedPost} />;
+  }
 
   const relatedPosts = getBlogPosts().filter((p) => p.slug !== post.slug && p.category === post.category).slice(0, 2);
   const articleJsonLd = {

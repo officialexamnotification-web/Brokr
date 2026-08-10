@@ -47,8 +47,8 @@ export function usePublishedTools() {
   return items;
 }
 
-export function usePublishedBlogs() {
-  const [items, setItems] = useState<BlogPost[]>([]);
+export function usePublishedBlogs(initialItems: BlogPost[] = []) {
+  const [items, setItems] = useState<BlogPost[]>(initialItems);
   useEffect(() => {
     const db = getFirebaseFirestore();
     if (!db) return;
@@ -79,8 +79,8 @@ export function ManagedToolPage({ slug }: { slug: string }) {
   return <div className="mx-auto max-w-4xl px-4 py-12"><Link href="/search" className="text-sm font-semibold text-primary-600">← Back to tools</Link><div className="mt-6 rounded-3xl border border-slate-200 bg-white p-6 dark:border-slate-800 dark:bg-slate-900"><div className="flex items-start gap-4"><div className="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-primary-50 text-xl font-black text-primary-600 dark:bg-primary-950/30">{(tool as Tool & { imageUrl?: string }).imageUrl?.startsWith("http") ? <Image src={(tool as Tool & { imageUrl?: string }).imageUrl as string} alt="" width={64} height={64} unoptimized className="h-full w-full object-cover" /> : tool.logo}</div><div><Badge variant="info">{tool.category}</Badge><h1 className="mt-2 text-3xl font-black text-slate-900 dark:text-white">{tool.name}</h1><p className="mt-2 text-slate-500">{tool.longDescription}</p></div></div><div className="mt-6 flex flex-wrap gap-3"><a href={tool.website} target="_blank" rel="noreferrer" className="rounded-xl bg-primary-600 px-5 py-3 text-sm font-bold text-white">Visit website</a><Link href={`/compare?tools=${tool.slug}`} className="rounded-xl border border-slate-200 px-5 py-3 text-sm font-bold text-slate-700 dark:border-slate-700 dark:text-slate-200">Compare</Link></div></div></div>;
 }
 
-export function ManagedBlogPage({ slug }: { slug: string }) {
-  const items = usePublishedBlogs();
+export function ManagedBlogPage({ slug, initialPost }: { slug: string; initialPost?: BlogPost | null }) {
+  const items = usePublishedBlogs(initialPost ? [initialPost] : []);
   const post = useMemo(() => items.find((item) => item.slug === slug), [items, slug]);
   if (!post) return <div className="mx-auto max-w-3xl px-4 py-24 text-center text-slate-500">Loading managed article…</div>;
 
