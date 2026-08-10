@@ -30,14 +30,15 @@ import QuickCompareSidebar from "@/components/common/QuickCompareSidebar";
 import RiskWarningBanner from "@/components/common/RiskWarningBanner";
 import { getRelevantTools } from "@/lib/tool-relevance";
 import { ManagedToolPage } from "@/components/content/ManagedContent";
+import { getPublishedManagedTool } from "@/lib/managed-tool-server";
 
 export function generateStaticParams() {
   return tools.map((tool) => ({ slug: tool.slug }));
 }
 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
-  const tool = getToolBySlug(params.slug);
-  if (!tool) return { title: "Tool Not Found | Tradivex" };
+  const tool = getToolBySlug(params.slug) ?? await getPublishedManagedTool(params.slug);
+  if (!tool) return { title: "Tool Not Found | Tradivex", robots: { index: false, follow: false } };
   return {
     title: `${tool.name} - Features, Fees & Availability | Tradivex`,
     description: `${tool.description} Review the public listing, availability, regulation labels, and provider details before using the service.`,
@@ -52,11 +53,24 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   };
 }
 
-export default function ToolDetailPage({ params }: { params: { slug: string } }) {
+export default async function ToolDetailPage({ params }: { params: { slug: string } }) {
   const { slug } = params;
   const tool = getToolBySlug(slug);
 
-  if (!tool) return <ManagedToolPage slug={slug} />;
+  if (!tool) {
+    const managedTool = await getPublishedManagedTool(slug);
+    if (!managedTool) return <ManagedToolPage slug={slug} />;
+    const managedJsonLd = {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      name: managedTool.name,
+      description: managedTool.longDescription,
+      url: `/tool/${managedTool.slug}`,
+      isPartOf: { "@type": "WebSite", name: "Tradivex" },
+      author: { "@type": "Organization", name: "Tradivex" },
+    };
+    return <><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(managedJsonLd) }} /><ManagedToolPage slug={slug} initialTool={managedTool} /></>;
+  }
 
   const relatedTools = getRelevantTools(tool, tools, 3);
 
@@ -78,7 +92,7 @@ export default function ToolDetailPage({ params }: { params: { slug: string } })
   const comparisonKeys = [
     { label: "Rating", key: "rating" as const, format: (v: number | null) => v ? `${v}/5` : "Not available" },
     { label: "Pricing", key: "pricing" as const, format: (v: string) => v },
-    { label: "Founded", key: "yearFounded" as const, format: (v: number) => String(v) },
+    { label: "Founded", key: "yearFounded" as const, format: (v: number) => v > 0 ? String(v) : "Not stated" },
   ];
 
   return (
@@ -265,7 +279,7 @@ export default function ToolDetailPage({ params }: { params: { slug: string } })
               {[
                 { icon: DollarSign, label: "Pricing", value: tool.pricingDetail },
                 { icon: Wallet, label: "Min Deposit", value: tool.minDeposit },
-                { icon: Clock, label: "Founded", value: String(tool.yearFounded) },
+                { icon: Clock, label: "Founded", value: tool.yearFounded > 0 ? String(tool.yearFounded) : "Not stated" },
                 { icon: Smartphone, label: "Mobile App", value: tool.mobileApp ? "Yes" : "No" },
                 { icon: BarChart3, label: "Demo Account", value: tool.demoAccount ? "Yes" : "No" },
                 { icon: Clock, label: "Withdrawal", value: tool.withdrawalTime },

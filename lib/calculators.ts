@@ -119,6 +119,48 @@ export const calculatorDefinitions = [
     shortTitle: "US Capital Gains",
     description: "Estimate federal capital-gains tax from cost basis, holding period, income, and filing status inputs.",
   },
+  {
+    slug: "atr-position-size",
+    title: "ATR Stop-Loss & Position Size Calculator",
+    shortTitle: "ATR Position Size",
+    description: "Estimate a volatility-adjusted stop distance and position size from ATR, risk budget, and contract or share value.",
+  },
+  {
+    slug: "expectancy-profit-factor",
+    title: "Trading Expectancy & Profit Factor Calculator",
+    shortTitle: "Expectancy & PF",
+    description: "Estimate expectancy, profit factor, break-even win rate, and average R from your strategy assumptions.",
+  },
+  {
+    slug: "prop-firm-drawdown",
+    title: "Prop Firm Daily Loss & Drawdown Calculator",
+    shortTitle: "Prop Firm Risk",
+    description: "Estimate remaining daily loss and drawdown buffers for a funded-account style risk plan.",
+  },
+  {
+    slug: "crypto-liquidation",
+    title: "Crypto Futures Liquidation & Funding Calculator",
+    shortTitle: "Crypto Liquidation",
+    description: "Estimate leveraged crypto futures liquidation price, margin, fees, funding, and risk distance.",
+  },
+  {
+    slug: "options-probability",
+    title: "Options Probability of Profit Calculator",
+    shortTitle: "Options Probability",
+    description: "Estimate options probability of profit and expected value from price, strike, volatility, and time assumptions.",
+  },
+  {
+    slug: "net-trading-cost",
+    title: "Net Trading Cost & Break-even Calculator",
+    shortTitle: "Net Trading Cost",
+    description: "Estimate the price move needed to cover spread, commissions, slippage, swap, funding, and other entered costs.",
+  },
+  {
+    slug: "portfolio-risk-allocation",
+    title: "Portfolio Risk Allocation Calculator",
+    shortTitle: "Portfolio Risk",
+    description: "Estimate portfolio heat, weighted exposure, and correlation-adjusted risk across planned positions.",
+  },
 ] as const;
 
 export type CalculatorSlug = (typeof calculatorDefinitions)[number]["slug"];

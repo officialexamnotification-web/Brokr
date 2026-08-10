@@ -35,8 +35,8 @@ function normalizeBlog(id: string, data: Record<string, unknown>): BlogPost {
   };
 }
 
-export function usePublishedTools() {
-  const [items, setItems] = useState<Tool[]>([]);
+export function usePublishedTools(initialItems: Tool[] = []) {
+  const [items, setItems] = useState<Tool[]>(initialItems);
   useEffect(() => {
     const db = getFirebaseFirestore();
     if (!db) return;
@@ -72,8 +72,8 @@ export function ManagedBlogList() {
   return <div className="mt-8 border-t border-slate-200 pt-8 dark:border-slate-800"><h2 className="mb-5 text-xl font-black text-slate-900 dark:text-white">More from Tradivex Editorial</h2><div className="grid grid-cols-1 gap-6 md:grid-cols-2">{items.map((post) => <Link key={`managed-${post.slug}`} href={`/blog/${post.slug}`} className="group rounded-3xl border border-slate-200 bg-white p-6 transition hover:-translate-y-1 hover:border-primary-300 dark:border-slate-800 dark:bg-slate-900"><div className="mb-4 flex items-center gap-3"><div className="flex h-12 w-12 items-center justify-center overflow-hidden rounded-2xl bg-primary-50 text-sm font-bold text-primary-600 dark:bg-primary-950/30">{imageSource(post.image) ? <Image src={imageSource(post.image)} alt="" width={48} height={48} unoptimized className="h-full w-full object-cover" /> : <ImageIcon className="h-5 w-5" />}</div><div><Badge variant="info">{post.category}</Badge><div className="mt-1 flex items-center gap-1 text-xs text-slate-400"><Clock className="h-3 w-3" /> {post.readTime}</div></div></div><h3 className="font-bold leading-snug text-slate-900 group-hover:text-primary-600 dark:text-white">{post.title}</h3><p className="mt-2 line-clamp-2 text-sm text-slate-500">{post.excerpt}</p><div className="mt-4 flex items-center justify-between border-t border-slate-200 pt-3 text-xs dark:border-slate-800"><span className="text-slate-500 dark:text-slate-400">By {post.author}</span><span className="inline-flex items-center gap-1 text-sm font-semibold text-primary-600">Read more <ArrowRight className="h-4 w-4" /></span></div></Link>)}</div></div>;
 }
 
-export function ManagedToolPage({ slug }: { slug: string }) {
-  const items = usePublishedTools();
+export function ManagedToolPage({ slug, initialTool }: { slug: string; initialTool?: Tool | null }) {
+  const items = usePublishedTools(initialTool ? [initialTool] : []);
   const tool = useMemo(() => items.find((item) => item.slug === slug), [items, slug]);
   if (!tool) return <div className="mx-auto max-w-3xl px-4 py-24 text-center text-slate-500">Loading managed tool…</div>;
   return <div className="mx-auto max-w-4xl px-4 py-12"><Link href="/search" className="text-sm font-semibold text-primary-600">← Back to tools</Link><div className="mt-6 rounded-3xl border border-slate-200 bg-white p-6 dark:border-slate-800 dark:bg-slate-900"><div className="flex items-start gap-4"><div className="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-primary-50 text-xl font-black text-primary-600 dark:bg-primary-950/30">{(tool as Tool & { imageUrl?: string }).imageUrl?.startsWith("http") ? <Image src={(tool as Tool & { imageUrl?: string }).imageUrl as string} alt="" width={64} height={64} unoptimized className="h-full w-full object-cover" /> : tool.logo}</div><div><Badge variant="info">{tool.category}</Badge><h1 className="mt-2 text-3xl font-black text-slate-900 dark:text-white">{tool.name}</h1><p className="mt-2 text-slate-500">{tool.longDescription}</p></div></div><div className="mt-6 flex flex-wrap gap-3"><a href={tool.website} target="_blank" rel="noreferrer" className="rounded-xl bg-primary-600 px-5 py-3 text-sm font-bold text-white">Visit website</a><Link href={`/compare?tools=${tool.slug}`} className="rounded-xl border border-slate-200 px-5 py-3 text-sm font-bold text-slate-700 dark:border-slate-700 dark:text-slate-200">Compare</Link></div></div></div>;

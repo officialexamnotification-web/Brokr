@@ -84,7 +84,7 @@ function CompareClient() {
     { label: "Category", key: "category", render: (t: Tool) => <Badge variant="info">{t.category}</Badge> },
     { label: "Pricing", key: "pricing", render: (t: Tool) => t.pricing },
     { label: "Min Deposit", key: "minDeposit", render: (t: Tool) => t.minDeposit },
-    { label: "Founded", key: "yearFounded", render: (t: Tool) => t.yearFounded.toString() },
+    { label: "Founded", key: "yearFounded", render: (t: Tool) => t.yearFounded > 0 ? t.yearFounded.toString() : "Not stated" },
     {
       label: "Regulation",
       key: "regulation",

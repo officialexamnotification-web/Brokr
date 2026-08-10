@@ -13065,15 +13065,215 @@ const rawTools: Tool[] = [
     sourceUrls: ["https://investmate.app/pricing", "https://investmate.app/"],
     lastVerifiedAt: "2026-08-07", dataStatus: "partially_verified",
   },
+  {
+    id: 352, name: "TradeZella", slug: "tradezella", logo: "TZ",
+    rating: null,
+    description: "Trading journal and backtesting platform for stocks, options, futures, forex, and crypto traders.",
+    longDescription: "TradeZella combines trade journaling, performance analytics, strategy playbooks, market replay, and backtesting. It is a software platform rather than a broker, and feature availability, integrations, historical data, and pricing should be confirmed with the provider.",
+    category: "Trading Tools", categoryId: 7,
+    features: ["Trading Journal", "Backtesting", "Trade Replay", "Performance Analytics", "Strategy Playbooks", "Broker Integrations"],
+    pros: ["Combines journaling and backtesting", "Supports multiple asset classes", "Detailed performance reports"],
+    cons: ["Paid plans may be required", "Data and broker support vary", "Not a trading venue"],
+    pricing: "Free trial or paid plans", pricingDetail: "Provider pricing and plan limits vary; confirm current terms directly.",
+    minDeposit: "N/A", platforms: ["Web"],
+    website: "https://www.tradezella.com", affiliate: false, trending: true, featured: true,
+    yearFounded: 0, regulation: ["Not a regulated broker", "Trading software"],
+    supportedCountries: ["Global"], depositMethods: ["N/A"], withdrawalTime: "N/A",
+    customerSupport: "Email, Help Center", mobileApp: false, demoAccount: false,
+    bestFor: ["Active Traders", "Trading Journaling", "Backtesting", "Prop-Firm Traders"],
+    faq: [
+      { q: "Is TradeZella a broker?", a: "No. TradeZella is trading software for journaling, analytics, replay, and backtesting; it does not execute trades." },
+      { q: "What markets does TradeZella support?", a: "The provider describes support across stocks, options, futures, forex, and crypto, subject to current data and integration availability." },
+    ],
+    sourceUrls: ["https://www.tradezella.com/", "https://www.tradezella.com/blog/backtest-with-tradezella"],
+    lastVerifiedAt: "2026-08-11", dataStatus: "partially_verified",
+  },
+  {
+    id: 353, name: "TraderSync", slug: "tradersync", logo: "TS",
+    rating: null,
+    description: "Trading journal with trade import, analytics, market replay, and strategy review features.",
+    longDescription: "TraderSync is a trading journal and analysis platform designed to help traders import trades, review performance, replay markets, and organize strategies. It is not a broker, and supported integrations and paid features can change.",
+    category: "Trading Tools", categoryId: 7,
+    features: ["Trade Journal", "Broker Import", "Market Replay", "Performance Analytics", "Strategy Tracking", "Mobile Access"],
+    pros: ["Trade-import workflow", "Replay and analytics features", "Useful for multi-market review"],
+    cons: ["Advanced features may require paid plans", "Integration coverage can change", "Not a trading venue"],
+    pricing: "Free and paid plans", pricingDetail: "Confirm current plan limits, integrations, and pricing with the provider.",
+    minDeposit: "N/A", platforms: ["Web", "iOS", "Android"],
+    website: "https://tradersync.com", affiliate: false, trending: true, featured: true,
+    yearFounded: 0, regulation: ["Not a regulated broker", "Trading software"],
+    supportedCountries: ["Global"], depositMethods: ["N/A"], withdrawalTime: "N/A",
+    customerSupport: "Email, Help Center", mobileApp: true, demoAccount: false,
+    bestFor: ["Active Traders", "Performance Review", "Options Traders", "Mobile Journaling"],
+    faq: [
+      { q: "Is TraderSync a broker?", a: "No. TraderSync is a journal and analytics platform and does not execute trades." },
+      { q: "Does TraderSync support replay?", a: "The provider describes market replay and strategy-review features; confirm current asset and plan coverage." },
+    ],
+    sourceUrls: ["https://tradersync.com/"],
+    lastVerifiedAt: "2026-08-11", dataStatus: "partially_verified",
+  },
+  {
+    id: 354, name: "Edgewonk", slug: "edgewonk", logo: "EW",
+    rating: null,
+    description: "Trading journal focused on performance analysis, psychology, and process improvement.",
+    longDescription: "Edgewonk is a trading journal and performance-analysis platform with trade tagging, statistics, journaling prompts, and behavioral review tools. It does not provide brokerage execution or personalized financial advice.",
+    category: "Trading Tools", categoryId: 7,
+    features: ["Trading Journal", "Trade Statistics", "Psychology Tracking", "Trade Tagging", "Performance Review", "Strategy Analysis"],
+    pros: ["Strong process and psychology focus", "Detailed trade tagging", "Useful for rule-based review"],
+    cons: ["Primarily a journal rather than a live market platform", "Import workflow varies", "Paid access may be required"],
+    pricing: "Paid software", pricingDetail: "Confirm current license and subscription terms directly with the provider.",
+    minDeposit: "N/A", platforms: ["Web"],
+    website: "https://edgewonk.com", affiliate: false, trending: false, featured: true,
+    yearFounded: 0, regulation: ["Not a regulated broker", "Trading software"],
+    supportedCountries: ["Global"], depositMethods: ["N/A"], withdrawalTime: "N/A",
+    customerSupport: "Email, Help Center", mobileApp: false, demoAccount: false,
+    bestFor: ["Process-Driven Traders", "Trading Psychology", "Trade Review", "Strategy Journaling"],
+    faq: [
+      { q: "Is Edgewonk a broker?", a: "No. Edgewonk is trading-journal software for reviewing trades and process; it does not execute trades." },
+      { q: "What is Edgewonk used for?", a: "It is used to record trades, tag setups, analyse performance, and review behavioral patterns." },
+    ],
+    sourceUrls: ["https://edgewonk.com/"],
+    lastVerifiedAt: "2026-08-11", dataStatus: "partially_verified",
+  },
+  {
+    id: 355, name: "FX Replay", slug: "fx-replay", logo: "FX",
+    rating: null,
+    description: "Forex and futures market-replay platform for manual backtesting and practice.",
+    longDescription: "FX Replay provides historical chart replay and manual backtesting workflows so traders can practise execution and review setups without placing live orders. It is educational software, not a broker or signal service.",
+    category: "Trading Tools", categoryId: 7,
+    features: ["Market Replay", "Manual Backtesting", "Trade Simulation", "Multi-Timeframe Charts", "Performance Review", "Practice Sessions"],
+    pros: ["Focused replay workflow", "Useful for deliberate practice", "Supports rule-based testing"],
+    cons: ["Historical data coverage varies", "Manual testing still depends on user discipline", "Not live execution"],
+    pricing: "Free trial or paid plans", pricingDetail: "Confirm current markets, data history, and plan limits with the provider.",
+    minDeposit: "N/A", platforms: ["Web"],
+    website: "https://www.fxreplay.com", affiliate: false, trending: true, featured: true,
+    yearFounded: 0, regulation: ["Not a regulated broker", "Trading software"],
+    supportedCountries: ["Global"], depositMethods: ["N/A"], withdrawalTime: "N/A",
+    customerSupport: "Email, Help Center", mobileApp: false, demoAccount: false,
+    bestFor: ["Forex Traders", "Futures Traders", "Manual Backtesting", "Trading Practice"],
+    faq: [
+      { q: "Is FX Replay a broker?", a: "No. FX Replay is a market-replay and manual-backtesting tool; it does not execute live trades." },
+      { q: "Can FX Replay guarantee strategy results?", a: "No. Replay results are hypothetical and do not account for every live-market execution condition." },
+    ],
+    sourceUrls: ["https://www.fxreplay.com/"],
+    lastVerifiedAt: "2026-08-11", dataStatus: "partially_verified",
+  },
+  {
+    id: 356, name: "Portfolio Visualizer", slug: "portfolio-visualizer", logo: "PV",
+    rating: null,
+    description: "Portfolio research platform for asset allocation, backtesting, factor analysis, and risk comparison.",
+    longDescription: "Portfolio Visualizer offers portfolio backtesting, asset-allocation analysis, factor research, Monte Carlo analysis, and risk comparisons for investors. Results depend on historical data and assumptions and are not forecasts or recommendations.",
+    category: "Trading Tools", categoryId: 7,
+    features: ["Portfolio Backtesting", "Asset Allocation", "Monte Carlo Analysis", "Factor Analysis", "Risk Metrics", "Portfolio Comparison"],
+    pros: ["Portfolio-level analysis", "Useful historical comparisons", "Supports allocation research"],
+    cons: ["Historical results are not forecasts", "Data and features vary by plan", "Not a broker"],
+    pricing: "Free and paid plans", pricingDetail: "Confirm current data access, limits, and subscription pricing with the provider.",
+    minDeposit: "N/A", platforms: ["Web"],
+    website: "https://www.portfoliovisualizer.com", affiliate: false, trending: true, featured: true,
+    yearFounded: 0, regulation: ["Not a regulated broker", "Research software"],
+    supportedCountries: ["Global"], depositMethods: ["N/A"], withdrawalTime: "N/A",
+    customerSupport: "Help Center, Email", mobileApp: false, demoAccount: false,
+    bestFor: ["Long-Term Investors", "Portfolio Research", "Asset Allocation", "Risk Analysis"],
+    faq: [
+      { q: "Is Portfolio Visualizer a broker?", a: "No. Portfolio Visualizer is research and analysis software and does not execute trades." },
+      { q: "Does backtesting predict future returns?", a: "No. Backtests describe selected historical periods and assumptions; they cannot guarantee future performance." },
+    ],
+    sourceUrls: ["https://www.portfoliovisualizer.com/"],
+    lastVerifiedAt: "2026-08-11", dataStatus: "partially_verified",
+  },
+  {
+    id: 357, name: "OptionStrat", slug: "optionstrat", logo: "OS",
+    rating: null,
+    description: "Options strategy visualisation and payoff-analysis platform for multi-leg trades.",
+    longDescription: "OptionStrat helps users model options strategies, visualize payoff diagrams, compare scenarios, and review Greeks and risk. It is an analysis tool rather than a broker, and live-data availability may depend on the plan and market.",
+    category: "Options Trading", categoryId: 5,
+    features: ["Multi-Leg Payoff Charts", "Strategy Builder", "Greeks", "Scenario Analysis", "Profit and Loss Visualisation", "Options Education"],
+    pros: ["Visual multi-leg workflow", "Useful for strategy comparison", "Options-focused interface"],
+    cons: ["Live data may require a paid plan", "Options models have assumptions", "Not trade execution"],
+    pricing: "Free and paid plans", pricingDetail: "Confirm current market-data access, plan limits, and pricing with the provider.",
+    minDeposit: "N/A", platforms: ["Web"],
+    website: "https://optionstrat.com", affiliate: false, trending: true, featured: true,
+    yearFounded: 0, regulation: ["Not a regulated broker", "Options analysis software"],
+    supportedCountries: ["Global"], depositMethods: ["N/A"], withdrawalTime: "N/A",
+    customerSupport: "Email, Help Center", mobileApp: false, demoAccount: false,
+    bestFor: ["Options Traders", "Spread Analysis", "Payoff Modelling", "Risk Comparison"],
+    faq: [
+      { q: "Is OptionStrat a broker?", a: "No. OptionStrat is an options analysis and visualisation tool; it does not execute trades." },
+      { q: "Are options payoff results guaranteed?", a: "No. Payoff and Greek outputs depend on inputs, volatility assumptions, market data, and contract terms." },
+    ],
+    sourceUrls: ["https://optionstrat.com/"],
+    lastVerifiedAt: "2026-08-11", dataStatus: "partially_verified",
+  },
+  {
+    id: 358, name: "ORATS", slug: "orats", logo: "OR",
+    rating: null,
+    description: "Options market-data and analytics platform for volatility, research, and strategy analysis.",
+    longDescription: "ORATS provides options analytics, volatility data, historical research, forecasting, and strategy tools for traders and researchers. It is a data and analytics provider rather than a broker; coverage and access depend on the selected product.",
+    category: "Options Trading", categoryId: 5,
+    features: ["Implied Volatility Data", "Options Analytics", "Historical Data", "Volatility Forecasts", "Strategy Research", "API Access"],
+    pros: ["Deep options-data focus", "Useful for volatility research", "Research and API workflows"],
+    cons: ["Advanced data can be expensive", "Requires options knowledge", "Not trade execution"],
+    pricing: "Product and subscription dependent", pricingDetail: "Confirm current products, data coverage, API limits, and pricing with the provider.",
+    minDeposit: "N/A", platforms: ["Web", "API"],
+    website: "https://orats.com", affiliate: false, trending: false, featured: true,
+    yearFounded: 0, regulation: ["Not a regulated broker", "Market-data provider"],
+    supportedCountries: ["Global"], depositMethods: ["N/A"], withdrawalTime: "N/A",
+    customerSupport: "Email, Documentation", mobileApp: false, demoAccount: false,
+    bestFor: ["Options Researchers", "Volatility Traders", "Quantitative Analysis", "Developers"],
+    faq: [
+      { q: "Is ORATS a broker?", a: "No. ORATS provides options data and analytics and does not execute trades." },
+      { q: "Does ORATS provide trading signals?", a: "Analytics and forecasts are model outputs, not guaranteed signals or personalized recommendations." },
+    ],
+    sourceUrls: ["https://orats.com/"],
+    lastVerifiedAt: "2026-08-11", dataStatus: "partially_verified",
+  },
+  {
+    id: 359, name: "CoinGlass", slug: "coinglass", logo: "CG",
+    rating: null,
+    description: "Crypto derivatives dashboard covering liquidations, funding rates, open interest, and market data.",
+    longDescription: "CoinGlass aggregates crypto derivatives and market data such as liquidation activity, funding rates, open interest, long-short ratios, and related dashboards. It is a data platform, not an exchange or broker, and market-data timing and coverage can vary.",
+    category: "Trading Tools", categoryId: 7,
+    features: ["Liquidation Data", "Funding Rates", "Open Interest", "Long-Short Ratios", "Derivatives Dashboards", "Crypto Market Data"],
+    pros: ["Derivatives-focused dashboards", "Useful for crypto market research", "Broad market-data categories"],
+    cons: ["Data can be delayed or provider-dependent", "Not trade execution", "Metrics need careful interpretation"],
+    pricing: "Free and paid plans", pricingDetail: "Confirm current data coverage, API access, limits, and pricing with the provider.",
+    minDeposit: "N/A", platforms: ["Web", "API"],
+    website: "https://www.coinglass.com", affiliate: false, trending: true, featured: true,
+    yearFounded: 0, regulation: ["Not a regulated broker", "Market-data platform"],
+    supportedCountries: ["Global"], depositMethods: ["N/A"], withdrawalTime: "N/A",
+    customerSupport: "Email, Help Center", mobileApp: true, demoAccount: false,
+    bestFor: ["Crypto Derivatives Traders", "Funding Research", "Liquidation Analysis", "Market Monitoring"],
+    faq: [
+      { q: "Is CoinGlass a crypto exchange?", a: "No. CoinGlass is a crypto market-data and derivatives analytics platform; it does not execute trades." },
+      { q: "Can liquidation data predict price direction?", a: "No. Liquidation, funding, and open-interest metrics are context indicators and do not guarantee a market outcome." },
+    ],
+    sourceUrls: ["https://www.coinglass.com/"],
+    lastVerifiedAt: "2026-08-11", dataStatus: "partially_verified",
+  },
 ];
 
 // Keep one canonical record per slug and keep unverified records out of the
 // public directory until their provider details can be independently checked.
-export const tools: Tool[] = rawTools.filter(
+// A few legacy source records reused numeric IDs, so normalize IDs at the
+// public export boundary to keep React keys and directory records unique.
+const canonicalRawTools = rawTools.filter(
   (tool, index, all) =>
     tool.dataStatus !== "unverified" &&
     all.findIndex((candidate) => candidate.slug === tool.slug) === index
 );
+
+const usedToolIds = new Set<number>();
+let nextAvailableToolId = Math.max(...canonicalRawTools.map((tool) => tool.id), 0) + 1;
+export const tools: Tool[] = canonicalRawTools.map((tool) => {
+  if (!usedToolIds.has(tool.id)) {
+    usedToolIds.add(tool.id);
+    return tool;
+  }
+  while (usedToolIds.has(nextAvailableToolId)) nextAvailableToolId += 1;
+  const normalized = { ...tool, id: nextAvailableToolId };
+  usedToolIds.add(nextAvailableToolId);
+  nextAvailableToolId += 1;
+  return normalized;
+});
 
 // Blog posts are educational editorial content. They are not provider fact
 // sheets, so expose a clear review status instead of implying live verification.

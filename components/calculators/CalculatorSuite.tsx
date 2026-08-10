@@ -10,12 +10,12 @@ type Props = { slug: CalculatorSlug };
 const inputClass = "w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-950 px-4 py-3 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500/30";
 const labelClass = "block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2";
 
-function NumberField({ label, value, onChange, step = "any", min = "0", suffix }: { label: string; value: number; onChange: (value: number) => void; step?: string; min?: string; suffix?: string }) {
+function NumberField({ label, value, onChange, step = "any", min = "0", max, suffix }: { label: string; value: number; onChange: (value: number) => void; step?: string; min?: string; max?: string; suffix?: string }) {
   return (
     <label className="block">
       <span className={labelClass}>{label}</span>
       <div className="relative">
-        <input type="number" min={min} step={step} value={value} onChange={(event) => onChange(Number(event.target.value))} className={inputClass} />
+        <input type="number" min={min} max={max} step={step} value={value} onChange={(event) => onChange(Number(event.target.value))} className={inputClass} />
         {suffix && <span className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-xs text-slate-400">{suffix}</span>}
       </div>
     </label>
@@ -704,6 +704,253 @@ function USCapitalGainsCalculator() {
   </>;
 }
 
+function AtrPositionSizeCalculator() {
+  const [account, setAccount] = useState(25000);
+  const [riskPercent, setRiskPercent] = useState(1);
+  const [price, setPrice] = useState(100);
+  const [atr, setAtr] = useState(2.5);
+  const [multiplier, setMultiplier] = useState(1.5);
+  const [valuePerPoint, setValuePerPoint] = useState(1);
+  const [targetMultiple, setTargetMultiple] = useState(2);
+  const riskBudget = Math.max(account, 0) * Math.max(riskPercent, 0) / 100;
+  const stopDistance = Math.max(atr, 0) * Math.max(multiplier, 0);
+  const units = stopDistance > 0 && valuePerPoint > 0 ? riskBudget / (stopDistance * valuePerPoint) : NaN;
+  return <>
+    <div className="grid gap-5 md:grid-cols-2">
+      <NumberField label="Account balance" value={account} onChange={setAccount} step="0.01" />
+      <NumberField label="Risk per trade" value={riskPercent} onChange={setRiskPercent} step="0.1" suffix="%" />
+      <NumberField label="Entry price" value={price} onChange={setPrice} step="0.01" />
+      <NumberField label="ATR value" value={atr} onChange={setAtr} step="0.01" />
+      <NumberField label="Stop distance multiplier" value={multiplier} onChange={setMultiplier} step="0.1" suffix="× ATR" />
+      <NumberField label="Value per price point" value={valuePerPoint} onChange={setValuePerPoint} step="0.01" />
+      <NumberField label="Target distance" value={targetMultiple} onChange={setTargetMultiple} step="0.1" suffix="× risk" />
+    </div>
+    <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <Result label="Risk budget" value={formatNumber(riskBudget)} />
+      <Result label="ATR stop distance" value={formatNumber(stopDistance)} />
+      <Result label="Estimated units" value={formatNumber(units, 4)} />
+      <Result label="Stop price" value={formatNumber(price - stopDistance)} />
+      <Result label="Target price" value={formatNumber(price + stopDistance * Math.max(targetMultiple, 0))} />
+    </div>
+    <Notice>ATR is a volatility measure, not a stop-loss recommendation. This estimate assumes one-sided risk, constant value per point, and no gap, spread, commission, or slippage.</Notice>
+  </>;
+}
+
+function ExpectancyProfitFactorCalculator() {
+  const [winRate, setWinRate] = useState(45);
+  const [averageWin, setAverageWin] = useState(2);
+  const [averageLoss, setAverageLoss] = useState(1);
+  const [costPerTrade, setCostPerTrade] = useState(0.05);
+  const [trades, setTrades] = useState(100);
+  const winProbability = Math.min(100, Math.max(0, winRate)) / 100;
+  const lossProbability = 1 - winProbability;
+  const expectancy = winProbability * Math.max(averageWin, 0) - lossProbability * Math.max(averageLoss, 0) - Math.max(costPerTrade, 0);
+  const grossLoss = lossProbability * Math.max(averageLoss, 0);
+  const profitFactor = grossLoss > 0 ? winProbability * Math.max(averageWin, 0) / grossLoss : NaN;
+  const breakEven = (Math.max(averageLoss, 0) + Math.max(costPerTrade, 0)) > 0 ? (Math.max(averageLoss, 0) + Math.max(costPerTrade, 0)) / (Math.max(averageWin, 0) + Math.max(averageLoss, 0)) * 100 : NaN;
+  return <>
+    <div className="grid gap-5 md:grid-cols-2">
+      <NumberField label="Win rate" value={winRate} onChange={setWinRate} step="0.1" suffix="%" />
+      <NumberField label="Average winning trade" value={averageWin} onChange={setAverageWin} step="0.01" suffix="R" />
+      <NumberField label="Average losing trade" value={averageLoss} onChange={setAverageLoss} step="0.01" suffix="R" />
+      <NumberField label="Cost per trade" value={costPerTrade} onChange={setCostPerTrade} step="0.01" suffix="R" />
+      <NumberField label="Planned trade count" value={trades} onChange={setTrades} step="1" />
+    </div>
+    <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <Result label="Expectancy per trade" value={`${formatNumber(expectancy, 3)} R`} />
+      <Result label="Estimated total expectancy" value={`${formatNumber(expectancy * Math.max(trades, 0), 2)} R`} />
+      <Result label="Profit factor" value={formatNumber(profitFactor, 3)} />
+      <Result label="Break-even win rate" value={`${formatNumber(breakEven, 2)}%`} />
+    </div>
+    <Notice>Expectancy and profit factor describe assumptions, not future performance. They are most useful when calculated from a sufficiently large, consistently recorded sample after realistic fees and slippage.</Notice>
+  </>;
+}
+
+function PropFirmDrawdownCalculator() {
+  const [startingBalance, setStartingBalance] = useState(100000);
+  const [currentEquity, setCurrentEquity] = useState(100000);
+  const [dayStartEquity, setDayStartEquity] = useState(100000);
+  const [dailyLimit, setDailyLimit] = useState(5);
+  const [maxDrawdown, setMaxDrawdown] = useState(10);
+  const [plannedRisk, setPlannedRisk] = useState(500);
+  const dailyFloor = dayStartEquity * (1 - Math.max(dailyLimit, 0) / 100);
+  const maxFloor = startingBalance * (1 - Math.max(maxDrawdown, 0) / 100);
+  const dailyBuffer = Math.max(0, currentEquity - dailyFloor);
+  const drawdownBuffer = Math.max(0, currentEquity - maxFloor);
+  const safeNextRisk = Math.max(0, Math.min(dailyBuffer, drawdownBuffer));
+  return <>
+    <div className="grid gap-5 md:grid-cols-2">
+      <NumberField label="Starting account balance" value={startingBalance} onChange={setStartingBalance} step="0.01" />
+      <NumberField label="Current equity" value={currentEquity} onChange={setCurrentEquity} step="0.01" />
+      <NumberField label="Today's starting equity" value={dayStartEquity} onChange={setDayStartEquity} step="0.01" />
+      <NumberField label="Daily loss limit" value={dailyLimit} onChange={setDailyLimit} step="0.1" suffix="%" />
+      <NumberField label="Maximum drawdown" value={maxDrawdown} onChange={setMaxDrawdown} step="0.1" suffix="%" />
+      <NumberField label="Planned next-trade risk" value={plannedRisk} onChange={setPlannedRisk} step="0.01" />
+    </div>
+    <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <Result label="Daily loss buffer" value={formatNumber(dailyBuffer)} />
+      <Result label="Maximum drawdown buffer" value={formatNumber(drawdownBuffer)} />
+      <Result label="Suggested maximum next risk" value={formatNumber(safeNextRisk)} />
+      <Result label="After planned risk" value={formatNumber(Math.max(0, safeNextRisk - Math.max(plannedRisk, 0)))} />
+    </div>
+    <Notice>Funded-account firms use different static, trailing, equity-based, news, consistency, and payout rules. Enter the exact rule values from your provider and verify them before trading.</Notice>
+  </>;
+}
+
+function CryptoLiquidationCalculator() {
+  const [entry, setEntry] = useState(60000);
+  const [quantity, setQuantity] = useState(0.1);
+  const [leverage, setLeverage] = useState(10);
+  const [maintenance, setMaintenance] = useState(0.5);
+  const [fee, setFee] = useState(0.05);
+  const [funding, setFunding] = useState(0.01);
+  const [hours, setHours] = useState(24);
+  const [target, setTarget] = useState(63000);
+  const [direction, setDirection] = useState("long");
+  const notional = Math.max(entry, 0) * Math.max(quantity, 0);
+  const initialMargin = leverage > 0 ? notional / leverage : NaN;
+  const maintenanceRate = Math.max(maintenance, 0) / 100;
+  const liquidation = direction === "long" ? entry * (1 - 1 / Math.max(leverage, 0.01) + maintenanceRate) : entry * (1 + 1 / Math.max(leverage, 0.01) - maintenanceRate);
+  const grossPnl = direction === "long" ? (target - entry) * quantity : (entry - target) * quantity;
+  const tradingFees = notional * Math.max(fee, 0) / 100 * 2;
+  const fundingCost = notional * Math.max(funding, 0) / 100 * Math.max(hours, 0) / 8;
+  return <>
+    <div className="grid gap-5 md:grid-cols-2">
+      <SelectField label="Direction" value={direction} onChange={setDirection} options={[{ label: "Long", value: "long" }, { label: "Short", value: "short" }]} />
+      <NumberField label="Entry price" value={entry} onChange={setEntry} step="0.01" />
+      <NumberField label="Position quantity" value={quantity} onChange={setQuantity} step="0.0001" />
+      <NumberField label="Leverage" value={leverage} onChange={setLeverage} step="0.1" suffix="×" />
+      <NumberField label="Maintenance margin" value={maintenance} onChange={setMaintenance} step="0.01" suffix="%" />
+      <NumberField label="Round-trip fee rate" value={fee} onChange={setFee} step="0.001" suffix="%" />
+      <NumberField label="Funding rate per 8 hours" value={funding} onChange={setFunding} step="0.001" suffix="%" />
+      <NumberField label="Holding period" value={hours} onChange={setHours} step="1" suffix="hours" />
+      <NumberField label="Target price" value={target} onChange={setTarget} step="0.01" />
+    </div>
+    <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <Result label="Initial margin" value={formatNumber(initialMargin)} />
+      <Result label="Estimated liquidation price" value={formatNumber(liquidation)} />
+      <Result label="Gross P&L at target" value={formatNumber(grossPnl)} />
+      <Result label="Fees + funding" value={formatNumber(tradingFees + fundingCost)} />
+      <Result label="Estimated net P&L" value={formatNumber(grossPnl - tradingFees - fundingCost)} />
+    </div>
+    <Notice>This is a simplified isolated-margin estimate. Exchange maintenance tiers, mark price, insurance funds, partial liquidation, fees, and funding rules can materially change the actual liquidation price.</Notice>
+  </>;
+}
+
+function OptionsProbabilityCalculator() {
+  const [spot, setSpot] = useState(100);
+  const [strike, setStrike] = useState(100);
+  const [premium, setPremium] = useState(5);
+  const [volatility, setVolatility] = useState(25);
+  const [days, setDays] = useState(45);
+  const [rate, setRate] = useState(4.5);
+  const [dividend, setDividend] = useState(0);
+  const [type, setType] = useState("call");
+  const [position, setPosition] = useState("long");
+  const [contracts, setContracts] = useState(1);
+  const time = Math.max(days, 0) / 365;
+  const sigma = Math.max(volatility, 0.01) / 100;
+  const breakeven = type === "call" ? strike + premium : strike - premium;
+  const d2 = time > 0 ? (Math.log(Math.max(spot, 0.0001) / Math.max(breakeven, 0.0001)) + ((rate - dividend) / 100 - 0.5 * sigma ** 2) * time) / (sigma * Math.sqrt(time)) : NaN;
+  const longProbability = type === "call" ? normalCdf(d2) : normalCdf(-d2);
+  const probability = position === "long" ? longProbability : 1 - longProbability;
+  const expectedValue = (probability * Math.max(premium, 0) - (1 - probability) * Math.max(premium, 0)) * 100 * Math.max(contracts, 0);
+  return <>
+    <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+      <SelectField label="Option type" value={type} onChange={setType} options={[{ label: "Call", value: "call" }, { label: "Put", value: "put" }]} />
+      <SelectField label="Position" value={position} onChange={setPosition} options={[{ label: "Long", value: "long" }, { label: "Short", value: "short" }]} />
+      <NumberField label="Underlying price" value={spot} onChange={setSpot} step="0.01" />
+      <NumberField label="Strike price" value={strike} onChange={setStrike} step="0.01" />
+      <NumberField label="Premium per share" value={premium} onChange={setPremium} step="0.01" />
+      <NumberField label="Implied volatility" value={volatility} onChange={setVolatility} step="0.1" suffix="%" />
+      <NumberField label="Days to expiry" value={days} onChange={setDays} step="1" />
+      <NumberField label="Risk-free rate" value={rate} onChange={setRate} step="0.01" suffix="%" />
+      <NumberField label="Dividend yield" value={dividend} onChange={setDividend} step="0.01" suffix="%" />
+      <NumberField label="Contracts" value={contracts} onChange={setContracts} step="1" />
+    </div>
+    <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <Result label="Break-even price" value={formatNumber(breakeven)} />
+      <Result label="Estimated probability of profit" value={`${formatNumber(probability * 100, 2)}%`} />
+      <Result label="Estimated probability of loss" value={`${formatNumber((1 - probability) * 100, 2)}%`} />
+      <Result label="Simple expected value" value={formatNumber(expectedValue)} />
+    </div>
+    <Notice>Probability uses a simplified Black–Scholes risk-neutral estimate for one option leg and assumes constant volatility. It does not model early exercise, assignment, skew, dividends accurately, bid/ask spread, fees, or trading signals.</Notice>
+  </>;
+}
+
+function NetTradingCostCalculator() {
+  const [direction, setDirection] = useState("long");
+  const [entry, setEntry] = useState(100);
+  const [exit, setExit] = useState(105);
+  const [units, setUnits] = useState(100);
+  const [commission, setCommission] = useState(10);
+  const [spread, setSpread] = useState(5);
+  const [slippage, setSlippage] = useState(5);
+  const [holdingCost, setHoldingCost] = useState(2);
+  const [tax, setTax] = useState(0);
+  const gross = (direction === "long" ? exit - entry : entry - exit) * units;
+  const totalCost = Math.max(commission, 0) + Math.max(spread, 0) + Math.max(slippage, 0) + Math.max(holdingCost, 0) + Math.max(tax, 0);
+  const net = gross - totalCost;
+  const requiredMove = units > 0 ? totalCost / units : NaN;
+  const breakEvenExit = direction === "long" ? entry + requiredMove : entry - requiredMove;
+  return <>
+    <div className="grid gap-5 md:grid-cols-2">
+      <SelectField label="Direction" value={direction} onChange={setDirection} options={[{ label: "Long", value: "long" }, { label: "Short", value: "short" }]} />
+      <NumberField label="Position size" value={units} onChange={setUnits} step="0.01" suffix="units" />
+      <NumberField label="Entry price" value={entry} onChange={setEntry} step="0.01" />
+      <NumberField label="Exit price" value={exit} onChange={setExit} step="0.01" />
+      <NumberField label="Round-trip commission" value={commission} onChange={setCommission} step="0.01" />
+      <NumberField label="Spread cost" value={spread} onChange={setSpread} step="0.01" />
+      <NumberField label="Slippage cost" value={slippage} onChange={setSlippage} step="0.01" />
+      <NumberField label="Swap / funding cost" value={holdingCost} onChange={setHoldingCost} step="0.01" />
+      <NumberField label="Taxes or other costs" value={tax} onChange={setTax} step="0.01" />
+    </div>
+    <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <Result label="Gross P&L" value={formatNumber(gross)} />
+      <Result label="Total trading cost" value={formatNumber(totalCost)} />
+      <Result label="Net P&L" value={formatNumber(net)} />
+      <Result label="Break-even exit price" value={formatNumber(breakEvenExit)} />
+    </div>
+    <Notice>Enter costs in the same account-currency units as your gross P&L. Actual fees, taxes, financing, spread, and slippage vary by instrument, venue, broker, and jurisdiction.</Notice>
+  </>;
+}
+
+function PortfolioRiskAllocationCalculator() {
+  const [account, setAccount] = useState(50000);
+  const [riskA, setRiskA] = useState(300);
+  const [riskB, setRiskB] = useState(250);
+  const [riskC, setRiskC] = useState(150);
+  const [exposureA, setExposureA] = useState(10000);
+  const [exposureB, setExposureB] = useState(7500);
+  const [exposureC, setExposureC] = useState(5000);
+  const [correlation, setCorrelation] = useState(0.4);
+  const risks = [Math.max(riskA, 0), Math.max(riskB, 0), Math.max(riskC, 0)];
+  const exposures = [Math.max(exposureA, 0), Math.max(exposureB, 0), Math.max(exposureC, 0)];
+  const grossRisk = risks.reduce((sum, value) => sum + value, 0);
+  const adjustedVariance = risks.reduce((sum, value) => sum + value ** 2, 0) + 2 * Math.max(-1, Math.min(1, correlation)) * (risks[0] * risks[1] + risks[0] * risks[2] + risks[1] * risks[2]);
+  const adjustedRisk = Math.sqrt(Math.max(0, adjustedVariance));
+  const totalExposure = exposures.reduce((sum, value) => sum + value, 0);
+  return <>
+    <div className="grid gap-5 md:grid-cols-2">
+      <NumberField label="Account value" value={account} onChange={setAccount} step="0.01" />
+      <NumberField label="Average pairwise correlation" value={correlation} onChange={setCorrelation} step="0.01" min="-1" max="1" />
+      <NumberField label="Position A risk" value={riskA} onChange={setRiskA} step="0.01" />
+      <NumberField label="Position A exposure" value={exposureA} onChange={setExposureA} step="0.01" />
+      <NumberField label="Position B risk" value={riskB} onChange={setRiskB} step="0.01" />
+      <NumberField label="Position B exposure" value={exposureB} onChange={setExposureB} step="0.01" />
+      <NumberField label="Position C risk" value={riskC} onChange={setRiskC} step="0.01" />
+      <NumberField label="Position C exposure" value={exposureC} onChange={setExposureC} step="0.01" />
+    </div>
+    <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <Result label="Gross portfolio risk" value={formatNumber(grossRisk)} />
+      <Result label="Correlation-adjusted risk" value={formatNumber(adjustedRisk)} />
+      <Result label="Risk as % of account" value={`${formatNumber(account > 0 ? adjustedRisk / account * 100 : NaN, 2)}%`} />
+      <Result label="Total exposure" value={formatNumber(totalExposure)} />
+    </div>
+    <Notice>This uses one average correlation for three positions, so it is a planning estimate rather than a full covariance model. Correlations can change during stress and do not remove gap or liquidity risk.</Notice>
+  </>;
+}
+
 const calculatorComponents: Record<CalculatorSlug, () => ReactNode> = {
   "pip-value": PipValueCalculator,
   "position-size": PositionSizeCalculator,
@@ -725,6 +972,13 @@ const calculatorComponents: Record<CalculatorSlug, () => ReactNode> = {
   "dividend-drip": DividendDripCalculator,
   "futures-position": FuturesPositionCalculator,
   "us-capital-gains": USCapitalGainsCalculator,
+  "atr-position-size": AtrPositionSizeCalculator,
+  "expectancy-profit-factor": ExpectancyProfitFactorCalculator,
+  "prop-firm-drawdown": PropFirmDrawdownCalculator,
+  "crypto-liquidation": CryptoLiquidationCalculator,
+  "options-probability": OptionsProbabilityCalculator,
+  "net-trading-cost": NetTradingCostCalculator,
+  "portfolio-risk-allocation": PortfolioRiskAllocationCalculator,
 };
 
 export default function CalculatorSuite({ slug }: Props) {
