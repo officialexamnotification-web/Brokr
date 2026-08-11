@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
-import * as admin from 'firebase-admin';
+import { getFirestore, collection, doc, getDoc, setDoc } from 'firebase/firestore';
+import { getApps, getApp, initializeApp } from 'firebase/app';
 
 export const dynamic = "force-dynamic";
 
@@ -24,47 +25,23 @@ type CacheData = {
   };
 };
 
+const firebaseConfig = {
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+  measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
+};
+
 let firestore: any = null;
 
 try {
-  if (!admin.apps.length) {
-    const privateKey = process.env.FIREBASE_PRIVATE_KEY;
-    let formattedPrivateKey = privateKey;
-    
-    // Handle different private key formats
-    if (privateKey) {
-      // If key has literal \n, replace with actual newlines
-      if (privateKey.includes('\\n')) {
-        formattedPrivateKey = privateKey.replace(/\\n/g, '\n');
-      }
-      // If key has actual newlines but is in wrong format, normalize it
-      else if (!privateKey.includes('-----BEGIN PRIVATE KEY-----')) {
-        formattedPrivateKey = privateKey.replace(/\n/g, '\n');
-      }
-    }
-    
-    const serviceAccount = {
-      projectId: process.env.FIREBASE_PROJECT_ID,
-      clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-      privateKey: formattedPrivateKey,
-    };
-    
-    if (serviceAccount.clientEmail && serviceAccount.privateKey) {
-      const app = admin.initializeApp({
-        credential: admin.credential.cert(serviceAccount),
-      });
-      firestore = app.firestore();
-    } else {
-      console.log('Firebase admin credentials not configured');
-    }
-  } else {
-    const existingApp = admin.apps[0];
-    if (existingApp) {
-      firestore = existingApp.firestore();
-    }
-  }
+  const firebaseApp = getApps().length ? getApp() : initializeApp(firebaseConfig);
+  firestore = getFirestore(firebaseApp);
 } catch (error) {
-  console.error('Firebase admin initialization error:', error);
+  console.error('Firebase initialization error:', error);
 }
 
 async function readCacheFromFirestore(): Promise<CacheData> {
@@ -73,10 +50,10 @@ async function readCacheFromFirestore(): Promise<CacheData> {
       console.error('Firestore not initialized');
       return {};
     }
-    const docRef = firestore.collection('forexCache').doc('rates');
-    const docSnap = await docRef.get();
+    const docRef = doc(collection(firestore, 'forexCache'), 'rates');
+    const docSnap = await getDoc(docRef);
     
-    if (docSnap.exists) {
+    if (docSnap.exists()) {
       const data = docSnap.data();
       return data as CacheData;
     }
@@ -92,8 +69,8 @@ async function writeCacheToFirestore(data: CacheData): Promise<void> {
     if (!firestore) {
       throw new Error('Firestore not initialized');
     }
-    const docRef = firestore.collection('forexCache').doc('rates');
-    await docRef.set(data, { merge: true });
+    const docRef = doc(collection(firestore, 'forexCache'), 'rates');
+    await setDoc(docRef, data, { merge: true });
   } catch (error) {
     console.error('Error writing to Firestore:', error);
     throw error;
