@@ -179,13 +179,13 @@ async function fetchRatesFromAPI(base: string): Promise<Record<string, number> |
   ]);
 
   // Return first successful result in priority order
-  if (exchangerateResult.status === 'fulfilled' && exchangerateResult.value) {
-    console.log(`Using Exchangerate-API for ${base}`);
-    return exchangerateResult.value;
-  }
   if (alphaVantageResult.status === 'fulfilled' && alphaVantageResult.value) {
     console.log(`Using Alpha Vantage for ${base}`);
     return alphaVantageResult.value;
+  }
+  if (exchangerateResult.status === 'fulfilled' && exchangerateResult.value) {
+    console.log(`Using Exchangerate-API for ${base}`);
+    return exchangerateResult.value;
   }
   if (frankfurterResult.status === 'fulfilled' && frankfurterResult.value) {
     console.log(`Using Frankfurter for ${base}`);
