@@ -22,7 +22,10 @@ try {
       console.log('Firebase admin credentials not configured');
     }
   } else {
-    firestore = admin.apps[0].firestore();
+    const existingApp = admin.apps[0];
+    if (existingApp) {
+      firestore = existingApp.firestore();
+    }
   }
 } catch (error) {
   console.error('Firebase admin initialization error:', error);
