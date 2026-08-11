@@ -6,7 +6,7 @@ export const dynamic = "force-dynamic";
 
 const FRANKFURTER_BASE = "https://api.frankfurter.dev";
 
-const CACHE_DURATION = 30 * 60 * 1000; // 30 minutes
+const CACHE_DURATION = 10 * 60 * 1000; // 10 minutes
 
 const ALLOWED_CURRENCIES = [
   "USD", "EUR", "GBP", "JPY", "AUD", "CAD", "CHF", "CNY", "INR", "MXN", "BRL", "RUB", "ZAR", "TRY", "KRW", "SGD", "HKD", "NOK", "SEK", "DKK", "PLN", "THB", "IDR", "MYR", "PHP", "VND", "CZK", "HUF", "RON", "ILS", "CLP", "COP", "PEN", "ARS", "UAH", "AED", "SAR", "QAR", "KWD", "BHD", "OMR", "EGP", "NZD", "TWD", "XAU", "XAG"
@@ -74,7 +74,7 @@ async function writeCacheToFirestore(data: CacheData): Promise<void> {
 async function fetchRatesFromAPI(base: string): Promise<Record<string, number> | null> {
   try {
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 10000);
+    const timeoutId = setTimeout(() => controller.abort(), 3000); // Reduced from 10s to 3s
 
     const url = `${FRANKFURTER_BASE}/v2/rates?base=${encodeURIComponent(base)}`;
     const res = await fetch(url, {
@@ -136,7 +136,8 @@ export async function GET(request: Request) {
     // Sync rates for all major base currencies
     const baseCurrencies = ["USD", "EUR", "GBP", "JPY", "AUD", "CAD", "CHF", "XAU", "XAG"];
 
-    for (const base of baseCurrencies) {
+    // Use parallel requests for faster sync
+    const syncPromises = baseCurrencies.map(async (base) => {
       const baseCache = cacheData[base] || { rates: {}, lastUpdated: null };
       const lastUpdated = baseCache.lastUpdated ? new Date(baseCache.lastUpdated).getTime() : 0;
       const needsUpdate = forceSync || !lastUpdated || (Date.now() - lastUpdated > CACHE_DURATION);
@@ -165,7 +166,9 @@ export async function GET(request: Request) {
       } else {
         console.log(`Skipping ${base} - cache is recent`);
       }
-    }
+    });
+
+    await Promise.all(syncPromises);
 
     // Write updated cache to Firestore
     if (updatedCurrencies.length > 0) {

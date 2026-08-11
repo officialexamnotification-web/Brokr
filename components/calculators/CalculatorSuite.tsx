@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import type { ReactNode } from "react";
 import { calculatorDefinitions, type CalculatorSlug } from "@/lib/calculators";
+import RateTable from "@/components/calculators/RateTable";
 
 type Props = { slug: CalculatorSlug };
 
@@ -452,6 +453,8 @@ function PipValueCalculator() {
       </div>
       
       <Notice>Formula estimate: standard lot = 100,000 units. For pairs where the quote currency is not your account currency, the current quote-to-account conversion rate is used. Spread, commission, and slippage are excluded.</Notice>
+      
+      <RateTable />
     </div>
   </>;
 }
@@ -471,18 +474,171 @@ function PositionSizeCalculator() {
 }
 
 function ForexPnlCalculator() {
+  const [pair, setPair] = useState("EUR/USD");
   const [direction, setDirection] = useState("long");
   const [entry, setEntry] = useState(1.085);
   const [exit, setExit] = useState(1.09);
   const [lotSize, setLotSize] = useState(1);
   const [pipValue, setPipValue] = useState(10);
   const [pipSize, setPipSize] = useState(0.0001);
+  const [accountCurrency, setAccountCurrency] = useState("USD");
+  const [autoPipValue, setAutoPipValue] = useState<number | null>(null);
+  const [useAutoPipValue, setUseAutoPipValue] = useState(true);
+  const [loadingPipValue, setLoadingPipValue] = useState(false);
+  const [conversionRate, setConversionRate] = useState(1);
+  const [loadingConversion, setLoadingConversion] = useState(false);
+
+  // Auto-detect pip size based on pair
+  useEffect(() => {
+    setPipSize(pair.includes("JPY") ? 0.01 : 0.0001);
+  }, [pair]);
+
+  // Fetch pip value automatically
+  useEffect(() => {
+    let active = true;
+    
+    async function fetchPipValue() {
+      if (!useAutoPipValue) return;
+      
+      const [base, target] = pair.split("/");
+      setLoadingPipValue(true);
+      
+      try {
+        const response = await fetch(`/api/forex?base=${base}&targets=${target}`);
+        if (response.ok) {
+          const data = await response.json();
+          if (data.rates && data.rates[target]) {
+            // Calculate pip value: 100,000 units × pip size × rate
+            const calculatedPipValue = 100000 * pipSize * (target === "USD" ? 1 : data.rates[target]);
+            setAutoPipValue(calculatedPipValue);
+            setPipValue(calculatedPipValue);
+          }
+        }
+      } catch (error) {
+        console.error("Failed to fetch pip value:", error);
+      } finally {
+        if (active) setLoadingPipValue(false);
+      }
+    }
+    
+    fetchPipValue();
+    return () => { active = false; };
+  }, [pair, useAutoPipValue, pipSize]);
+
+  // Fetch conversion rate for account currency
+  useEffect(() => {
+    let active = true;
+    
+    async function fetchConversion() {
+      const [base, target] = pair.split("/");
+      
+      // If account currency is base or target, no conversion needed
+      if (accountCurrency === base || accountCurrency === target) {
+        setConversionRate(1);
+        return;
+      }
+      
+      setLoadingConversion(true);
+      
+      try {
+        // Fetch from target to account currency
+        const response = await fetch(`/api/forex?base=${target}&targets=${accountCurrency}`);
+        if (response.ok) {
+          const data = await response.json();
+          if (data.rates && data.rates[accountCurrency]) {
+            setConversionRate(data.rates[accountCurrency]);
+          }
+        }
+      } catch (error) {
+        console.error("Failed to fetch conversion rate:", error);
+      } finally {
+        if (active) setLoadingConversion(false);
+      }
+    }
+    
+    fetchConversion();
+    return () => { active = false; };
+  }, [pair, accountCurrency]);
+
   const pips = (direction === "long" ? exit - entry : entry - exit) / pipSize;
-  const pnl = pips * pipValue * lotSize;
+  const basePnl = pips * pipValue * lotSize;
+  const convertedPnl = basePnl * conversionRate;
+
+  // Manual refresh for pip value
+  const handleRefreshPipValue = async () => {
+    const [base, target] = pair.split("/");
+    setLoadingPipValue(true);
+    
+    try {
+      const response = await fetch(`/api/forex?base=${base}&targets=${target}`);
+      if (response.ok) {
+        const data = await response.json();
+        if (data.rates && data.rates[target]) {
+          const calculatedPipValue = 100000 * pipSize * (target === "USD" ? 1 : data.rates[target]);
+          setAutoPipValue(calculatedPipValue);
+          setPipValue(calculatedPipValue);
+        }
+      }
+    } catch (error) {
+      console.error("Refresh failed:", error);
+    } finally {
+      setLoadingPipValue(false);
+    }
+  };
+
   return <>
-    <div className="grid gap-5 md:grid-cols-2"><SelectField label="Direction" value={direction} onChange={setDirection} options={[{ label: "Long", value: "long" }, { label: "Short", value: "short" }]} /><NumberField label="Position size" value={lotSize} onChange={setLotSize} step="0.01" suffix="lots" /><NumberField label="Entry price" value={entry} onChange={setEntry} step="0.00001" /><NumberField label="Exit price" value={exit} onChange={setExit} step="0.00001" /><NumberField label="Pip value per lot" value={pipValue} onChange={setPipValue} step="0.01" /><SelectField label="Pip size" value={String(pipSize)} onChange={(value) => setPipSize(Number(value))} options={[{ label: "0.0001 (most pairs)", value: "0.0001" }, { label: "0.01 (JPY pairs)", value: "0.01" }]} /></div>
-    <div className="mt-6 grid gap-4 sm:grid-cols-2"><Result label="Pips" value={formatNumber(pips, 1)} /><Result label="Estimated P&L" value={formatNumber(pnl)} note="In the currency used for your pip value" /></div>
+    <div className="grid gap-5 md:grid-cols-2">
+      <SelectField label="Currency pair" value={pair} onChange={setPair} options={forexPairSelectOptions} />
+      <SelectField label="Direction" value={direction} onChange={setDirection} options={[{ label: "Long", value: "long" }, { label: "Short", value: "short" }]} />
+      <NumberField label="Position size" value={lotSize} onChange={setLotSize} step="0.01" suffix="lots" />
+      <NumberField label="Entry price" value={entry} onChange={setEntry} step="0.00001" />
+      <NumberField label="Exit price" value={exit} onChange={setExit} step="0.00001" />
+      <div>
+        <span className={labelClass}>Pip value per lot</span>
+        <input 
+          type="number" 
+          step="0.01" 
+          value={useAutoPipValue && autoPipValue !== null ? autoPipValue : pipValue} 
+          onChange={(e) => { setPipValue(Number(e.target.value)); setUseAutoPipValue(false); }} 
+          disabled={useAutoPipValue && loadingPipValue}
+          className={inputClass + (useAutoPipValue && loadingPipValue ? " opacity-50" : "")}
+        />
+        <div className="mt-3 flex items-center gap-2">
+          <input 
+            type="checkbox" 
+            id="autoPipValue" 
+            checked={useAutoPipValue} 
+            onChange={(e) => setUseAutoPipValue(e.target.checked)} 
+            className="rounded border-slate-300 text-primary-600 focus:ring-primary-500"
+          />
+          <label htmlFor="autoPipValue" className="text-sm text-slate-600 dark:text-slate-400">
+            Auto-fetch pip value {loadingPipValue && "(loading...)"} {autoPipValue !== null && useAutoPipValue && `(current: ${formatNumber(autoPipValue, 6)})`}
+          </label>
+          {useAutoPipValue && (
+            <button 
+              onClick={handleRefreshPipValue}
+              disabled={loadingPipValue}
+              className="text-xs text-primary-600 hover:text-primary-700 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              Refresh
+            </button>
+          )}
+        </div>
+        <div className="mt-1 flex items-center justify-between">
+          <p className="text-xs text-slate-500 dark:text-slate-400">
+            {pair.split("/")[0]} → {pair.split("/")[1]}
+          </p>
+        </div>
+      </div>
+      <SelectField label="Account currency" value={accountCurrency} onChange={setAccountCurrency} options={worldCurrencyOptions} />
+      <SelectField label="Pip size" value={String(pipSize)} onChange={(value) => setPipSize(Number(value))} options={[{ label: "0.0001 (most pairs)", value: "0.0001" }, { label: "0.01 (JPY pairs)", value: "0.01" }]} />
+    </div>
+    <div className="mt-6 grid gap-4 sm:grid-cols-2">
+      <Result label="Pips" value={formatNumber(pips, 1)} />
+      <Result label="Estimated P&L" value={formatNumber(convertedPnl)} note={accountCurrency} />
+    </div>
     <Notice>Expiry, spread, commission, swaps, slippage, taxes, and financing are excluded. A negative result represents an estimated loss from the entered prices.</Notice>
+    <RateTable />
   </>;
 }
 

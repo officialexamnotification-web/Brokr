@@ -124,6 +124,20 @@ const content: Record<string, CalculatorSeoContent> = {
     ],
     related: ["position-size", "forex-pnl", "forex-margin"],
   },
+  "forex-pnl": {
+    intro: "Calculate potential profit or loss from forex trades by entering entry price, exit price, direction, lot size, and pip value. This essential risk management tool helps you plan trades, understand potential outcomes, and make informed decisions before executing positions with live exchange rates.",
+    howItWorks: "Select your currency pair and trading direction (long or short). Enter your planned entry and exit prices, position size in lots, and account currency. The calculator automatically calculates pip movement, converts to your account currency using current exchange rates, and displays the estimated profit or loss. For example, buying EUR/USD at 1.0850 and selling at 1.0900 with 1 lot would yield approximately $500 profit.",
+    bullets: ["Auto-detects pip size (0.0001 for most pairs, 0.01 for JPY pairs) based on selected currency pair", "Automatic pip value calculation using live exchange rates for accurate account currency conversion", "Supports 45+ major, minor, and exotic currency pairs including precious metals", "Manual pip value override available when automatic calculation isn't preferred", "Currency conversion to 45 account currencies including USD, EUR, GBP, JPY, INR, and more", "Results update instantly as you change inputs for real-time trade planning"],
+    faqs: [
+      { question: "How do I calculate forex profit or loss?", answer: "Profit or loss = (Exit Price - Entry Price) × Lot Size × Contract Size (100,000 units for standard lot). For long positions, profit occurs when exit price exceeds entry price. For short positions, profit occurs when exit price is below entry price. The calculator handles pip sizing and currency conversion automatically." },
+      { question: "What is the difference between long and short positions?", answer: "A long position (buy) profits when the price rises above your entry. A short position (sell) profits when the price falls below your entry. The calculator automatically adjusts the calculation based on your selected direction." },
+      { question: "Why does my account currency matter for P&L calculations?", answer: "When your account currency differs from the quote currency (the second currency in the pair), the P&L needs conversion. For example, trading EUR/USD with an INR account requires converting USD P&L to INR using current exchange rates. The calculator handles this automatically." },
+      { question: "How accurate are the live exchange rates used?", answer: "The calculator uses current market exchange rates that update every 10 minutes via our cache system. For exact trading decisions, always verify rates with your broker's platform, as spreads, commissions, and execution timing can affect actual trading results." },
+      { question: "Can I use this calculator for risk management?", answer: "Yes. Calculate potential loss if your stop loss is hit, then determine if this loss fits your risk budget. For example, if the calculator shows a potential $500 loss and your risk budget is $200, you may need to reduce your position size or adjust your stop loss." },
+      { question: "What lot sizes should I use?", answer: "Standard lot (1.0) = 100,000 units, Mini lot (0.1) = 10,000 units, Micro lot (0.01) = 1,000 units. Choose lot sizes that align with your account balance, risk percentage, and stop loss distance. Smaller lots reduce risk per pip movement." },
+    ],
+    related: ["pip-value", "position-size", "forex-margin"],
+  },
 };
 
 export function getCalculatorSeoContent(slug: string, fallbackDescription: string): CalculatorSeoContent {

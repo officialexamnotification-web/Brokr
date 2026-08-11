@@ -81,7 +81,7 @@ export async function GET(request: Request) {
     }
 
     const base = requestedBase;
-    const targets = Array.from(new Set((requestedTargets?.length ? requestedTargets : ["INR", "EUR", "GBP", "JPY"]).filter((target) => allowedCurrencies.has(target) && target !== base))).slice(0, 13);
+    const targets = Array.from(new Set((requestedTargets?.length ? requestedTargets : ["INR", "EUR", "GBP", "JPY"]).filter((target) => allowedCurrencies.has(target) && target !== base)));
 
     if (targets.length === 0) {
       return NextResponse.json({ error: "Unsupported currency selection." }, { status: 400 });
