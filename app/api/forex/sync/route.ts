@@ -180,15 +180,19 @@ async function fetchRatesFromAPI(base: string): Promise<Record<string, number> |
 
   // Return first successful result in priority order
   if (exchangerateResult.status === 'fulfilled' && exchangerateResult.value) {
+    console.log(`Using Exchangerate-API for ${base}`);
     return exchangerateResult.value;
   }
   if (alphaVantageResult.status === 'fulfilled' && alphaVantageResult.value) {
+    console.log(`Using Alpha Vantage for ${base}`);
     return alphaVantageResult.value;
   }
   if (frankfurterResult.status === 'fulfilled' && frankfurterResult.value) {
+    console.log(`Using Frankfurter for ${base}`);
     return frankfurterResult.value;
   }
 
+  console.log(`All APIs failed for ${base}`);
   return null;
 }
 
