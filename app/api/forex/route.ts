@@ -1,14 +1,17 @@
 import { NextResponse } from 'next/server';
-import { allowPublicRequest } from "@/lib/public-rate-limit";
+import { readFile } from 'fs/promises';
+import { join } from 'path';
 
 export const dynamic = "force-dynamic";
 
-const FRANKFURTER_BASE = "https://api.frankfurter.app";
-const ALLOWED_CURRENCIES = new Set(["USD", "INR", "EUR", "GBP", "JPY", "AUD", "CAD", "CHF", "SGD", "NZD", "SEK", "NOK", "DKK", "HKD"]);
+const CACHE_FILE_PATH = join(process.cwd(), 'public', 'data', 'forex-cache.json');
 
-// Cache implementation (in-memory for server-side)
-const cache = new Map();
-const CACHE_DURATION = 60 * 60 * 1000; // 1 hour
+type CacheData = {
+  [base: string]: {
+    rates: Record<string, number>;
+    lastUpdated: string | null;
+  };
+};
 
 type ForexSnapshot = {
   base: string;
@@ -19,113 +22,75 @@ type ForexSnapshot = {
   source?: "live" | "offline";
 };
 
-const OFFLINE_USD_RATES: Record<string, number> = {
-  USD: 1, EUR: 0.92, GBP: 0.79, JPY: 150, AUD: 1.53, CAD: 1.36, CHF: 0.88, SGD: 1.34, INR: 83.5, NZD: 1.67, SEK: 10.5, NOK: 10.6, DKK: 6.85, HKD: 7.8,
-};
-
-function offlineSnapshot(base: string, targets: string[]): ForexSnapshot {
-  const baseRate = OFFLINE_USD_RATES[base] || 1;
-  const rates = Object.fromEntries(targets.map((target) => [target, (OFFLINE_USD_RATES[target] || 1) / baseRate]));
-  return { base, date: "Offline reference", rates, previousDate: null, previousRates: null, source: "offline" };
-}
-
-function getCached<T>(key: string, duration: number): T | null {
-  const item = cache.get(key);
-  if (item && Date.now() - item.time < duration) {
-    return item.data;
+async function readCacheFile(): Promise<CacheData> {
+  try {
+    const data = await readFile(CACHE_FILE_PATH, 'utf-8');
+    return JSON.parse(data);
+  } catch (error) {
+    return {};
   }
-  return null;
-}
-
-function setCache<T>(key: string, data: T) {
-  cache.set(key, { data, time: Date.now() });
 }
 
 export async function GET(request: Request) {
-  const rateLimit = allowPublicRequest(request, "forex", 15);
-  if (!rateLimit.allowed) {
-    return NextResponse.json({ error: "Market-data request limit reached. Please try again shortly." }, { status: 429, headers: { "Retry-After": String(rateLimit.retryAfter) } });
-  }
   const { searchParams } = new URL(request.url);
   const requestedBase = (searchParams.get('base') || "USD").trim().toUpperCase();
   const requestedTargets = searchParams.get('targets')?.split(',').map((target) => target.trim().toUpperCase()).filter(Boolean);
-  if (!ALLOWED_CURRENCIES.has(requestedBase)) {
+
+  const allowedCurrencies = new Set([
+    "USD", "EUR", "GBP", "JPY", "AUD", "CAD", "CHF", "CNY", "INR", "MXN", "BRL", "RUB", "ZAR", "TRY", "KRW", "SGD", "HKD", "NOK", "SEK", "DKK", "PLN", "THB", "IDR", "MYR", "PHP", "VND", "CZK", "HUF", "RON", "ILS", "CLP", "COP", "PEN", "ARS", "UAH", "AED", "SAR", "QAR", "KWD", "BHD", "OMR", "EGP", "NZD", "TWD", "XAU", "XAG"
+  ]);
+
+  if (!allowedCurrencies.has(requestedBase)) {
     return NextResponse.json({ error: "Unsupported base currency." }, { status: 400 });
   }
+
   const base = requestedBase;
-  const targets = Array.from(new Set((requestedTargets?.length ? requestedTargets : ["INR", "EUR", "GBP", "JPY"]).filter((target) => ALLOWED_CURRENCIES.has(target) && target !== base))).slice(0, 13);
+  const targets = Array.from(new Set((requestedTargets?.length ? requestedTargets : ["INR", "EUR", "GBP", "JPY"]).filter((target) => allowedCurrencies.has(target) && target !== base))).slice(0, 13);
+
   if (targets.length === 0) {
     return NextResponse.json({ error: "Unsupported currency selection." }, { status: 400 });
   }
-  
+
   try {
-    
-    const cacheKey = `forex:${base}:${targets.join(",")}`;
-    const cached = getCached<ForexSnapshot>(cacheKey, CACHE_DURATION);
-    if (cached) {
-      return NextResponse.json(cached);
+    // Read from cache file
+    const cacheData = await readCacheFile();
+    const baseCache = cacheData[base];
+
+    if (!baseCache || !baseCache.rates || Object.keys(baseCache.rates).length === 0) {
+      return NextResponse.json({
+        error: "Cache not available. Please wait for data sync.",
+        message: "Rates are being updated. Try again in a few minutes."
+      }, { status: 503 });
     }
 
-    let url = `${FRANKFURTER_BASE}/latest?from=${encodeURIComponent(base)}`;
-    if (targets?.length) {
-      url += `&to=${encodeURIComponent(targets.join(","))}`;
-    }
-
-    const res = await fetch(url, {
-      next: { revalidate: 3600 }, // ISR: revalidate every 1 hour
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
-      },
-    });
-    
-    
-    if (!res.ok) throw new Error(`Frankfurter API failed: ${res.status}`);
-    const data = await res.json();
-
-    if (!data.rates) throw new Error("Invalid API response");
-
-    let previousDate: string | null = null;
-    let previousRates: Record<string, number> | null = null;
-    const latestDate = typeof data.date === "string" ? data.date : new Date().toISOString().slice(0, 10);
-    const latestDateValue = new Date(`${latestDate}T00:00:00Z`);
-
-    // Frankfurter publishes working-day reference rates. Look back a few
-    // calendar days so weekends and bank holidays use the previous available
-    // reference date instead of displaying a fabricated 0.00% change.
-    for (let offset = 1; offset <= 7; offset += 1) {
-      const candidate = new Date(latestDateValue);
-      candidate.setUTCDate(candidate.getUTCDate() - offset);
-      const candidateDate = candidate.toISOString().slice(0, 10);
-      const previousUrl = `${FRANKFURTER_BASE}/${candidateDate}?from=${encodeURIComponent(base)}&to=${encodeURIComponent(targets.join(","))}`;
-      const previousResponse = await fetch(previousUrl, {
-        next: { revalidate: 86400 },
-        headers: { 'User-Agent': 'Tradivex informational directory' },
-      });
-      if (!previousResponse.ok) continue;
-      const previousData = await previousResponse.json();
-      if (previousData?.rates && Object.keys(previousData.rates).length > 0) {
-        previousDate = typeof previousData.date === "string" ? previousData.date : candidateDate;
-        previousRates = previousData.rates;
-        break;
+    // Filter requested targets from cache
+    const filteredRates: Record<string, number> = {};
+    targets.forEach(target => {
+      if (baseCache.rates[target]) {
+        filteredRates[target] = baseCache.rates[target];
       }
+    });
+
+    if (Object.keys(filteredRates).length === 0) {
+      return NextResponse.json({
+        error: "Requested currencies not available in cache.",
+        message: "Try again after cache update."
+      }, { status: 503 });
     }
 
+    // Create snapshot from cache
     const snapshot: ForexSnapshot = {
       base,
-      date: latestDate,
-      rates: data.rates,
-      previousDate,
-      previousRates,
+      date: baseCache.lastUpdated || new Date().toISOString().slice(0, 10),
+      rates: filteredRates,
+      previousDate: null,
+      previousRates: null,
       source: "live",
     };
-    setCache(cacheKey, snapshot);
+
     return NextResponse.json(snapshot);
   } catch (error) {
-    console.error("FOREX ERROR DETAILS:", error);
-    console.error("FOREX ERROR TYPE:", error instanceof Error ? error.constructor.name : typeof error);
-    console.error("FOREX ERROR MESSAGE:", error instanceof Error ? error.message : String(error));
-    console.error("FOREX ERROR STACK:", error instanceof Error ? error.stack : "No stack trace");
-    
-    return NextResponse.json(offlineSnapshot(base, targets), { headers: { "X-Market-Data-Source": "offline-reference" } });
+    console.error("Forex API error:", error);
+    return NextResponse.json({ error: "Failed to read cache data" }, { status: 500 });
   }
 }

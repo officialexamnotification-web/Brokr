@@ -55,6 +55,63 @@ function Notice({ children }: { children: ReactNode }) {
   return <div className="mt-5 rounded-2xl border border-amber-200 bg-amber-50 px-5 py-4 text-sm leading-relaxed text-amber-900 dark:border-amber-900/60 dark:bg-amber-950/30 dark:text-amber-200">{children}</div>;
 }
 
+const worldCurrencyCodes = [
+  "AED", "AFN", "ALL", "AMD", "ANG", "AOA", "ARS", "AUD", "AWG", "AZN",
+  "BAM", "BBD", "BDT", "BGN", "BHD", "BIF", "BMD", "BND", "BOB", "BRL",
+  "BSD", "BTN", "BWP", "BYN", "BZD", "CAD", "CDF", "CHF", "CLP", "CNY",
+  "COP", "CRC", "CUC", "CUP", "CVE", "CZK", "DJF", "DKK", "DOP", "DZD",
+  "EGP", "ERN", "ETB", "EUR", "FJD", "FKP", "GBP", "GEL", "GHS", "GIP",
+  "GMD", "GNF", "GTQ", "GYD", "HKD", "HNL", "HTG", "HUF", "IDR", "ILS",
+  "INR", "IQD", "IRR", "ISK", "JMD", "JOD", "JPY", "KES", "KGS", "KHR",
+  "KMF", "KPW", "KRW", "KWD", "KYD", "KZT", "LAK", "LBP", "LKR", "LRD",
+  "LSL", "LYD", "MAD", "MDL", "MGA", "MKD", "MMK", "MNT", "MOP", "MRU",
+  "MUR", "MVR", "MWK", "MXN", "MYR", "MZN", "NAD", "NGN", "NIO", "NOK",
+  "NPR", "NZD", "OMR", "PAB", "PEN", "PGK", "PHP", "PKR", "PLN", "PYG",
+  "QAR", "RON", "RSD", "RUB", "RWF", "SAR", "SBD", "SCR", "SDG", "SEK",
+  "SGD", "SHP", "SLE", "SOS", "SRD", "SSP", "STN", "SVC", "SYP", "SZL",
+  "THB", "TJS", "TMT", "TND", "TOP", "TRY", "TTD", "TWD", "TZS", "UAH",
+  "UGX", "USD", "UYU", "UZS", "VES", "VND", "VUV", "WST", "XAF", "XCD",
+  "XOF", "XPF", "YER", "ZAR", "ZMW", "ZWG",
+];
+
+const forexPairOptions = [
+  // Global Majors (10) - 90%+ trading volume
+  "EUR/USD", "GBP/USD", "USD/JPY", "USD/CHF", "AUD/USD", "USD/CAD", "NZD/USD",
+  "EUR/GBP", "EUR/JPY", "GBP/JPY",
+
+  // Commodity Pairs (4) - High RPM, wealthy traders
+  "XAU/USD", "XAG/USD", "XAU/EUR", "XAG/EUR",
+
+  // Asian High RPM (6) - Singapore, Hong Kong, China, Korea
+  "USD/SGD", "USD/HKD", "USD/CNH", "USD/KRW", "SGD/JPY", "HKD/JPY",
+
+  // Middle Eastern High RPM (7) - Oil wealth, high income
+  "USD/AED", "USD/SAR", "USD/QAR", "USD/KWD", "USD/BHD", "USD/OMR", "USD/EGP",
+
+  // European Regional (7) - Scandinavia, Switzerland
+  "EUR/CHF", "GBP/CHF", "AUD/CHF", "CAD/CHF", "CHF/JPY", "EUR/SEK", "EUR/NOK",
+
+  // Commonwealth (4) - Australia, Canada, New Zealand
+  "AUD/JPY", "CAD/JPY", "NZD/JPY", "AUD/CAD",
+
+  // Important Regional (10) - Brazil, Mexico, South Africa, Thailand, etc.
+  "USD/SEK", "USD/NOK", "USD/DKK", "USD/ZAR", "USD/THB", "USD/MYR", "USD/BRL", "USD/MXN",
+  "USD/PLN", "USD/CZK",
+
+  // Emerging Market (4) - Turkey, Indonesia, Philippines
+  "USD/HUF", "USD/TRY", "USD/IDR", "USD/PHP",
+
+  // Professional Cross Pairs (10) - Institutional trading
+  "EUR/AUD", "EUR/CAD", "EUR/NZD", "GBP/AUD", "GBP/CAD", "GBP/NZD", "AUD/CAD", "NZD/CAD",
+  "SEK/NOK", "DKK/SEK",
+
+  // JPY Volatile Crosses (3) - Professional trading
+  "TRY/JPY", "ZAR/JPY", "MXN/JPY",
+];
+
+const worldCurrencyOptions = worldCurrencyCodes.map((value) => ({ label: value, value }));
+const forexPairSelectOptions = forexPairOptions.map((value) => ({ label: value, value }));
+
 function CurrencyCorrelationCalculator() {
   const [currencyA, setCurrencyA] = useState([0.4, -0.8, 1.1, -0.2, 0.7, -1]);
   const [currencyB, setCurrencyB] = useState([0.2, -0.5, 0.9, 0.1, 0.5, -0.7]);
@@ -192,18 +249,225 @@ function PipValueCalculator() {
   const [accountCurrency, setAccountCurrency] = useState("USD");
   const [lotSize, setLotSize] = useState(1);
   const [conversion, setConversion] = useState(1);
+  const [autoRate, setAutoRate] = useState<number | null>(null);
+  const [loadingRate, setLoadingRate] = useState(false);
+  const [useAutoRate, setUseAutoRate] = useState(true);
+  const [cacheAge, setCacheAge] = useState<string | null>(null);
+  
+  const quoteCurrency = pair.split("/")[1];
   const pipSize = pair.includes("JPY") ? 0.01 : 0.0001;
   const quotePipValue = lotSize * 100000 * pipSize;
-  const accountPipValue = quotePipValue * conversion;
+  const effectiveConversion = useAutoRate && autoRate !== null ? autoRate : conversion;
+  const accountPipValue = quotePipValue * effectiveConversion;
+  
+  // Client-side caching functions
+  const getCachedRate = (base: string, target: string): { rate: number; timestamp: number } | null => {
+    if (typeof window === 'undefined') return null;
+    try {
+      const cacheKey = `forex_rate_${base}_${target}`;
+      const cached = localStorage.getItem(cacheKey);
+      if (cached) {
+        const data = JSON.parse(cached);
+        const cacheAge = Date.now() - data.timestamp;
+        const maxAge = getCacheDuration(base, target);
+        
+        if (cacheAge < maxAge) {
+          return data;
+        } else {
+          localStorage.removeItem(cacheKey);
+        }
+      }
+    } catch (error) {
+      console.error("Cache read error:", error);
+    }
+    return null;
+  };
+  
+  const setCachedRate = (base: string, target: string, rate: number) => {
+    if (typeof window === 'undefined') return;
+    try {
+      const cacheKey = `forex_rate_${base}_${target}`;
+      const data = { rate, timestamp: Date.now() };
+      localStorage.setItem(cacheKey, JSON.stringify(data));
+    } catch (error) {
+      console.error("Cache write error:", error);
+    }
+  };
+  
+  const getCacheDuration = (base: string, target: string): number => {
+    // Different cache durations based on pair type
+    const majorPairs = ['USD', 'EUR', 'GBP', 'JPY'];
+    const isMajor = majorPairs.includes(base) && majorPairs.includes(target);
+    
+    if (isMajor) {
+      return 2 * 60 * 60 * 1000; // 2 hours for major pairs
+    } else {
+      return 4 * 60 * 60 * 1000; // 4 hours for other pairs
+    }
+  };
+  
+  const formatCacheAge = (timestamp: number): string => {
+    const minutes = Math.floor((Date.now() - timestamp) / (60 * 1000));
+    if (minutes < 60) return `${minutes} min ago`;
+    const hours = Math.floor(minutes / 60);
+    return `${hours} hour${hours > 1 ? 's' : ''} ago`;
+  };
+  
+  useEffect(() => {
+    async function fetchConversionRate() {
+      if (quoteCurrency === accountCurrency) {
+        setAutoRate(1);
+        setCacheAge(null);
+        return;
+      }
+      
+      // Check cache first
+      const cached = getCachedRate(quoteCurrency, accountCurrency);
+      if (cached && useAutoRate) {
+        setAutoRate(cached.rate);
+        setCacheAge(formatCacheAge(cached.timestamp));
+        return;
+      }
+      
+      setLoadingRate(true);
+      try {
+        const response = await fetch(`/api/forex?base=${quoteCurrency}&targets=${accountCurrency}`);
+        if (response.ok) {
+          const data = await response.json();
+          if (data.rates && data.rates[accountCurrency]) {
+            const rate = data.rates[accountCurrency];
+            setAutoRate(rate);
+            setCacheAge("Just now");
+            // Cache the rate
+            setCachedRate(quoteCurrency, accountCurrency, rate);
+          }
+        }
+      } catch (error) {
+        console.error("Failed to fetch conversion rate:", error);
+      } finally {
+        setLoadingRate(false);
+      }
+    }
+    
+    if (useAutoRate) {
+      fetchConversionRate();
+    }
+  }, [pair, accountCurrency, useAutoRate, quoteCurrency]);
+  
+  // Manual refresh function
+  const handleRefresh = () => {
+    // Clear cache for current pair
+    if (typeof window !== 'undefined') {
+      const cacheKey = `forex_rate_${quoteCurrency}_${accountCurrency}`;
+      localStorage.removeItem(cacheKey);
+    }
+    setCacheAge(null);
+    // Force refetch
+    setLoadingRate(true);
+    fetch(`/api/forex?base=${quoteCurrency}&targets=${accountCurrency}`)
+      .then(response => response.json())
+      .then(data => {
+        if (data.rates && data.rates[accountCurrency]) {
+          const rate = data.rates[accountCurrency];
+          setAutoRate(rate);
+          setCacheAge("Just updated");
+          setCachedRate(quoteCurrency, accountCurrency, rate);
+        }
+      })
+      .catch(error => console.error("Refresh failed:", error))
+      .finally(() => setLoadingRate(false));
+  };
+  
   return <>
-    <div className="grid gap-5 md:grid-cols-2">
-      <SelectField label="Currency pair" value={pair} onChange={setPair} options={["EUR/USD", "GBP/USD", "USD/JPY", "AUD/USD", "USD/CAD", "USD/CHF"].map((value) => ({ label: value, value }))} />
-      <SelectField label="Account currency" value={accountCurrency} onChange={setAccountCurrency} options={["USD", "EUR", "GBP", "INR", "AUD", "CAD"].map((value) => ({ label: value, value }))} />
-      <NumberField label="Position size" value={lotSize} onChange={setLotSize} step="0.01" suffix="lots" />
-      <NumberField label={`Quote currency → ${accountCurrency} rate`} value={conversion} onChange={setConversion} step="0.0001" />
+    <div className="space-y-4">
+      <div className="grid gap-4 grid-cols-2 md:grid-cols-2 items-center">
+        <SelectField label="Currency pair" value={pair} onChange={setPair} options={forexPairSelectOptions} />
+        <SelectField label="Account currency" value={accountCurrency} onChange={setAccountCurrency} options={worldCurrencyOptions} />
+        <NumberField label="Position size" value={lotSize} onChange={setLotSize} step="0.01" suffix="lots" />
+        <div>
+          <span className={labelClass}>Conversion rate</span>
+          <div className="flex items-center gap-2 mb-2">
+            <input 
+              type="checkbox" 
+              id="autoRate" 
+              checked={useAutoRate} 
+              onChange={(e) => setUseAutoRate(e.target.checked)} 
+              className="rounded border-slate-300 text-primary-600 focus:ring-primary-500"
+            />
+            <label htmlFor="autoRate" className="text-sm text-slate-600 dark:text-slate-400">
+              Auto-fetch live rate {loadingRate && "(loading...)"} {autoRate !== null && useAutoRate && `(current: ${formatNumber(autoRate, 6)})`}
+            </label>
+            {useAutoRate && cacheAge && (
+              <button 
+                onClick={handleRefresh}
+                disabled={loadingRate}
+                className="text-xs text-primary-600 hover:text-primary-700 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                Refresh
+              </button>
+            )}
+          </div>
+          <input 
+            type="number" 
+            step="0.0001" 
+            value={useAutoRate && autoRate !== null ? autoRate : conversion} 
+            onChange={(e) => { setConversion(Number(e.target.value)); setUseAutoRate(false); }} 
+            disabled={useAutoRate && loadingRate}
+            className={inputClass + (useAutoRate && loadingRate ? " opacity-50" : "")}
+          />
+          <div className="mt-1 flex items-center justify-between">
+            <p className="text-xs text-slate-500 dark:text-slate-400">
+              {quoteCurrency} → {accountCurrency}
+            </p>
+            {useAutoRate && cacheAge && (
+              <p className="text-xs text-slate-500 dark:text-slate-400">
+                Updated: {cacheAge}
+              </p>
+            )}
+          </div>
+        </div>
+      </div>
+    
+      <div className="grid gap-4 sm:grid-cols-2">
+        <Result label="Estimated value per pip" value={`${formatNumber(accountPipValue)} ${accountCurrency}`} note="For the entered lot size" />
+        <Result label="Estimated value for 10 pips" value={`${formatNumber(accountPipValue * 10)} ${accountCurrency}`} />
+      </div>
+      
+      <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5 dark:border-slate-800 dark:bg-slate-950/70">
+        <h3 className="text-base font-semibold text-slate-700 dark:text-slate-300 mb-4">Lot Units Breakdown</h3>
+        <div className="grid gap-4 sm:grid-cols-3">
+          <div className="rounded-xl border border-slate-200 bg-white p-4 dark:border-slate-700 dark:bg-slate-900">
+            <p className="text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">Standard Lot</p>
+            <p className="text-sm font-bold text-slate-900 dark:text-white">100,000 units</p>
+            <p className="text-sm text-slate-600 dark:text-slate-400 mt-2">{formatNumber(accountPipValue)} {accountCurrency}/pip</p>
+          </div>
+          <div className="rounded-xl border border-slate-200 bg-white p-4 dark:border-slate-700 dark:bg-slate-900">
+            <p className="text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">Mini Lot (0.1)</p>
+            <p className="text-sm font-bold text-slate-900 dark:text-white">10,000 units</p>
+            <p className="text-sm text-slate-600 dark:text-slate-400 mt-2">{formatNumber(accountPipValue * 0.1)} {accountCurrency}/pip</p>
+          </div>
+          <div className="rounded-xl border border-slate-200 bg-white p-4 dark:border-slate-700 dark:bg-slate-900">
+            <p className="text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">Micro Lot (0.01)</p>
+            <p className="text-sm font-bold text-slate-900 dark:text-white">1,000 units</p>
+            <p className="text-sm text-slate-600 dark:text-slate-400 mt-2">{formatNumber(accountPipValue * 0.01)} {accountCurrency}/pip</p>
+          </div>
+        </div>
+      </div>
+      
+      <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5 dark:border-slate-800 dark:bg-slate-950/70">
+        <h3 className="text-base font-semibold text-slate-700 dark:text-slate-300 mb-4">Calculation Formula</h3>
+        <div className="space-y-3 text-sm text-slate-600 dark:text-slate-400">
+          <p><strong>Pip Size:</strong> {pipSize} {pair.includes("JPY") ? "(JPY pairs use 0.01)" : "(standard pairs use 0.0001)"}</p>
+          <p><strong>Quote Currency Pip Value:</strong> {lotSize} lots × 100,000 units × {pipSize} = {formatNumber(quotePipValue)} {quoteCurrency}</p>
+          <p><strong>Account Currency Pip Value:</strong> {formatNumber(quotePipValue)} {quoteCurrency} × {formatNumber(effectiveConversion, 6)} = {formatNumber(accountPipValue)} {accountCurrency}</p>
+          {pair.includes("JPY") && (
+            <p className="text-xs text-amber-700 dark:text-amber-400 mt-3"><strong>JPY Note:</strong> JPY pairs quote to 2 decimal places (e.g., 150.25), so 1 pip = 0.01. Some brokers use pipettes (3rd decimal) for precision.</p>
+          )}
+        </div>
+      </div>
+      
+      <Notice>Formula estimate: standard lot = 100,000 units. For pairs where the quote currency is not your account currency, the current quote-to-account conversion rate is used. Spread, commission, and slippage are excluded.</Notice>
     </div>
-    <div className="mt-6 grid gap-4 sm:grid-cols-2"><Result label="Estimated value per pip" value={`${formatNumber(accountPipValue)} ${accountCurrency}`} note="For the entered lot size" /><Result label="Estimated value for 10 pips" value={`${formatNumber(accountPipValue * 10)} ${accountCurrency}`} /></div>
-    <Notice>Formula estimate: standard lot = 100,000 units. For pairs where the quote currency is not your account currency, enter the current quote-to-account conversion rate. Spread, commission, and slippage are excluded.</Notice>
   </>;
 }
 

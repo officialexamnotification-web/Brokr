@@ -111,6 +111,19 @@ const content: Record<string, CalculatorSeoContent> = {
     ],
     related: ["stock-profit", "compound-returns", "dividend-drip"],
   },
+  "pip-value": {
+    intro: "Calculate the monetary value of a single pip movement in your currency pair. This essential forex trading tool helps you understand your risk per pip, plan position sizes accurately, and manage your trading risk effectively with live exchange rates.",
+    howItWorks: "Enter your currency pair, position size, and account currency. The calculator automatically determines the pip size (0.0001 for most pairs, 0.01 for JPY pairs) and calculates the pip value in your account currency using current exchange rates. For example, a standard lot (100,000 units) on EUR/USD equals $10 per pip, while a mini lot (10,000 units) equals $1 per pip.",
+    bullets: ["Use live exchange rates for accurate account currency conversion", "Standard lot (1.0) = 100,000 units, Mini lot (0.1) = 10,000 units, Micro lot (0.01) = 1,000 units", "JPY pairs like USD/JPY use 0.01 pip size instead of 0.0001", "Manual rate override available when automatic conversion isn't preferred", "Results update instantly as you change inputs for real-time planning"],
+    faqs: [
+      { question: "What is a pip in forex trading?", answer: "A pip (percentage in point) is the smallest standardized price movement in a currency pair. For most pairs, it's the fourth decimal place (0.0001). For JPY pairs, it's the second decimal place (0.01). Understanding pip values is crucial for risk management and position sizing." },
+      { question: "How do I use pip values for risk management?", answer: "Calculate your pip value first, then determine how many pips you're willing to risk on a trade. For example, if each pip is worth $10 and you want to risk $100, your stop loss should be 10 pips. This helps you size your positions appropriately." },
+      { question: "Why does my account currency matter for pip calculations?", answer: "When your account currency differs from the quote currency (the second currency in the pair), the pip value needs conversion. For instance, trading EUR/GBP with a USD account requires converting GBP pip values to USD using current exchange rates." },
+      { question: "Do pip values change with leverage?", answer: "No. Leverage affects your margin requirements and potential percentage returns, but the pip value remains constant. One pip movement always represents the same monetary amount per lot, regardless of your leverage setting." },
+      { question: "How accurate are the live exchange rates used?", answer: "The calculator uses current market exchange rates that update every 30 minutes via our cache system. For exact trading decisions, always verify rates with your broker's platform, as spreads and execution timing can affect actual trading results." },
+    ],
+    related: ["position-size", "forex-pnl", "forex-margin"],
+  },
 };
 
 export function getCalculatorSeoContent(slug: string, fallbackDescription: string): CalculatorSeoContent {

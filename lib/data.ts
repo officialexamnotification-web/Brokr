@@ -487,7 +487,209 @@ Key factors to consider:
 CFDs are suitable for experienced traders who understand leverage and risk management. If you are a beginner, start with a demo account and only trade with money you can afford to lose.`,
   },
   {
-    id: 6, slug: "trading-psychology-mastery", title: "Trading Psychology: How to Control Emotions and Build Discipline",
+    id: 3, slug: "forex-pip-calculation-guide", title: "Forex Pip Calculation: Essential Guide for Trading Risk Management",
+    excerpt: "Master pip value calculations for accurate forex risk management. Learn to calculate pip values across different currency pairs, lot sizes, and account currencies with practical examples.",
+    category: "Forex", author: "Alex Thompson", date: "2026-08-11", readTime: "8 min",
+    image: "FX", tags: ["forex", "pips", "risk-management", "calculator"],
+    content: `# Forex Pip Calculation: Essential Guide for Trading Risk Management
+
+## Why Pip Values Matter in Forex Trading
+
+Understanding pip values is crucial for every forex trader. It directly impacts your risk management, position sizing, and overall trading strategy. A pip (percentage in point) represents the smallest standardized price movement in a currency pair, and knowing its monetary value helps you make informed trading decisions.
+
+## What is a Pip?
+
+For most currency pairs, a pip is the fourth decimal place (0.0001). For example:
+- EUR/USD moves from 1.1000 to 1.1001 = 1 pip movement
+- GBP/USD moves from 1.3000 to 1.3001 = 1 pip movement
+
+**JPY Pairs Exception:**
+For Japanese yen pairs, a pip is the second decimal place (0.01) because yen quotes are larger:
+- USD/JPY moves from 150.00 to 150.01 = 1 pip movement
+- EUR/JPY moves from 165.00 to 165.01 = 1 pip movement
+
+## Understanding Lot Sizes
+
+Your position size determines how much each pip movement is worth in monetary terms.
+
+### Standard Lot (1.0 lot)
+- 100,000 units of base currency
+- Common for experienced traders
+- Higher potential profit per pip, but also higher risk
+
+### Mini Lot (0.1 lot)  
+- 10,000 units of base currency
+- Popular among retail traders
+- Balanced risk-reward for most strategies
+
+### Micro Lot (0.01 lot)
+- 1,000 units of base currency
+- Ideal for beginners and strategy testing
+- Lower risk per pip, allowing for smaller position sizes
+
+## The Pip Value Formula
+
+**Pip Value = (Position Size × Pip Size) / Exchange Rate**
+
+Where:
+- Position Size = Number of lots × 100,000 units
+- Pip Size = 0.0001 (standard) or 0.01 (JPY pairs)
+- Exchange Rate = Current rate if account currency differs from quote currency
+
+## Practical Calculation Examples
+
+### Example 1: EUR/USD with USD Account
+- Pair: EUR/USD
+- Position: 1 standard lot (100,000 EUR)
+- Account Currency: USD
+- Current Rate: 1.1000
+
+**Calculation:**
+- Pip Size: 0.0001
+- Quote Currency Pip Value: 100,000 × 0.0001 = 10 USD
+- No conversion needed (USD = USD)
+- **Result: $10 per pip**
+
+### Example 2: EUR/GBP with USD Account
+- Pair: EUR/GBP
+- Position: 1 standard lot (100,000 EUR)
+- Account Currency: USD
+- Current Rate: EUR/GBP = 0.8500, GBP/USD = 1.2500
+
+**Calculation:**
+- Pip Size: 0.0001
+- Quote Currency Pip Value: 100,000 × 0.0001 = 10 GBP
+- Convert to USD: 10 GBP × 1.2500 = 12.50 USD
+- **Result: $12.50 per pip**
+
+### Example 3: USD/JPY with USD Account
+- Pair: USD/JPY
+- Position: 1 standard lot (100,000 USD)
+- Account Currency: USD
+- Current Rate: 150.00
+
+**Calculation:**
+- Pip Size: 0.01 (JPY pair)
+- Quote Currency Pip Value: 100,000 × 0.01 = 1,000 JPY
+- Convert to USD: 1,000 JPY / 150.00 = 6.67 USD
+- **Result: $6.67 per pip**
+
+## Using Pip Values for Risk Management
+
+### Step 1: Determine Your Risk Budget
+Decide how much you're willing to risk on a single trade (typically 1-2% of your account balance).
+
+### Step 2: Calculate Your Stop Loss in Pips
+Based on your technical analysis, determine how many pips your stop loss should be from your entry point.
+
+### Step 3: Calculate Position Size
+Use the formula: Position Size = Risk Budget / (Stop Loss in Pips × Pip Value)
+
+**Example:**
+- Account balance: $10,000
+- Risk per trade: 1% = $100
+- Stop loss: 20 pips
+- Pip value: $10 per pip (standard lot EUR/USD)
+- Position size: $100 / (20 × $10) = 0.5 lots
+
+## Common Mistakes to Avoid
+
+1. **Ignoring Currency Conversion** - Forgetting to convert pip values when account currency differs from quote currency
+2. **Wrong Pip Size for JPY** - Using 0.0001 instead of 0.01 for JPY pairs
+3. **Overlooking Spreads** - Not accounting for the spread when calculating actual entry/exit points
+4. **Inconsistent Risk Management** - Using different risk percentages across trades
+
+## Advanced: Pipettes and Precision
+
+Many brokers quote prices using pipettes (fifth decimal for most pairs, third for JPY pairs):
+- EUR/USD: 1.10001 (the '1' is a pipette)
+- USD/JPY: 150.001 (the '1' is a pipette)
+
+This allows for tighter spreads and more precise pricing, but standard pip calculations remain based on the traditional pip definition.
+
+## Using Technology for Accuracy
+
+Manual calculations can be time-consuming and prone to errors. Modern forex pip calculators:
+- Provide instant calculations with live exchange rates
+- Handle currency conversions automatically
+- Support multiple lot sizes and account currencies
+- Update in real-time as market conditions change
+
+## Conclusion
+
+Accurate pip calculation is fundamental to successful forex trading. Whether you calculate manually or use automated tools, understanding the principles ensures you can manage risk effectively and make informed trading decisions.
+
+Use our <a href="/calculators/pip-value">Forex Pip Value Calculator</a> for instant, accurate calculations with live exchange rates and comprehensive lot size breakdowns.
+- EUR/USD with GBP account: Need USD/GBP rate
+- GBP/JPY with USD account: Need JPY/USD rate
+- AUD/CAD with EUR account: Need CAD/EUR rate
+
+## Practical Risk Management Applications
+
+### Calculating Position Size from Risk Budget
+If you want to risk $100 on a trade with a 20-pip stop loss:
+- Risk per pip = $100 / 20 pips = $5 per pip
+- For EUR/USD (10 USD/pip per standard lot): $5 / 10 = 0.5 lots
+- **Recommended Position: 0.5 standard lots or 5 mini lots**
+
+### Setting Take Profit Targets
+If your analysis suggests a 50-pip move potential:
+- With 0.5 lots on EUR/USD: 50 pips × $5/pip = $250 potential profit
+- Compare this against your risk to assess risk-reward ratio
+
+## Common Mistakes to Avoid
+
+1. **Ignoring Currency Conversion**: Forgetting to convert pip values when account currency differs from quote currency
+2. **Wrong Pip Size for JPY**: Using 0.0001 instead of 0.01 for JPY pairs
+3. **Overlooking Spreads**: Not accounting for broker spreads in profit calculations
+4. **Static Rate Assumption**: Using outdated exchange rates for conversion
+5. **Lot Size Confusion**: Mixing up standard, mini, and micro lot calculations
+
+## Using Technology for Accurate Calculations
+
+Manual calculations are educational but time-consuming. Modern trading platforms and dedicated calculators can:
+- Automatically fetch live exchange rates
+- Handle complex currency conversions
+- Provide instant pip value updates
+- Account for different lot sizes simultaneously
+
+However, understanding the underlying math remains crucial for:
+- Verifying calculator accuracy
+- Making quick mental estimates
+- Troubleshooting trading platform discrepancies
+- Building intuition for risk management
+
+## Advanced Considerations
+
+### Impact of Leverage
+Leverage does not change pip values but affects:
+- Margin requirements
+- Percentage gains/losses on your account
+- Risk of margin calls on adverse moves
+
+### Broker-Specific Variations
+Some brokers may use:
+- Different contract specifications
+- Alternative pip definitions
+- Variable pricing models
+- Different minimum lot sizes
+
+Always verify your broker's specific terms and conditions.
+
+## Conclusion
+
+Accurate pip calculation is the foundation of effective forex risk management. Whether you use manual calculations or automated tools, understanding the principles ensures you can:
+- Size positions appropriately
+- Set realistic profit targets
+- Manage risk effectively
+- Verify platform calculations
+
+Practice these calculations with different currency pairs and lot sizes until they become second nature. Your trading account will thank you.
+
+Use our <a href="/calculators/pip-value">Forex Pip Value Calculator</a> for instant, accurate calculations with live exchange rates and comprehensive lot size breakdowns.`,
+  },
+  {
+    id: 4, slug: "trading-psychology-mastery", title: "Trading Psychology: How to Control Emotions and Build Discipline",
     excerpt: "Explore practical techniques for recognizing emotions, following a process and building disciplined trading habits.",
     category: "Education", author: "Dr. Michael Chen", date: "2026-06-25", readTime: "15 min",
     image: "TP", tags: ["psychology", "discipline", "mindset"],
