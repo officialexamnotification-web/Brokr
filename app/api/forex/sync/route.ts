@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server';
-import { writeFile, readFile } from 'fs/promises';
-import { join } from 'path';
+import * as admin from 'firebase-admin';
 
 export const dynamic = "force-dynamic";
 
@@ -8,7 +7,6 @@ const EXCHANGERATE_API_BASE = "https://api.exchangerate-api.com/v4/latest";
 const FRANKFURTER_BASE = "https://api.frankfurter.app";
 const API_KEY = process.env.EXCHANGERATE_API_KEY;
 
-const CACHE_FILE_PATH = join(process.cwd(), 'public', 'data', 'forex-cache.json');
 const CACHE_DURATION = 30 * 60 * 1000; // 30 minutes
 
 const ALLOWED_CURRENCIES = [
@@ -26,17 +24,62 @@ type CacheData = {
   };
 };
 
-async function readCacheFile(): Promise<CacheData> {
+let firestore: any = null;
+
+try {
+  if (!admin.apps.length) {
+    const serviceAccount = {
+      projectId: process.env.FIREBASE_PROJECT_ID,
+      clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+      privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
+    };
+    
+    if (serviceAccount.clientEmail && serviceAccount.privateKey) {
+      const app = admin.initializeApp({
+        credential: admin.credential.cert(serviceAccount),
+      });
+      firestore = app.firestore();
+    } else {
+      console.log('Firebase admin credentials not configured');
+    }
+  } else {
+    firestore = admin.apps[0].firestore();
+  }
+} catch (error) {
+  console.error('Firebase admin initialization error:', error);
+}
+
+async function readCacheFromFirestore(): Promise<CacheData> {
   try {
-    const data = await readFile(CACHE_FILE_PATH, 'utf-8');
-    return JSON.parse(data);
+    if (!firestore) {
+      console.error('Firestore not initialized');
+      return {};
+    }
+    const docRef = firestore.collection('forexCache').doc('rates');
+    const docSnap = await docRef.get();
+    
+    if (docSnap.exists) {
+      const data = docSnap.data();
+      return data as CacheData;
+    }
+    return {};
   } catch (error) {
+    console.error('Error reading from Firestore:', error);
     return {};
   }
 }
 
-async function writeCacheFile(data: CacheData): Promise<void> {
-  await writeFile(CACHE_FILE_PATH, JSON.stringify(data, null, 2), 'utf-8');
+async function writeCacheToFirestore(data: CacheData): Promise<void> {
+  try {
+    if (!firestore) {
+      throw new Error('Firestore not initialized');
+    }
+    const docRef = firestore.collection('forexCache').doc('rates');
+    await docRef.set(data, { merge: true });
+  } catch (error) {
+    console.error('Error writing to Firestore:', error);
+    throw error;
+  }
 }
 
 async function fetchRatesFromAPI(base: string): Promise<Record<string, number> | null> {
@@ -83,7 +126,18 @@ async function fetchRatesFromAPI(base: string): Promise<Record<string, number> |
 
 export async function GET(request: Request) {
   try {
-    const cacheData = await readCacheFile();
+    console.log('Starting forex cache sync...');
+    console.log('Firestore initialized:', !!firestore);
+    
+    if (!firestore) {
+      return NextResponse.json({
+        success: false,
+        error: 'Firebase not initialized'
+      }, { status: 500 });
+    }
+
+    const cacheData = await readCacheFromFirestore();
+    console.log('Cache data loaded:', Object.keys(cacheData).length, 'currencies');
     const now = new Date().toISOString();
     const updatedCurrencies: string[] = [];
 
@@ -119,9 +173,10 @@ export async function GET(request: Request) {
       }
     }
 
-    // Write updated cache
+    // Write updated cache to Firestore
     if (updatedCurrencies.length > 0) {
-      await writeCacheFile(cacheData);
+      console.log(`Writing ${updatedCurrencies.length} updated currencies to Firestore...`);
+      await writeCacheToFirestore(cacheData);
     }
 
     return NextResponse.json({
@@ -135,7 +190,8 @@ export async function GET(request: Request) {
     console.error('Cache sync error:', error);
     return NextResponse.json({
       success: false,
-      error: 'Failed to sync cache'
+      error: 'Failed to sync cache',
+      details: error instanceof Error ? error.message : 'Unknown error'
     }, { status: 500 });
   }
 }

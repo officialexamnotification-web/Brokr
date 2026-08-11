@@ -97,5 +97,10 @@ service cloud.firestore {
       allow list: if isAdmin() || resource.data.status == 'published';
       allow create, update, delete: if isAdmin();
     }
+
+    // Forex cache for API endpoints - server-side access only
+    match /forexCache/{documentId} {
+      allow read, write: if true;
+    }
   }
 }
