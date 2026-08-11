@@ -7,10 +7,25 @@ let firestore: any = null;
 
 try {
   if (!admin.apps.length) {
+    const privateKey = process.env.FIREBASE_PRIVATE_KEY;
+    let formattedPrivateKey = privateKey;
+    
+    // Handle different private key formats
+    if (privateKey) {
+      // If key has literal \n, replace with actual newlines
+      if (privateKey.includes('\\n')) {
+        formattedPrivateKey = privateKey.replace(/\\n/g, '\n');
+      }
+      // If key has actual newlines but is in wrong format, normalize it
+      else if (!privateKey.includes('-----BEGIN PRIVATE KEY-----')) {
+        formattedPrivateKey = privateKey.replace(/\n/g, '\n');
+      }
+    }
+    
     const serviceAccount = {
       projectId: process.env.FIREBASE_PROJECT_ID,
       clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-      privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
+      privateKey: formattedPrivateKey,
     };
     
     if (serviceAccount.clientEmail && serviceAccount.privateKey) {
