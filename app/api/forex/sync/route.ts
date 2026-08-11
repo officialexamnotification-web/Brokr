@@ -4,24 +4,12 @@ import { getApps, getApp, initializeApp } from 'firebase/app';
 
 export const dynamic = "force-dynamic";
 
-const EXCHANGERATE_API_BASE = "https://api.exchangerate-api.com/v4/latest";
-const FRANKFURTER_BASE = "https://api.frankfurter.app";
-const ALPHA_VANTAGE_BASE = "https://www.alphavantage.co/query";
-const EXCHANGERATE_API_KEY = process.env.EXCHANGERATE_API_KEY;
-const ALPHA_VANTAGE_API_KEY = process.env.ALPHA_VANTAGE_API_KEY;
+const FRANKFURTER_BASE = "https://api.frankfurter.dev";
 
 const CACHE_DURATION = 30 * 60 * 1000; // 30 minutes
 
 const ALLOWED_CURRENCIES = [
   "USD", "EUR", "GBP", "JPY", "AUD", "CAD", "CHF", "CNY", "INR", "MXN", "BRL", "RUB", "ZAR", "TRY", "KRW", "SGD", "HKD", "NOK", "SEK", "DKK", "PLN", "THB", "IDR", "MYR", "PHP", "VND", "CZK", "HUF", "RON", "ILS", "CLP", "COP", "PEN", "ARS", "UAH", "AED", "SAR", "QAR", "KWD", "BHD", "OMR", "EGP", "NZD", "TWD", "XAU", "XAG"
-];
-
-const FRANKFURTER_CURRENCIES = [
-  "USD", "EUR", "GBP", "JPY", "AUD", "CAD", "CHF", "SGD", "NZD", "SEK", "NOK", "DKK", "HKD", "INR", "XAU", "XAG"
-];
-
-const EXCHANGERATE_CURRENCIES = [
-  "CNY", "MXN", "BRL", "RUB", "ZAR", "TRY", "KRW", "PLN", "THB", "IDR", "MYR", "PHP", "VND", "CZK", "HUF", "RON", "ILS", "CLP", "COP", "PEN", "ARS", "UAH", "AED", "SAR", "QAR", "KWD", "BHD", "OMR", "EGP", "TWD"
 ];
 
 type CacheData = {
@@ -84,84 +72,45 @@ async function writeCacheToFirestore(data: CacheData): Promise<void> {
 }
 
 async function fetchRatesFromAPI(base: string): Promise<Record<string, number> | null> {
-  const rates: Record<string, number> = {};
-  
-  // Fetch from Frankfurter for its supported currencies
-  const frankfurterPromise = (async () => {
-    try {
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 10000);
-      
-      const url = `${FRANKFURTER_BASE}/latest?from=${encodeURIComponent(base)}`;
-      const res = await fetch(url, {
-        headers: {
-          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
-        },
-        signal: controller.signal
-      });
-      
-      clearTimeout(timeoutId);
+  try {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 10000);
 
-      if (res.ok) {
-        const data = await res.json();
-        if (data.rates) {
-          console.log(`Frankfurter success for ${base}`);
-          // Filter to only Frankfurter-supported currencies
-          FRANKFURTER_CURRENCIES.forEach(currency => {
-            if (data.rates[currency] && currency !== base) {
-              rates[currency] = data.rates[currency];
-            }
-          });
-        }
+    const url = `${FRANKFURTER_BASE}/v2/rates?base=${encodeURIComponent(base)}`;
+    const res = await fetch(url, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+      },
+      signal: controller.signal
+    });
+
+    clearTimeout(timeoutId);
+
+    if (res.ok) {
+      const data = await res.json();
+
+      // Frankfurter v2 returns an array directly
+      const ratesArray = Array.isArray(data) ? data : (data.rates || []);
+
+      if (ratesArray.length > 0) {
+        console.log(`Frankfurter success for ${base}: ${ratesArray.length} rates`);
+        // Convert array format to object format
+        const rates: Record<string, number> = {};
+        ratesArray.forEach((item: any) => {
+          if (item.quote && item.rate && item.quote !== base) {
+            rates[item.quote] = item.rate;
+          }
+        });
+        return rates;
       }
-    } catch (error) {
-      console.log(`Frankfurter failed for ${base}:`, error);
     }
-  })();
 
-  // Fetch from Exchangerate-API for its supported currencies
-  const exchangeratePromise = (async () => {
-    try {
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 10000);
-      
-      const url = `${EXCHANGERATE_API_BASE}/${encodeURIComponent(base)}`;
-      const res = await fetch(url, {
-        headers: {
-          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
-        },
-        signal: controller.signal
-      });
-      
-      clearTimeout(timeoutId);
-
-      if (res.ok) {
-        const data = await res.json();
-        if (data.rates) {
-          console.log(`Exchangerate-API success for ${base}`);
-          // Filter to only Exchangerate-supported currencies (excluding Frankfurter ones)
-          EXCHANGERATE_CURRENCIES.forEach(currency => {
-            if (data.rates[currency] && currency !== base) {
-              rates[currency] = data.rates[currency];
-            }
-          });
-        }
-      }
-    } catch (error) {
-      console.log(`Exchangerate-API failed for ${base}:`, error);
-    }
-  })();
-
-  // Execute both calls in parallel
-  await Promise.allSettled([frankfurterPromise, exchangeratePromise]);
-
-  if (Object.keys(rates).length > 0) {
-    console.log(`Total rates fetched for ${base}: ${Object.keys(rates).length}`);
-    return rates;
+    console.log(`Frankfurter failed for ${base} with status ${res.status}`);
+    return null;
+  } catch (error) {
+    console.log(`Frankfurter failed for ${base}:`, error);
+    return null;
   }
-
-  console.log(`All APIs failed for ${base}`);
-  return null;
 }
 
 export async function GET(request: Request) {
