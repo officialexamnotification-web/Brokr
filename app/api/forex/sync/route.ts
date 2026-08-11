@@ -6,7 +6,9 @@ export const dynamic = "force-dynamic";
 
 const EXCHANGERATE_API_BASE = "https://api.exchangerate-api.com/v4/latest";
 const FRANKFURTER_BASE = "https://api.frankfurter.app";
-const API_KEY = process.env.EXCHANGERATE_API_KEY;
+const ALPHA_VANTAGE_BASE = "https://www.alphavantage.co/query";
+const EXCHANGERATE_API_KEY = process.env.EXCHANGERATE_API_KEY;
+const ALPHA_VANTAGE_API_KEY = process.env.ALPHA_VANTAGE_API_KEY;
 
 const CACHE_DURATION = 30 * 60 * 1000; // 30 minutes
 
@@ -78,42 +80,96 @@ async function writeCacheToFirestore(data: CacheData): Promise<void> {
 }
 
 async function fetchRatesFromAPI(base: string): Promise<Record<string, number> | null> {
-  // Try Exchangerate-API first
-  try {
-    const url = `${EXCHANGERATE_API_BASE}/${encodeURIComponent(base)}`;
-    const res = await fetch(url, {
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
-      },
-    });
+  // Try all three APIs in parallel for faster response
+  const [exchangerateResult, alphaVantageResult, frankfurterResult] = await Promise.allSettled([
+    (async () => {
+      try {
+        const url = `${EXCHANGERATE_API_BASE}/${encodeURIComponent(base)}`;
+        const res = await fetch(url, {
+          headers: {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+          },
+        }, { signal: AbortSignal.timeout(10000) }); // 10 second timeout per API
 
-    if (res.ok) {
-      const data = await res.json();
-      if (data.rates) {
-        return data.rates;
+        if (res.ok) {
+          const data = await res.json();
+          if (data.rates) {
+            console.log(`Exchangerate-API success for ${base}`);
+            return data.rates;
+          }
+        }
+      } catch (error) {
+        console.log(`Exchangerate-API failed for ${base}:`, error);
       }
-    }
-  } catch (error) {
-    console.log(`Exchangerate-API failed for ${base}:`, error);
+      return null;
+    })(),
+    (async () => {
+      try {
+        // Alpha Vantage provides single pair rates, so we need to fetch each target separately
+        // For now, fetch common targets to reduce API calls
+        const targets = ['USD', 'EUR', 'GBP', 'JPY', 'INR', 'AUD', 'CAD', 'CHF'];
+        const rates: Record<string, number> = {};
+        
+        for (const target of targets) {
+          if (target === base) continue;
+          
+          try {
+            const url = `${ALPHA_VANTAGE_BASE}?function=CURRENCY_EXCHANGE_RATE&from_currency=${base}&to_currency=${target}&apikey=${ALPHA_VANTAGE_API_KEY}`;
+            const res = await fetch(url, { signal: AbortSignal.timeout(5000) });
+            
+            if (res.ok) {
+              const data = await res.json();
+              if (data['Realtime Currency Exchange Rate']) {
+                const rateStr = data['Realtime Currency Exchange Rate']['5. Exchange Rate'];
+                rates[target] = parseFloat(rateStr);
+              }
+            }
+          } catch (error) {
+            console.log(`Alpha Vantage failed for ${base}-${target}:`, error);
+          }
+        }
+        
+        if (Object.keys(rates).length > 0) {
+          console.log(`Alpha Vantage success for ${base} with ${Object.keys(rates).length} rates`);
+          return rates;
+        }
+      } catch (error) {
+        console.log(`Alpha Vantage failed for ${base}:`, error);
+      }
+      return null;
+    })(),
+    (async () => {
+      try {
+        const url = `${FRANKFURTER_BASE}/latest?from=${encodeURIComponent(base)}`;
+        const res = await fetch(url, {
+          headers: {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+          },
+        }, { signal: AbortSignal.timeout(10000) }); // 10 second timeout per API
+
+        if (res.ok) {
+          const data = await res.json();
+          if (data.rates) {
+            console.log(`Frankfurter success for ${base}`);
+            return data.rates;
+          }
+        }
+      } catch (error) {
+        console.log(`Frankfurter failed for ${base}:`, error);
+      }
+      return null;
+    })()
+  ]);
+
+  // Return first successful result in priority order
+  if (exchangerateResult.status === 'fulfilled' && exchangerateResult.value) {
+    return exchangerateResult.value;
   }
-
-  // Fallback to Frankfurter
-  try {
-    const url = `${FRANKFURTER_BASE}/latest?from=${encodeURIComponent(base)}`;
-    const res = await fetch(url, {
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
-      },
-    });
-
-    if (res.ok) {
-      const data = await res.json();
-      if (data.rates) {
-        return data.rates;
-      }
-    }
-  } catch (error) {
-    console.log(`Frankfurter failed for ${base}:`, error);
+  if (alphaVantageResult.status === 'fulfilled' && alphaVantageResult.value) {
+    return alphaVantageResult.value;
+  }
+  if (frankfurterResult.status === 'fulfilled' && frankfurterResult.value) {
+    return frankfurterResult.value;
   }
 
   return null;
@@ -131,6 +187,9 @@ export async function GET(request: Request) {
       }, { status: 500 });
     }
 
+    const { searchParams } = new URL(request.url);
+    const forceSync = searchParams.get('force') === 'true';
+
     const cacheData = await readCacheFromFirestore();
     console.log('Cache data loaded:', Object.keys(cacheData).length, 'currencies');
     const now = new Date().toISOString();
@@ -142,7 +201,7 @@ export async function GET(request: Request) {
     for (const base of baseCurrencies) {
       const baseCache = cacheData[base] || { rates: {}, lastUpdated: null };
       const lastUpdated = baseCache.lastUpdated ? new Date(baseCache.lastUpdated).getTime() : 0;
-      const needsUpdate = !lastUpdated || (Date.now() - lastUpdated > CACHE_DURATION);
+      const needsUpdate = forceSync || !lastUpdated || (Date.now() - lastUpdated > CACHE_DURATION);
 
       if (needsUpdate) {
         console.log(`Syncing rates for ${base}...`);
@@ -165,6 +224,8 @@ export async function GET(request: Request) {
         } else {
           console.log(`Failed to fetch rates for ${base}, keeping cache`);
         }
+      } else {
+        console.log(`Skipping ${base} - cache is recent`);
       }
     }
 

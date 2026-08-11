@@ -379,14 +379,22 @@ function PipValueCalculator() {
   };
   
   return <>
-    <div className="space-y-4">
-      <div className="grid gap-4 grid-cols-2 md:grid-cols-2 items-center">
+    <div className="space-y-5">
+      <div className="grid gap-4 grid-cols-2 md:grid-cols-2 items-start">
         <SelectField label="Currency pair" value={pair} onChange={setPair} options={forexPairSelectOptions} />
         <SelectField label="Account currency" value={accountCurrency} onChange={setAccountCurrency} options={worldCurrencyOptions} />
         <NumberField label="Position size" value={lotSize} onChange={setLotSize} step="0.01" suffix="lots" />
         <div>
           <span className={labelClass}>Conversion rate</span>
-          <div className="flex items-center gap-2 mb-2">
+          <input 
+            type="number" 
+            step="0.0001" 
+            value={useAutoRate && autoRate !== null ? autoRate : conversion} 
+            onChange={(e) => { setConversion(Number(e.target.value)); setUseAutoRate(false); }} 
+            disabled={useAutoRate && loadingRate}
+            className={inputClass + (useAutoRate && loadingRate ? " opacity-50" : "")}
+          />
+          <div className="mt-3 flex items-center gap-2">
             <input 
               type="checkbox" 
               id="autoRate" 
@@ -407,14 +415,6 @@ function PipValueCalculator() {
               </button>
             )}
           </div>
-          <input 
-            type="number" 
-            step="0.0001" 
-            value={useAutoRate && autoRate !== null ? autoRate : conversion} 
-            onChange={(e) => { setConversion(Number(e.target.value)); setUseAutoRate(false); }} 
-            disabled={useAutoRate && loadingRate}
-            className={inputClass + (useAutoRate && loadingRate ? " opacity-50" : "")}
-          />
           <div className="mt-1 flex items-center justify-between">
             <p className="text-xs text-slate-500 dark:text-slate-400">
               {quoteCurrency} → {accountCurrency}
