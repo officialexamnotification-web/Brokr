@@ -84,12 +84,18 @@ async function fetchRatesFromAPI(base: string): Promise<Record<string, number> |
   const [exchangerateResult, alphaVantageResult, frankfurterResult] = await Promise.allSettled([
     (async () => {
       try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 10000);
+        
         const url = `${EXCHANGERATE_API_BASE}/${encodeURIComponent(base)}`;
         const res = await fetch(url, {
           headers: {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
           },
-        }, { signal: AbortSignal.timeout(10000) }); // 10 second timeout per API
+          signal: controller.signal
+        });
+        
+        clearTimeout(timeoutId);
 
         if (res.ok) {
           const data = await res.json();
@@ -114,8 +120,13 @@ async function fetchRatesFromAPI(base: string): Promise<Record<string, number> |
           if (target === base) continue;
           
           try {
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 5000);
+            
             const url = `${ALPHA_VANTAGE_BASE}?function=CURRENCY_EXCHANGE_RATE&from_currency=${base}&to_currency=${target}&apikey=${ALPHA_VANTAGE_API_KEY}`;
-            const res = await fetch(url, { signal: AbortSignal.timeout(5000) });
+            const res = await fetch(url, { signal: controller.signal });
+            
+            clearTimeout(timeoutId);
             
             if (res.ok) {
               const data = await res.json();
@@ -140,12 +151,18 @@ async function fetchRatesFromAPI(base: string): Promise<Record<string, number> |
     })(),
     (async () => {
       try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 10000);
+        
         const url = `${FRANKFURTER_BASE}/latest?from=${encodeURIComponent(base)}`;
         const res = await fetch(url, {
           headers: {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
           },
-        }, { signal: AbortSignal.timeout(10000) }); // 10 second timeout per API
+          signal: controller.signal
+        });
+        
+        clearTimeout(timeoutId);
 
         if (res.ok) {
           const data = await res.json();
