@@ -143,7 +143,11 @@ export default function CalculatorPage({ params }: { params: { slug: string } })
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(calculatorJsonLd) }} />
       <div className="min-h-screen bg-white dark:bg-slate-950">
-        <CalculatorSuite slug={calculator.slug as CalculatorSlug} />
+        <div className="px-4 py-6 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-6xl">
+            <CalculatorSuite slug={calculator.slug as CalculatorSlug} />
+          </div>
+        </div>
         <div className="px-4 py-6 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-6xl">
             <CalculatorGuide {...seo} relatedTitles={relatedTitles} />
