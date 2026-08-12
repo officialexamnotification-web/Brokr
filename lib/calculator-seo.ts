@@ -120,7 +120,7 @@ const content: Record<string, CalculatorSeoContent> = {
       { question: "How do I use pip values for risk management?", answer: "Calculate your pip value first, then determine how many pips you're willing to risk on a trade. For example, if each pip is worth $10 and you want to risk $100, your stop loss should be 10 pips. This helps you size your positions appropriately." },
       { question: "Why does my account currency matter for pip calculations?", answer: "When your account currency differs from the quote currency (the second currency in the pair), the pip value needs conversion. For instance, trading EUR/GBP with a USD account requires converting GBP pip values to USD using current exchange rates." },
       { question: "Do pip values change with leverage?", answer: "No. Leverage affects your margin requirements and potential percentage returns, but the pip value remains constant. One pip movement always represents the same monetary amount per lot, regardless of your leverage setting." },
-      { question: "How accurate are the live exchange rates used?", answer: "The calculator uses current market exchange rates that update every 30 minutes via our cache system. For exact trading decisions, always verify rates with your broker's platform, as spreads and execution timing can affect actual trading results." },
+      { question: "How accurate are the live exchange rates used?", answer: "The calculator uses current market exchange rates that update every 10 minutes via our cache system. For exact trading decisions, always verify rates with your broker's platform, as spreads and execution timing can affect actual trading results." },
     ],
     related: ["position-size", "forex-pnl", "forex-margin"],
   },
