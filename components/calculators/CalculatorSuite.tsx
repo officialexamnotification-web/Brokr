@@ -1,14 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import type { ReactNode } from "react";
 import { calculatorDefinitions, type CalculatorSlug } from "@/lib/calculators";
 import RateTable from "@/components/calculators/RateTable";
 
 type Props = { slug: CalculatorSlug };
 
-const inputClass = "w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-950 px-4 py-3 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500/30";
+const inputClass = "min-w-0 w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-950 px-4 py-3 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500/30";
 const labelClass = "block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2";
 
 function NumberField({ label, value, onChange, step = "any", min = "0", max, suffix }: { label: string; value: number; onChange: (value: number) => void; step?: string; min?: string; max?: string; suffix?: string }) {
@@ -247,7 +247,19 @@ function PipValueCalculator() {
   const accountPipValue = quotePipValue * effectiveConversion;
   
   // Client-side caching functions
-  const getCachedRate = (base: string, target: string): { rate: number; timestamp: number } | null => {
+  const getCacheDuration = useCallback((base: string, target: string): number => {
+    // Different cache durations based on pair type
+    const majorPairs = ['USD', 'EUR', 'GBP', 'JPY'];
+    const isMajor = majorPairs.includes(base) && majorPairs.includes(target);
+
+    if (isMajor) {
+      return 2 * 60 * 60 * 1000; // 2 hours for major pairs
+    } else {
+      return 4 * 60 * 60 * 1000; // 4 hours for other pairs
+    }
+  }, []);
+
+  const getCachedRate = useCallback((base: string, target: string): { rate: number; timestamp: number } | null => {
     if (typeof window === 'undefined') return null;
     try {
       const cacheKey = `forex_rate_${base}_${target}`;
@@ -267,7 +279,7 @@ function PipValueCalculator() {
       console.error("Cache read error:", error);
     }
     return null;
-  };
+  }, [getCacheDuration]);
   
   const setCachedRate = (base: string, target: string, rate: number) => {
     if (typeof window === 'undefined') return;
@@ -277,18 +289,6 @@ function PipValueCalculator() {
       localStorage.setItem(cacheKey, JSON.stringify(data));
     } catch (error) {
       console.error("Cache write error:", error);
-    }
-  };
-  
-  const getCacheDuration = (base: string, target: string): number => {
-    // Different cache durations based on pair type
-    const majorPairs = ['USD', 'EUR', 'GBP', 'JPY'];
-    const isMajor = majorPairs.includes(base) && majorPairs.includes(target);
-    
-    if (isMajor) {
-      return 2 * 60 * 60 * 1000; // 2 hours for major pairs
-    } else {
-      return 4 * 60 * 60 * 1000; // 4 hours for other pairs
     }
   };
   
@@ -338,7 +338,7 @@ function PipValueCalculator() {
     if (useAutoRate) {
       fetchConversionRate();
     }
-  }, [pair, accountCurrency, useAutoRate, quoteCurrency]);
+  }, [pair, accountCurrency, useAutoRate, quoteCurrency, getCachedRate]);
   
   // Manual refresh function
   const handleRefresh = () => {
@@ -365,7 +365,7 @@ function PipValueCalculator() {
   };
   
   return <>
-    <div className="space-y-5">
+    <div className="min-w-0 space-y-5">
       <div className="grid gap-4 grid-cols-1 md:grid-cols-2 items-start">
         <SelectField label="Currency pair" value={pair} onChange={setPair} options={forexPairSelectOptions} />
         <SelectField label="Account currency" value={accountCurrency} onChange={setAccountCurrency} options={worldCurrencyOptions} />
@@ -380,7 +380,7 @@ function PipValueCalculator() {
             disabled={useAutoRate && loadingRate}
             className={inputClass + (useAutoRate && loadingRate ? " opacity-50" : "")}
           />
-          <div className="mt-3 flex items-center gap-2">
+          <div className="mt-3 flex flex-wrap items-center gap-2">
             <input 
               type="checkbox" 
               id="autoRate" 
@@ -388,7 +388,7 @@ function PipValueCalculator() {
               onChange={(e) => setUseAutoRate(e.target.checked)} 
               className="rounded border-slate-300 text-primary-600 focus:ring-primary-500"
             />
-            <label htmlFor="autoRate" className="text-sm text-slate-600 dark:text-slate-400">
+            <label htmlFor="autoRate" className="min-w-0 flex-1 text-sm text-slate-600 dark:text-slate-400">
               Auto-fetch live rate {loadingRate && "(loading...)"} {autoRate !== null && useAutoRate && `(current: ${formatNumber(autoRate, 6)})`}
             </label>
             {useAutoRate && cacheAge && (
@@ -587,7 +587,7 @@ function ForexPnlCalculator() {
   };
 
   return <>
-    <div className="grid gap-5 grid-cols-1 md:grid-cols-2">
+    <div className="min-w-0 grid gap-5 grid-cols-1 md:grid-cols-2">
       <SelectField label="Currency pair" value={pair} onChange={setPair} options={forexPairSelectOptions} />
       <SelectField label="Direction" value={direction} onChange={setDirection} options={[{ label: "Long", value: "long" }, { label: "Short", value: "short" }]} />
       <NumberField label="Position size" value={lotSize} onChange={setLotSize} step="0.01" suffix="lots" />
@@ -603,7 +603,7 @@ function ForexPnlCalculator() {
           disabled={useAutoPipValue && loadingPipValue}
           className={inputClass + (useAutoPipValue && loadingPipValue ? " opacity-50" : "")}
         />
-        <div className="mt-3 flex items-center gap-2">
+        <div className="mt-3 flex flex-wrap items-center gap-2">
           <input 
             type="checkbox" 
             id="autoPipValue" 
@@ -611,7 +611,7 @@ function ForexPnlCalculator() {
             onChange={(e) => setUseAutoPipValue(e.target.checked)} 
             className="rounded border-slate-300 text-primary-600 focus:ring-primary-500"
           />
-          <label htmlFor="autoPipValue" className="text-sm text-slate-600 dark:text-slate-400">
+          <label htmlFor="autoPipValue" className="min-w-0 flex-1 text-sm text-slate-600 dark:text-slate-400">
             Auto-fetch pip value {loadingPipValue && "(loading...)"} {autoPipValue !== null && useAutoPipValue && `(current: ${formatNumber(autoPipValue, 6)})`}
           </label>
           {useAutoPipValue && (
@@ -624,7 +624,7 @@ function ForexPnlCalculator() {
             </button>
           )}
         </div>
-        <div className="mt-1 flex items-center justify-between">
+        <div className="mt-1 flex flex-wrap items-center justify-between gap-x-3 gap-y-1">
           <p className="text-xs text-slate-500 dark:text-slate-400">
             {pair.split("/")[0]} → {pair.split("/")[1]}
           </p>
@@ -1393,9 +1393,9 @@ export default function CalculatorSuite({ slug }: Props) {
     <div className="relative min-h-screen bg-white dark:bg-slate-950">
       <div className="absolute inset-0 grid-pattern noise-bg pointer-events-none" />
       <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-20">
-        <div className="max-w-3xl mb-10"><p className="text-sm font-bold uppercase tracking-widest text-primary-600 mb-3">Tradivex Calculators</p><h1 className="text-4xl lg:text-5xl font-black text-slate-900 dark:text-white mb-4">{definition.title}</h1><p className="text-lg text-slate-600 dark:text-slate-400">{definition.description}</p></div>
-        <div className="grid gap-8 lg:grid-cols-[1fr_280px] items-start">
-          <section className="glass-card rounded-3xl p-6 lg:p-8"><Calculator /></section>
+        <div className="max-w-3xl mb-10"><p className="text-sm font-bold uppercase tracking-widest text-primary-600 mb-3">Tradivex Calculators</p><h1 className="break-words text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 dark:text-white mb-4">{definition.title}</h1><p className="text-lg text-slate-600 dark:text-slate-400">{definition.description}</p></div>
+        <div className="min-w-0 grid gap-8 lg:grid-cols-[1fr_280px] items-start">
+          <section className="glass-card min-w-0 rounded-3xl p-4 sm:p-6 lg:p-8"><Calculator /></section>
           <aside className="space-y-4"><div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white/70 dark:bg-slate-900/70 p-5"><h2 className="font-bold text-slate-900 dark:text-white mb-3">More calculators</h2><nav className="space-y-2">{calculatorDefinitions.map((item) => <Link key={item.slug} href={`/calculators/${item.slug}`} className={`block rounded-xl px-3 py-2 text-sm transition-colors ${item.slug === slug ? "bg-primary-50 text-primary-700 dark:bg-primary-950/40 dark:text-primary-300" : "text-slate-600 hover:bg-slate-50 dark:text-slate-400 dark:hover:bg-slate-800"}`}>{item.shortTitle}</Link>)}</nav></div><div className="rounded-2xl border border-slate-200 dark:border-slate-800 p-5 text-sm text-slate-600 dark:text-slate-400">Results are estimates from your inputs. They are not financial advice or a recommendation to trade.</div></aside>
         </div>
       </div>
