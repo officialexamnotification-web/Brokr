@@ -96,13 +96,6 @@ export default function CalculatorPage({ params }: { params: { slug: string } })
         price: "0",
         priceCurrency: "USD",
         availability: "https://schema.org/InStock"
-      },
-      aggregateRating: {
-        "@type": "AggregateRating",
-        ratingValue: "4.8",
-        ratingCount: "1250",
-        bestRating: "5",
-        worstRating: "1"
       }
     };
     
