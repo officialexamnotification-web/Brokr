@@ -11,6 +11,7 @@ export const metadata: Metadata = {
   description:
     "Tradivex is a neutral directory for comparing trading platforms, brokers, exchanges, market tools, and calculators.",
   keywords: "trading tools directory, broker comparison, forex brokers, crypto exchanges, stock brokers, trading platforms",
+  viewport: "width=device-width, initial-scale=1, maximum-scale=5",
   openGraph: {
     type: "website",
     siteName: "Tradivex",
