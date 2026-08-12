@@ -21,13 +21,13 @@ export const calculatorDefinitions = [
     slug: "forex-margin",
     title: "Forex Margin Calculator",
     shortTitle: "Forex Margin",
-    description: "Estimate required margin from trade size, entry price, leverage, and currency conversion.",
+    description: "Calculate required margin with live exchange rates, 50+ currency pairs, 18 leverage options, and automatic currency conversion for accurate margin planning.",
   },
   {
     slug: "options-payoff",
     title: "Options Payoff Calculator",
     shortTitle: "Options Payoff",
-    description: "Model a basic long or short call/put payoff at expiry using your own assumptions.",
+    description: "Enterprise-grade options calculator with BSM/Binomial models, complete & advanced Greeks, IV solver, multi-leg strategies, volatility surface, and payoff diagrams.",
   },
   {
     slug: "brokerage",

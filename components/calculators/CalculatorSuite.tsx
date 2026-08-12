@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import type { ReactNode } from "react";
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine } from "recharts";
 import { calculatorDefinitions, type CalculatorSlug } from "@/lib/calculators";
 import RateTable from "@/components/calculators/RateTable";
 
@@ -248,15 +249,8 @@ function PipValueCalculator() {
   
   // Client-side caching functions
   const getCacheDuration = useCallback((base: string, target: string): number => {
-    // Different cache durations based on pair type
-    const majorPairs = ['USD', 'EUR', 'GBP', 'JPY'];
-    const isMajor = majorPairs.includes(base) && majorPairs.includes(target);
-
-    if (isMajor) {
-      return 2 * 60 * 60 * 1000; // 2 hours for major pairs
-    } else {
-      return 4 * 60 * 60 * 1000; // 4 hours for other pairs
-    }
+    // 10 minutes for all forex pairs - forex markets move fast
+    return 10 * 60 * 1000; // 10 minutes
   }, []);
 
   const getCachedRate = useCallback((base: string, target: string): { rate: number; timestamp: number } | null => {
@@ -464,12 +458,311 @@ function PositionSizeCalculator() {
   const [riskPercent, setRiskPercent] = useState(1);
   const [stopLoss, setStopLoss] = useState(30);
   const [pipValue, setPipValue] = useState(10);
+  
+  // NEW: Enhanced states with proper error handling
+  const [pair, setPair] = useState("EUR/USD");
+  const [accountCurrency, setAccountCurrency] = useState("USD");
+  const [autoPipValue, setAutoPipValue] = useState<number | null>(null);
+  const [useAutoPipValue, setUseAutoPipValue] = useState(true);
+  const [loadingPipValue, setLoadingPipValue] = useState(false);
+  const [conversionRate, setConversionRate] = useState(1);
+  const [loadingConversion, setLoadingConversion] = useState(false);
+  const [cacheAge, setCacheAge] = useState<string | null>(null);
+  const [apiError, setApiError] = useState<string | null>(null);
+  
+  // Client-side caching functions (from PipValueCalculator, corrected)
+  const getCacheDuration = useCallback((base: string, target: string): number => {
+    // 10 minutes for all forex pairs - forex markets move fast
+    return 10 * 60 * 1000; // 10 minutes
+  }, []);
+
+  const getCachedRate = useCallback((base: string, target: string): { rate: number; timestamp: number } | null => {
+    if (typeof window === 'undefined') return null;
+    try {
+      const cacheKey = `forex_rate_${base}_${target}`;
+      const cached = localStorage.getItem(cacheKey);
+      if (cached) {
+        const data = JSON.parse(cached);
+        const cacheAge = Date.now() - data.timestamp;
+        const maxAge = getCacheDuration(base, target);
+        if (cacheAge < maxAge) {
+          return data;
+        } else {
+          localStorage.removeItem(cacheKey);
+        }
+      }
+    } catch (error) {
+      console.error("Cache read error:", error);
+    }
+    return null;
+  }, [getCacheDuration]);
+
+  const setCachedRate = useCallback((base: string, target: string, rate: number) => {
+    if (typeof window === 'undefined') return;
+    try {
+      const cacheKey = `forex_rate_${base}_${target}`;
+      const data = { rate, timestamp: Date.now() };
+      localStorage.setItem(cacheKey, JSON.stringify(data));
+    } catch (error) {
+      console.error("Cache write error:", error);
+    }
+  }, []);
+
+  const formatCacheAge = useCallback((timestamp: number): string => {
+    const minutes = Math.floor((Date.now() - timestamp) / (60 * 1000));
+    if (minutes < 60) return `${minutes} min ago`;
+    const hours = Math.floor(minutes / 60);
+    return `${hours} hour${hours > 1 ? 's' : ''} ago`;
+  }, []);
+  
+  // Auto-detect pip size based on pair
+  const pipSize = pair.includes("JPY") ? 0.01 : 0.0001;
+  
+  // Fetch pip value automatically with proper error handling
+  useEffect(() => {
+    let active = true;
+    let controller = new AbortController();
+    
+    async function fetchPipValue() {
+      if (!useAutoPipValue) return;
+      
+      const [base, target] = pair.split("/");
+      setLoadingPipValue(true);
+      setApiError(null);
+      
+      try {
+        // Check cache first
+        const cached = getCachedRate(base, target);
+        if (cached) {
+          if (active) {
+            const calculatedPipValue = 100000 * pipSize * (target === "USD" ? 1 : cached.rate);
+            setAutoPipValue(calculatedPipValue);
+            setPipValue(calculatedPipValue);
+            setCacheAge(formatCacheAge(cached.timestamp));
+            setLoadingPipValue(false);
+          }
+          return;
+        }
+        
+        const response = await fetch(`/api/forex?base=${base}&targets=${target}`, {
+          signal: controller.signal
+        });
+        
+        if (!response.ok) throw new Error("API request failed");
+        
+        const data = await response.json();
+        if (data.rates && data.rates[target] && active) {
+          const rate = data.rates[target];
+          const calculatedPipValue = 100000 * pipSize * (target === "USD" ? 1 : rate);
+          setAutoPipValue(calculatedPipValue);
+          setPipValue(calculatedPipValue);
+          setCacheAge("Just now");
+          setCachedRate(base, target, rate);
+        }
+      } catch (error) {
+        if (active && !(error instanceof Error && error.name === 'AbortError')) {
+          console.error("Failed to fetch pip value:", error);
+          setApiError("Failed to fetch live rates. Using manual mode.");
+          setUseAutoPipValue(false);
+        }
+      } finally {
+        if (active) setLoadingPipValue(false);
+      }
+    }
+    
+    fetchPipValue();
+    return () => {
+      active = false;
+      controller.abort();
+    };
+  }, [pair, useAutoPipValue, pipSize, getCachedRate, setCachedRate, formatCacheAge]);
+
+  // Fetch conversion rate for account currency with proper error handling
+  useEffect(() => {
+    let active = true;
+    let controller = new AbortController();
+    
+    async function fetchConversion() {
+      const [base, target] = pair.split("/");
+      
+      // If account currency is base or target, no conversion needed
+      if (accountCurrency === base || accountCurrency === target) {
+        if (active) {
+          setConversionRate(1);
+          setLoadingConversion(false);
+        }
+        return;
+      }
+      
+      setLoadingConversion(true);
+      
+      try {
+        const response = await fetch(`/api/forex?base=${target}&targets=${accountCurrency}`, {
+          signal: controller.signal
+        });
+        
+        if (!response.ok) throw new Error("Conversion API failed");
+        
+        const data = await response.json();
+        if (data.rates && data.rates[accountCurrency] && active) {
+          setConversionRate(data.rates[accountCurrency]);
+        }
+      } catch (error) {
+        if (active && !(error instanceof Error && error.name === 'AbortError')) {
+          console.error("Failed to fetch conversion rate:", error);
+          // Fallback to rate 1 if conversion fails
+          setConversionRate(1);
+        }
+      } finally {
+        if (active) setLoadingConversion(false);
+      }
+    }
+    
+    fetchConversion();
+    return () => {
+      active = false;
+      controller.abort();
+    };
+  }, [pair, accountCurrency]);
+
+  // Manual refresh for pip value
+  const handleRefreshPipValue = async () => {
+    const [base, target] = pair.split("/");
+    setLoadingPipValue(true);
+    setApiError(null);
+    
+    try {
+      // Clear cache
+      if (typeof window !== 'undefined') {
+        const cacheKey = `forex_rate_${base}_${target}`;
+        localStorage.removeItem(cacheKey);
+      }
+      
+      const response = await fetch(`/api/forex?base=${base}&targets=${target}`);
+      if (response.ok) {
+        const data = await response.json();
+        if (data.rates && data.rates[target]) {
+          const rate = data.rates[target];
+          const calculatedPipValue = 100000 * pipSize * (target === "USD" ? 1 : rate);
+          setAutoPipValue(calculatedPipValue);
+          setPipValue(calculatedPipValue);
+          setCacheAge("Just updated");
+          setCachedRate(base, target, rate);
+        }
+      }
+    } catch (error) {
+      console.error("Refresh failed:", error);
+      setApiError("Failed to refresh live rates.");
+    } finally {
+      setLoadingPipValue(false);
+    }
+  };
+
+  // Proper calculation with account currency conversion
   const riskAmount = balance * riskPercent / 100;
-  const lots = riskAmount / (stopLoss * pipValue);
+  const effectivePipValue = useAutoPipValue && autoPipValue !== null 
+    ? autoPipValue * conversionRate 
+    : pipValue * conversionRate;
+  
+  const lots = stopLoss > 0 && effectivePipValue > 0 
+    ? riskAmount / (stopLoss * effectivePipValue) 
+    : 0;
+
   return <>
-    <div className="grid gap-5 md:grid-cols-2"><NumberField label="Account balance" value={balance} onChange={setBalance} step="0.01" /><NumberField label="Risk per trade" value={riskPercent} onChange={setRiskPercent} step="0.1" suffix="%" /><NumberField label="Stop loss" value={stopLoss} onChange={setStopLoss} step="0.1" suffix="pips" /><NumberField label="Pip value per standard lot" value={pipValue} onChange={setPipValue} step="0.01" /></div>
-    <div className="mt-6 grid gap-4 sm:grid-cols-3"><Result label="Risk amount" value={formatNumber(riskAmount)} /><Result label="Estimated position size" value={`${formatNumber(lots, 4)} lots`} /><Result label="Approx. units" value={formatNumber(lots * 100000, 0)} /></div>
-    <Notice>This is a calculation from your own inputs, not a recommendation of how much to risk. Actual pip value, minimum lot size, and execution loss can differ by instrument and broker.</Notice>
+    <div className="min-w-0 space-y-5">
+      <div className="grid gap-4 grid-cols-1 md:grid-cols-2 items-start">
+        <SelectField label="Currency pair" value={pair} onChange={setPair} options={forexPairSelectOptions} />
+        <SelectField label="Account currency" value={accountCurrency} onChange={setAccountCurrency} options={worldCurrencyOptions} />
+        <NumberField label="Account balance" value={balance} onChange={setBalance} step="0.01" />
+        <NumberField label="Risk per trade" value={riskPercent} onChange={setRiskPercent} step="0.1" suffix="%" />
+        <NumberField label="Stop loss" value={stopLoss} onChange={setStopLoss} step="0.1" suffix="pips" />
+        
+        <div>
+          <span className={labelClass}>Pip value per standard lot</span>
+          <div className="relative">
+            <input 
+              type="number" 
+              step="0.01" 
+              value={useAutoPipValue && autoPipValue !== null ? autoPipValue : pipValue} 
+              onChange={(e) => { 
+                setPipValue(Number(e.target.value)); 
+                setUseAutoPipValue(false); 
+              }} 
+              disabled={useAutoPipValue && loadingPipValue}
+              className={inputClass + (useAutoPipValue && loadingPipValue ? " opacity-50" : "")}
+            />
+            {loadingPipValue && (
+              <span className="absolute right-4 top-1/2 -translate-y-1/2 text-xs text-slate-400">
+                Loading...
+              </span>
+            )}
+          </div>
+          
+          <div className="mt-3 flex flex-wrap items-center gap-2">
+            <input 
+              type="checkbox" 
+              id="autoPipValue" 
+              checked={useAutoPipValue} 
+              onChange={(e) => setUseAutoPipValue(e.target.checked)} 
+              className="rounded border-slate-300 text-primary-600 focus:ring-primary-500"
+            />
+            <label htmlFor="autoPipValue" className="min-w-0 flex-1 text-sm text-slate-600 dark:text-slate-400">
+              Auto-fetch pip value {loadingPipValue && "(loading...)"} {autoPipValue !== null && useAutoPipValue && `(current: ${formatNumber(autoPipValue, 6)})`}
+            </label>
+            {useAutoPipValue && (
+              <button 
+                onClick={handleRefreshPipValue}
+                disabled={loadingPipValue}
+                className="text-xs text-primary-600 hover:text-primary-700 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                Refresh
+              </button>
+            )}
+          </div>
+          
+          {apiError && (
+            <div className="mt-2 text-xs text-red-600 dark:text-red-400">
+              {apiError}
+            </div>
+          )}
+          
+          <div className="mt-1 flex items-center justify-between">
+            <p className="text-xs text-slate-500 dark:text-slate-400">
+              {pair.split("/")[0]} → {pair.split("/")[1]}
+            </p>
+            {cacheAge && useAutoPipValue && (
+              <p className="text-xs text-slate-500 dark:text-slate-400">
+                Updated: {cacheAge}
+              </p>
+            )}
+          </div>
+        </div>
+      </div>
+      
+      <div className="mt-6 grid gap-4 sm:grid-cols-3">
+        <Result label="Risk amount" value={formatNumber(riskAmount)} />
+        <Result label="Estimated position size" value={`${formatNumber(lots, 4)} lots`} />
+        <Result label="Approx. units" value={formatNumber(lots * 100000, 0)} />
+      </div>
+      
+      {/* Calculation Formula Display */}
+      <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5 dark:border-slate-800 dark:bg-slate-950/70">
+        <h3 className="text-base font-semibold text-slate-700 dark:text-slate-300 mb-4">Calculation Formula</h3>
+        <div className="space-y-3 text-sm text-slate-600 dark:text-slate-400">
+          <p><strong>Risk Amount:</strong> {formatNumber(balance)} × {riskPercent}% = {formatNumber(riskAmount)}</p>
+          <p><strong>Pip Size:</strong> {pipSize} {pair.includes("JPY") ? "(JPY pairs use 0.01)" : "(standard pairs use 0.0001)"}</p>
+          <p><strong>Effective Pip Value:</strong> {formatNumber(effectivePipValue, 6)} {accountCurrency}</p>
+          <p><strong>Position Size:</strong> {formatNumber(riskAmount)} ÷ ({stopLoss} pips × {formatNumber(effectivePipValue, 6)}) = {formatNumber(lots, 4)} lots</p>
+          {pair.includes("JPY") && (
+            <p className="text-xs text-amber-700 dark:text-amber-400 mt-3"><strong>JPY Note:</strong> JPY pairs quote to 2 decimal places (e.g., 150.25), so 1 pip = 0.01.</p>
+          )}
+        </div>
+      </div>
+      
+      <Notice>This is a calculation from your own inputs, not a recommendation of how much to risk. Actual pip value, minimum lot size, and execution loss can differ by instrument and broker.</Notice>
+      
+      <RateTable />
+    </div>
   </>;
 }
 
@@ -487,100 +780,198 @@ function ForexPnlCalculator() {
   const [loadingPipValue, setLoadingPipValue] = useState(false);
   const [conversionRate, setConversionRate] = useState(1);
   const [loadingConversion, setLoadingConversion] = useState(false);
+  const [cacheAge, setCacheAge] = useState<string | null>(null);
+  const [apiError, setApiError] = useState<string | null>(null);
+
+  // Client-side caching functions (10 minutes for all forex pairs)
+  const getCacheDuration = useCallback((base: string, target: string): number => {
+    // 10 minutes for all forex pairs - forex markets move fast
+    return 10 * 60 * 1000; // 10 minutes
+  }, []);
+
+  const getCachedRate = useCallback((base: string, target: string): { rate: number; timestamp: number } | null => {
+    if (typeof window === 'undefined') return null;
+    try {
+      const cacheKey = `forex_rate_${base}_${target}`;
+      const cached = localStorage.getItem(cacheKey);
+      if (cached) {
+        const data = JSON.parse(cached);
+        const cacheAge = Date.now() - data.timestamp;
+        const maxAge = getCacheDuration(base, target);
+        if (cacheAge < maxAge) {
+          return data;
+        } else {
+          localStorage.removeItem(cacheKey);
+        }
+      }
+    } catch (error) {
+      console.error("Cache read error:", error);
+    }
+    return null;
+  }, [getCacheDuration]);
+
+  const setCachedRate = useCallback((base: string, target: string, rate: number) => {
+    if (typeof window === 'undefined') return;
+    try {
+      const cacheKey = `forex_rate_${base}_${target}`;
+      const data = { rate, timestamp: Date.now() };
+      localStorage.setItem(cacheKey, JSON.stringify(data));
+    } catch (error) {
+      console.error("Cache write error:", error);
+    }
+  }, []);
+
+  const formatCacheAge = useCallback((timestamp: number): string => {
+    const minutes = Math.floor((Date.now() - timestamp) / (60 * 1000));
+    if (minutes < 60) return `${minutes} min ago`;
+    const hours = Math.floor(minutes / 60);
+    return `${hours} hour${hours > 1 ? 's' : ''} ago`;
+  }, []);
 
   // Auto-detect pip size based on pair
   useEffect(() => {
     setPipSize(pair.includes("JPY") ? 0.01 : 0.0001);
   }, [pair]);
 
-  // Fetch pip value automatically
+  // Fetch pip value automatically with caching
   useEffect(() => {
     let active = true;
+    let controller = new AbortController();
     
     async function fetchPipValue() {
       if (!useAutoPipValue) return;
       
       const [base, target] = pair.split("/");
       setLoadingPipValue(true);
+      setApiError(null);
       
       try {
-        const response = await fetch(`/api/forex?base=${base}&targets=${target}`);
-        if (response.ok) {
-          const data = await response.json();
-          if (data.rates && data.rates[target]) {
-            // Calculate pip value: 100,000 units × pip size × rate
-            const calculatedPipValue = 100000 * pipSize * (target === "USD" ? 1 : data.rates[target]);
+        // Check cache first
+        const cached = getCachedRate(base, target);
+        if (cached) {
+          if (active) {
+            const calculatedPipValue = 100000 * pipSize * (target === "USD" ? 1 : cached.rate);
             setAutoPipValue(calculatedPipValue);
             setPipValue(calculatedPipValue);
+            setCacheAge(formatCacheAge(cached.timestamp));
+            setLoadingPipValue(false);
           }
+          return;
+        }
+        
+        const response = await fetch(`/api/forex?base=${base}&targets=${target}`, {
+          signal: controller.signal
+        });
+        
+        if (!response.ok) throw new Error("API request failed");
+        
+        const data = await response.json();
+        if (data.rates && data.rates[target] && active) {
+          const rate = data.rates[target];
+          const calculatedPipValue = 100000 * pipSize * (target === "USD" ? 1 : rate);
+          setAutoPipValue(calculatedPipValue);
+          setPipValue(calculatedPipValue);
+          setCacheAge("Just now");
+          setCachedRate(base, target, rate);
         }
       } catch (error) {
-        console.error("Failed to fetch pip value:", error);
+        if (active && !(error instanceof Error && error.name === 'AbortError')) {
+          console.error("Failed to fetch pip value:", error);
+          setApiError("Failed to fetch live rates. Using manual mode.");
+          setUseAutoPipValue(false);
+        }
       } finally {
         if (active) setLoadingPipValue(false);
       }
     }
     
     fetchPipValue();
-    return () => { active = false; };
-  }, [pair, useAutoPipValue, pipSize]);
+    return () => {
+      active = false;
+      controller.abort();
+    };
+  }, [pair, useAutoPipValue, pipSize, getCachedRate, setCachedRate, formatCacheAge]);
 
-  // Fetch conversion rate for account currency
+  // Fetch conversion rate for account currency with error handling
   useEffect(() => {
     let active = true;
+    let controller = new AbortController();
     
     async function fetchConversion() {
       const [base, target] = pair.split("/");
       
       // If account currency is base or target, no conversion needed
       if (accountCurrency === base || accountCurrency === target) {
-        setConversionRate(1);
+        if (active) {
+          setConversionRate(1);
+          setLoadingConversion(false);
+        }
         return;
       }
       
       setLoadingConversion(true);
       
       try {
-        // Fetch from target to account currency
-        const response = await fetch(`/api/forex?base=${target}&targets=${accountCurrency}`);
-        if (response.ok) {
-          const data = await response.json();
-          if (data.rates && data.rates[accountCurrency]) {
-            setConversionRate(data.rates[accountCurrency]);
-          }
+        const response = await fetch(`/api/forex?base=${target}&targets=${accountCurrency}`, {
+          signal: controller.signal
+        });
+        
+        if (!response.ok) throw new Error("Conversion API failed");
+        
+        const data = await response.json();
+        if (data.rates && data.rates[accountCurrency] && active) {
+          setConversionRate(data.rates[accountCurrency]);
         }
       } catch (error) {
-        console.error("Failed to fetch conversion rate:", error);
+        if (active && !(error instanceof Error && error.name === 'AbortError')) {
+          console.error("Failed to fetch conversion rate:", error);
+          // Fallback to rate 1 if conversion fails
+          setConversionRate(1);
+        }
       } finally {
         if (active) setLoadingConversion(false);
       }
     }
     
     fetchConversion();
-    return () => { active = false; };
+    return () => {
+      active = false;
+      controller.abort();
+    };
   }, [pair, accountCurrency]);
 
   const pips = (direction === "long" ? exit - entry : entry - exit) / pipSize;
   const basePnl = pips * pipValue * lotSize;
   const convertedPnl = basePnl * conversionRate;
 
-  // Manual refresh for pip value
+  // Manual refresh for pip value with cache clearing
   const handleRefreshPipValue = async () => {
     const [base, target] = pair.split("/");
     setLoadingPipValue(true);
+    setApiError(null);
     
     try {
+      // Clear cache
+      if (typeof window !== 'undefined') {
+        const cacheKey = `forex_rate_${base}_${target}`;
+        localStorage.removeItem(cacheKey);
+      }
+      
       const response = await fetch(`/api/forex?base=${base}&targets=${target}`);
       if (response.ok) {
         const data = await response.json();
         if (data.rates && data.rates[target]) {
-          const calculatedPipValue = 100000 * pipSize * (target === "USD" ? 1 : data.rates[target]);
+          const rate = data.rates[target];
+          const calculatedPipValue = 100000 * pipSize * (target === "USD" ? 1 : rate);
           setAutoPipValue(calculatedPipValue);
           setPipValue(calculatedPipValue);
+          setCacheAge("Just updated");
+          setCachedRate(base, target, rate);
         }
       }
     } catch (error) {
       console.error("Refresh failed:", error);
+      setApiError("Failed to refresh live rates.");
     } finally {
       setLoadingPipValue(false);
     }
@@ -595,14 +986,21 @@ function ForexPnlCalculator() {
       <NumberField label="Exit price" value={exit} onChange={setExit} step="0.00001" />
       <div>
         <span className={labelClass}>Pip value per lot</span>
-        <input 
-          type="number" 
-          step="0.01" 
-          value={useAutoPipValue && autoPipValue !== null ? autoPipValue : pipValue} 
-          onChange={(e) => { setPipValue(Number(e.target.value)); setUseAutoPipValue(false); }} 
-          disabled={useAutoPipValue && loadingPipValue}
-          className={inputClass + (useAutoPipValue && loadingPipValue ? " opacity-50" : "")}
-        />
+        <div className="relative">
+          <input 
+            type="number" 
+            step="0.01" 
+            value={useAutoPipValue && autoPipValue !== null ? autoPipValue : pipValue} 
+            onChange={(e) => { setPipValue(Number(e.target.value)); setUseAutoPipValue(false); }} 
+            disabled={useAutoPipValue && loadingPipValue}
+            className={inputClass + (useAutoPipValue && loadingPipValue ? " opacity-50" : "")}
+          />
+          {loadingPipValue && (
+            <span className="absolute right-4 top-1/2 -translate-y-1/2 text-xs text-slate-400">
+              Loading...
+            </span>
+          )}
+        </div>
         <div className="mt-3 flex flex-wrap items-center gap-2">
           <input 
             type="checkbox" 
@@ -624,10 +1022,20 @@ function ForexPnlCalculator() {
             </button>
           )}
         </div>
-        <div className="mt-1 flex flex-wrap items-center justify-between gap-x-3 gap-y-1">
+        {apiError && (
+          <div className="mt-2 text-xs text-red-600 dark:text-red-400">
+            {apiError}
+          </div>
+        )}
+        <div className="mt-1 flex items-center justify-between">
           <p className="text-xs text-slate-500 dark:text-slate-400">
             {pair.split("/")[0]} → {pair.split("/")[1]}
           </p>
+          {cacheAge && useAutoPipValue && (
+            <p className="text-xs text-slate-500 dark:text-slate-400">
+              Updated: {cacheAge}
+            </p>
+          )}
         </div>
       </div>
       <SelectField label="Account currency" value={accountCurrency} onChange={setAccountCurrency} options={worldCurrencyOptions} />
@@ -643,34 +1051,1148 @@ function ForexPnlCalculator() {
 }
 
 function ForexMarginCalculator() {
-  const [units, setUnits] = useState(100000);
+  const [pair, setPair] = useState("EUR/USD");
+  const [accountCurrency, setAccountCurrency] = useState("USD");
+  const [lotSize, setLotSize] = useState(1);
+  const [leverage, setLeverage] = useState(100);
   const [entry, setEntry] = useState(1.085);
-  const [leverage, setLeverage] = useState(30);
-  const [conversion, setConversion] = useState(1);
-  const margin = units * entry * conversion / leverage;
+  const [conversionRate, setConversionRate] = useState(1);
+  const [loadingConversion, setLoadingConversion] = useState(false);
+  const [cacheAge, setCacheAge] = useState<string | null>(null);
+  const [apiError, setApiError] = useState<string | null>(null);
+  const [useAutoRate, setUseAutoRate] = useState(true);
+  const [autoRate, setAutoRate] = useState<number | null>(null);
+
+  const leverageOptions = [
+    { label: "1:5", value: "5" },
+    { label: "1:10", value: "10" },
+    { label: "1:20", value: "20" },
+    { label: "1:25", value: "25" },
+    { label: "1:30", value: "30" },
+    { label: "1:33", value: "33" },
+    { label: "1:40", value: "40" },
+    { label: "1:50", value: "50" },
+    { label: "1:66", value: "66" },
+    { label: "1:100", value: "100" },
+    { label: "1:125", value: "125" },
+    { label: "1:150", value: "150" },
+    { label: "1:200", value: "200" },
+    { label: "1:300", value: "300" },
+    { label: "1:400", value: "400" },
+    { label: "1:500", value: "500" },
+    { label: "1:600", value: "600" },
+    { label: "1:1000", value: "1000" },
+  ];
+
+  // Client-side caching functions (10 minutes for all forex pairs)
+  const getCacheDuration = useCallback((base: string, target: string): number => {
+    // 10 minutes for all forex pairs - forex markets move fast
+    return 10 * 60 * 1000; // 10 minutes
+  }, []);
+
+  const getCachedRate = useCallback((base: string, target: string): { rate: number; timestamp: number } | null => {
+    if (typeof window === 'undefined') return null;
+    try {
+      const cacheKey = `forex_rate_${base}_${target}`;
+      const cached = localStorage.getItem(cacheKey);
+      if (cached) {
+        const data = JSON.parse(cached);
+        const cacheAge = Date.now() - data.timestamp;
+        const maxAge = getCacheDuration(base, target);
+        if (cacheAge < maxAge) {
+          return data;
+        } else {
+          localStorage.removeItem(cacheKey);
+        }
+      }
+    } catch (error) {
+      console.error("Cache read error:", error);
+    }
+    return null;
+  }, [getCacheDuration]);
+
+  const setCachedRate = useCallback((base: string, target: string, rate: number) => {
+    if (typeof window === 'undefined') return;
+    try {
+      const cacheKey = `forex_rate_${base}_${target}`;
+      const data = { rate, timestamp: Date.now() };
+      localStorage.setItem(cacheKey, JSON.stringify(data));
+    } catch (error) {
+      console.error("Cache write error:", error);
+    }
+  }, []);
+
+  const formatCacheAge = useCallback((timestamp: number): string => {
+    const minutes = Math.floor((Date.now() - timestamp) / (60 * 1000));
+    if (minutes < 60) return `${minutes} min ago`;
+    const hours = Math.floor(minutes / 60);
+    return `${hours} hour${hours > 1 ? 's' : ''} ago`;
+  }, []);
+
+  // Fetch conversion rate for account currency
+  useEffect(() => {
+    let active = true;
+    let controller = new AbortController();
+    
+    async function fetchConversion() {
+      const [base, target] = pair.split("/");
+      
+      // If account currency is base or target, no conversion needed
+      if (accountCurrency === base || accountCurrency === target) {
+        if (active) {
+          setConversionRate(1);
+          setAutoRate(1);
+          setLoadingConversion(false);
+          setCacheAge(null);
+        }
+        return;
+      }
+      
+      setLoadingConversion(true);
+      
+      try {
+        // Check cache first
+        const cached = getCachedRate(base, accountCurrency);
+        if (cached && useAutoRate) {
+          if (active) {
+            setAutoRate(cached.rate);
+            setConversionRate(cached.rate);
+            setCacheAge(formatCacheAge(cached.timestamp));
+            setLoadingConversion(false);
+          }
+          return;
+        }
+        
+        const response = await fetch(`/api/forex?base=${base}&targets=${accountCurrency}`, {
+          signal: controller.signal
+        });
+        
+        if (!response.ok) throw new Error("Conversion API failed");
+        
+        const data = await response.json();
+        if (data.rates && data.rates[accountCurrency] && active) {
+          const rate = data.rates[accountCurrency];
+          setAutoRate(rate);
+          setConversionRate(rate);
+          setCacheAge("Just now");
+          setCachedRate(base, accountCurrency, rate);
+        }
+      } catch (error) {
+        if (active && !(error instanceof Error && error.name === 'AbortError')) {
+          console.error("Failed to fetch conversion rate:", error);
+          setApiError("Failed to fetch live rates. Using manual mode.");
+          setUseAutoRate(false);
+          // Fallback to rate 1 if conversion fails
+          setConversionRate(1);
+        }
+      } finally {
+        if (active) setLoadingConversion(false);
+      }
+    }
+    
+    if (useAutoRate) {
+      fetchConversion();
+    }
+    return () => {
+      active = false;
+      controller.abort();
+    };
+  }, [pair, accountCurrency, useAutoRate, getCachedRate, setCachedRate, formatCacheAge]);
+
+  // Manual refresh for conversion rate
+  const handleRefreshRate = async () => {
+    const [base, target] = pair.split("/");
+    setLoadingConversion(true);
+    setApiError(null);
+    
+    try {
+      // Clear cache
+      if (typeof window !== 'undefined') {
+        const cacheKey = `forex_rate_${base}_${accountCurrency}`;
+        localStorage.removeItem(cacheKey);
+      }
+      
+      const response = await fetch(`/api/forex?base=${base}&targets=${accountCurrency}`);
+      if (response.ok) {
+        const data = await response.json();
+        if (data.rates && data.rates[accountCurrency]) {
+          const rate = data.rates[accountCurrency];
+          setAutoRate(rate);
+          setConversionRate(rate);
+          setCacheAge("Just updated");
+          setCachedRate(base, accountCurrency, rate);
+        }
+      }
+    } catch (error) {
+      console.error("Refresh failed:", error);
+      setApiError("Failed to refresh live rates.");
+    } finally {
+      setLoadingConversion(false);
+    }
+  };
+
+  // Calculate margin
+  const units = lotSize * 100000; // Convert lots to units
+  const notionalValue = units * entry * conversionRate;
+  const requiredMargin = notionalValue / leverage;
+
   return <>
-    <div className="grid gap-5 md:grid-cols-2"><NumberField label="Trade units" value={units} onChange={setUnits} step="1000" /><NumberField label="Entry price" value={entry} onChange={setEntry} step="0.00001" /><NumberField label="Leverage" value={leverage} onChange={setLeverage} step="1" suffix="×" /><NumberField label="Quote currency → account currency" value={conversion} onChange={setConversion} step="0.0001" /></div>
-    <div className="mt-6 grid gap-4 sm:grid-cols-2"><Result label="Estimated required margin" value={formatNumber(margin)} /><Result label="Notional value in account currency" value={formatNumber(units * entry * conversion)} /></div>
-    <Notice>This is an illustrative estimate, not a broker quote. Margin rates, leverage limits, hedging rules, liquidation thresholds, and conversion rates vary by broker, instrument, country, and account type.</Notice>
+    <div className="min-w-0 space-y-5">
+      <div className="grid gap-4 grid-cols-1 md:grid-cols-2 items-start">
+        <SelectField label="Currency pair" value={pair} onChange={setPair} options={forexPairSelectOptions} />
+        <SelectField label="Account currency" value={accountCurrency} onChange={setAccountCurrency} options={worldCurrencyOptions} />
+        <NumberField label="Position size" value={lotSize} onChange={setLotSize} step="0.01" suffix="lots" />
+        <SelectField label="Leverage" value={String(leverage)} onChange={(value) => setLeverage(Number(value))} options={leverageOptions} />
+        <NumberField label="Entry price" value={entry} onChange={setEntry} step="0.00001" />
+        <div>
+          <span className={labelClass}>Base → Account conversion rate</span>
+          <div className="relative">
+            <input 
+              type="number" 
+              step="0.0001" 
+              value={useAutoRate && autoRate !== null ? autoRate : conversionRate} 
+              onChange={(e) => { 
+                setConversionRate(Number(e.target.value)); 
+                setUseAutoRate(false); 
+              }} 
+              disabled={useAutoRate && loadingConversion}
+              className={inputClass + (useAutoRate && loadingConversion ? " opacity-50" : "")}
+            />
+            {loadingConversion && (
+              <span className="absolute right-4 top-1/2 -translate-y-1/2 text-xs text-slate-400">
+                Loading...
+              </span>
+            )}
+          </div>
+          <div className="mt-3 flex flex-wrap items-center gap-2">
+            <input 
+              type="checkbox" 
+              id="autoRate" 
+              checked={useAutoRate} 
+              onChange={(e) => setUseAutoRate(e.target.checked)} 
+              className="rounded border-slate-300 text-primary-600 focus:ring-primary-500"
+            />
+            <label htmlFor="autoRate" className="min-w-0 flex-1 text-sm text-slate-600 dark:text-slate-400">
+              Auto-fetch conversion rate {loadingConversion && "(loading...)"} {autoRate !== null && useAutoRate && `(current: ${formatNumber(autoRate, 6)})`}
+            </label>
+            {useAutoRate && (
+              <button 
+                onClick={handleRefreshRate}
+                disabled={loadingConversion}
+                className="text-xs text-primary-600 hover:text-primary-700 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                Refresh
+              </button>
+            )}
+          </div>
+          {apiError && (
+            <div className="mt-2 text-xs text-red-600 dark:text-red-400">
+              {apiError}
+            </div>
+          )}
+          <div className="mt-1 flex items-center justify-between">
+            <p className="text-xs text-slate-500 dark:text-slate-400">
+              {pair.split("/")[0]} → {accountCurrency}
+            </p>
+            {cacheAge && useAutoRate && (
+              <p className="text-xs text-slate-500 dark:text-slate-400">
+                Updated: {cacheAge}
+              </p>
+            )}
+          </div>
+        </div>
+      </div>
+      
+      <div className="mt-6 grid gap-4 sm:grid-cols-2">
+        <Result label="Required margin" value={formatNumber(requiredMargin)} note={accountCurrency} />
+        <Result label="Notional value" value={formatNumber(notionalValue)} note={accountCurrency} />
+      </div>
+      
+      {/* Calculation Formula Display */}
+      <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5 dark:border-slate-800 dark:bg-slate-950/70">
+        <h3 className="text-base font-semibold text-slate-700 dark:text-slate-300 mb-4">Calculation Formula</h3>
+        <div className="space-y-3 text-sm text-slate-600 dark:text-slate-400">
+          <p><strong>Units:</strong> {formatNumber(lotSize)} lots × 100,000 = {formatNumber(units, 0)} units</p>
+          <p><strong>Notional Value:</strong> {formatNumber(units, 0)} units × {formatNumber(entry)} × {formatNumber(conversionRate, 6)} = {formatNumber(notionalValue)} {accountCurrency}</p>
+          <p><strong>Required Margin:</strong> {formatNumber(notionalValue)} ÷ {leverage} = {formatNumber(requiredMargin)} {accountCurrency}</p>
+          <p><strong>Margin Percentage:</strong> {(100 / leverage).toFixed(2)}% of notional value</p>
+        </div>
+      </div>
+      
+      <Notice>This is an illustrative estimate, not a broker quote. Margin rates, leverage limits, hedging rules, liquidation thresholds, and conversion rates vary by broker, instrument, country, and account type. ESMA limits leverage to 1:30 for major pairs on retail accounts.</Notice>
+      
+      <RateTable />
+    </div>
   </>;
 }
 
+// Black-Scholes-Merton Model Helper Functions
+function normalCDF(x: number): number {
+  const a1 = 0.254829592;
+  const a2 = -0.284496736;
+  const a3 = 1.421413741;
+  const a4 = -1.453152027;
+  const a5 = 1.061405429;
+  const p = 0.3275911;
+
+  const sign = x < 0 ? -1 : 1;
+  x = Math.abs(x) / Math.sqrt(2);
+
+  const t = 1.0 / (1.0 + p * x);
+  const y = 1.0 - (((((a5 * t + a4) * t) + a3) * t + a2) * t + a1) * t * Math.exp(-x * x);
+
+  return 0.5 * (1.0 + sign * y);
+}
+
+function normalPDF(x: number): number {
+  return Math.exp(-0.5 * x * x) / Math.sqrt(2 * Math.PI);
+}
+
+// Multi-leg Strategy Types
+interface StrategyLeg {
+  id: string;
+  type: 'call' | 'put';
+  position: 'long' | 'short';
+  strike: number;
+  premium: number;
+  contracts: number;
+}
+
+interface StrategyTemplate {
+  name: string;
+  description: string;
+  legs: Omit<StrategyLeg, 'id'>[];
+}
+
+const strategyTemplates: StrategyTemplate[] = [
+  {
+    name: "Long Call",
+    description: "Bullish position that profits from price increase",
+    legs: [{ type: 'call', position: 'long', strike: 100, premium: 5, contracts: 1 }]
+  },
+  {
+    name: "Long Put",
+    description: "Bearish position that profits from price decrease",
+    legs: [{ type: 'put', position: 'long', strike: 100, premium: 5, contracts: 1 }]
+  },
+  {
+    name: "Bull Call Spread",
+    description: "Debit spread limiting upside but reducing cost",
+    legs: [
+      { type: 'call', position: 'long', strike: 100, premium: 5, contracts: 1 },
+      { type: 'call', position: 'short', strike: 110, premium: 2, contracts: 1 }
+    ]
+  },
+  {
+    name: "Bear Put Spread",
+    description: "Debit spread limiting downside but reducing cost",
+    legs: [
+      { type: 'put', position: 'long', strike: 100, premium: 5, contracts: 1 },
+      { type: 'put', position: 'short', strike: 90, premium: 2, contracts: 1 }
+    ]
+  },
+  {
+    name: "Long Straddle",
+    description: "Profits from large price movement in either direction",
+    legs: [
+      { type: 'call', position: 'long', strike: 100, premium: 5, contracts: 1 },
+      { type: 'put', position: 'long', strike: 100, premium: 5, contracts: 1 }
+    ]
+  },
+  {
+    name: "Long Strangle",
+    description: "Cheaper than straddle with wider break-even range",
+    legs: [
+      { type: 'call', position: 'long', strike: 105, premium: 3, contracts: 1 },
+      { type: 'put', position: 'long', strike: 95, premium: 3, contracts: 1 }
+    ]
+  },
+  {
+    name: "Iron Condor",
+    description: "Income strategy profiting from range-bound price",
+    legs: [
+      { type: 'put', position: 'short', strike: 90, premium: 2, contracts: 1 },
+      { type: 'put', position: 'long', strike: 85, premium: 1, contracts: 1 },
+      { type: 'call', position: 'short', strike: 110, premium: 2, contracts: 1 },
+      { type: 'call', position: 'long', strike: 115, premium: 1, contracts: 1 }
+    ]
+  },
+  {
+    name: "Covered Call",
+    description: "Holding underlying + selling call for income",
+    legs: [
+      { type: 'call', position: 'short', strike: 110, premium: 3, contracts: 1 }
+    ]
+  },
+  {
+    name: "Protective Put",
+    description: "Holding underlying + buying put for insurance",
+    legs: [
+      { type: 'put', position: 'long', strike: 95, premium: 2, contracts: 1 }
+    ]
+  }
+];
+
+// Multi-leg Strategy P&L Calculation
+function calculateStrategyPnL(
+  legs: StrategyLeg[],
+  spotAtExpiry: number,
+  T: number,
+  r: number,
+  sigma: number,
+  optionStyle: 'european' | 'american'
+): { totalPnl: number; maxProfit: number; maxLoss: number; breakevens: number[] } {
+  let totalPnl = 0;
+  let maxProfit = Infinity;
+  let maxLoss = -Infinity;
+  const breakevens: number[] = [];
+
+  legs.forEach(leg => {
+    const intrinsic = leg.type === 'call' ? Math.max(spotAtExpiry - leg.strike, 0) : Math.max(leg.strike - spotAtExpiry, 0);
+    const pnl = leg.position === 'long' ? intrinsic - leg.premium : leg.premium - intrinsic;
+    totalPnl += pnl * leg.contracts;
+  });
+
+  // Calculate max profit/loss (simplified)
+  const totalPremium = legs.reduce((sum, leg) => {
+    return sum + (leg.position === 'long' ? -leg.premium : leg.premium) * leg.contracts;
+  }, 0);
+
+  if (totalPremium < 0) {
+    maxProfit = -totalPremium; // Credit spread
+    maxLoss = -Infinity; // Unlimited risk
+  } else {
+    maxProfit = Infinity; // Unlimited profit
+    maxLoss = -totalPremium; // Debit spread
+  }
+
+  return { totalPnl, maxProfit, maxLoss, breakevens };
+}
+
+// Volatility Surface Data Generation
+function generateVolatilitySurface(
+  baseVol: number,
+  strikes: number[],
+  expiries: number[]
+): { strike: number; expiry: number; iv: number }[] {
+  const surface: { strike: number; expiry: number; iv: number }[] = [];
+  
+  strikes.forEach(strike => {
+    expiries.forEach(expiry => {
+      // Simplified volatility smile/term structure
+      const moneyness = strike / 100; // Assuming ATM at 100
+      const skew = 0.1 * Math.log(moneyness); // Volatility skew
+      const termEffect = 0.05 * (expiry / 365); // Term structure
+      const iv = baseVol + skew + termEffect;
+      surface.push({ strike, expiry, iv: Math.max(iv, 5) }); // Minimum 5% IV
+    });
+  });
+  
+  return surface;
+}
+
+interface Greeks {
+  delta: number;
+  gamma: number;
+  theta: number;
+  vega: number;
+  rho: number;
+}
+
+interface AdvancedGreeks extends Greeks {
+  vanna: number;
+  charm: number;
+  vomma: number;
+  zomma: number;
+}
+
+function blackScholes(
+  S: number,
+  K: number,
+  T: number,
+  r: number,
+  sigma: number,
+  type: 'call' | 'put'
+): { price: number; greeks: Greeks } {
+  if (T <= 0 || sigma <= 0) {
+    // At expiry or zero volatility, return intrinsic value
+    const intrinsic = type === 'call' ? Math.max(S - K, 0) : Math.max(K - S, 0);
+    return {
+      price: intrinsic,
+      greeks: { delta: type === 'call' ? (S > K ? 1 : 0) : (S < K ? -1 : 0), gamma: 0, theta: 0, vega: 0, rho: 0 }
+    };
+  }
+
+  const d1 = (Math.log(S / K) + (r + sigma * sigma / 2) * T) / (sigma * Math.sqrt(T));
+  const d2 = d1 - sigma * Math.sqrt(T);
+  
+  const nd1 = normalCDF(d1);
+  const nd2 = normalCDF(d2);
+  const nd1_pdf = normalPDF(d1);
+  const sqrtT = Math.sqrt(T);
+  const discount = Math.exp(-r * T);
+
+  let price: number;
+  if (type === 'call') {
+    price = S * nd1 - K * discount * nd2;
+  } else {
+    price = K * discount * normalCDF(-d2) - S * normalCDF(-d1);
+  }
+
+  // Calculate Greeks
+  const delta = type === 'call' ? nd1 : nd1 - 1;
+  const gamma = nd1_pdf / (S * sigma * sqrtT);
+  const theta = (-S * nd1_pdf * sigma / (2 * sqrtT) - r * K * discount * (type === 'call' ? nd2 : -normalCDF(-d2))) / 365; // Per day
+  const vega = S * sqrtT * nd1_pdf / 100; // Per 1% change
+  const rho = (type === 'call' ? K * T * discount * nd2 : -K * T * discount * normalCDF(-d2)) / 100; // Per 1% change
+
+  return { price, greeks: { delta, gamma, theta, vega, rho } };
+}
+
+function solveImpliedVolatility(
+  marketPrice: number,
+  S: number,
+  K: number,
+  T: number,
+  r: number,
+  type: 'call' | 'put',
+  maxIterations: number = 100,
+  tolerance: number = 1e-6
+): number {
+  let sigma = 0.3; // Initial guess (30%)
+  
+  for (let i = 0; i < maxIterations; i++) {
+    const { price, greeks } = blackScholes(S, K, T, r, sigma, type);
+    const diff = price - marketPrice;
+    
+    if (Math.abs(diff) < tolerance) {
+      return sigma;
+    }
+    
+    // Newton-Raphson: sigma_new = sigma - f(sigma) / f'(sigma)
+    // f'(sigma) = vega
+    if (greeks.vega === 0) break;
+    sigma = sigma - diff / greeks.vega;
+    
+    if (sigma < 0.01) sigma = 0.01; // Prevent negative volatility
+    if (sigma > 5.0) sigma = 5.0;  // Cap at 500%
+  }
+  
+  return sigma; // Return best estimate
+}
+
+// Binomial Model for American Options
+function binomialAmerican(
+  S: number,
+  K: number,
+  T: number,
+  r: number,
+  sigma: number,
+  type: 'call' | 'put',
+  steps: number = 100
+): { price: number; greeks: Greeks } {
+  if (T <= 0 || sigma <= 0) {
+    const intrinsic = type === 'call' ? Math.max(S - K, 0) : Math.max(K - S, 0);
+    return {
+      price: intrinsic,
+      greeks: { delta: type === 'call' ? (S > K ? 1 : 0) : (S < K ? -1 : 0), gamma: 0, theta: 0, vega: 0, rho: 0 }
+    };
+  }
+
+  const dt = T / steps;
+  const u = Math.exp(sigma * Math.sqrt(dt));
+  const d = 1 / u;
+  const p = (Math.exp(r * dt) - d) / (u - d);
+  
+  // Build price tree
+  const prices: number[][] = [];
+  for (let i = 0; i <= steps; i++) {
+    prices[i] = [];
+    for (let j = 0; j <= i; j++) {
+      prices[i][j] = S * Math.pow(u, j) * Math.pow(d, i - j);
+    }
+  }
+  
+  // Backward induction with early exercise
+  const values: number[][] = [];
+  for (let i = steps; i >= 0; i--) {
+    values[i] = [];
+    for (let j = 0; j <= i; j++) {
+      if (i === steps) {
+        // Terminal payoff
+        values[i][j] = type === 'call' 
+          ? Math.max(prices[i][j] - K, 0)
+          : Math.max(K - prices[i][j], 0);
+      } else {
+        // Expected value
+        const expected = Math.exp(-r * dt) * (p * values[i + 1][j + 1] + (1 - p) * values[i + 1][j]);
+        // Early exercise value
+        const exercise = type === 'call'
+          ? Math.max(prices[i][j] - K, 0)
+          : Math.max(K - prices[i][j], 0);
+        values[i][j] = Math.max(expected, exercise);
+      }
+    }
+  }
+  
+  // Calculate Greeks using finite differences
+  const price = values[0][0];
+  const delta = (values[1][1] - values[1][0]) / (S * u - S * d);
+  const gamma = ((values[2][2] - values[2][1]) / (prices[2][2] - prices[2][1]) - (values[2][1] - values[2][0]) / (prices[2][1] - prices[2][0])) / ((prices[2][2] - prices[2][0]) / 2);
+  const theta = (values[1][0] - values[0][0]) / dt / 365; // Per day
+  const vega = (binomialAmerican(S, K, T, r, sigma * 1.01, type, steps).price - price) / 0.01; // Per 1%
+  const rho = (binomialAmerican(S, K, T, r * 1.01, sigma, type, steps).price - price) / 0.01; // Per 1%
+  
+  return { price, greeks: { delta, gamma, theta, vega, rho } };
+}
+
+// Advanced Greeks Calculation
+function calculateAdvancedGreeks(
+  d1: number,
+  d2: number,
+  S: number,
+  K: number,
+  T: number,
+  r: number,
+  sigma: number
+): AdvancedGreeks {
+  const nd1 = normalPDF(d1);
+  const nd2 = normalPDF(d2);
+  const sqrtT = Math.sqrt(T);
+  const cd1 = normalCDF(d1);
+  const cd2 = normalCDF(d2);
+  
+  // Basic Greeks
+  const delta = cd1;
+  const gamma = nd1 / (S * sigma * sqrtT);
+  const theta = (-S * nd1 * sigma / (2 * sqrtT) - r * K * Math.exp(-r * T) * cd2) / 365;
+  const vega = S * sqrtT * nd1 / 100;
+  const rho = K * T * Math.exp(-r * T) * cd2 / 100;
+  
+  // Advanced Greeks
+  const vanna = -nd1 * d2 / sigma;
+  const charm = -nd1 * (2 * r * T - d2 * sigma * sqrtT) / (2 * T * sigma * sqrtT);
+  const vomma = S * sqrtT * nd1 * d1 * d2 / sigma;
+  const zomma = nd1 * (d1 * d2 - 1) / (S * sigma * sigma * sqrtT);
+  
+  return { delta, gamma, theta, vega, rho, vanna, charm, vomma, zomma };
+}
+
+// Probability of Profit Calculation
+function calculateProbabilityOfProfit(
+  S: number,
+  K: number,
+  T: number,
+  r: number,
+  sigma: number,
+  type: 'call' | 'put',
+  position: 'long' | 'short',
+  premium: number
+): number {
+  const breakeven = type === 'call' ? K + premium : K - premium;
+  const d = (Math.log(S / breakeven) + (r - sigma * sigma / 2) * T) / (sigma * Math.sqrt(T));
+  
+  if (position === 'long') {
+    return type === 'call' ? normalCDF(d) : normalCDF(-d);
+  } else {
+    return type === 'call' ? normalCDF(-d) : normalCDF(d);
+  }
+}
+
 function OptionsPayoffCalculator() {
-  const [optionType, setOptionType] = useState("call");
-  const [position, setPosition] = useState("long");
+  const [mode, setMode] = useState<'single' | 'strategy'>('single');
+  const [optionType, setOptionType] = useState<"call" | "put">("call");
+  const [position, setPosition] = useState<"long" | "short">("long");
   const [spot, setSpot] = useState(110);
   const [strike, setStrike] = useState(100);
   const [premium, setPremium] = useState(5);
   const [contracts, setContracts] = useState(1);
   const [multiplier, setMultiplier] = useState(100);
+  const [timeToExpiry, setTimeToExpiry] = useState(30); // Days
+  const [volatility, setVolatility] = useState(20); // Annualized %
+  const [riskFreeRate, setRiskFreeRate] = useState(5); // Annual %
+  const [useAdvancedModel, setUseAdvancedModel] = useState(false);
+  const [solveIV, setSolveIV] = useState(false);
+  const [impliedVolatility, setImpliedVolatility] = useState<number | null>(null);
+  const [optionStyle, setOptionStyle] = useState<'european' | 'american'>('european');
+  const [showAdvancedGreeks, setShowAdvancedGreeks] = useState(false);
+  const [showPayoffChart, setShowPayoffChart] = useState(true);
+  const [showVolSurface, setShowVolSurface] = useState(false);
+  
+  // Multi-leg strategy state
+  const [strategyLegs, setStrategyLegs] = useState<StrategyLeg[]>([]);
+  const [selectedTemplate, setSelectedTemplate] = useState<string | null>(null);
+
+  const T = timeToExpiry / 365; // Convert days to years
+  const r = riskFreeRate / 100; // Convert % to decimal
+  const sigma = volatility / 100; // Convert % to decimal
+
+  // Single leg pricing
+  const { price: fairValue, greeks } = useAdvancedModel && mode === 'single'
+    ? (optionStyle === 'american' 
+        ? binomialAmerican(spot, strike, T, r, sigma, optionType)
+        : blackScholes(spot, strike, T, r, sigma, optionType))
+    : { price: premium, greeks: { delta: 0, gamma: 0, theta: 0, vega: 0, rho: 0 } };
+
+  // Advanced Greeks calculation
+  const advancedGreeks: AdvancedGreeks | null = useAdvancedModel && mode === 'single' && optionStyle === 'european'
+    ? calculateAdvancedGreeks(
+        (Math.log(spot / strike) + (r + sigma * sigma / 2) * T) / (sigma * Math.sqrt(T)),
+        (Math.log(spot / strike) + (r + sigma * sigma / 2) * T) / (sigma * Math.sqrt(T)) - sigma * Math.sqrt(T),
+        spot, strike, T, r, sigma
+      )
+    : null;
+
+  // Solve IV if enabled
+  useEffect(() => {
+    if (solveIV && useAdvancedModel && mode === 'single') {
+      const iv = solveImpliedVolatility(premium, spot, strike, T, r, optionType);
+      setImpliedVolatility(iv * 100); // Convert back to %
+    } else {
+      setImpliedVolatility(null);
+    }
+  }, [solveIV, useAdvancedModel, premium, spot, strike, T, r, optionType, mode]);
+
+  // Single leg calculations
   const intrinsic = optionType === "call" ? Math.max(spot - strike, 0) : Math.max(strike - spot, 0);
+  const timeValue = useAdvancedModel && mode === 'single' ? fairValue - intrinsic : 0;
   const pnlPerUnit = position === "long" ? intrinsic - premium : premium - intrinsic;
   const totalPnl = pnlPerUnit * contracts * multiplier;
   const breakeven = optionType === "call" ? strike + premium : strike - premium;
+  const probabilityOfProfit = useAdvancedModel && mode === 'single'
+    ? calculateProbabilityOfProfit(spot, strike, T, r, sigma, optionType, position, premium)
+    : null;
+
+  // Strategy calculations
+  const strategyPnL = mode === 'strategy' && strategyLegs.length > 0
+    ? calculateStrategyPnL(strategyLegs, spot, T, r, sigma, optionStyle)
+    : null;
+
+  // Payoff chart data
+  const payoffData = Array.from({ length: 100 }, (_, i) => {
+    const price = strike - 50 + i * 1;
+    let payoffPnl: number;
+    
+    if (mode === 'single') {
+      const payoffIntrinsic = optionType === "call" ? Math.max(price - strike, 0) : Math.max(strike - price, 0);
+      payoffPnl = position === "long" ? payoffIntrinsic - premium : premium - payoffIntrinsic;
+    } else {
+      const strategyResult = calculateStrategyPnL(strategyLegs, price, T, r, sigma, optionStyle);
+      payoffPnl = strategyResult.totalPnl;
+    }
+    
+    return { x: price, y: payoffPnl };
+  });
+
+  // Volatility surface data
+  const volSurfaceData = showVolSurface
+    ? generateVolatilitySurface(volatility, [85, 90, 95, 100, 105, 110, 115], [30, 60, 90, 180])
+    : [];
+
+  // Apply strategy template
+  const applyTemplate = (templateName: string) => {
+    const template = strategyTemplates.find(t => t.name === templateName);
+    if (template) {
+      const legsWithIds: StrategyLeg[] = template.legs.map((leg, index) => ({
+        ...leg,
+        id: `leg-${Date.now()}-${index}`
+      }));
+      setStrategyLegs(legsWithIds);
+      setSpot(100); // Reset to ATM
+      setStrike(100);
+    }
+  };
+
   return <>
-    <div className="grid gap-5 md:grid-cols-2"><SelectField label="Option type" value={optionType} onChange={setOptionType} options={[{ label: "Call", value: "call" }, { label: "Put", value: "put" }]} /><SelectField label="Position" value={position} onChange={setPosition} options={[{ label: "Long", value: "long" }, { label: "Short", value: "short" }]} /><NumberField label="Underlying price at expiry" value={spot} onChange={setSpot} step="0.01" /><NumberField label="Strike price" value={strike} onChange={setStrike} step="0.01" /><NumberField label="Premium per unit" value={premium} onChange={setPremium} step="0.01" /><NumberField label="Contracts" value={contracts} onChange={setContracts} step="1" /><NumberField label="Contract multiplier" value={multiplier} onChange={setMultiplier} step="1" /></div>
-    <div className="mt-6 grid gap-4 sm:grid-cols-3"><Result label="Estimated payoff P&L" value={formatNumber(totalPnl)} /><Result label="P&L per unit" value={formatNumber(pnlPerUnit)} /><Result label="Illustrative breakeven" value={formatNumber(breakeven)} /></div>
-    <Notice>This model shows intrinsic payoff at expiry only. It excludes time value before expiry, volatility, Greeks, fees, taxes, assignment, settlement, and liquidity.</Notice>
+    <div className="space-y-5">
+      {/* Mode Selector */}
+      <div className="flex gap-3">
+        <button
+          onClick={() => setMode('single')}
+          className={`px-4 py-2 text-sm rounded-lg border ${mode === 'single' ? 'bg-primary-600 text-white border-primary-600' : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50 dark:bg-slate-800 dark:text-slate-300 dark:border-slate-700 dark:hover:bg-slate-700'}`}
+        >
+          Single Option
+        </button>
+        <button
+          onClick={() => setMode('strategy')}
+          className={`px-4 py-2 text-sm rounded-lg border ${mode === 'strategy' ? 'bg-primary-600 text-white border-primary-600' : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50 dark:bg-slate-800 dark:text-slate-300 dark:border-slate-700 dark:hover:bg-slate-700'}`}
+        >
+          Multi-Leg Strategy
+        </button>
+      </div>
+
+      {mode === 'single' ? (
+        <>
+          <div className="grid gap-5 md:grid-cols-2">
+            <SelectField label="Option type" value={optionType} onChange={(value) => setOptionType(value as "call" | "put")} options={[{ label: "Call", value: "call" }, { label: "Put", value: "put" }]} />
+            <SelectField label="Position" value={position} onChange={(value) => setPosition(value as "long" | "short")} options={[{ label: "Long", value: "long" }, { label: "Short", value: "short" }]} />
+            <NumberField label="Underlying price" value={spot} onChange={setSpot} step="0.01" />
+            <NumberField label="Strike price" value={strike} onChange={setStrike} step="0.01" />
+            <NumberField label="Premium per unit" value={premium} onChange={setPremium} step="0.01" />
+            <NumberField label="Contracts" value={contracts} onChange={setContracts} step="1" />
+            <NumberField label="Contract multiplier" value={multiplier} onChange={setMultiplier} step="1" />
+          </div>
+
+          {/* Advanced Model Toggle */}
+          <div className="flex items-center gap-3 p-4 rounded-2xl border border-slate-200 bg-slate-50 dark:border-slate-800 dark:bg-slate-950/70">
+            <input 
+              type="checkbox" 
+              id="advancedModel" 
+              checked={useAdvancedModel} 
+              onChange={(e) => setUseAdvancedModel(e.target.checked)} 
+              className="rounded border-slate-300 text-primary-600 focus:ring-primary-500"
+            />
+            <label htmlFor="advancedModel" className="min-w-0 flex-1 text-sm text-slate-600 dark:text-slate-400">
+              Enable professional pricing model (Black-Scholes-Merton / Binomial)
+            </label>
+          </div>
+
+          {useAdvancedModel && (
+            <>
+              <div className="grid gap-5 md:grid-cols-3">
+                <NumberField label="Time to expiry" value={timeToExpiry} onChange={setTimeToExpiry} step="1" suffix="days" />
+                <NumberField label="Volatility" value={volatility} onChange={setVolatility} step="0.1" suffix="%" />
+                <NumberField label="Risk-free rate" value={riskFreeRate} onChange={setRiskFreeRate} step="0.1" suffix="%" />
+              </div>
+
+              <div className="grid gap-5 md:grid-cols-2">
+                <SelectField label="Option style" value={optionStyle} onChange={(value) => setOptionStyle(value as "european" | "american")} options={[
+                  { label: "European (BSM model)", value: "european" },
+                  { label: "American (Binomial model)", value: "american" }
+                ]} />
+                <div className="flex items-center gap-3">
+                  <input 
+                    type="checkbox" 
+                    id="solveIV" 
+                    checked={solveIV} 
+                    onChange={(e) => setSolveIV(e.target.checked)} 
+                    className="rounded border-slate-300 text-primary-600 focus:ring-primary-500"
+                  />
+                  <label htmlFor="solveIV" className="text-sm text-slate-600 dark:text-slate-400">
+                    Solve implied volatility
+                  </label>
+                  {impliedVolatility !== null && (
+                    <span className="text-sm font-medium text-primary-600 dark:text-primary-400">
+                      IV: {impliedVolatility.toFixed(2)}%
+                    </span>
+                  )}
+                </div>
+              </div>
+
+              <div className="flex flex-wrap gap-3">
+                <button
+                  onClick={() => setShowAdvancedGreeks(!showAdvancedGreeks)}
+                  className="px-4 py-2 text-sm rounded-lg border border-slate-200 bg-white hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:hover:bg-slate-700"
+                >
+                  {showAdvancedGreeks ? 'Hide' : 'Show'} Advanced Greeks
+                </button>
+                <button
+                  onClick={() => setShowPayoffChart(!showPayoffChart)}
+                  className="px-4 py-2 text-sm rounded-lg border border-slate-200 bg-white hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:hover:bg-slate-700"
+                >
+                  {showPayoffChart ? 'Hide' : 'Show'} Payoff Chart
+                </button>
+                <button
+                  onClick={() => setShowVolSurface(!showVolSurface)}
+                  className="px-4 py-2 text-sm rounded-lg border border-slate-200 bg-white hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:hover:bg-slate-700"
+                >
+                  {showVolSurface ? 'Hide' : 'Show'} Vol Surface
+                </button>
+              </div>
+            </>
+          )}
+
+          <div className="mt-6 grid gap-4 sm:grid-cols-3">
+            <Result label="Estimated payoff P&L" value={formatNumber(totalPnl)} />
+            <Result label="P&L per unit" value={formatNumber(pnlPerUnit)} />
+            <Result label="Illustrative breakeven" value={formatNumber(breakeven)} />
+          </div>
+
+          {useAdvancedModel && probabilityOfProfit !== null && (
+            <Result label="Probability of profit" value={`${(probabilityOfProfit * 100).toFixed(1)}%`} note="Model estimate" />
+          )}
+
+          {useAdvancedModel && (
+            <>
+              <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5 dark:border-slate-800 dark:bg-slate-950/70">
+                <h3 className="text-base font-semibold text-slate-700 dark:text-slate-300 mb-4">Pricing Analysis</h3>
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <Result label="Fair value" value={formatNumber(fairValue)} />
+                  <Result label="Intrinsic value" value={formatNumber(intrinsic)} />
+                  <Result label="Time value" value={formatNumber(timeValue)} />
+                  <Result label="Total premium" value={formatNumber(premium)} />
+                </div>
+              </div>
+
+              <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5 dark:border-slate-800 dark:bg-slate-950/70">
+                <h3 className="text-base font-semibold text-slate-700 dark:text-slate-300 mb-4">Option Greeks</h3>
+                <div className="grid gap-4 sm:grid-cols-3">
+                  <Result label="Delta (Δ)" value={formatNumber(greeks.delta, 4)} note="Price sensitivity" />
+                  <Result label="Gamma (Γ)" value={formatNumber(greeks.gamma, 6)} note="Delta rate of change" />
+                  <Result label="Theta (Θ)" value={formatNumber(greeks.theta, 4)} note="Time decay per day" />
+                  <Result label="Vega (ν)" value={formatNumber(greeks.vega, 4)} note="Vol sensitivity per 1%" />
+                  <Result label="Rho (ρ)" value={formatNumber(greeks.rho, 4)} note="Rate sensitivity per 1%" />
+                </div>
+              </div>
+
+              {showAdvancedGreeks && advancedGreeks && (
+                <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5 dark:border-slate-800 dark:bg-slate-950/70">
+                  <h3 className="text-base font-semibold text-slate-700 dark:text-slate-300 mb-4">Advanced Greeks</h3>
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    <Result label="Vanna" value={formatNumber(advancedGreeks.vanna, 6)} note="Delta to vol sensitivity" />
+                    <Result label="Charm" value={formatNumber(advancedGreeks.charm, 6)} note="Delta to time sensitivity" />
+                    <Result label="Vomma" value={formatNumber(advancedGreeks.vomma, 6)} note="Vega to vol sensitivity" />
+                    <Result label="Zomma" value={formatNumber(advancedGreeks.zomma, 6)} note="Gamma to vol sensitivity" />
+                  </div>
+                </div>
+              )}
+
+              {showPayoffChart && (
+                <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5 dark:border-slate-800 dark:bg-slate-950/70">
+                  <h3 className="text-base font-semibold text-slate-700 dark:text-slate-300 mb-4">Payoff Diagram at Expiry</h3>
+                  <div className="h-64">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <LineChart data={payoffData}>
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis 
+                          dataKey="x" 
+                          label={{ value: 'Underlying Price', position: 'insideBottom', offset: -5 }}
+                          type="number"
+                          domain={['dataMin', 'dataMax']}
+                        />
+                        <YAxis 
+                          label={{ value: 'P&L', angle: -90, position: 'insideLeft' }}
+                          type="number"
+                        />
+                        <Tooltip />
+                        <ReferenceLine x={strike} stroke="red" strokeDasharray="3 3" label="Strike" />
+                        <ReferenceLine y={0} stroke="black" label="Breakeven" />
+                        <Line type="monotone" dataKey="y" stroke="#8884d8" strokeWidth={2} dot={false} />
+                      </LineChart>
+                    </ResponsiveContainer>
+                  </div>
+                </div>
+              )}
+
+              {showVolSurface && (
+                <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5 dark:border-slate-800 dark:bg-slate-950/70">
+                  <h3 className="text-base font-semibold text-slate-700 dark:text-slate-300 mb-4">Volatility Surface (Illustrative)</h3>
+                  <div className="text-xs text-slate-500 dark:text-slate-400 mb-4">
+                    Showing skew and term structure. In production, this would use live market data.
+                  </div>
+                  <div className="h-64 overflow-x-auto">
+                    <table className="w-full text-sm">
+                      <thead>
+                        <tr className="border-b border-slate-200 dark:border-slate-700">
+                          <th className="p-2 text-left">Strike</th>
+                          <th className="p-2">30D</th>
+                          <th className="p-2">60D</th>
+                          <th className="p-2">90D</th>
+                          <th className="p-2">180D</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {volSurfaceData.filter(d => d.expiry === 30).map((row, i) => (
+                          <tr key={i} className="border-b border-slate-100 dark:border-slate-800">
+                            <td className="p-2 font-medium">{row.strike}</td>
+                            <td className="p-2 text-center">{row.iv.toFixed(1)}%</td>
+                            <td className="p-2 text-center">-</td>
+                            <td className="p-2 text-center">-</td>
+                            <td className="p-2 text-center">-</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              )}
+            </>
+          )}
+        </>
+      ) : (
+        <>
+          {/* Multi-leg Strategy Builder */}
+          <div className="space-y-4">
+            <div className="flex items-center gap-3">
+              <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Load pre-built strategy:</span>
+              <select
+                value={selectedTemplate || ''}
+                onChange={(e) => {
+                  setSelectedTemplate(e.target.value);
+                  if (e.target.value) applyTemplate(e.target.value);
+                }}
+                className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm dark:bg-slate-800 dark:border-slate-700 dark:text-slate-300"
+              >
+                <option value="">Select strategy...</option>
+                {strategyTemplates.map(t => (
+                  <option key={t.name} value={t.name}>{t.name}</option>
+                ))}
+              </select>
+            </div>
+
+            <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5 dark:border-slate-800 dark:bg-slate-950/70">
+              <div className="flex justify-between items-center mb-4">
+                <h3 className="text-base font-semibold text-slate-700 dark:text-slate-300">Strategy Legs</h3>
+                <button
+                  onClick={() => {
+                    const newLeg: StrategyLeg = {
+                      id: `leg-${Date.now()}`,
+                      type: 'call',
+                      position: 'long',
+                      strike: 100,
+                      premium: 5,
+                      contracts: 1
+                    };
+                    setStrategyLegs([...strategyLegs, newLeg]);
+                  }}
+                  className="px-3 py-1 text-sm rounded-lg bg-primary-600 text-white hover:bg-primary-700"
+                >
+                  + Add Leg
+                </button>
+              </div>
+
+              {strategyLegs.length === 0 ? (
+                <p className="text-sm text-slate-500 dark:text-slate-400">
+                  No legs added. Select a template or add legs manually.
+                </p>
+              ) : (
+                <div className="space-y-3">
+                  {strategyLegs.map((leg, index) => (
+                    <div key={leg.id} className="flex gap-3 items-start p-3 rounded-lg border border-slate-200 bg-white dark:bg-slate-800 dark:border-slate-700">
+                      <span className="text-xs font-mono bg-slate-100 dark:bg-slate-700 px-2 py-1 rounded">
+                        #{index + 1}
+                      </span>
+                      <div className="flex-1 grid grid-cols-5 gap-2 text-xs">
+                        <select
+                          value={leg.type}
+                          onChange={(e) => {
+                            const updated = [...strategyLegs];
+                            updated[index].type = e.target.value as 'call' | 'put';
+                            setStrategyLegs(updated);
+                          }}
+                          className="rounded border border-slate-200 px-2 py-1 dark:bg-slate-700 dark:border-slate-600 dark:text-slate-300"
+                        >
+                          <option value="call">Call</option>
+                          <option value="put">Put</option>
+                        </select>
+                        <select
+                          value={leg.position}
+                          onChange={(e) => {
+                            const updated = [...strategyLegs];
+                            updated[index].position = e.target.value as 'long' | 'short';
+                            setStrategyLegs(updated);
+                          }}
+                          className="rounded border border-slate-200 px-2 py-1 dark:bg-slate-700 dark:border-slate-600 dark:text-slate-300"
+                        >
+                          <option value="long">Long</option>
+                          <option value="short">Short</option>
+                        </select>
+                        <input
+                          type="number"
+                          value={leg.strike}
+                          onChange={(e) => {
+                            const updated = [...strategyLegs];
+                            updated[index].strike = Number(e.target.value);
+                            setStrategyLegs(updated);
+                          }}
+                          className="rounded border border-slate-200 px-2 py-1 w-full dark:bg-slate-700 dark:border-slate-600 dark:text-slate-300"
+                          placeholder="Strike"
+                        />
+                        <input
+                          type="number"
+                          value={leg.premium}
+                          onChange={(e) => {
+                            const updated = [...strategyLegs];
+                            updated[index].premium = Number(e.target.value);
+                            setStrategyLegs(updated);
+                          }}
+                          className="rounded border border-slate-200 px-2 py-1 w-full dark:bg-slate-700 dark:border-slate-600 dark:text-slate-300"
+                          placeholder="Premium"
+                        />
+                        <input
+                          type="number"
+                          value={leg.contracts}
+                          onChange={(e) => {
+                            const updated = [...strategyLegs];
+                            updated[index].contracts = Number(e.target.value);
+                            setStrategyLegs(updated);
+                          }}
+                          className="rounded border border-slate-200 px-2 py-1 w-full dark:bg-slate-700 dark:border-slate-600 dark:text-slate-300"
+                          placeholder="Contracts"
+                        />
+                      </div>
+                      <button
+                        onClick={() => {
+                          setStrategyLegs(strategyLegs.filter(l => l.id !== leg.id));
+                        }}
+                        className="text-red-600 hover:text-red-700 text-xs"
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className="grid gap-5 md:grid-cols-3">
+            <NumberField label="Underlying price" value={spot} onChange={setSpot} step="0.01" />
+            <NumberField label="Time to expiry" value={timeToExpiry} onChange={setTimeToExpiry} step="1" suffix="days" />
+            <NumberField label="Volatility" value={volatility} onChange={setVolatility} step="0.1" suffix="%" />
+          </div>
+
+          <div className="grid gap-5 md:grid-cols-2">
+            <SelectField label="Option style" value={optionStyle} onChange={(value) => setOptionStyle(value as "european" | "american")} options={[
+              { label: "European (BSM model)", value: "european" },
+              { label: "American (Binomial model)", value: "american" }
+            ]} />
+            <NumberField label="Risk-free rate" value={riskFreeRate} onChange={setRiskFreeRate} step="0.1" suffix="%" />
+          </div>
+
+          {strategyPnL && (
+            <>
+              <div className="mt-6 grid gap-4 sm:grid-cols-3">
+                <Result label="Strategy P&L" value={formatNumber(strategyPnL.totalPnl)} />
+                <Result label="Max profit" value={strategyPnL.maxProfit === Infinity ? "Unlimited" : formatNumber(strategyPnL.maxProfit)} />
+                <Result label="Max loss" value={strategyPnL.maxLoss === -Infinity ? "Unlimited" : formatNumber(strategyPnL.maxLoss)} />
+              </div>
+
+              <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5 dark:border-slate-800 dark:bg-slate-950/70">
+                <h3 className="text-base font-semibold text-slate-700 dark:text-slate-300 mb-4">Strategy Payoff Diagram</h3>
+                <div className="h-64">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <LineChart data={payoffData}>
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis 
+                        dataKey="x" 
+                        label={{ value: 'Underlying Price', position: 'insideBottom', offset: -5 }}
+                        type="number"
+                        domain={['dataMin', 'dataMax']}
+                      />
+                      <YAxis 
+                        label={{ value: 'P&L', angle: -90, position: 'insideLeft' }}
+                        type="number"
+                      />
+                      <Tooltip />
+                      <ReferenceLine y={0} stroke="black" label="Breakeven" />
+                      <Line type="monotone" dataKey="y" stroke="#8884d8" strokeWidth={2} dot={false} />
+                    </LineChart>
+                  </ResponsiveContainer>
+                </div>
+              </div>
+            </>
+          )}
+        </>
+      )}
+
+      <Notice>
+        {useAdvancedModel 
+          ? `The ${optionStyle === 'european' ? 'Black-Scholes-Merton' : 'Binomial'} model assumes constant volatility, efficient markets, and no dividends. American options support early exercise via binomial tree. ${mode === 'strategy' ? 'Multi-leg strategies combine multiple options for defined risk-reward profiles. Real-world pricing may differ due to dividend payments, volatility smiles, transaction costs, and market frictions.' : 'Probability of profit is a model estimate, not a prediction.'}`
+          : "This model shows intrinsic payoff at expiry only. It excludes time value before expiry, volatility, Greeks, fees, taxes, assignment, settlement, and liquidity."
+        }
+      </Notice>
+    </div>
   </>;
 }
 
