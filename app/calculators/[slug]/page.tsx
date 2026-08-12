@@ -18,14 +18,21 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   
   // Enhanced metadata for pip-value calculator specifically
   const isPipCalculator = calculator.slug === "pip-value";
+  const isForexPnlCalculator = calculator.slug === "forex-pnl";
   const enhancedTitle = isPipCalculator 
     ? "Pip Calculator | Calculate Forex Pip Value Instantly"
+    : isForexPnlCalculator
+    ? "Forex Profit Calculator | Calculate Forex P&L Instantly"
     : `${calculator.title} | Tradivex`;
   const enhancedDescription = isPipCalculator
     ? "Calculate forex pip values instantly with live exchange rates. Free pip calculator for all major, minor, and exotic currency pairs including JPY pairs. Accurate risk management for standard, mini, and micro lots."
+    : isForexPnlCalculator
+    ? "Calculate forex profit and loss instantly with live exchange rates. Free forex P&L calculator for all major, minor, and exotic currency pairs. Accurate risk management for standard, mini, and micro lots."
     : `${seo.intro} Educational estimate only; verify provider rules and costs.`;
   const enhancedKeywords = isPipCalculator
     ? "pip calculator, free pip calculator, forex pip value, currency pip calculation, JPY pip calculator, lot size calculator, forex risk management, position size calculator, standard lot mini lot micro lot, forex trading tools"
+    : isForexPnlCalculator
+    ? "forex profit calculator, forex loss calculator, profit loss calculator, forex pnl calculator, currency profit calculation, JPY profit calculator, lot size calculator, forex risk management, position size calculator, standard lot mini lot micro lot, forex trading tools"
     : undefined;
   
   return {

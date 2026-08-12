@@ -366,7 +366,7 @@ function PipValueCalculator() {
   
   return <>
     <div className="space-y-5">
-      <div className="grid gap-4 grid-cols-2 md:grid-cols-2 items-start">
+      <div className="grid gap-4 grid-cols-1 md:grid-cols-2 items-start">
         <SelectField label="Currency pair" value={pair} onChange={setPair} options={forexPairSelectOptions} />
         <SelectField label="Account currency" value={accountCurrency} onChange={setAccountCurrency} options={worldCurrencyOptions} />
         <NumberField label="Position size" value={lotSize} onChange={setLotSize} step="0.01" suffix="lots" />
@@ -587,7 +587,7 @@ function ForexPnlCalculator() {
   };
 
   return <>
-    <div className="grid gap-5 md:grid-cols-2">
+    <div className="grid gap-5 grid-cols-1 md:grid-cols-2">
       <SelectField label="Currency pair" value={pair} onChange={setPair} options={forexPairSelectOptions} />
       <SelectField label="Direction" value={direction} onChange={setDirection} options={[{ label: "Long", value: "long" }, { label: "Short", value: "short" }]} />
       <NumberField label="Position size" value={lotSize} onChange={setLotSize} step="0.01" suffix="lots" />
