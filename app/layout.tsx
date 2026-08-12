@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
 import SiteChrome from "@/components/layout/SiteChrome";
@@ -11,7 +11,6 @@ export const metadata: Metadata = {
   description:
     "Tradivex is a neutral directory for comparing trading platforms, brokers, exchanges, market tools, and calculators.",
   keywords: "trading tools directory, broker comparison, forex brokers, crypto exchanges, stock brokers, trading platforms",
-  viewport: "width=device-width, initial-scale=1, maximum-scale=5",
   openGraph: {
     type: "website",
     siteName: "Tradivex",
@@ -25,6 +24,12 @@ export const metadata: Metadata = {
     title: "Tradivex - Trading Tools, Comparisons & Calculators",
     description: "Compare trading tools and use educational calculators with provider-specific details and limitations.",
   },
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
 };
 
 export default function RootLayout({

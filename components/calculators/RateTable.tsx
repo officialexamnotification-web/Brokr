@@ -179,7 +179,7 @@ export default function RateTable() {
           
           {/* Pagination Controls */}
           {totalPages > 1 && (
-            <div className="flex items-center justify-center gap-2 mt-4">
+            <div className="flex flex-wrap items-center justify-center gap-2 mt-4">
               <button
                 onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
                 disabled={currentPage === 1}
@@ -188,7 +188,7 @@ export default function RateTable() {
                 Previous
               </button>
               
-              <div className="flex gap-1">
+              <div className="flex flex-wrap justify-center gap-1">
                 {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
                   <button
                     key={pageNum}
