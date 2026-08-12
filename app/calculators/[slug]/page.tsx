@@ -39,12 +39,12 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
     title: enhancedTitle,
     description: enhancedDescription,
     keywords: enhancedKeywords,
-    alternates: { canonical: `/calculators/${calculator.slug}` },
+    alternates: { canonical: `${siteUrl}/calculators/${calculator.slug}` },
     openGraph: {
       title: enhancedTitle,
       description: enhancedDescription,
       type: "website",
-      url: `/calculators/${calculator.slug}`,
+      url: `${siteUrl}/calculators/${calculator.slug}`,
     },
     twitter: {
       card: "summary_large_image",
