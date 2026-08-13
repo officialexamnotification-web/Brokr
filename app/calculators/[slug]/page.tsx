@@ -22,7 +22,8 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   const isPositionSizeCalculator = calculator.slug === "position-size";
   const isForexMarginCalculator = calculator.slug === "forex-margin";
   const isOptionsPayoffCalculator = calculator.slug === "options-payoff";
-  const enhancedTitle = isPipCalculator 
+  const isPivotPointsCalculator = calculator.slug === "pivot-points";
+  const enhancedTitle = isPipCalculator
     ? "Pip Calculator | Calculate Forex Pip Value Instantly"
     : isForexPnlCalculator
     ? "Forex Profit Calculator | Calculate Forex P&L Instantly"
@@ -32,6 +33,8 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
     ? "Forex Margin Calculator | Calculate Required Margin Instantly"
     : isOptionsPayoffCalculator
     ? "Options Payoff Calculator | Multi-Leg Strategies & Vol Surface"
+    : isPivotPointsCalculator
+    ? "Pivot Point Calculator | Classic, Woodie's, Camarilla, DeMark's, Fibonacci"
     : `${calculator.title} | Tradivex`;
   const enhancedDescription = isPipCalculator
     ? "Calculate forex pip values instantly with live exchange rates. Free pip calculator for all major, minor, and exotic currency pairs including JPY pairs. Accurate risk management for standard, mini, and micro lots."
@@ -43,6 +46,8 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
     ? "Calculate forex margin requirements instantly with live exchange rates. Free margin calculator for all major, minor, and exotic currency pairs. Accurate leverage planning for standard, mini, and micro lots with automatic currency conversion."
     : isOptionsPayoffCalculator
     ? "Professional options calculator with BSM/Binomial models, complete & advanced Greeks, IV solver, multi-leg strategy builder (spreads, straddles, iron condors), volatility surface visualization, and interactive payoff diagrams."
+    : isPivotPointsCalculator
+    ? "Professional pivot point calculator with Classic, Woodie's, Camarilla, DeMark's, and Fibonacci methods. Live market data for 40+ US stocks, daily/weekly/monthly timeframes, CSV/PDF export, chart visualization, proximity alerts, and 22 global timezones covering USA, Canada, UK, Europe, Asia, Australia, New Zealand, Brazil, South Africa. Free technical analysis tool for accurate support and resistance levels."
     : `${seo.intro} Educational estimate only; verify provider rules and costs.`;
   const enhancedKeywords = isPipCalculator
     ? "pip calculator, free pip calculator, forex pip value, currency pip calculation, JPY pip calculator, lot size calculator, forex risk management, position size calculator, standard lot mini lot micro lot, forex trading tools"
@@ -54,6 +59,8 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
     ? "forex margin calculator, free margin calculator, forex leverage calculation, currency margin requirement, JPY margin calculator, lot size margin calculator, forex risk management, leverage calculator, standard lot mini lot micro lot, forex trading tools, margin requirement calculator"
     : isOptionsPayoffCalculator
     ? "options payoff calculator, Black-Scholes calculator, binomial model calculator, American options calculator, European options calculator, option Greeks calculator, implied volatility calculator, delta gamma theta vega rho, advanced Greeks vanna charm vomma zomma, probability of profit, payoff diagram, multi-leg strategies, option spreads, iron condor, straddle strangle, volatility surface, option pricing model, call put calculator, time value intrinsic value, options risk management, professional options tools, enterprise options calculator"
+    : isPivotPointsCalculator
+    ? "pivot point calculator, free pivot point calculator, support resistance calculator, technical analysis tool, classic pivot points, woodie pivot points, camarilla pivot points, demark pivot points, fibonacci pivot points, daily pivot points, weekly pivot points, monthly pivot points, stock pivot calculator, trading levels calculator, s1 s2 s3 r1 r2 r3, pivot point formula, forex pivot points, stock market support resistance, day trading calculator, swing trading calculator, position trading calculator, intraday trading tool, market analysis calculator, price level calculator, trading calculator, technical analysis calculator"
     : undefined;
   
   return {
@@ -296,7 +303,7 @@ export default function CalculatorPage({ params }: { params: { slug: string } })
         availability: "https://schema.org/InStock"
       }
     };
-    
+
     graph.push({
       "@type": "HowTo",
       name: "How to Use the Enterprise Options Calculator",
@@ -332,6 +339,75 @@ export default function CalculatorPage({ params }: { params: { slug: string } })
         {
           "@type": "HowToStep",
           text: "Optionally solve for implied volatility from market premium"
+        }
+      ]
+    });
+  }
+
+  // Add enhanced schema for pivot-points calculator
+  if (calculator.slug === "pivot-points") {
+    graph[0] = {
+      ...graph[0],
+      featureList: [
+        "Five calculation methods: Classic, Woodie's, Camarilla, DeMark's, Fibonacci",
+        "Live market data integration for 40+ US stocks",
+        "Multiple timeframes: Daily, Weekly, Monthly",
+        "Customizable decimal precision (2-5 decimals)",
+        "CSV and PDF export functionality",
+        "Interactive chart visualization with Recharts",
+        "Proximity alerts system for level notification",
+        "Mid-level calculations (R1.5, S1.5, etc.)",
+        "Historical data tracking with localStorage",
+        "Risk management integration",
+        "22 global timezone options covering USA, Canada, UK, Europe, Asia, Australia, New Zealand, Brazil, South Africa",
+        "Color-coded zones for visual identification",
+        "Quick preset selection",
+        "Distance from current price calculation",
+        "5-minute caching system for fast performance"
+      ],
+      offers: {
+        "@type": "Offer",
+        price: "0",
+        priceCurrency: "USD",
+        availability: "https://schema.org/InStock"
+      }
+    };
+
+    graph.push({
+      "@type": "HowTo",
+      name: "How to Calculate Pivot Points",
+      step: [
+        {
+          "@type": "HowToStep",
+          text: "Enter the high, low, and close prices from your trading period, or load live data from 40+ US stocks"
+        },
+        {
+          "@type": "HowToStep",
+          text: "Select your preferred calculation method (Classic, Woodie's, Camarilla, DeMark's, or Fibonacci)"
+        },
+        {
+          "@type": "HowToStep",
+          text: "Choose the timeframe (Daily, Weekly, or Monthly) based on your trading style"
+        },
+        {
+          "@type": "HowToStep",
+          text: "Set decimal precision (2-5 decimals) for accurate price level display"
+        },
+        {
+          "@type": "HowToStep",
+          text: "Select your timezone to view relevant market session hours"
+        },
+        {
+          "@type": "HowToStep",
+          text: "Enable proximity alerts to notify when price approaches key levels"
+        },
+        {
+          "@type": "HowToStep",
+          text: "View calculated pivot points (R1-R3, S1-S3) with mid-levels and chart visualization"
+        },
+        {
+          "@type": "HowToStep",
+          text: "Export results via CSV or PDF for record-keeping and analysis"
         }
       ]
     });

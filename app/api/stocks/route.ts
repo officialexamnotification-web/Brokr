@@ -71,7 +71,7 @@ const STOCK_INFO: Record<string, { name: string; exchange: string; currency: str
 
 // Cache implementation (in-memory for server-side)
 const cache = new Map();
-const CACHE_DURATION = 60 * 60 * 1000; // 1 hour; protects the 100-request free plan
+const CACHE_DURATION = 10 * 60 * 1000; // 10 minutes; balances freshness with provider quotas
 
 type StockQuote = {
   price: number;
@@ -102,6 +102,25 @@ function setCache<T>(key: string, data: T) {
   cache.set(key, { data, time: Date.now() });
 }
 
+function tradingDaysSince(value: string | null) {
+  if (!value) return Number.POSITIVE_INFINITY;
+  const timestamp = new Date(value).getTime();
+  if (!Number.isFinite(timestamp)) return Number.POSITIVE_INFINITY;
+
+  const start = new Date(timestamp);
+  const end = new Date();
+  const cursor = new Date(start);
+  cursor.setHours(0, 0, 0, 0);
+  end.setHours(0, 0, 0, 0);
+  let tradingDays = 0;
+  while (cursor < end) {
+    cursor.setDate(cursor.getDate() + 1);
+    const day = cursor.getDay();
+    if (day !== 0 && day !== 6) tradingDays += 1;
+  }
+  return tradingDays;
+}
+
 export async function GET(request: Request) {
   const rateLimit = allowPublicRequest(request, "stocks", 10);
   if (!rateLimit.allowed) {
@@ -128,12 +147,12 @@ export async function GET(request: Request) {
     
     const results: Record<string, StockQuote> = {};
 
-    const addFinnhubQuotes = async () => {
+    const addFinnhubQuotes = async (symbolsToFetch = symbols) => {
       const finnhubKey = process.env.FINNHUB_API_KEY || "";
       if (!finnhubKey) return;
-      const responses = await Promise.allSettled(symbols.map(async (symbol) => {
+      const responses = await Promise.allSettled(symbolsToFetch.map(async (symbol) => {
         const response = await fetch(`${FINNHUB_BASE}/quote?symbol=${encodeURIComponent(symbol)}&token=${encodeURIComponent(finnhubKey)}`, {
-          next: { revalidate: 3600 },
+          next: { revalidate: 600 },
         });
         if (!response.ok) throw new Error(`Finnhub quote failed for ${symbol}`);
         const quote = await response.json();
@@ -178,7 +197,7 @@ export async function GET(request: Request) {
       
       
       const res = await fetch(`${STOCKDATA_BASE}/data/quote?symbols=${batch.join(",")}&api_token=${apiKey}`, {
-        next: { revalidate: 3600 }, // 1 hour
+        next: { revalidate: 600 }, // 10 minutes
       });
       const data = await res.json();
       
@@ -214,6 +233,14 @@ export async function GET(request: Request) {
       if (i + batchSize < symbols.length) {
         await new Promise(resolve => setTimeout(resolve, 500));
       }
+    }
+
+    // Some quote providers can return an older successful response even when
+    // our application cache has expired. Refresh only those stale symbols from
+    // Finnhub so the fallback does not multiply requests for fresh quotes.
+    const staleSymbols = symbols.filter((symbol) => tradingDaysSince(results[symbol]?.lastTradeTime) > 1);
+    if (staleSymbols.length > 0) {
+      await addFinnhubQuotes(staleSymbols);
     }
 
     
