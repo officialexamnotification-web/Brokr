@@ -8,7 +8,7 @@ import StatsBanner from "@/components/home/StatsBanner";
 import Testimonials from "@/components/home/Testimonials";
 import Newsletter from "@/components/home/Newsletter";
 
-const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || "https://www.tradivex.com").replace(/\/$/, "");
+const siteUrl = "https://www.tradivex.com";
 
 export const metadata: Metadata = {
   title: "Tradivex - Compare Trading Platforms, Brokers & Market Tools",

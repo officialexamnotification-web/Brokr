@@ -5,7 +5,7 @@ import CalculatorGuide from "@/components/calculators/CalculatorGuide";
 import { calculatorDefinitions, getCalculatorDefinition, type CalculatorSlug } from "@/lib/calculators";
 import { getCalculatorSeoContent } from "@/lib/calculator-seo";
 
-const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || "https://www.tradivex.com").replace(/\/$/, "");
+const siteUrl = "https://www.tradivex.com";
 
 export function generateStaticParams() {
   return calculatorDefinitions.map((calculator) => ({ slug: calculator.slug }));
@@ -60,6 +60,7 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
     title: enhancedTitle,
     description: enhancedDescription,
     keywords: enhancedKeywords,
+    robots: { index: true, follow: true },
     alternates: { canonical: `${siteUrl}/calculators/${calculator.slug}` },
     openGraph: {
       title: enhancedTitle,

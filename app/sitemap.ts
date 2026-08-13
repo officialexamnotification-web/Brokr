@@ -4,7 +4,7 @@ import { calculatorDefinitions } from "@/lib/calculators";
 import { getPublishedManagedBlogs } from "@/lib/managed-blog-server";
 import { getPublishedManagedTools } from "@/lib/managed-tool-server";
 
-const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || "https://www.tradivex.com").replace(/\/$/, "");
+const siteUrl = "https://www.tradivex.com";
 export const revalidate = 300;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {

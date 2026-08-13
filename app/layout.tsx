@@ -3,7 +3,9 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
 import SiteChrome from "@/components/layout/SiteChrome";
 
-const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || "https://www.tradivex.com").replace(/\/$/, "");
+// Keep production metadata tied to the verified public domain. A misconfigured
+// deployment environment must not be able to publish a third-party canonical.
+const siteUrl = "https://www.tradivex.com";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),

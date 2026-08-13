@@ -80,8 +80,8 @@ export default async function ToolDetailPage({ params }: { params: { slug: strin
     "@type": "WebPage",
     name: tool.name,
     description: tool.longDescription,
-    url: `${(process.env.NEXT_PUBLIC_SITE_URL || "https://www.tradivex.com").replace(/\/$/, "")}/tool/${tool.slug}`,
-    mainEntityOfPage: { "@type": "WebPage", "@id": `${(process.env.NEXT_PUBLIC_SITE_URL || "https://www.tradivex.com").replace(/\/$/, "")}/tool/${tool.slug}` },
+    url: `https://www.tradivex.com/tool/${tool.slug}`,
+    mainEntityOfPage: { "@type": "WebPage", "@id": `https://www.tradivex.com/tool/${tool.slug}` },
     about: tool.category,
     isPartOf: { "@type": "WebSite", name: "Tradivex" },
     author: {

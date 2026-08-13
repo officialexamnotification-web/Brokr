@@ -9,7 +9,7 @@ import { getPublishedManagedBlog } from "@/lib/managed-blog-server";
 import { calculatorDefinitions, type CalculatorSlug } from "@/lib/calculators";
 import { renderBlogContent } from "@/lib/blog-content";
 
-const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || "https://www.tradivex.com").replace(/\/$/, "");
+const siteUrl = "https://www.tradivex.com";
 
 const calculatorLinksByCategory: Record<string, string[]> = {
   "Risk Management": ["risk-reward", "position-size", "drawdown-recovery", "net-trading-cost"],
