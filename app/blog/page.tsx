@@ -34,7 +34,7 @@ export const metadata: Metadata = {
 };
 
 export function generateStaticParams() {
-  return blogPosts.map((p) => ({ slug: p.slug }));
+  return [];
 }
 
 const categoryIcons: Record<string, React.ElementType> = {

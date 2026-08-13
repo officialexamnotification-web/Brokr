@@ -73,7 +73,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
 }
 
 export function generateStaticParams() {
-  return getBlogPosts().map((post) => ({ slug: post.slug }));
+  return [];
 }
 
 export default async function BlogPostPage({ params }: { params: { slug: string } }) {
@@ -146,6 +146,16 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
           <span key={t} className="px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-xs font-medium">{t}</span>
         ))}
       </div>
+
+      {post.image && (
+        <div className="mb-8 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800">
+          <img 
+            src={post.image} 
+            alt={post.title} 
+            className="w-full h-auto object-cover"
+          />
+        </div>
+      )}
 
       <article className="prose prose-slate dark:prose-invert max-w-none prose-headings:font-bold prose-a:text-primary-600 prose-strong:text-slate-900 dark:prose-strong:text-white">
         {renderBlogContent(post.content)}
