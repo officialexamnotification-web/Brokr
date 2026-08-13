@@ -48,7 +48,7 @@ const categoryIcons: Record<string, React.ElementType> = {
   "Education": GraduationCap,
 };
 
-export default function BlogListPage({
+export default async function BlogListPage({
   searchParams,
 }: {
   searchParams: Promise<{ category?: string }>;
