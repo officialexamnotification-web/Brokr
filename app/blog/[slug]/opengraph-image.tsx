@@ -3,10 +3,11 @@ import { getBlogPostBySlug } from "@/lib/data";
 
 export const runtime = "edge";
 
-export async function GET(
-  request: Request,
-  { params }: { params: Promise<{ slug: string }> }
-) {
+export default async function OGImage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
   const { slug } = await params;
   const post = getBlogPostBySlug(slug);
 
