@@ -113,9 +113,9 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
       <div className="flex items-center gap-3 mb-4">
         <Link 
           href={categorySlug ? `/category/${categorySlug}` : `/blog?category=${encodeURIComponent(post.category)}`}
-          className="inline-block"
+          className="inline-block hover:bg-primary-100 dark:hover:bg-primary-900/30 cursor-pointer"
         >
-          <Badge variant="info" className="hover:bg-primary-100 dark:hover:bg-primary-900/30 cursor-pointer">{post.category}</Badge>
+          <Badge variant="info">{post.category}</Badge>
         </Link>
         <span className="text-xs text-slate-400 flex items-center gap-1"><Clock className="w-3 h-3" /> {post.readTime}</span>
         <span className="text-xs text-slate-400">{post.date}</span>

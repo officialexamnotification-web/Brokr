@@ -109,10 +109,10 @@ export default async function BlogListPage({
                 <div>
                   <Link 
                     href={categorySlug ? `/category/${categorySlug}` : `/blog?category=${encodeURIComponent(post.category)}`}
-                    className="inline-block"
+                    className="inline-block hover:bg-primary-100 dark:hover:bg-primary-900/30 cursor-pointer"
                     onClick={(e) => e.stopPropagation()}
                   >
-                    <Badge variant="info" className="hover:bg-primary-100 dark:hover:bg-primary-900/30 cursor-pointer">{post.category}</Badge>
+                    <Badge variant="info">{post.category}</Badge>
                   </Link>
                   <div className="flex items-center gap-3 mt-1 text-xs text-slate-400">
                     <span className="flex items-center gap-1"><Clock className="w-3 h-3" /> {post.readTime}</span>
