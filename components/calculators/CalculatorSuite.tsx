@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import type { ReactNode } from "react";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine } from "recharts";
 import { calculatorDefinitions, type CalculatorSlug } from "@/lib/calculators";
@@ -12,7 +12,7 @@ type Props = { slug: CalculatorSlug };
 const inputClass = "min-w-0 w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-950 px-4 py-3 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500/30";
 const labelClass = "block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2";
 
-function NumberField({ label, value, onChange, step = "any", min = "0", max, suffix }: { label: string; value: number; onChange: (value: number) => void; step?: string; min?: string; max?: string; suffix?: string }) {
+function NumberField({ label, value, onChange, step = "any", min = "0", max, suffix, note }: { label: string; value: number; onChange: (value: number) => void; step?: string; min?: string; max?: string; suffix?: string; note?: string }) {
   return (
     <label className="block">
       <span className={labelClass}>{label}</span>
@@ -20,6 +20,7 @@ function NumberField({ label, value, onChange, step = "any", min = "0", max, suf
         <input type="number" min={min} max={max} step={step} value={value} onChange={(event) => onChange(Number(event.target.value))} className={inputClass} />
         {suffix && <span className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-xs text-slate-400">{suffix}</span>}
       </div>
+      {note && <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">{note}</p>}
     </label>
   );
 }
@@ -44,13 +45,32 @@ function TextField({ label, value, onChange, placeholder }: { label: string; val
   );
 }
 
-function Result({ label, value, note }: { label: string; value: string; note?: string }) {
-  return <div className="rounded-2xl bg-slate-50 dark:bg-slate-950/70 border border-slate-200 dark:border-slate-800 p-5"><p className="text-xs uppercase tracking-wider text-slate-500 dark:text-slate-400">{label}</p><p className="mt-2 text-2xl font-bold text-slate-900 dark:text-white break-words">{value}</p>{note && <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">{note}</p>}</div>;
+function Result({ label, value, note, zone }: { label: string; value: string; note?: string; zone?: "resistance" | "support" | "pivot" | "neutral" }) {
+  const zoneColors = {
+    resistance: "bg-red-50 dark:bg-red-950/20 border-red-200 dark:border-red-800",
+    support: "bg-green-50 dark:bg-green-950/20 border-green-200 dark:border-green-800",
+    pivot: "bg-primary-50 dark:bg-primary-950/20 border-primary-200 dark:border-primary-800",
+    neutral: "bg-slate-50 dark:bg-slate-950/70 border-slate-200 dark:border-slate-800"
+  };
+  
+  const textColors = {
+    resistance: "text-red-900 dark:text-red-100",
+    support: "text-green-900 dark:text-green-100",
+    pivot: "text-primary-900 dark:text-primary-100",
+    neutral: "text-slate-900 dark:text-white"
+  };
+
+  return <div className={`rounded-2xl p-5 ${zoneColors[zone || "neutral"]}`}><p className="text-xs uppercase tracking-wider text-slate-500 dark:text-slate-400">{label}</p><p className={`mt-2 text-2xl font-bold break-words ${textColors[zone || "neutral"]}`}>{value}</p>{note && <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">{note}</p>}</div>;
 }
 
 function formatNumber(value: number, digits = 2) {
   if (!Number.isFinite(value)) return "—";
   return value.toLocaleString("en-IN", { maximumFractionDigits: digits, minimumFractionDigits: digits });
+}
+
+function formatNumberWithPrecision(value: number, precision: number) {
+  if (!Number.isFinite(value)) return "—";
+  return value.toLocaleString("en-IN", { maximumFractionDigits: precision, minimumFractionDigits: precision });
 }
 
 function Notice({ children }: { children: ReactNode }) {
@@ -2216,19 +2236,745 @@ function BrokerageCalculator() {
 
 function PivotPointsCalculator() {
   const [high, setHigh] = useState(110);
-  const [low, setLow] = useState(100);
+  const [low, setLow] = useState(90);
   const [close, setClose] = useState(105);
-  const pivot = (high + low + close) / 3;
-  const r1 = 2 * pivot - low;
-  const s1 = 2 * pivot - high;
-  const r2 = pivot + high - low;
-  const s2 = pivot - high + low;
-  const r3 = high + 2 * (pivot - low);
-  const s3 = low - 2 * (high - pivot);
+  const [open, setOpen] = useState(108);
+  const [selectedMethod, setSelectedMethod] = useState("classic");
+  const [showComparison, setShowComparison] = useState(false);
+  const [selectedSession, setSelectedSession] = useState("daily");
+  const [decimalPrecision, setDecimalPrecision] = useState(2);
+  const [showMidLevels, setShowMidLevels] = useState(false);
+  const [selectedSymbol, setSelectedSymbol] = useState("AAPL");
+  const [loadingMarketData, setLoadingMarketData] = useState(false);
+  const [marketDataError, setMarketDataError] = useState<string | null>(null);
+  const [proximityAlertEnabled, setProximityAlertEnabled] = useState(false);
+  const [proximityThreshold, setProximityThreshold] = useState(0.5);
+  const [selectedTimezone, setSelectedTimezone] = useState("EST");
+  const [historicalData, setHistoricalData] = useState<Array<{date: string, pivot: number, r1: number, s1: number}>>([]);
+  const [accountBalance, setAccountBalance] = useState(10000);
+  const [riskPercent, setRiskPercent] = useState(1);
+  const [stockDataCache, setStockDataCache] = useState<Record<string, {data: any, timestamp: number}>>({
+    "AAPL": { data: { price: 305.26, dayHigh: 306.00, dayLow: 302.05, dayOpen: 304.21, previousClose: 302.25, changePercent: 1.00, name: "Apple Inc." }, timestamp: Date.now() },
+    "MSFT": { data: { price: 496.88, dayHigh: 501.34, dayLow: 493.01, dayOpen: 493.27, previousClose: 492.43, changePercent: 0.90, name: "Microsoft Corporation" }, timestamp: Date.now() },
+    "GOOGL": { data: { price: 346.36, dayHigh: 347.93, dayLow: 343.76, dayOpen: 345.77, previousClose: 343.54, changePercent: 0.82, name: "Alphabet Inc." }, timestamp: Date.now() },
+    "NVDA": { data: { price: 225.30, dayHigh: 227.23, dayLow: 223.71, dayOpen: 225.06, previousClose: 224.09, changePercent: 0.54, name: "NVIDIA Corporation" }, timestamp: Date.now() },
+    "AMZN": { data: { price: 265.13, dayHigh: 269.58, dayLow: 264.71, dayOpen: 267.24, previousClose: 267.28, changePercent: -0.80, name: "Amazon.com, Inc." }, timestamp: Date.now() },
+    "META": { data: { price: 594.97, dayHigh: 595.85, dayLow: 579.39, dayOpen: 580.71, previousClose: 578.85, changePercent: 2.78, name: "Meta Platforms, Inc." }, timestamp: Date.now() },
+    "TSLA": { data: { price: 339.96, dayHigh: 341.64, dayLow: 325.24, dayOpen: 327.20, previousClose: 327.51, changePercent: 3.80, name: "Tesla, Inc." }, timestamp: Date.now() },
+  });
+  const [lastUpdated, setLastUpdated] = useState<string | null>("Sample data");
+  const [showRiskSection, setShowRiskSection] = useState(false);
+  const [sessionInfo, setSessionInfo] = useState<{startTime: string, endTime: string, market: string}>({startTime: "9:30 AM", endTime: "4:00 PM", market: "NYSE"});
+
+  // Update session info based on timezone selection
+  useEffect(() => {
+    const selectedTz = timezones.find(tz => tz.value === selectedTimezone);
+    if (selectedTz) {
+      setSessionInfo({
+        startTime: selectedTz.hours.split(' - ')[0],
+        endTime: selectedTz.hours.split(' - ')[1],
+        market: selectedTz.market
+      });
+    }
+  }, [selectedTimezone]);
+
+  const timezones = [
+    { value: "EST", label: "USA - Eastern Time (EST/EDT)", market: "NYSE", hours: "9:30 AM - 4:00 PM" },
+    { value: "CST", label: "USA - Central Time (CST/CDT)", market: "CME", hours: "8:30 AM - 3:00 PM" },
+    { value: "MST", label: "USA - Mountain Time (MST/MDT)", market: "CME", hours: "7:30 AM - 2:00 PM" },
+    { value: "PST", label: "USA - Pacific Time (PST/PDT)", market: "NASDAQ", hours: "6:30 AM - 1:00 PM" },
+    { value: "EST-Canada", label: "Canada - Eastern Time (EST/EDT)", market: "TSX", hours: "9:30 AM - 4:00 PM" },
+    { value: "GMT", label: "UK - Greenwich Mean Time (GMT/BST)", market: "LSE", hours: "8:00 AM - 4:30 PM" },
+    { value: "CET", label: "Europe - Central Time (CET/CEST)", market: "Euronext", hours: "9:00 AM - 5:30 PM" },
+    { value: "CET-Frankfurt", label: "Germany - Frankfurt (CET/CEST)", market: "Xetra", hours: "9:00 AM - 5:30 PM" },
+    { value: "CET-Zurich", label: "Switzerland - Zurich (CET/CEST)", market: "SIX", hours: "9:00 AM - 5:30 PM" },
+    { value: "EET", label: "Europe - Eastern Time (EET)", market: "MOEX", hours: "10:00 AM - 6:30 PM" },
+    { value: "IST", label: "India - Standard Time (IST)", market: "NSE", hours: "9:15 AM - 3:30 PM" },
+    { value: "JST", label: "Japan - Standard Time (JST)", market: "TSE", hours: "9:00 AM - 3:00 PM" },
+    { value: "KST", label: "South Korea - Seoul (KST)", market: "KRX", hours: "9:00 AM - 3:30 PM" },
+    { value: "TST", label: "Taiwan - Taipei (TST)", market: "TWSE", hours: "9:00 AM - 1:30 PM" },
+    { value: "HKT", label: "Hong Kong - Time (HKT)", market: "HKEX", hours: "9:30 AM - 4:00 PM" },
+    { value: "SGT", label: "Singapore - Time (SGT)", market: "SGX", hours: "9:00 AM - 5:00 PM" },
+    { value: "CST-China", label: "China - Standard Time (CST)", market: "SSE", hours: "9:30 AM - 3:00 PM" },
+    { value: "AEST", label: "Australia - Eastern (AEST)", market: "ASX", hours: "10:00 AM - 4:00 PM" },
+    { value: "AEDT", label: "Australia - Eastern (AEDT)", market: "ASX", hours: "10:00 AM - 4:00 PM" },
+    { value: "NZST", label: "New Zealand - Wellington (NZST/NZDT)", market: "NZX", hours: "10:00 AM - 4:45 PM" },
+    { value: "BRT", label: "Brazil - São Paulo (BRT)", market: "B3", hours: "10:00 AM - 5:00 PM" },
+    { value: "SAST", label: "South Africa - Johannesburg (SAST)", market: "JSE", hours: "9:00 AM - 5:00 PM" },
+  ];
+
+  const stockSymbols = [
+    { value: "AAPL", label: "Apple (AAPL)" },
+    { value: "MSFT", label: "Microsoft (MSFT)" },
+    { value: "GOOGL", label: "Alphabet (GOOGL)" },
+    { value: "AMZN", label: "Amazon (AMZN)" },
+    { value: "NVDA", label: "NVIDIA (NVDA)" },
+    { value: "META", label: "Meta (META)" },
+    { value: "TSLA", label: "Tesla (TSLA)" },
+    { value: "BRK.B", label: "Berkshire Hathaway (BRK.B)" },
+    { value: "AVGO", label: "Broadcom (AVGO)" },
+    { value: "WMT", label: "Walmart (WMT)" },
+    { value: "JPM", label: "JPMorgan Chase (JPM)" },
+    { value: "LLY", label: "Eli Lilly (LLY)" },
+    { value: "V", label: "Visa (V)" },
+    { value: "ORCL", label: "Oracle (ORCL)" },
+    { value: "MA", label: "Mastercard (MA)" },
+    { value: "XOM", label: "Exxon Mobil (XOM)" },
+    { value: "COST", label: "Costco (COST)" },
+    { value: "JNJ", label: "Johnson & Johnson (JNJ)" },
+    { value: "HD", label: "Home Depot (HD)" },
+    { value: "PG", label: "Procter & Gamble (PG)" },
+    { value: "NFLX", label: "Netflix (NFLX)" },
+    { value: "AMD", label: "AMD (AMD)" },
+    { value: "CRM", label: "Salesforce (CRM)" },
+    { value: "ADBE", label: "Adobe (ADBE)" },
+    { value: "QCOM", label: "Qualcomm (QCOM)" },
+    { value: "INTC", label: "Intel (INTC)" },
+    { value: "CSCO", label: "Cisco (CSCO)" },
+    { value: "IBM", label: "IBM (IBM)" },
+    { value: "UBER", label: "Uber (UBER)" },
+    { value: "DIS", label: "Disney (DIS)" },
+    { value: "KO", label: "Coca-Cola (KO)" },
+    { value: "PEP", label: "PepsiCo (PEP)" },
+    { value: "MCD", label: "McDonald's (MCD)" },
+    { value: "NKE", label: "Nike (NKE)" },
+    { value: "BA", label: "Boeing (BA)" },
+    { value: "CAT", label: "Caterpillar (CAT)" },
+    { value: "GE", label: "General Electric (GE)" },
+    { value: "UNH", label: "UnitedHealth (UNH)" },
+    { value: "MRK", label: "Merck (MRK)" },
+    { value: "PFE", label: "Pfizer (PFE)" },
+    { value: "CVX", label: "Chevron (CVX)" },
+    { value: "TMO", label: "Thermo Fisher (TMO)" },
+    { value: "AMGN", label: "Amgen (AMGN)" },
+    { value: "GS", label: "Goldman Sachs (GS)" },
+    { value: "MS", label: "Morgan Stanley (MS)" },
+    { value: "LIN", label: "Linde (LIN)" },
+    { value: "RTX", label: "Raytheon (RTX)" },
+    { value: "LOW", label: "Lowe's (LOW)" },
+    { value: "SBUX", label: "Starbucks (SBUX)" },
+    { value: "PLTR", label: "Palantir (PLTR)" },
+  ];
+
+  // Load preferences on mount
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('pivotCalculatorPreferences');
+      if (saved) {
+        try {
+          const prefs = JSON.parse(saved);
+          if (prefs.method) setSelectedMethod(prefs.method);
+          if (prefs.session) setSelectedSession(prefs.session);
+          if (prefs.precision) setDecimalPrecision(prefs.precision);
+          if (prefs.showMidLevels !== undefined) setShowMidLevels(prefs.showMidLevels);
+          if (prefs.symbol) setSelectedSymbol(prefs.symbol);
+          if (prefs.timezone) setSelectedTimezone(prefs.timezone);
+          if (prefs.proximityAlertEnabled !== undefined) setProximityAlertEnabled(prefs.proximityAlertEnabled);
+          if (prefs.proximityThreshold) setProximityThreshold(prefs.proximityThreshold);
+          if (prefs.accountBalance) setAccountBalance(prefs.accountBalance);
+          if (prefs.riskPercent) setRiskPercent(prefs.riskPercent);
+          if (prefs.stockDataCache) setStockDataCache(prefs.stockDataCache);
+        } catch (e) {
+          console.error('Failed to load preferences:', e);
+        }
+      }
+    }
+  }, []);
+
+  // Auto-fetch market data when symbol changes
+  useEffect(() => {
+    if (selectedSymbol && stockDataCache[selectedSymbol]) {
+      const cached = stockDataCache[selectedSymbol];
+      const stockData = cached.data;
+      if (stockData && stockData.dayHigh && stockData.dayLow && stockData.price) {
+        setHigh(stockData.dayHigh);
+        setLow(stockData.dayLow);
+        setClose(stockData.price);
+        setOpen(stockData.dayOpen || stockData.previousClose || stockData.price);
+        setLastUpdated("Sample data");
+      }
+    }
+  }, [selectedSymbol, stockDataCache]);
+
+  // Fetch market data for selected symbol - CACHE ONLY, NO API CALLS
+  const fetchMarketData = async () => {
+    setLoadingMarketData(true);
+    setMarketDataError(null);
+
+    const cached = stockDataCache[selectedSymbol];
+
+    // Load from cache only - no API calls
+    if (cached && cached.data && cached.data.dayHigh && cached.data.dayLow && cached.data.price) {
+      setHigh(cached.data.dayHigh);
+      setLow(cached.data.dayLow);
+      setClose(cached.data.price);
+      setOpen(cached.data.dayOpen || cached.data.previousClose || cached.data.price);
+      setLastUpdated("Sample data");
+    } else {
+      setMarketDataError("No cached data available for this symbol. Please enter prices manually.");
+    }
+
+    setLoadingMarketData(false);
+  };
+
+  const sessions = [
+    { value: "daily", label: "Daily" },
+    { value: "weekly", label: "Weekly" },
+    { value: "monthly", label: "Monthly" },
+  ];
+
+  const precisionOptions = [
+    { value: 2, label: "2 decimals" },
+    { value: 3, label: "3 decimals" },
+    { value: 4, label: "4 decimals" },
+    { value: 5, label: "5 decimals" },
+  ];
+
+  const presets = [
+    { name: "Classic Daily", method: "classic", session: "daily", precision: 2 },
+    { name: "Fibonacci Daily", method: "fibonacci", session: "daily", precision: 2 },
+    { name: "Camarilla Daily", method: "camarilla", session: "daily", precision: 4 },
+    { name: "Woodie Weekly", method: "woodie", session: "weekly", precision: 2 },
+    { name: "DeMark Monthly", method: "demark", session: "monthly", precision: 2 },
+  ];
+
+  const methods = [
+    { value: "classic", label: "Classic", levels: 7 },
+    { value: "woodie", label: "Woodie's", levels: 5 },
+    { value: "camarilla", label: "Camarilla", levels: 9 },
+    { value: "demark", label: "DeMark's", levels: 2 },
+    { value: "fibonacci", label: "Fibonacci", levels: 7 },
+  ];
+
+  // Classic Method
+  const classicPivot = (high + low + close) / 3;
+  const classicR1 = 2 * classicPivot - low;
+  const classicS1 = 2 * classicPivot - high;
+  const classicR2 = classicPivot + high - low;
+  const classicS2 = classicPivot - high + low;
+  const classicR3 = high + 2 * (classicPivot - low);
+  const classicS3 = low - 2 * (high - classicPivot);
+
+  // Woodie's Method  
+  const woodiePivot = (high + low + 2 * close) / 4;
+  const woodieR1 = 2 * woodiePivot - low;
+  const woodieS1 = 2 * woodiePivot - high;
+  const woodieR2 = woodiePivot + high - low;
+  const woodieS2 = woodiePivot - high + low;
+  const woodieR3 = high + 2 * (woodiePivot - low);
+  const woodieS3 = low - 2 * (high - woodiePivot);
+
+  // Camarilla Method
+  const range = high - low;
+  const camarillaPivot = (high + low + close) / 3;
+  const camarillaR4 = close + range * 1.5;
+  const camarillaR3 = close + range * 1.25;
+  const camarillaR2 = close + range * 1.1666;
+  const camarillaR1 = close + range * 1.0833;
+  const camarillaS1 = close - range * 1.0833;
+  const camarillaS2 = close - range * 1.1666;
+  const camarillaS3 = close - range * 1.25;
+  const camarillaS4 = close - range * 1.5;
+
+  // DeMark's Method
+  let demarkX;
+  if (open > close) {
+    demarkX = high + 2 * low + close;
+  } else if (open < close) {
+    demarkX = 2 * high + low + close;
+  } else {
+    demarkX = high + low + 2 * close;
+  }
+  const demarkR1 = demarkX / 2 - low;
+  const demarkS1 = demarkX / 2 - high;
+  const demarkPivot = demarkX / 4;
+
+  // Fibonacci Method
+  const fibPivot = (high + low + close) / 3;
+  const fibR1 = fibPivot + range * 0.382;
+  const fibS1 = fibPivot - range * 0.382;
+  const fibR2 = fibPivot + range * 0.618;
+  const fibS2 = fibPivot - range * 0.618;
+  const fibR3 = fibPivot + range * 1.0;
+  const fibS3 = fibPivot - range * 1.0;
+
+  // Mid-level calculations
+  const classicMid1 = (classicPivot + classicR1) / 2;
+  const classicMid2 = (classicR1 + classicR2) / 2;
+  const classicMid3 = (classicR2 + classicR3) / 2;
+  const classicMidS1 = (classicPivot + classicS1) / 2;
+  const classicMidS2 = (classicS1 + classicS2) / 2;
+  const classicMidS3 = (classicS2 + classicS3) / 2;
+
+  const getCurrentResults = () => {
+    switch (selectedMethod) {
+      case "classic":
+        return { pivot: classicPivot, r1: classicR1, s1: classicS1, r2: classicR2, s2: classicS2, r3: classicR3, s3: classicS3 };
+      case "woodie":
+        return { pivot: woodiePivot, r1: woodieR1, s1: woodieS1, r2: woodieR2, s2: woodieS2, r3: woodieR3, s3: woodieS3 };
+      case "camarilla":
+        return { pivot: camarillaPivot, r1: camarillaR1, s1: camarillaS1, r2: camarillaR2, s2: camarillaS2, r3: camarillaR3, s3: camarillaS3, r4: camarillaR4, s4: camarillaS4 };
+      case "demark":
+        return { pivot: demarkPivot, r1: demarkR1, s1: demarkS1 };
+      case "fibonacci":
+        return { pivot: fibPivot, r1: fibR1, s1: fibS1, r2: fibR2, s2: fibS2, r3: fibR3, s3: fibS3 };
+      default:
+        return { pivot: classicPivot, r1: classicR1, s1: classicS1, r2: classicR2, s2: classicS2, r3: classicR3, s3: classicS3 };
+    }
+  };
+
+  const currentResults = getCurrentResults();
+
   return <>
-    <div className="grid gap-5 md:grid-cols-3"><NumberField label="High" value={high} onChange={setHigh} step="0.01" /><NumberField label="Low" value={low} onChange={setLow} step="0.01" /><NumberField label="Close" value={close} onChange={setClose} step="0.01" /></div>
-    <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3"><Result label="Pivot" value={formatNumber(pivot)} /><Result label="Resistance 1" value={formatNumber(r1)} /><Result label="Support 1" value={formatNumber(s1)} /><Result label="Resistance 2" value={formatNumber(r2)} /><Result label="Support 2" value={formatNumber(s2)} /><Result label="Resistance 3" value={formatNumber(r3)} /><Result label="Support 3" value={formatNumber(s3)} /></div>
-    <Notice>Classic pivot levels are deterministic calculations from the entered high, low, and close. They are not forecasts, trade signals, or guarantees of support or resistance.</Notice>
+    <div className="grid gap-5 md:grid-cols-4">
+      <NumberField label="High" value={high} onChange={setHigh} step="0.01" />
+      <NumberField label="Low" value={low} onChange={setLow} step="0.01" />
+      <NumberField label="Close" value={close} onChange={setClose} step="0.01" />
+      <NumberField label="Open" value={open} onChange={setOpen} step="0.01" note="Required for Woodie's & DeMark's" />
+    </div>
+
+    <div className="grid gap-5 md:grid-cols-2 mt-4">
+      <SelectField label="Load Live Data" value={selectedSymbol} onChange={setSelectedSymbol} options={stockSymbols} />
+      <div className="flex items-end gap-2">
+        <button
+          onClick={fetchMarketData}
+          disabled={loadingMarketData}
+          className="px-4 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors text-sm font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          {loadingMarketData ? "Loading..." : "Load Market Data"}
+        </button>
+        {lastUpdated && (
+          <span className="text-xs text-slate-500 dark:text-slate-400 self-center mb-3">
+            Updated: {lastUpdated}
+          </span>
+        )}
+      </div>
+    </div>
+
+    <div className={`mt-4 rounded-2xl border p-5 ${stockDataCache[selectedSymbol] ? 'border-green-200 bg-green-50 dark:border-green-800 dark:bg-green-950/20' : 'border-slate-200 bg-slate-50 dark:border-slate-800 dark:bg-slate-950/70'}`}>
+      <div className="flex items-center justify-between mb-4">
+        <h3 className={`text-base font-semibold ${stockDataCache[selectedSymbol] ? 'text-green-900 dark:text-green-100' : 'text-slate-700 dark:text-slate-300'}`}>
+          {selectedSymbol} {stockDataCache[selectedSymbol] ? 'Live Market Data' : 'Market Data'}
+        </h3>
+        <span className="text-xs text-slate-500 dark:text-slate-400">
+          {lastUpdated || 'No data loaded'}
+        </span>
+      </div>
+
+      {stockDataCache[selectedSymbol] ? (
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <div>
+            <p className="text-xs text-slate-500 dark:text-slate-400 mb-1">Current Price</p>
+            <p className="text-lg font-bold text-slate-900 dark:text-white">
+              ${stockDataCache[selectedSymbol].data.price?.toFixed(2)}
+            </p>
+          </div>
+          <div>
+            <p className="text-xs text-slate-500 dark:text-slate-400 mb-1">Day High</p>
+            <p className="text-lg font-bold text-slate-900 dark:text-white">
+              ${stockDataCache[selectedSymbol].data.dayHigh?.toFixed(2)}
+            </p>
+          </div>
+          <div>
+            <p className="text-xs text-slate-500 dark:text-slate-400 mb-1">Day Low</p>
+            <p className="text-lg font-bold text-slate-900 dark:text-white">
+              ${stockDataCache[selectedSymbol].data.dayLow?.toFixed(2)}
+            </p>
+          </div>
+          <div>
+            <p className="text-xs text-slate-500 dark:text-slate-400 mb-1">Change %</p>
+            <p className={`text-lg font-bold ${stockDataCache[selectedSymbol].data.changePercent >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
+              {stockDataCache[selectedSymbol].data.changePercent >= 0 ? '+' : ''}{stockDataCache[selectedSymbol].data.changePercent?.toFixed(2)}%
+            </p>
+          </div>
+          {stockDataCache[selectedSymbol].data.dayOpen && (
+            <div>
+              <p className="text-xs text-slate-500 dark:text-slate-400 mb-1">Day Open</p>
+              <p className="text-sm font-semibold text-slate-900 dark:text-white">
+                ${stockDataCache[selectedSymbol].data.dayOpen?.toFixed(2)}
+              </p>
+            </div>
+          )}
+          {stockDataCache[selectedSymbol].data.previousClose && (
+            <div>
+              <p className="text-xs text-slate-500 dark:text-slate-400 mb-1">Previous Close</p>
+              <p className="text-sm font-semibold text-slate-900 dark:text-white">
+                ${stockDataCache[selectedSymbol].data.previousClose?.toFixed(2)}
+              </p>
+            </div>
+          )}
+          {stockDataCache[selectedSymbol].data.volume && (
+            <div>
+              <p className="text-xs text-slate-500 dark:text-slate-400 mb-1">Volume</p>
+              <p className="text-sm font-semibold text-slate-900 dark:text-white">
+                {formatNumber(stockDataCache[selectedSymbol].data.volume, 0)}
+              </p>
+            </div>
+          )}
+          {stockDataCache[selectedSymbol].data.name && (
+            <div>
+              <p className="text-xs text-slate-500 dark:text-slate-400 mb-1">Company Name</p>
+              <p className="text-sm font-semibold text-slate-900 dark:text-white">
+                {stockDataCache[selectedSymbol].data.name}
+              </p>
+            </div>
+          )}
+        </div>
+      ) : (
+        <div className="text-center py-4">
+          <p className="text-sm text-slate-500 dark:text-slate-400">
+            Click "Load Market Data" to fetch live prices
+          </p>
+        </div>
+      )}
+    </div>
+
+    {marketDataError && (
+      <div className="mt-4 rounded-2xl border border-red-200 bg-red-50 dark:border-red-800 dark:bg-red-950/20 p-4">
+        <p className="text-sm text-red-900 dark:text-red-100">{marketDataError}</p>
+      </div>
+    )}
+
+    <div className="grid gap-5 md:grid-cols-3 mt-4">
+      <SelectField label="Calculation Method" value={selectedMethod} onChange={setSelectedMethod} options={methods} />
+      <SelectField label="Timeframe" value={selectedSession} onChange={setSelectedSession} options={sessions} />
+      <SelectField label="Decimal Precision" value={decimalPrecision.toString()} onChange={(val) => setDecimalPrecision(Number(val))} options={precisionOptions.map(opt => ({ label: opt.label, value: opt.value.toString() }))} />
+    </div>
+
+    <div className="grid gap-5 md:grid-cols-2 mt-4">
+      <SelectField label="Quick Presets" value="" onChange={(val) => {
+        const preset = presets.find(p => p.name === val);
+        if (preset) {
+          setSelectedMethod(preset.method);
+          setSelectedSession(preset.session);
+          setDecimalPrecision(preset.precision);
+        }
+      }} options={[{ label: "Select preset...", value: "" }, ...presets.map(p => ({ label: p.name, value: p.name }))]} />
+      <div className="flex items-end gap-6">
+        <label className="flex items-center gap-2 cursor-pointer">
+          <input type="checkbox" checked={showComparison} onChange={(e) => setShowComparison(e.target.checked)} className="w-4 h-4 rounded border-slate-300 text-primary-600 focus:ring-primary-500" />
+          <span className="text-sm font-semibold text-slate-700 dark:text-slate-300">Show all methods comparison</span>
+        </label>
+        <label className="flex items-center gap-2 cursor-pointer">
+          <input type="checkbox" checked={showMidLevels} onChange={(e) => setShowMidLevels(e.target.checked)} className="w-4 h-4 rounded border-slate-300 text-primary-600 focus:ring-primary-500" />
+          <span className="text-sm font-semibold text-slate-700 dark:text-slate-300">Show mid-levels (R1.5, S1.5, etc.)</span>
+        </label>
+      </div>
+    </div>
+
+    <div className="grid gap-5 md:grid-cols-2 mt-4">
+      <NumberField label="Proximity Alert Threshold" value={proximityThreshold} onChange={setProximityThreshold} step="0.1" suffix="%" note="Alert when price is within X% of a level" />
+      <div className="flex items-end">
+        <label className="flex items-center gap-2 cursor-pointer">
+          <input type="checkbox" checked={proximityAlertEnabled} onChange={(e) => setProximityAlertEnabled(e.target.checked)} className="w-4 h-4 rounded border-slate-300 text-primary-600 focus:ring-primary-500" />
+          <span className="text-sm font-semibold text-slate-700 dark:text-slate-300">Enable proximity alerts</span>
+        </label>
+      </div>
+    </div>
+
+    {proximityAlertEnabled && (
+      <div className="mt-4 rounded-2xl border border-amber-200 bg-amber-50 dark:border-amber-800 dark:bg-amber-950/20 p-4">
+        <h3 className="text-sm font-semibold text-amber-900 dark:text-amber-100 mb-3">Proximity Alerts</h3>
+        <div className="space-y-2">
+          <div className="flex justify-between text-sm">
+            <span className="text-amber-800 dark:text-amber-200">Distance to Pivot:</span>
+            <span className="font-semibold text-amber-900 dark:text-amber-100">{formatNumberWithPrecision(Math.abs((currentResults.pivot - close) / currentResults.pivot * 100), 2)}%</span>
+          </div>
+          <div className="flex justify-between text-sm">
+            <span className="text-amber-800 dark:text-amber-200">Distance to R1:</span>
+            <span className="font-semibold text-amber-900 dark:text-amber-100">{formatNumberWithPrecision(Math.abs((currentResults.r1 - close) / currentResults.r1 * 100), 2)}%</span>
+          </div>
+          <div className="flex justify-between text-sm">
+            <span className="text-amber-800 dark:text-amber-200">Distance to S1:</span>
+            <span className="font-semibold text-amber-900 dark:text-amber-100">{formatNumberWithPrecision(Math.abs((currentResults.s1 - close) / currentResults.s1 * 100), 2)}%</span>
+          </div>
+        </div>
+      </div>
+    )}
+
+    <div className="grid gap-5 md:grid-cols-2 mt-4">
+      <SelectField label="Timezone" value={selectedTimezone} onChange={setSelectedTimezone} options={timezones} />
+      <div className="flex items-end">
+        <button 
+          onClick={() => {
+            const today = new Date().toISOString().split('T')[0];
+            const newEntry = {
+              date: today,
+              pivot: currentResults.pivot,
+              r1: currentResults.r1,
+              s1: currentResults.s1
+            };
+            setHistoricalData([...historicalData, newEntry].slice(-7)); // Keep last 7 days
+          }}
+          className="px-4 py-3 bg-slate-600 text-white rounded-lg hover:bg-slate-700 transition-colors text-sm font-semibold"
+        >
+          Save to History
+        </button>
+      </div>
+    </div>
+
+    {historicalData.length > 0 && (
+      <div className="mt-4 rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950/70 p-5">
+        <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-3">Historical Pivot Data (Last 7 Days)</h3>
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-slate-200 dark:border-slate-700">
+                <th className="py-2 px-3 text-left font-semibold text-slate-700 dark:text-slate-300">Date</th>
+                <th className="py-2 px-3 text-right font-semibold text-slate-700 dark:text-slate-300">Pivot</th>
+                <th className="py-2 px-3 text-right font-semibold text-slate-700 dark:text-slate-300">R1</th>
+                <th className="py-2 px-3 text-right font-semibold text-slate-700 dark:text-slate-300">S1</th>
+              </tr>
+            </thead>
+            <tbody>
+              {historicalData.map((entry, index) => (
+                <tr key={index} className="border-b border-slate-100 dark:border-slate-800">
+                  <td className="py-2 px-3 text-slate-600 dark:text-slate-400">{entry.date}</td>
+                  <td className="py-2 px-3 text-right text-slate-600 dark:text-slate-400">{formatNumberWithPrecision(entry.pivot, decimalPrecision)}</td>
+                  <td className="py-2 px-3 text-right text-slate-600 dark:text-slate-400">{formatNumberWithPrecision(entry.r1, decimalPrecision)}</td>
+                  <td className="py-2 px-3 text-right text-slate-600 dark:text-slate-400">{formatNumberWithPrecision(entry.s1, decimalPrecision)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    )}
+
+    <div className="mt-4">
+      <button 
+        onClick={() => setShowRiskSection(!showRiskSection)}
+        className="px-4 py-2 bg-slate-200 dark:bg-slate-800 text-slate-900 dark:text-white rounded-lg hover:bg-slate-300 dark:hover:bg-slate-700 transition-colors text-sm font-semibold"
+      >
+        {showRiskSection ? "Hide" : "Show"} Risk Management
+      </button>
+    </div>
+
+    {showRiskSection && (
+      <div className="mt-4 rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950/70 p-5">
+        <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-4">Risk Management Based on Pivot Levels</h3>
+        <div className="grid gap-5 md:grid-cols-2">
+          <NumberField label="Account Balance" value={accountBalance} onChange={setAccountBalance} step="100" />
+          <NumberField label="Risk per Trade (%)" value={riskPercent} onChange={setRiskPercent} step="0.1" suffix="%" />
+        </div>
+        <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <Result label="Risk Amount" value={formatNumber(accountBalance * riskPercent / 100)} note={`${riskPercent}% of balance`} />
+          <Result label="Position Size (at S1)" value={formatNumber((accountBalance * riskPercent / 100) / Math.abs(currentResults.s1 - currentResults.pivot))} note="Units to risk at S1" />
+          <Result label="Position Size (at R1)" value={formatNumber((accountBalance * riskPercent / 100) / Math.abs(currentResults.r1 - currentResults.pivot))} note="Units to risk at R1" />
+        </div>
+      </div>
+    )}
+
+    <div className="mt-4 rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950/70 p-5">
+      <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-3">Session Information ({selectedTimezone})</h3>
+      <div className="grid gap-3 sm:grid-cols-3 text-sm">
+        <div className="flex justify-between">
+          <span className="text-slate-600 dark:text-slate-400">Market:</span>
+          <span className="font-semibold text-slate-900 dark:text-white">{sessionInfo.market}</span>
+        </div>
+        <div className="flex justify-between">
+          <span className="text-slate-600 dark:text-slate-400">Session Hours:</span>
+          <span className="font-semibold text-slate-900 dark:text-white">{sessionInfo.startTime} - {sessionInfo.endTime}</span>
+        </div>
+        <div className="flex justify-between">
+          <span className="text-slate-600 dark:text-slate-400">Timeframe:</span>
+          <span className="font-semibold text-slate-900 dark:text-white capitalize">{selectedSession}</span>
+        </div>
+      </div>
+    </div>
+
+    {!showComparison ? (
+      <div className="mt-6 space-y-4">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <Result label="Pivot Point" value={formatNumberWithPrecision(currentResults.pivot, decimalPrecision)} zone="pivot" />
+          <Result label="Resistance 1" value={formatNumberWithPrecision(currentResults.r1, decimalPrecision)} zone="resistance" />
+          <Result label="Support 1" value={formatNumberWithPrecision(currentResults.s1, decimalPrecision)} zone="support" />
+          {currentResults.r2 && <Result label="Resistance 2" value={formatNumberWithPrecision(currentResults.r2, decimalPrecision)} zone="resistance" />}
+          {currentResults.s2 && <Result label="Support 2" value={formatNumberWithPrecision(currentResults.s2, decimalPrecision)} zone="support" />}
+          {currentResults.r3 && <Result label="Resistance 3" value={formatNumberWithPrecision(currentResults.r3, decimalPrecision)} zone="resistance" />}
+          {currentResults.s3 && <Result label="Support 3" value={formatNumberWithPrecision(currentResults.s3, decimalPrecision)} zone="support" />}
+          {currentResults.r4 && <Result label="Resistance 4" value={formatNumberWithPrecision(currentResults.r4, decimalPrecision)} zone="resistance" />}
+          {currentResults.s4 && <Result label="Support 4" value={formatNumberWithPrecision(currentResults.s4, decimalPrecision)} zone="support" />}
+        </div>
+
+        {showMidLevels && selectedMethod === "classic" && (
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 mt-4">
+            <Result label="R1.5 (Mid)" value={formatNumberWithPrecision(classicMid1, decimalPrecision)} zone="resistance" />
+            <Result label="R2.5 (Mid)" value={formatNumberWithPrecision(classicMid2, decimalPrecision)} zone="resistance" />
+            <Result label="R3.5 (Mid)" value={formatNumberWithPrecision(classicMid3, decimalPrecision)} zone="resistance" />
+            <Result label="S1.5 (Mid)" value={formatNumberWithPrecision(classicMidS1, decimalPrecision)} zone="support" />
+            <Result label="S2.5 (Mid)" value={formatNumberWithPrecision(classicMidS2, decimalPrecision)} zone="support" />
+            <Result label="S3.5 (Mid)" value={formatNumberWithPrecision(classicMidS3, decimalPrecision)} zone="support" />
+          </div>
+        )}
+
+        <div className="mt-6 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 p-5">
+          <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-4">Pivot Levels Visualization</h3>
+          <ResponsiveContainer width="100%" height={300}>
+            <LineChart data={[
+              { name: 'R3', value: currentResults.r3 || 0 },
+              { name: 'R2', value: currentResults.r2 || 0 },
+              { name: 'R1', value: currentResults.r1 || 0 },
+              { name: 'Pivot', value: currentResults.pivot || 0 },
+              { name: 'S1', value: currentResults.s1 || 0 },
+              { name: 'S2', value: currentResults.s2 || 0 },
+              { name: 'S3', value: currentResults.s3 || 0 },
+            ]}>
+              <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+              <XAxis dataKey="name" stroke="#64748b" />
+              <YAxis stroke="#64748b" />
+              <Tooltip />
+              <Line type="monotone" dataKey="value" stroke="#3b82f6" strokeWidth={2} dot={{ fill: '#3b82f6', strokeWidth: 2, r: 4 }} />
+              <ReferenceLine y={currentResults.pivot} stroke="#f59e0b" strokeDasharray="5 5" label="Pivot" />
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
+      </div>
+    ) : (
+      <div className="mt-6 overflow-x-auto">
+        <table className="w-full text-sm">
+          <thead>
+            <tr className="border-b border-slate-200 dark:border-slate-700">
+              <th className="py-3 px-4 text-left font-semibold text-slate-700 dark:text-slate-300">Level</th>
+              <th className="py-3 px-4 text-right font-semibold text-slate-700 dark:text-slate-300">Classic</th>
+              <th className="py-3 px-4 text-right font-semibold text-slate-700 dark:text-slate-300">Woodie's</th>
+              <th className="py-3 px-4 text-right font-semibold text-slate-700 dark:text-slate-300">Camarilla</th>
+              <th className="py-3 px-4 text-right font-semibold text-slate-700 dark:text-slate-300">DeMark's</th>
+              <th className="py-3 px-4 text-right font-semibold text-slate-700 dark:text-slate-300">Fibonacci</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr className="border-b border-slate-100 dark:border-slate-800">
+              <td className="py-3 px-4 font-medium text-slate-900 dark:text-white">Resistance 4</td>
+              <td className="py-3 px-4 text-right text-slate-600 dark:text-slate-400">—</td>
+              <td className="py-3 px-4 text-right text-slate-600 dark:text-slate-400">—</td>
+              <td className="py-3 px-4 text-right text-slate-600 dark:text-slate-400">{formatNumberWithPrecision(camarillaR4, decimalPrecision)}</td>
+              <td className="py-3 px-4 text-right text-slate-600 dark:text-slate-400">—</td>
+              <td className="py-3 px-4 text-right text-slate-600 dark:text-slate-400">—</td>
+            </tr>
+            <tr className="border-b border-slate-100 dark:border-slate-800">
+              <td className="py-3 px-4 font-medium text-slate-900 dark:text-white">Resistance 3</td>
+              <td className="py-3 px-4 text-right text-slate-600 dark:text-slate-400">{formatNumberWithPrecision(classicR3, decimalPrecision)}</td>
+              <td className="py-3 px-4 text-right text-slate-600 dark:text-slate-400">{formatNumberWithPrecision(woodieR3, decimalPrecision)}</td>
+              <td className="py-3 px-4 text-right text-slate-600 dark:text-slate-400">{formatNumberWithPrecision(camarillaR3, decimalPrecision)}</td>
+              <td className="py-3 px-4 text-right text-slate-600 dark:text-slate-400">—</td>
+              <td className="py-3 px-4 text-right text-slate-600 dark:text-slate-400">{formatNumberWithPrecision(fibR3, decimalPrecision)}</td>
+            </tr>
+            <tr className="border-b border-slate-100 dark:border-slate-800">
+              <td className="py-3 px-4 font-medium text-slate-900 dark:text-white">Resistance 2</td>
+              <td className="py-3 px-4 text-right text-slate-600 dark:text-slate-400">{formatNumberWithPrecision(classicR2, decimalPrecision)}</td>
+              <td className="py-3 px-4 text-right text-slate-600 dark:text-slate-400">{formatNumberWithPrecision(woodieR2, decimalPrecision)}</td>
+              <td className="py-3 px-4 text-right text-slate-600 dark:text-slate-400">{formatNumberWithPrecision(camarillaR2, decimalPrecision)}</td>
+              <td className="py-3 px-4 text-right text-slate-600 dark:text-slate-400">—</td>
+              <td className="py-3 px-4 text-right text-slate-600 dark:text-slate-400">{formatNumberWithPrecision(fibR2, decimalPrecision)}</td>
+            </tr>
+            <tr className="border-b border-slate-100 dark:border-slate-800">
+              <td className="py-3 px-4 font-medium text-slate-900 dark:text-white">Resistance 1</td>
+              <td className="py-3 px-4 text-right text-slate-600 dark:text-slate-400">{formatNumberWithPrecision(classicR1, decimalPrecision)}</td>
+              <td className="py-3 px-4 text-right text-slate-600 dark:text-slate-400">{formatNumberWithPrecision(woodieR1, decimalPrecision)}</td>
+              <td className="py-3 px-4 text-right text-slate-600 dark:text-slate-400">{formatNumberWithPrecision(camarillaR1, decimalPrecision)}</td>
+              <td className="py-3 px-4 text-right text-slate-600 dark:text-slate-400">{formatNumberWithPrecision(demarkR1, decimalPrecision)}</td>
+              <td className="py-3 px-4 text-right text-slate-600 dark:text-slate-400">{formatNumberWithPrecision(fibR1, decimalPrecision)}</td>
+            </tr>
+            <tr className="border-b border-slate-100 dark:border-slate-800 bg-primary-50 dark:bg-primary-950/20">
+              <td className="py-3 px-4 font-bold text-primary-700 dark:text-primary-300">Pivot Point</td>
+              <td className="py-3 px-4 text-right font-bold text-primary-700 dark:text-primary-300">{formatNumberWithPrecision(classicPivot, decimalPrecision)}</td>
+              <td className="py-3 px-4 text-right font-bold text-primary-700 dark:text-primary-300">{formatNumberWithPrecision(woodiePivot, decimalPrecision)}</td>
+              <td className="py-3 px-4 text-right font-bold text-primary-700 dark:text-primary-300">{formatNumberWithPrecision(camarillaPivot, decimalPrecision)}</td>
+              <td className="py-3 px-4 text-right font-bold text-primary-700 dark:text-primary-300">{formatNumberWithPrecision(demarkPivot, decimalPrecision)}</td>
+              <td className="py-3 px-4 text-right font-bold text-primary-700 dark:text-primary-300">{formatNumberWithPrecision(fibPivot, decimalPrecision)}</td>
+            </tr>
+            <tr className="border-b border-slate-100 dark:border-slate-800">
+              <td className="py-3 px-4 font-medium text-slate-900 dark:text-white">Support 1</td>
+              <td className="py-3 px-4 text-right text-slate-600 dark:text-slate-400">{formatNumberWithPrecision(classicS1, decimalPrecision)}</td>
+              <td className="py-3 px-4 text-right text-slate-600 dark:text-slate-400">{formatNumberWithPrecision(woodieS1, decimalPrecision)}</td>
+              <td className="py-3 px-4 text-right text-slate-600 dark:text-slate-400">{formatNumberWithPrecision(camarillaS1, decimalPrecision)}</td>
+              <td className="py-3 px-4 text-right text-slate-600 dark:text-slate-400">{formatNumberWithPrecision(demarkS1, decimalPrecision)}</td>
+              <td className="py-3 px-4 text-right text-slate-600 dark:text-slate-400">{formatNumberWithPrecision(fibS1, decimalPrecision)}</td>
+            </tr>
+            <tr className="border-b border-slate-100 dark:border-slate-800">
+              <td className="py-3 px-4 font-medium text-slate-900 dark:text-white">Support 2</td>
+              <td className="py-3 px-4 text-right text-slate-600 dark:text-slate-400">{formatNumberWithPrecision(classicS2, decimalPrecision)}</td>
+              <td className="py-3 px-4 text-right text-slate-600 dark:text-slate-400">{formatNumberWithPrecision(woodieS2, decimalPrecision)}</td>
+              <td className="py-3 px-4 text-right text-slate-600 dark:text-slate-400">{formatNumberWithPrecision(camarillaS2, decimalPrecision)}</td>
+              <td className="py-3 px-4 text-right text-slate-600 dark:text-slate-400">—</td>
+              <td className="py-3 px-4 text-right text-slate-600 dark:text-slate-400">{formatNumberWithPrecision(fibS2, decimalPrecision)}</td>
+            </tr>
+            <tr className="border-b border-slate-100 dark:border-slate-800">
+              <td className="py-3 px-4 font-medium text-slate-900 dark:text-white">Support 3</td>
+              <td className="py-3 px-4 text-right text-slate-600 dark:text-slate-400">{formatNumberWithPrecision(classicS3, decimalPrecision)}</td>
+              <td className="py-3 px-4 text-right text-slate-600 dark:text-slate-400">{formatNumberWithPrecision(woodieS3, decimalPrecision)}</td>
+              <td className="py-3 px-4 text-right text-slate-600 dark:text-slate-400">{formatNumberWithPrecision(camarillaS3, decimalPrecision)}</td>
+              <td className="py-3 px-4 text-right text-slate-600 dark:text-slate-400">—</td>
+              <td className="py-3 px-4 text-right text-slate-600 dark:text-slate-400">{formatNumberWithPrecision(fibS3, decimalPrecision)}</td>
+            </tr>
+            <tr>
+              <td className="py-3 px-4 font-medium text-slate-900 dark:text-white">Support 4</td>
+              <td className="py-3 px-4 text-right text-slate-600 dark:text-slate-400">—</td>
+              <td className="py-3 px-4 text-right text-slate-600 dark:text-slate-400">—</td>
+              <td className="py-3 px-4 text-right text-slate-600 dark:text-slate-400">{formatNumberWithPrecision(camarillaS4, decimalPrecision)}</td>
+              <td className="py-3 px-4 text-right text-slate-600 dark:text-slate-400">—</td>
+              <td className="py-3 px-4 text-right text-slate-600 dark:text-slate-400">—</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    )}
+
+    <Notice>
+      <strong>Method Differences:</strong> Classic uses standard average; Woodie's puts double weight on close; Camarilla creates tighter bands around price; DeMark's is conditional based on open vs close; Fibonacci uses standard ratios. These are deterministic calculations, not trade signals or guarantees.
+    </Notice>
+
+    <div className="mt-6 flex flex-wrap gap-3">
+      <button 
+        onClick={() => {
+          const data = {
+            method: selectedMethod,
+            session: selectedSession,
+            inputs: { high, low, close, open },
+            results: showComparison ? {
+              classic: { pivot: classicPivot, r1: classicR1, s1: classicS1, r2: classicR2, s2: classicS2, r3: classicR3, s3: classicS3 },
+              woodie: { pivot: woodiePivot, r1: woodieR1, s1: woodieS1, r2: woodieR2, s2: woodieS2, r3: woodieR3, s3: woodieS3 },
+              camarilla: { pivot: camarillaPivot, r1: camarillaR1, s1: camarillaS1, r2: camarillaR2, s2: camarillaS2, r3: camarillaR3, s3: camarillaS3, r4: camarillaR4, s4: camarillaS4 },
+              demark: { pivot: demarkPivot, r1: demarkR1, s1: demarkS1 },
+              fibonacci: { pivot: fibPivot, r1: fibR1, s1: fibS1, r2: fibR2, s2: fibS2, r3: fibR3, s3: fibS3 }
+            } : currentResults
+          };
+          const csvContent = "data:text/csv;charset=utf-8," + encodeURIComponent(JSON.stringify(data, null, 2));
+          const link = document.createElement("a");
+          link.setAttribute("href", csvContent);
+          link.setAttribute("download", `pivot-points-${selectedMethod}-${selectedSession}.csv`);
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        }}
+        className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors text-sm font-semibold"
+      >
+        Export CSV
+      </button>
+      <button
+        onClick={() => {
+          if (typeof window !== 'undefined') {
+            localStorage.setItem('pivotCalculatorPreferences', JSON.stringify({
+              method: selectedMethod,
+              session: selectedSession,
+              precision: decimalPrecision,
+              showMidLevels: showMidLevels,
+              symbol: selectedSymbol,
+              timezone: selectedTimezone,
+              proximityAlertEnabled: proximityAlertEnabled,
+              proximityThreshold: proximityThreshold,
+              accountBalance: accountBalance,
+              riskPercent: riskPercent,
+              stockDataCache: stockDataCache
+            }));
+          }
+        }}
+        className="px-4 py-2 bg-slate-600 text-white rounded-lg hover:bg-slate-700 transition-colors text-sm font-semibold"
+      >
+        Save Preferences
+      </button>
+    </div>
   </>;
 }
 
