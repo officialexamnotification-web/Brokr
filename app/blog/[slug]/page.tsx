@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { ChevronLeft, Clock, ArrowLeft } from "lucide-react";
 import { getBlogPostBySlug, getBlogPosts, categories } from "@/lib/data";
 import Badge from "@/components/common/Badge";
@@ -25,6 +26,10 @@ const calculatorLinksByCategory: Record<string, string[]> = {
 
 function getRelatedCalculatorSlugs(category: string) {
   return calculatorLinksByCategory[category] ?? ["position-size", "risk-reward", "net-trading-cost"];
+}
+
+function imageSource(value: string) {
+  return /^(https?:|data:image\/|\/)/.test(value) ? value : "";
 }
 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
@@ -147,12 +152,15 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
         ))}
       </div>
 
-      {post.image && (
+      {imageSource(post.image) && (
         <div className="mb-8 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800">
-          <img 
-            src={post.image} 
+          <Image
+            src={imageSource(post.image)}
             alt={post.title} 
-            className="w-full h-auto object-cover"
+            width={1200}
+            height={675}
+            unoptimized
+            className="h-auto w-full object-cover"
           />
         </div>
       )}
@@ -197,7 +205,9 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
               <Link key={rp.id} href={`/blog/${rp.slug}`} className="glass-card rounded-2xl p-5 hover-lift">
                 <div className="flex items-center gap-3 mb-2">
                   <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500/10 to-purple-500/10 flex items-center justify-center text-sm font-bold text-primary-600">
-                    {rp.image}
+                    {imageSource(rp.image) ? (
+                      <Image src={imageSource(rp.image)} alt={rp.title} width={40} height={40} unoptimized className="h-full w-full rounded-xl object-cover" />
+                    ) : rp.image}
                   </div>
                   <span className="text-xs text-slate-400">{rp.readTime} read</span>
                 </div>

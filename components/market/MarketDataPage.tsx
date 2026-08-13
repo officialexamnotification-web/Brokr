@@ -31,6 +31,12 @@ const FOREX_PAIRS = [
   ["AUD", "NZD"], ["NZD", "JPY"], ["CAD", "SGD"], ["SGD", "JPY"],
 ] as const;
 
+const MARKET_REFRESH_INTERVALS: Record<MarketKind, number> = {
+  crypto: 5 * 60 * 1000,
+  forex: 10 * 60 * 1000,
+  stocks: 10 * 60 * 1000,
+};
+
 type CryptoQuote = {
   usd: number;
   change_24h: number | null;
@@ -158,7 +164,7 @@ export default function MarketDataPage({ market }: { market: MarketKind }) {
           return;
         }
         const endpoint = `/api/stocks?symbols=${STOCK_SYMBOLS.join(",")}`;
-        const response = await fetch(endpoint);
+        const response = await fetch(endpoint, { cache: "no-store" });
         const data = await response.json();
         if (!response.ok) throw new Error(data?.error || "Market data is temporarily unavailable.");
         if (!active) return;
@@ -171,7 +177,7 @@ export default function MarketDataPage({ market }: { market: MarketKind }) {
       }
     };
     fetchData();
-    const interval = setInterval(fetchData, 60 * 60 * 1000);
+    const interval = setInterval(fetchData, MARKET_REFRESH_INTERVALS[market]);
     return () => { active = false; clearInterval(interval); };
   }, [market]);
 
