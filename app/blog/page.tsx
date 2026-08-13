@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { ChevronLeft, Clock, ArrowRight, BookOpen, TrendingUp, DollarSign, Shield, Bitcoin, BarChart3, LineChart, GanttChart, Wallet, Wrench, GraduationCap } from "lucide-react";
 import { getBlogPosts, getBlogPostBySlug, blogPosts, categories } from "@/lib/data";
 import Badge from "@/components/common/Badge";
@@ -47,6 +48,10 @@ const categoryIcons: Record<string, React.ElementType> = {
   "Trading Tools": Wrench,
   "Education": GraduationCap,
 };
+
+function imageSource(value: string) {
+  return /^(https?:|data:image\/|\/)/.test(value) ? value : "";
+}
 
 export default async function BlogListPage({
   searchParams,
@@ -104,7 +109,9 @@ export default async function BlogListPage({
             <article key={post.id} className="group glass-card rounded-3xl p-6 lg:p-8 hover-lift">
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-indigo-500/10 to-purple-500/10 flex items-center justify-center text-lg font-bold text-primary-600">
-                  {post.image}
+                  {imageSource(post.image) ? (
+                    <Image src={imageSource(post.image)} alt={post.title} width={48} height={48} unoptimized className="h-full w-full rounded-2xl object-cover" />
+                  ) : post.image}
                 </div>
                 <div>
                   <Link 
