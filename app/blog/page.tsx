@@ -101,7 +101,7 @@ export default async function BlogListPage({
           const Icon = categoryIcons[post.category] || BookOpen;
           const categorySlug = categories.find(c => c.name === post.category)?.slug;
           return (
-            <Link key={post.id} href={`/blog/${post.slug}`} className="group glass-card rounded-3xl p-6 lg:p-8 hover-lift">
+            <article key={post.id} className="group glass-card rounded-3xl p-6 lg:p-8 hover-lift">
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-indigo-500/10 to-purple-500/10 flex items-center justify-center text-lg font-bold text-primary-600">
                   {post.image}
@@ -110,7 +110,6 @@ export default async function BlogListPage({
                   <Link 
                     href={categorySlug ? `/category/${categorySlug}` : `/blog?category=${encodeURIComponent(post.category)}`}
                     className="inline-block hover:bg-primary-100 dark:hover:bg-primary-900/30 cursor-pointer"
-                    onClick={(e) => e.stopPropagation()}
                   >
                     <Badge variant="info">{post.category}</Badge>
                   </Link>
@@ -120,22 +119,24 @@ export default async function BlogListPage({
                   </div>
                 </div>
               </div>
-              <h2 className="text-lg font-bold text-slate-900 dark:text-white mb-2 group-hover:text-primary-600 transition-colors leading-snug">
-                {post.title}
-              </h2>
-              <p className="text-sm text-slate-500 dark:text-slate-400 mb-4 line-clamp-2 leading-relaxed">{post.excerpt}</p>
-              <div className="flex items-center gap-2 flex-wrap">
-                {post.tags.map((t) => (
-                  <span key={t} className="px-2 py-0.5 text-xs rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400">{t}</span>
-                ))}
-              </div>
-              <div className="mt-4 pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
-                <span className="text-xs text-slate-400">By {post.author}</span>
-                <span className="text-sm font-semibold text-primary-600 dark:text-primary-400 flex items-center gap-1 group-hover:gap-2 transition-all">
-                  Read More <ArrowRight className="w-4 h-4" />
-                </span>
-              </div>
-            </Link>
+              <Link href={`/blog/${post.slug}`} className="block">
+                <h2 className="text-lg font-bold text-slate-900 dark:text-white mb-2 group-hover:text-primary-600 transition-colors leading-snug">
+                  {post.title}
+                </h2>
+                <p className="text-sm text-slate-500 dark:text-slate-400 mb-4 line-clamp-2 leading-relaxed">{post.excerpt}</p>
+                <div className="flex items-center gap-2 flex-wrap">
+                  {post.tags.map((t) => (
+                    <span key={t} className="px-2 py-0.5 text-xs rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400">{t}</span>
+                  ))}
+                </div>
+                <div className="mt-4 pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
+                  <span className="text-xs text-slate-400">By {post.author}</span>
+                  <span className="text-sm font-semibold text-primary-600 dark:text-primary-400 flex items-center gap-1 group-hover:gap-2 transition-all">
+                    Read More <ArrowRight className="w-4 h-4" />
+                  </span>
+                </div>
+              </Link>
+            </article>
           );
         })}
       </div>
