@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { ChevronLeft, Clock, ArrowRight, BookOpen, TrendingUp, DollarSign, Shield } from "lucide-react";
-import { getBlogPosts, getBlogPostBySlug, blogPosts } from "@/lib/data";
+import { ChevronLeft, Clock, ArrowRight, BookOpen, TrendingUp, DollarSign, Shield, Bitcoin, BarChart3, LineChart, GanttChart, Wallet, Wrench, GraduationCap } from "lucide-react";
+import { getBlogPosts, getBlogPostBySlug, blogPosts, categories } from "@/lib/data";
 import Badge from "@/components/common/Badge";
 import type { Metadata } from "next";
 import { ManagedBlogList } from "@/components/content/ManagedContent";
@@ -16,11 +16,20 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     url: "/blog",
+    images: [
+      {
+        url: "/opengraph-image",
+        width: 1200,
+        height: 630,
+        alt: "Tradivex Trading Guides",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Trading Guides | Tradivex",
     description: "Learn trading concepts and market context from explanatory articles and guides.",
+    images: ["/opengraph-image"],
   },
 };
 
@@ -29,11 +38,28 @@ export function generateStaticParams() {
 }
 
 const categoryIcons: Record<string, React.ElementType> = {
-  Forex: TrendingUp, Crypto: DollarSign, Stocks: TrendingUp, Education: BookOpen, CFD: Shield,
+  "Forex Brokers": TrendingUp,
+  "Crypto Exchanges": Bitcoin,
+  "Stock Brokers": BarChart3,
+  "CFD Brokers": LineChart,
+  "Options Trading": GanttChart,
+  "Payment Systems": Wallet,
+  "Trading Tools": Wrench,
+  "Education": GraduationCap,
 };
 
-export default function BlogListPage() {
+export default function BlogListPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ category?: string }>;
+}) {
+  const resolvedSearchParams = await searchParams;
   const posts = getBlogPosts();
+  const filteredPosts = resolvedSearchParams.category 
+    ? posts.filter(post => post.category === resolvedSearchParams.category)
+    : posts;
+  const allCategories = ["All", ...categories.map(c => c.name)];
+  
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <Link href="/" className="inline-flex items-center gap-1.5 text-sm text-slate-500 dark:text-slate-400 hover:text-primary-600 mb-8 transition-colors">
@@ -47,9 +73,33 @@ export default function BlogListPage() {
       <div className="mb-8 rounded-2xl border border-primary-200 bg-primary-50/70 p-5 text-sm leading-relaxed text-primary-900 dark:border-primary-900/60 dark:bg-primary-950/20 dark:text-primary-200">
         Looking for an interactive estimate? Browse the <Link href="/calculators" className="font-semibold underline">free trading calculators</Link> and read the assumptions shown below each tool.
       </div>
+      
+      {/* Category Filter Tabs */}
+      <div className="flex flex-wrap gap-2 mb-8">
+        {allCategories.map((category) => {
+          const isActive = resolvedSearchParams.category === category || (category === "All" && !resolvedSearchParams.category);
+          const href = category === "All" ? "/blog" : `/blog?category=${encodeURIComponent(category)}`;
+          
+          return (
+            <Link
+              key={category}
+              href={href}
+              className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                isActive 
+                  ? "bg-primary-600 text-white" 
+                  : "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-primary-100 dark:hover:bg-primary-900/30"
+              }`}
+            >
+              {category}
+            </Link>
+          );
+        })}
+      </div>
+      
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {posts.map((post) => {
+        {filteredPosts.map((post) => {
           const Icon = categoryIcons[post.category] || BookOpen;
+          const categorySlug = categories.find(c => c.name === post.category)?.slug;
           return (
             <Link key={post.id} href={`/blog/${post.slug}`} className="group glass-card rounded-3xl p-6 lg:p-8 hover-lift">
               <div className="flex items-center gap-3 mb-4">
@@ -57,7 +107,13 @@ export default function BlogListPage() {
                   {post.image}
                 </div>
                 <div>
-                  <Badge variant="info">{post.category}</Badge>
+                  <Link 
+                    href={categorySlug ? `/category/${categorySlug}` : `/blog?category=${encodeURIComponent(post.category)}`}
+                    className="inline-block"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <Badge variant="info" className="hover:bg-primary-100 dark:hover:bg-primary-900/30 cursor-pointer">{post.category}</Badge>
+                  </Link>
                   <div className="flex items-center gap-3 mt-1 text-xs text-slate-400">
                     <span className="flex items-center gap-1"><Clock className="w-3 h-3" /> {post.readTime}</span>
                     <span>{post.date}</span>

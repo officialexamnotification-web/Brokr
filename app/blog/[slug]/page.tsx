@@ -1,21 +1,26 @@
 import Link from "next/link";
 import { ChevronLeft, Clock, ArrowLeft } from "lucide-react";
-import { getBlogPostBySlug, getBlogPosts } from "@/lib/data";
+import { getBlogPostBySlug, getBlogPosts, categories } from "@/lib/data";
 import Badge from "@/components/common/Badge";
 import ShareButton from "@/components/common/ShareButton";
 import type { Metadata } from "next";
 import { ManagedBlogPage } from "@/components/content/ManagedContent";
 import { getPublishedManagedBlog } from "@/lib/managed-blog-server";
 import { calculatorDefinitions, type CalculatorSlug } from "@/lib/calculators";
+import { renderBlogContent } from "@/lib/blog-content";
 
 const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || "https://www.tradivex.com").replace(/\/$/, "");
 
 const calculatorLinksByCategory: Record<string, string[]> = {
   "Risk Management": ["risk-reward", "position-size", "drawdown-recovery", "net-trading-cost"],
-  Forex: ["pip-value", "position-size", "forex-pnl", "forex-margin"],
-  Options: ["options-payoff", "options-strategy", "options-probability"],
-  Stocks: ["stock-profit", "dividend-drip", "us-capital-gains"],
-  Crypto: ["crypto-liquidation", "dca-average-price", "net-trading-cost"],
+  "Forex Brokers": ["pip-value", "position-size", "forex-pnl", "forex-margin"],
+  "Options Trading": ["options-payoff", "options-strategy", "options-probability"],
+  "Stock Brokers": ["stock-profit", "dividend-drip", "us-capital-gains"],
+  "Crypto Exchanges": ["crypto-liquidation", "dca-average-price", "net-trading-cost"],
+  "CFD Brokers": ["position-size", "forex-margin", "risk-reward"],
+  "Trading Tools": ["risk-reward", "position-size", "net-trading-cost"],
+  "Education": ["risk-reward", "position-size", "forex-pnl"],
+  "Payment Systems": ["position-size", "net-trading-cost"],
 };
 
 function getRelatedCalculatorSlugs(category: string) {
@@ -49,11 +54,20 @@ export async function generateMetadata({ params }: { params: { slug: string } })
       authors: [resolvedPost.author],
       section: resolvedPost.category,
       tags: resolvedPost.tags,
+      images: [
+        {
+          url: `/blog/${resolvedPost.slug}/opengraph-image`,
+          width: 1200,
+          height: 630,
+          alt: resolvedPost.title,
+        },
+      ],
     },
     twitter: {
       card: "summary_large_image",
       title: resolvedPost.title,
       description: resolvedPost.excerpt,
+      images: [`/blog/${resolvedPost.slug}/opengraph-image`],
     },
   };
 }
@@ -74,6 +88,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
   const relatedCalculators = getRelatedCalculatorSlugs(post.category)
     .map((slug) => calculatorBySlug.get(slug as CalculatorSlug))
     .filter((calculator): calculator is (typeof calculatorDefinitions)[number] => Boolean(calculator));
+  const categorySlug = categories.find(c => c.name === post.category)?.slug;
   const articleJsonLd = {
     "@context": "https://schema.org",
     "@type": "Article",
@@ -96,7 +111,12 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
       </Link>
 
       <div className="flex items-center gap-3 mb-4">
-        <Badge variant="info">{post.category}</Badge>
+        <Link 
+          href={categorySlug ? `/category/${categorySlug}` : `/blog?category=${encodeURIComponent(post.category)}`}
+          className="inline-block"
+        >
+          <Badge variant="info" className="hover:bg-primary-100 dark:hover:bg-primary-900/30 cursor-pointer">{post.category}</Badge>
+        </Link>
         <span className="text-xs text-slate-400 flex items-center gap-1"><Clock className="w-3 h-3" /> {post.readTime}</span>
         <span className="text-xs text-slate-400">{post.date}</span>
       </div>
@@ -128,30 +148,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
       </div>
 
       <article className="prose prose-slate dark:prose-invert max-w-none prose-headings:font-bold prose-a:text-primary-600 prose-strong:text-slate-900 dark:prose-strong:text-white">
-        {post.content.split("\n").map((line, i) => {
-          if (line.startsWith("# ")) return <h1 key={i} className="text-2xl font-black mt-10 mb-4">{line.replace("# ", "")}</h1>;
-          if (line.startsWith("## ")) return <h2 key={i} className="text-xl font-bold mt-8 mb-3 text-slate-900 dark:text-white">{line.replace("## ", "")}</h2>;
-          if (line.startsWith("### ")) return <h3 key={i} className="text-lg font-bold mt-6 mb-2 text-slate-800 dark:text-slate-200">{line.replace("### ", "")}</h3>;
-          if (line.startsWith("|")) {
-            const cells = line.split("|").filter(Boolean).map((c) => c.trim());
-            if (cells.every((c) => c.match(/^-+$/))) return <hr key={i} className="my-2 border-slate-200 dark:border-slate-700" />;
-            if (cells.some((c) => c.startsWith("**"))) {
-              return (
-                <div key={i} className="flex gap-4 py-2 border-b border-slate-200 dark:border-slate-700 text-sm font-semibold text-slate-900 dark:text-white">
-                  {cells.map((c, j) => <span key={j} className="flex-1">{c.replace(/\*\*/g, "")}</span>)}
-                </div>
-              );
-            }
-            return (
-              <div key={i} className="flex gap-4 py-1.5 border-b border-slate-100 dark:border-slate-800 text-sm text-slate-600 dark:text-slate-400">
-                {cells.map((c, j) => <span key={j} className="flex-1">{c}</span>)}
-              </div>
-            );
-          }
-          if (line.startsWith("- ")) return <li key={i} className="text-slate-600 dark:text-slate-400 ml-4 list-disc">{line.replace("- ", "")}</li>;
-          if (line.trim() === "") return <br key={i} />;
-          return <p key={i} className="text-slate-600 dark:text-slate-400 leading-relaxed mb-4">{line}</p>;
-        })}
+        {renderBlogContent(post.content)}
       </article>
 
       {relatedCalculators.length > 0 && (
@@ -164,6 +161,21 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
               </Link>
             ))}
           </div>
+        </div>
+      )}
+
+      {categorySlug && (
+        <div className="mt-8 rounded-2xl border border-slate-200 bg-slate-50/60 p-5 dark:border-slate-800 dark:bg-slate-900/50">
+          <h2 className="text-lg font-bold text-slate-900 dark:text-white">Compare {post.category}</h2>
+          <p className="text-sm text-slate-600 dark:text-slate-400 mt-2 mb-4">
+            Explore top-rated tools and platforms in the {post.category} category.
+          </p>
+          <Link 
+            href={`/category/${categorySlug}`}
+            className="inline-flex items-center gap-2 rounded-xl bg-primary-600 px-4 py-2 text-sm font-semibold text-white hover:bg-primary-700 transition-colors"
+          >
+            Browse {post.category} <ArrowLeft className="w-4 h-4 rotate-180" />
+          </Link>
         </div>
       )}
 

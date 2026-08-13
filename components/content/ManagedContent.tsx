@@ -9,6 +9,7 @@ import Badge from "@/components/common/Badge";
 import ToolCard from "@/components/common/ToolCard";
 import type { BlogPost, Tool } from "@/lib/data";
 import { getFirebaseFirestore } from "@/lib/firebase";
+import { renderBlogContent } from "@/lib/blog-content";
 
 function listValue(value: unknown) {
   return Array.isArray(value) ? value.filter((item): item is string => typeof item === "string") : [];
@@ -102,7 +103,7 @@ export function ManagedBlogPage({ slug, initialPost }: { slug: string; initialPo
         </div>
       )}
       <article className="prose prose-slate mt-8 max-w-none dark:prose-invert">
-        {post.content.split("\n").map((line, index) => line.startsWith("## ") ? <h2 key={index}>{line.slice(3)}</h2> : line.startsWith("# ") ? <h1 key={index}>{line.slice(2)}</h1> : line.startsWith("- ") ? <li key={index}>{line.slice(2)}</li> : <p key={index}>{line || "\u00a0"}</p>)}
+        {renderBlogContent(post.content)}
       </article>
     </div>
   );

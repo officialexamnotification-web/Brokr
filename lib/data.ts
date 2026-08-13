@@ -197,7 +197,7 @@ export const blogPosts: BlogPost[] = [
   {
     id: 1, slug: "beginner-guide-forex-trading", title: "Complete Beginner's Guide to Forex Trading in 2026",
     excerpt: "Everything you need to know about forex trading - from basic terminology to choosing your first broker. Start your trading journey the right way.",
-    category: "Forex", author: "Alex Thompson", date: "2026-07-15", readTime: "12 min",
+    category: "Forex Brokers", author: "Tradivex Editorial Team", date: "2026-07-15", readTime: "12 min",
     image: "FX", tags: ["forex", "beginners", "guide"],
     content: `# Complete Beginner's Guide to Forex Trading
 
@@ -269,7 +269,7 @@ Forex trading involves a substantial risk of loss and requires education, discip
   {
     id: 2, slug: "crypto-exchange-comparison", title: "Five Crypto Exchanges Compared: Fees, Security & Features",
     excerpt: "A neutral framework for comparing cryptocurrency exchanges by fees, security disclosures, supported products and regional availability.",
-    category: "Crypto", author: "Sarah Chen", date: "2026-07-10", readTime: "8 min",
+    category: "Crypto Exchanges", author: "Tradivex Editorial Team", date: "2026-07-10", readTime: "8 min",
     image: "CR", tags: ["crypto", "exchanges", "comparison"],
     content: `# Top 5 Crypto Exchanges Compared
 
@@ -315,7 +315,7 @@ There is no single best exchange for every user. Compare the current fee schedul
   {
     id: 3, slug: "stock-brokers-zero-commission", title: "Zero-Commission Stock Brokers: Understanding Total Costs",
     excerpt: "Zero-commission trading sounds great, but what's the catch? We investigate the hidden costs and compare the top commission-free brokers.",
-    category: "Stocks", author: "James Miller", date: "2026-07-05", readTime: "10 min",
+    category: "Stock Brokers", author: "Tradivex Editorial Team", date: "2026-07-05", readTime: "10 min",
     image: "ST", tags: ["stocks", "zero-commission", "brokers"],
     content: `# Zero-Commission Stock Brokers: Understanding Total Costs
 
@@ -366,7 +366,7 @@ Some brokers advertise $0 commissions for eligible products, but total cost depe
   {
     id: 4, slug: "trading-risk-management", title: "Risk Management for Traders: 10 Rules to Protect Your Capital",
     excerpt: "Learn practical risk-management concepts, position-sizing examples and questions to consider before placing a trade.",
-    category: "Education", author: "Alex Thompson", date: "2026-07-01", readTime: "14 min",
+    category: "Education", author: "Tradivex Editorial Team", date: "2026-07-01", readTime: "14 min",
     image: "RM", tags: ["risk-management", "education", "beginners"],
     content: `# 10 Essential Risk Management Rules for Traders
 
@@ -430,7 +430,7 @@ Risk management is not a guarantee of success. The aim is to define losses, posi
   {
     id: 5, slug: "cfd-trading-explained", title: "CFD Trading Explained: Costs, Risks and Features to Compare",
     excerpt: "Contracts for Difference (CFDs) let you trade price movements without owning the asset. Learn how CFDs work and which costs, risks and platform features to compare.",
-    category: "CFD", author: "David Park", date: "2026-06-28", readTime: "11 min",
+    category: "CFD Brokers", author: "Tradivex Editorial Team", date: "2026-06-28", readTime: "11 min",
     image: "CF", tags: ["cfd", "derivatives", "leverage"],
     content: `# CFD Trading Explained: Complete Guide for 2026
 
@@ -487,9 +487,9 @@ Key factors to consider:
 CFDs are suitable for experienced traders who understand leverage and risk management. If you are a beginner, start with a demo account and only trade with money you can afford to lose.`,
   },
   {
-    id: 3, slug: "forex-pip-calculation-guide", title: "Forex Pip Calculation: Essential Guide for Trading Risk Management",
+    id: 6, slug: "forex-pip-calculation-guide", title: "Forex Pip Calculation: Essential Guide for Trading Risk Management",
     excerpt: "Master pip value calculations for accurate forex risk management. Learn to calculate pip values across different currency pairs, lot sizes, and account currencies with practical examples.",
-    category: "Forex", author: "Alex Thompson", date: "2026-08-11", readTime: "8 min",
+    category: "Forex Brokers", author: "Tradivex Editorial Team", date: "2026-08-11", readTime: "8 min",
     image: "FX", tags: ["forex", "pips", "risk-management", "calculator"],
     content: `# Forex Pip Calculation: Essential Guide for Trading Risk Management
 
@@ -689,9 +689,9 @@ Practice these calculations with different currency pairs and lot sizes until th
 Use our <a href="/calculators/pip-value">Forex Pip Value Calculator</a> for instant, accurate calculations with live exchange rates and comprehensive lot size breakdowns.`,
   },
   {
-    id: 4, slug: "trading-psychology-mastery", title: "Trading Psychology: How to Control Emotions and Build Discipline",
+    id: 7, slug: "trading-psychology-mastery", title: "Trading Psychology: How to Control Emotions and Build Discipline",
     excerpt: "Explore practical techniques for recognizing emotions, following a process and building disciplined trading habits.",
-    category: "Education", author: "Dr. Michael Chen", date: "2026-06-25", readTime: "15 min",
+    category: "Education", author: "Tradivex Editorial Team", date: "2026-06-25", readTime: "15 min",
     image: "TP", tags: ["psychology", "discipline", "mindset"],
     content: `# Trading Psychology: Master Your Mind, Master Your Trading
 
@@ -790,9 +790,9 @@ Revenge trading is the fastest way to blow up your account. Focus on protecting 
 Trading psychology is not about eliminating emotions - it is about recognizing and managing them. Discipline can support a process, but it does not guarantee profitable results.`,
   },
   {
-    id: 7, slug: "technical-analysis-basics", title: "Technical Analysis for Beginners: Chart Patterns and Indicators",
+    id: 8, slug: "technical-analysis-basics", title: "Technical Analysis for Beginners: Chart Patterns and Indicators",
     excerpt: "Learn the basics of charts, support/resistance, trend lines, candlestick patterns and indicators without treating technical analysis as a prediction guarantee.",
-    category: "Education", author: "Sarah Williams", date: "2026-06-20", readTime: "18 min",
+    category: "Education", author: "Tradivex Editorial Team", date: "2026-06-20", readTime: "18 min",
     image: "TA", tags: ["technical-analysis", "charts", "indicators"],
     content: `# Technical Analysis for Beginners: Complete Guide
 
@@ -897,9 +897,9 @@ Always use stop losses just beyond support/resistance levels
 Technical analysis is both art and science. Master the basics first, then develop your own style. Remember: price action is king - indicators are just tools to help interpret it.`,
   },
   {
-    id: 8, slug: "day-trading-vs-swing-trading", title: "Day Trading vs Swing Trading: Which Style Suits You?",
+    id: 9, slug: "day-trading-vs-swing-trading", title: "Day Trading vs Swing Trading: Which Style Suits You?",
     excerpt: "Different trading styles suit different personalities and lifestyles. Compare day trading and swing trading to find which approach matches your goals and schedule.",
-    category: "Education", author: "James Miller", date: "2026-06-15", readTime: "12 min",
+    category: "Education", author: "Tradivex Editorial Team", date: "2026-06-15", readTime: "12 min",
     image: "DT", tags: ["trading-styles", "day-trading", "swing-trading"],
     content: `# Day Trading vs Swing Trading: Find Your Style
 
@@ -1023,9 +1023,9 @@ Many successful traders combine both styles:
 There is no "better" style - only the style that fits your personality, lifestyle, and goals. Start with paper trading both approaches to see which feels more natural. Remember: the best trading style is the one you can execute consistently.`,
   },
   {
-    id: 9, slug: "choosing-first-broker", title: "How to Choose Your First Trading Broker: Complete Checklist",
+    id: 10, slug: "choosing-first-broker", title: "How to Choose Your First Trading Broker: Complete Checklist",
     excerpt: "Your broker choice can make or break your trading journey. This comprehensive checklist covers regulation, fees, platforms, and what to look for in your first broker.",
-    category: "Education", author: "Alex Thompson", date: "2026-06-10", readTime: "13 min",
+    category: "Education", author: "Tradivex Editorial Team", date: "2026-06-10", readTime: "13 min",
     image: "CB", tags: ["brokers", "beginners", "checklist"],
     content: `# How to Choose Your First Trading Broker: Complete Checklist
 
@@ -1154,9 +1154,9 @@ For beginners, we recommend:
 Take your time choosing a broker. Compare the applicable entity, permissions, costs, execution, funding, withdrawal terms and protections, then verify them with the provider and regulator. No broker is right for every user.`,
   },
   {
-    id: 10, slug: "support-resistance-trading", title: "Support and Resistance Trading: The Foundation of Technical Analysis",
+    id: 11, slug: "support-resistance-trading", title: "Support and Resistance Trading: The Foundation of Technical Analysis",
     excerpt: "Support and resistance levels are the building blocks of technical analysis. Master these concepts to identify high-probability trade setups and improve your entry and exit timing.",
-    category: "Education", author: "Sarah Williams", date: "2026-06-05", readTime: "11 min",
+    category: "Education", author: "Tradivex Editorial Team", date: "2026-06-05", readTime: "11 min",
     image: "SR", tags: ["support-resistance", "technical-analysis", "trading-strategy"],
     content: `# Support and Resistance Trading: Complete Guide
 
@@ -1297,9 +1297,9 @@ Support and resistance are common technical-analysis concepts. Practice identify
 Remember: Support and resistance are zones, not exact lines. Think in terms of areas where price is likely to react, not precise price points.`,
   },
   {
-    id: 11, slug: "candlestick-patterns-guide", title: "10 Essential Candlestick Patterns Every Trader Should Know",
+    id: 12, slug: "candlestick-patterns-guide", title: "10 Essential Candlestick Patterns Every Trader Should Know",
     excerpt: "Master the art of reading candlestick patterns. From basic single candles to complex multi-candle formations, learn the patterns that signal potential reversals and continuations.",
-    category: "Education", author: "Sarah Williams", date: "2026-05-30", readTime: "16 min",
+    category: "Education", author: "Tradivex Editorial Team", date: "2026-05-30", readTime: "16 min",
     image: "CP", tags: ["candlesticks", "patterns", "technical-analysis"],
     content: `# 10 Essential Candlestick Patterns Every Trader Should Know
 
@@ -1430,9 +1430,9 @@ Candlestick patterns are powerful tools when used correctly. They provide insigh
 Remember: The market doesn't always follow patterns. Use them as probability enhancers, not guarantees.`,
   },
   {
-    id: 12, slug: "position-sizing-guide", title: "Position Sizing: A Risk-Control Framework",
+    id: 13, slug: "position-sizing-guide", title: "Position Sizing: A Risk-Control Framework",
     excerpt: "Position sizing connects account risk, stop distance and trade quantity. Learn a calculation framework without treating any percentage as a guarantee.",
-    category: "Education", author: "Dr. Michael Chen", date: "2026-05-25", readTime: "14 min",
+    category: "Education", author: "Tradivex Editorial Team", date: "2026-05-25", readTime: "14 min",
     image: "PS", tags: ["position-sizing", "risk-management", "money-management"],
     content: `# Position Sizing: The Secret to Consistent Trading Profits
 
@@ -1587,9 +1587,9 @@ Focus less on finding the perfect entry and more on managing your risk. Position
 Remember: Protect your capital first. Profits are never guaranteed.`,
   },
   {
-    id: 13, slug: "trading-mistakes-avoid", title: "Top 10 Trading Mistakes Beginners Make (And How to Avoid Them)",
+    id: 14, slug: "trading-mistakes-avoid", title: "Top 10 Trading Mistakes Beginners Make (And How to Avoid Them)",
     excerpt: "Learn from the mistakes of others. These 10 common trading errors account for 90% of beginner failures. Understand them and avoid them to accelerate your trading success.",
-    category: "Education", author: "Alex Thompson", date: "2026-05-20", readTime: "13 min",
+    category: "Education", author: "Tradivex Editorial Team", date: "2026-05-20", readTime: "13 min",
     image: "TM", tags: ["mistakes", "beginners", "trading-tips"],
     content: `# Top 10 Trading Mistakes Beginners Make (And How to Avoid Them)
 
@@ -1777,9 +1777,9 @@ The fastest way to success is to learn from others' mistakes. Study this list, i
 Remember: The market will always be there. Protect your capital first, then focus on profits.`,
   },
   {
-    id: 14, slug: "moving-averages-strategy", title: "Moving Averages Trading Strategy: Complete Guide",
+    id: 15, slug: "moving-averages-strategy", title: "Moving Averages Trading Strategy: Complete Guide",
     excerpt: "Moving averages are the most versatile technical indicator. Learn how to use single, dual, and triple moving averages for trend identification, entry signals, and dynamic support/resistance.",
-    category: "Education", author: "Sarah Williams", date: "2026-05-15", readTime: "15 min",
+    category: "Education", author: "Tradivex Editorial Team", date: "2026-05-15", readTime: "15 min",
     image: "MA", tags: ["moving-averages", "indicators", "trading-strategy"],
     content: `# Moving Averages Trading Strategy: Complete Guide
 
@@ -1960,9 +1960,9 @@ Remember: Moving averages are lagging indicators. They tell you what has happene
 The best moving average strategy is the one you can execute consistently with discipline.`,
   },
   {
-    id: 15, slug: "portfolio-diversification", title: "Portfolio Diversification: Protect Your Trading Capital",
+    id: 16, slug: "portfolio-diversification", title: "Portfolio Diversification: Protect Your Trading Capital",
     excerpt: "Don't put all your eggs in one basket. Learn the art of portfolio diversification to reduce risk, smooth returns, and protect your trading capital from market volatility.",
-    category: "Education", author: "Dr. Michael Chen", date: "2026-05-10", readTime: "12 min",
+    category: "Education", author: "Tradivex Editorial Team", date: "2026-05-10", readTime: "12 min",
     image: "PD", tags: ["diversification", "portfolio", "risk-management"],
     content: `# Portfolio Diversification: Protect Your Trading Capital
 
@@ -2153,9 +2153,9 @@ The goal is not to have the highest returns, but to have the most consistent ret
 Remember: Diversification doesn't eliminate risk, it manages it. You still need proper risk management, due diligence, and discipline.`,
   },
   {
-    id: 16, slug: "sofi-vs-m1-finance-comparison", title: "SoFi Invest vs M1 Finance: Which is Better for USA Investing?",
+    id: 17, slug: "sofi-vs-m1-finance-comparison", title: "SoFi Invest vs M1 Finance: Which is Better for USA Investing?",
     excerpt: "Comprehensive comparison between SoFi Invest and M1 Finance for USA investors. Features, fees, pros and cons to help you choose the right platform.",
-    category: "Stock Brokers", author: "Sarah Chen", date: "2026-08-07", readTime: "10 min",
+    category: "Stock Brokers", author: "Tradivex Editorial Team", date: "2026-08-07", readTime: "10 min",
     image: "SI", tags: ["sofi-invest", "m1-finance", "usa-investing", "comparison"],
     content: `# SoFi Invest vs M1 Finance: Which is Better for USA Investing?
 
@@ -2219,9 +2219,9 @@ Choose SoFi Invest if you want versatility and crypto access. Choose M1 Finance 
     lastReviewedAt: "2026-08-07", reviewStatus: "editorial_reviewed", sourceUrls: ["https://www.sofi.com/invest/pricing", "https://www.m1finance.com/pricing"],
   },
   {
-    id: 17, slug: "uk-isa-investing-guide", title: "Complete Guide to UK ISA Investing with AJ Bell and Nutmeg",
+    id: 18, slug: "uk-isa-investing-guide", title: "Complete Guide to UK ISA Investing with AJ Bell and Nutmeg",
     excerpt: "Learn how to invest in UK ISAs with AJ Bell and Nutmeg. Compare fees, features, and benefits for tax-efficient investing.",
-    category: "Stock Brokers", author: "James Miller", date: "2026-08-07", readTime: "12 min",
+    category: "Stock Brokers", author: "Tradivex Editorial Team", date: "2026-08-07", readTime: "12 min",
     image: "AB", tags: ["aj-bell", "nutmeg", "uk-investing", "isa", "tax-efficient"],
     content: `# Complete Guide to UK ISA Investing with AJ Bell and Nutmeg
 
@@ -2316,9 +2316,9 @@ Choose AJ Bell if you want control and research tools. Choose Nutmeg if you pref
     lastReviewedAt: "2026-08-07", reviewStatus: "editorial_reviewed", sourceUrls: ["https://www.ajbell.co.uk/pricing", "https://www.nutmeg.com/pricing"],
   },
   {
-    id: 18, slug: "german-etf-savings-plans", title: "German ETF Savings Plans: Scalable Capital vs Ing Diba Comparison",
+    id: 19, slug: "german-etf-savings-plans", title: "German ETF Savings Plans: Scalable Capital vs Ing Diba Comparison",
     excerpt: "Compare German ETF savings plans from Scalable Capital and Ing Diba. Learn about fees, features, and long-term investing in Germany.",
-    category: "Stock Brokers", author: "Alex Thompson", date: "2026-08-07", readTime: "11 min",
+    category: "Stock Brokers", author: "Tradivex Editorial Team", date: "2026-08-07", readTime: "11 min",
     image: "SC", tags: ["scalable-capital", "ing-diba", "german-investing", "etf-savings", "long-term"],
     content: `# German ETF Savings Plans: Scalable Capital vs Ing Diba Comparison
 
@@ -2428,9 +2428,9 @@ Choose Scalable Capital for modern features and fractional shares. Choose Ing Di
     lastReviewedAt: "2026-08-07", reviewStatus: "editorial_reviewed", sourceUrls: ["https://www.scalable.capital/pricing", "https://www.ing.de/anlegen/preise-gebuehren/"],
   },
   {
-    id: 19, slug: "okcoin-vs-coinbase-comparison", title: "OKCoin vs Coinbase: Which US Crypto Exchange is Better?",
+    id: 20, slug: "okcoin-vs-coinbase-comparison", title: "OKCoin vs Coinbase: Which US Crypto Exchange is Better?",
     excerpt: "Compare OKCoin and Coinbase for US crypto trading. Security, fees, features, and regulatory compliance to choose the right exchange.",
-    category: "Crypto Exchanges", author: "Sarah Chen", date: "2026-08-07", readTime: "9 min",
+    category: "Crypto Exchanges", author: "Tradivex Editorial Team", date: "2026-08-07", readTime: "9 min",
     image: "OK", tags: ["okcoin", "coinbase", "crypto-exchanges", "usa-crypto", "comparison"],
     content: `# OKCoin vs Coinbase: Which US Crypto Exchange is Better?
 
@@ -2542,9 +2542,9 @@ Choose OKCoin for professional trading and lower fees. Choose Coinbase for begin
     lastReviewedAt: "2026-08-07", reviewStatus: "editorial_reviewed", sourceUrls: ["https://www.okcoin.com/fees", "https://www.coinbase.com/fees"],
   },
   {
-    id: 20, slug: "active-trading-platforms", title: "Active Trading: Lightspeed vs Cobra Trading for Day Traders",
+    id: 21, slug: "active-trading-platforms", title: "Active Trading: Lightspeed vs Cobra Trading for Day Traders",
     excerpt: "Compare Lightspeed and Cobra Trading for active day trading. Commissions, platform speed, and features for professional traders.",
-    category: "Stock Brokers", author: "James Miller", date: "2026-08-07", readTime: "10 min",
+    category: "Stock Brokers", author: "Tradivex Editorial Team", date: "2026-08-07", readTime: "10 min",
     image: "LS", tags: ["lightspeed", "cobra-trading", "day-trading", "active-trading", "comparison"],
     content: `# Active Trading: Lightspeed vs Cobra Trading for Day Traders
 
@@ -2659,9 +2659,9 @@ Choose Lightspeed for comprehensive multi-asset trading. Choose Cobra Trading fo
     lastReviewedAt: "2026-08-07", reviewStatus: "editorial_reviewed", sourceUrls: ["https://www.lightspeed.com/pricing", "https://www.cobratrading.com/pricing"],
   },
   {
-    id: 21, slug: "european-investing-guide", title: "European Investing: Directa Sim vs Indexa Capital vs Keytrade Bank",
+    id: 22, slug: "european-investing-guide", title: "European Investing: Directa Sim vs Indexa Capital vs Keytrade Bank",
     excerpt: "Compare European investment platforms: Directa Sim (Italy), Indexa Capital (Spain), and Keytrade Bank (Belgium). Features and regional considerations.",
-    category: "Stock Brokers", author: "Alex Thompson", date: "2026-08-07", readTime: "11 min",
+    category: "Stock Brokers", author: "Tradivex Editorial Team", date: "2026-08-07", readTime: "11 min",
     image: "DS", tags: ["directa-sim", "indexa-capital", "keytrade-bank", "european-investing", "comparison"],
     content: `# European Investing: Directa Sim vs Indexa Capital vs Keytrade Bank
 
@@ -2791,9 +2791,9 @@ Choose Directa Sim for Italian active trading. Choose Indexa Capital for Spanish
     lastReviewedAt: "2026-08-07", reviewStatus: "editorial_reviewed", sourceUrls: ["https://www.directa.it/tariffe", "https://www.indexacapital.es/precios", "https://www.keytradebank.be/tarifs"],
   },
   {
-    id: 22, slug: "motley-fool-review", title: "Motley Fool Stock Advisor: Is It Worth the Subscription?",
+    id: 23, slug: "motley-fool-review", title: "Motley Fool Stock Advisor: Is It Worth the Subscription?",
     excerpt: "Complete review of Motley Fool Stock Advisor subscription service. Analyze performance, costs, and whether it's worth the investment.",
-    category: "Trading Tools", author: "Sarah Chen", date: "2026-08-07", readTime: "8 min",
+    category: "Trading Tools", author: "Tradivex Editorial Team", date: "2026-08-07", readTime: "8 min",
     image: "MF", tags: ["motley-fool", "stock-recommendations", "investment-research", "subscription"],
     content: `# Motley Fool Stock Advisor: Is It Worth the Subscription?
 
@@ -2902,9 +2902,9 @@ For small portfolios under $5,000, the subscription cost may represent too high 
     lastReviewedAt: "2026-08-07", reviewStatus: "editorial_reviewed", sourceUrls: ["https://www.fool.com/pricing", "https://www.fool.com/performance"],
   },
   {
-    id: 23, slug: "personal-capital-review", title: "Personal Capital vs Traditional Wealth Management: Complete Analysis",
+    id: 24, slug: "personal-capital-review", title: "Personal Capital vs Traditional Wealth Management: Complete Analysis",
     excerpt: "Compare Personal Capital's digital wealth management with traditional wealth management services. Fees, features, and which approach suits your needs.",
-    category: "Stock Brokers", author: "James Miller", date: "2026-08-07", readTime: "9 min",
+    category: "Stock Brokers", author: "Tradivex Editorial Team", date: "2026-08-07", readTime: "9 min",
     image: "PC", tags: ["personal-capital", "wealth-management", "financial-planning", "robo-advisor"],
     content: `# Personal Capital vs Traditional Wealth Management: Complete Analysis
 
@@ -3044,9 +3044,9 @@ The right choice depends on your portfolio size, complexity of needs, and prefer
     lastReviewedAt: "2026-08-07", reviewStatus: "editorial_reviewed", sourceUrls: ["https://www.personalcapital.com/pricing", "https://www.investopedia.com/wealth-management"],
   },
   {
-    id: 24, slug: "best-investment-apps-beginners", title: "Best Investment Apps for Beginners in 2026",
+    id: 25, slug: "best-investment-apps-beginners", title: "Best Investment Apps for Beginners in 2026",
     excerpt: "Complete guide to the best investment apps for beginners. Compare SoFi Invest, M1 Finance, Robinhood, and Webull for new investors.",
-    category: "Stock Brokers", author: "Sarah Chen", date: "2026-08-07", readTime: "10 min",
+    category: "Stock Brokers", author: "Tradivex Editorial Team", date: "2026-08-07", readTime: "10 min",
     image: "SI", tags: ["investment-apps", "beginners", "sofi-invest", "m1-finance", "robinhood", "webull"],
     content: `# Best Investment Apps for Beginners in 2026
 
@@ -3197,9 +3197,9 @@ Start with what matches your learning style and investment goals.`,
     lastReviewedAt: "2026-08-07", reviewStatus: "editorial_reviewed", sourceUrls: ["https://www.sofi.com/invest", "https://www.m1finance.com", "https://robinhood.com", "https://webull.com"],
   },
   {
-    id: 25, slug: "swedish-investing-avanza", title: "Swedish Investing with Avanza: Complete Guide to Nordic Markets",
+    id: 26, slug: "swedish-investing-avanza", title: "Swedish Investing with Avanza: Complete Guide to Nordic Markets",
     excerpt: "Learn about investing in Sweden with Avanza platform. Features, fees, and how to get started with Swedish stock market investing.",
-    category: "Stock Brokers", author: "Alex Thompson", date: "2026-08-07", readTime: "11 min",
+    category: "Stock Brokers", author: "Tradivex Editorial Team", date: "2026-08-07", readTime: "11 min",
     image: "AV", tags: ["avanza", "swedish-investing", "nordic-markets", "etf-savings", "long-term"],
     content: `# Swedish Investing with Avanza: Complete Guide to Nordic Markets
 
@@ -3364,9 +3364,9 @@ Avanza provides an excellent entry point for Swedish investing with competitive 
     lastReviewedAt: "2026-08-07", reviewStatus: "editorial_reviewed", sourceUrls: ["https://www.avanza.se/priser", "https://www.avanza.se/"],
   },
   {
-    id: 26, slug: "australia-investing-guide", title: "Complete Guide to Australian Investing with SelfWealth and Pearler",
+    id: 27, slug: "australia-investing-guide", title: "Complete Guide to Australian Investing with SelfWealth and Pearler",
     excerpt: "Learn about investing in Australia with SelfWealth and Pearler platforms. Compare fees, features, and benefits for Australian investors.",
-    category: "Stock Brokers", author: "Sarah Chen", date: "2026-08-07", readTime: "12 min",
+    category: "Stock Brokers", author: "Tradivex Editorial Team", date: "2026-08-07", readTime: "12 min",
     image: "SW", tags: ["selfwealth", "pearler", "australia-investing", "asx", "long-term"],
     content: `# Complete Guide to Australian Investing with SelfWealth and Pearler
 
@@ -3537,9 +3537,9 @@ SelfWealth and Pearler both offer competitive $9.50 flat fees with no ongoing co
     lastReviewedAt: "2026-08-07", reviewStatus: "editorial_reviewed", sourceUrls: ["https://www.selfwealth.com.au/pricing", "https://www.pearler.com/pricing"],
   },
   {
-    id: 27, slug: "canada-investing-guide", title: "Canadian Investing with BMO InvestorLine: Complete Guide",
+    id: 28, slug: "canada-investing-guide", title: "Canadian Investing with BMO InvestorLine: Complete Guide",
     excerpt: "Learn about investing in Canada with BMO InvestorLine. Features, fees, RRSP, TFSA, and getting started with Canadian stock market.",
-    category: "Stock Brokers", author: "James Miller", date: "2026-08-07", readTime: "11 min",
+    category: "Stock Brokers", author: "Tradivex Editorial Team", date: "2026-08-07", readTime: "11 min",
     image: "BI", tags: ["bmo-investorline", "canada-investing", "tsx", "rrsp", "tfsa"],
     content: `# Canadian Investing with BMO InvestorLine: Complete Guide
 
@@ -3709,9 +3709,9 @@ BMO InvestorLine provides comprehensive Canadian investing with banking integrat
     lastReviewedAt: "2026-08-07", reviewStatus: "editorial_reviewed", sourceUrls: ["https://www.bmoinvestorline.com/pricing", "https://www.bmo.com/investing"],
   },
   {
-    id: 28, slug: "retirement-planning-guide", title: "Retirement Planning with Personal Capital and M1 Finance",
+    id: 29, slug: "retirement-planning-guide", title: "Retirement Planning with Personal Capital and M1 Finance",
     excerpt: "Comprehensive guide to retirement planning using Personal Capital and M1 Finance. Automate your retirement savings and grow wealth long-term.",
-    category: "Stock Brokers", author: "Alex Thompson", date: "2026-08-07", readTime: "13 min",
+    category: "Stock Brokers", author: "Tradivex Editorial Team", date: "2026-08-07", readTime: "13 min",
     image: "PC", tags: ["personal-capital", "m1-finance", "retirement-planning", "401k", "ira"],
     content: `# Retirement Planning with Personal Capital and M1 Finance
 
@@ -3907,9 +3907,9 @@ Start early, maximize tax-advantaged accounts, and choose the platform that matc
     lastReviewedAt: "2026-08-07", reviewStatus: "editorial_reviewed", sourceUrls: ["https://www.personalcapital.com/retirement", "https://www.m1finance.com/ira"],
   },
   {
-    id: 29, slug: "trading-tools-review", title: "Trading Tools Deep Dive: StockTwits, Koyfin, and Simply Wall St",
+    id: 30, slug: "trading-tools-review", title: "Trading Tools Deep Dive: StockTwits, Koyfin, and Simply Wall St",
     excerpt: "Comprehensive review of essential trading tools: StockTwits for social trading, Koyfin for research, and Simply Wall St for analysis.",
-    category: "Trading Tools", author: "Sarah Chen", date: "2026-08-07", readTime: "10 min",
+    category: "Trading Tools", author: "Tradivex Editorial Team", date: "2026-08-07", readTime: "10 min",
     image: "ST", tags: ["stocktwits", "koyfin", "simply-wall-st", "trading-tools", "market-research"],
     content: `# Trading Tools Deep Dive: StockTwits, Koyfin, and Simply Wall St
 
@@ -4151,9 +4151,9 @@ StockTwits excels for sentiment and community, Koyfin for comprehensive research
     lastReviewedAt: "2026-08-07", reviewStatus: "editorial_reviewed", sourceUrls: ["https://stocktwits.com/pricing", "https://koyfin.com/pricing", "https://simplywall.st/pricing"],
   },
   {
-    id: 30, slug: "crypto-derivatives-guide", title: "Crypto Derivatives Trading with OKCoin: Complete Guide",
+    id: 31, slug: "crypto-derivatives-guide", title: "Crypto Derivatives Trading with OKCoin: Complete Guide",
     excerpt: "Learn about crypto derivatives trading with OKCoin. Futures, options, leverage, and risk management for advanced crypto trading.",
-    category: "Crypto Exchanges", author: "James Miller", date: "2026-08-07", readTime: "11 min",
+    category: "Crypto Exchanges", author: "Tradivex Editorial Team", date: "2026-08-07", readTime: "11 min",
     image: "OK", tags: ["okcoin", "crypto-derivatives", "futures-trading", "leverage", "risk-management"],
     content: `# Crypto Derivatives Trading with OKCoin: Complete Guide
 
@@ -4382,9 +4382,9 @@ Crypto derivatives offer powerful trading opportunities but come with significan
     lastReviewedAt: "2026-08-07", reviewStatus: "editorial_reviewed", sourceUrls: ["https://www.okcoin.com/futures", "https://www.okcoin.com/pricing"],
   },
   {
-    id: 31, slug: "social-trading-stocktwits", title: "Social Trading with StockTwits: Harnessing Crowd Wisdom",
+    id: 32, slug: "social-trading-stocktwits", title: "Social Trading with StockTwits: Harnessing Crowd Wisdom",
     excerpt: "Learn how to use StockTwits for social trading and market sentiment analysis. Connect with traders, track sentiment, and make informed decisions.",
-    category: "Trading Tools", author: "Alex Thompson", date: "2026-08-07", readTime: "9 min",
+    category: "Trading Tools", author: "Tradivex Editorial Team", date: "2026-08-07", readTime: "9 min",
     image: "ST", tags: ["stocktwits", "social-trading", "market-sentiment", "community", "trading-ideas"],
     content: `# Social Trading with StockTwits: Harnessing Crowd Wisdom
 
@@ -4615,9 +4615,9 @@ The key is filtering quality information from noise and using sentiment as confi
     lastReviewedAt: "2026-08-07", reviewStatus: "editorial_reviewed", sourceUrls: ["https://stocktwits.com", "https://stocktwits.com/pricing"],
   },
   {
-    id: 32, slug: "tax-efficient-investing", title: "Tax-Efficient Investing Strategies for Long-Term Wealth",
+    id: 33, slug: "tax-efficient-investing", title: "Tax-Efficient Investing Strategies for Long-Term Wealth",
     excerpt: "Learn tax-efficient investing strategies for maximizing after-tax returns. Asset location, tax-loss harvesting, and optimizing your portfolio.",
-    category: "Stock Brokers", author: "Sarah Chen", date: "2026-08-07", readTime: "12 min",
+    category: "Stock Brokers", author: "Tradivex Editorial Team", date: "2026-08-07", readTime: "12 min",
     image: "PC", tags: ["tax-efficient", "investing-strategies", "retirement", "wealth-building", "optimization"],
     content: `# Tax-Efficient Investing Strategies for Long-Term Wealth
 
@@ -4882,9 +4882,9 @@ The key is to balance tax efficiency with investment quality and simplicity.`,
     lastReviewedAt: "2026-08-07", reviewStatus: "editorial_reviewed", sourceUrls: ["https://www.investopedia.com/tax-efficient-investing", "https://www.vanguard.com/tax-efficient"],
   },
   {
-    id: 33, slug: "investment-timing-guide", title: "Market Timing vs Time in Market: Which Strategy Wins?",
+    id: 34, slug: "investment-timing-guide", title: "Market Timing vs Time in Market: Which Strategy Wins?",
     excerpt: "Comprehensive analysis of market timing vs time in market strategies. Learn why staying invested often beats trying to time the market.",
-    category: "Stock Brokers", author: "James Miller", date: "2026-08-07", readTime: "10 min",
+    category: "Stock Brokers", author: "Tradivex Editorial Team", date: "2026-08-07", readTime: "10 min",
     image: "PC", tags: ["market-timing", "time-in-market", "long-term-investing", "strategy", "compounding"],
     content: `# Market Timing vs Time in Market: Which Strategy Wins?
 
@@ -5152,9 +5152,9 @@ Market timing is best left to professionals with extensive resources and experti
     lastReviewedAt: "2026-08-07", reviewStatus: "editorial_reviewed", sourceUrls: ["https://www.vanguard.com/market-timing", "https://www.morningstar.com/time-in-market"],
   },
   {
-    id: 34, slug: "robo-advisor-guide", title: "Robo-Advisors vs Traditional Advisors: Which is Right for You?",
+    id: 35, slug: "robo-advisor-guide", title: "Robo-Advisors vs Traditional Advisors: Which is Right for You?",
     excerpt: "Compare robo-advisors like Personal Capital and Nutmeg with traditional human advisors. Fees, services, and when to choose each approach.",
-    category: "Stock Brokers", author: "Alex Thompson", date: "2026-08-07", readTime: "11 min",
+    category: "Stock Brokers", author: "Tradivex Editorial Team", date: "2026-08-07", readTime: "11 min",
     image: "PC", tags: ["robo-advisors", "personal-capital", "nutmeg", "wealth-management", "comparison"],
     content: `# Robo-Advisors vs Traditional Advisors: Which is Right for You?
 
@@ -5440,9 +5440,9 @@ For most investors under $1M with simple situations, robo-advisors provide excel
     lastReviewedAt: "2026-08-07", reviewStatus: "editorial_reviewed", sourceUrls: ["https://www.personalcapital.com/pricing", "https://www.nutmeg.com/pricing", "https://www.investopedia.com/robo-advisors"],
   },
   {
-    id: 35, slug: "dividend-investing-guide", title: "Dividend Investing: Building Passive Income with Quality Stocks",
+    id: 36, slug: "dividend-investing-guide", title: "Dividend Investing: Building Passive Income with Quality Stocks",
     excerpt: "Learn dividend investing strategies for building passive income. Dividend growth, REITs, and building a sustainable income portfolio.",
-    category: "Stock Brokers", author: "Sarah Chen", date: "2026-08-07", readTime: "12 min",
+    category: "Stock Brokers", author: "Tradivex Editorial Team", date: "2026-08-07", readTime: "12 min",
     image: "PC", tags: ["dividend-investing", "passive-income", "reits", "dividend-growth", "income"],
     content: `# Dividend Investing: Building Passive Income with Quality Stocks
 
@@ -5752,9 +5752,9 @@ Avoid yield traps, maintain proper diversification, and consider tax efficiency.
     lastReviewedAt: "2026-08-07", reviewStatus: "editorial_reviewed", sourceUrls: ["https://www.investopedia.com/dividend-investing", "https://www.morningstar.com/dividend-investing"],
   },
   {
-    id: 36, slug: "what-is-stock-broker-guide", title: "What is a Stock Broker: Complete Beginner Guide",
+    id: 37, slug: "what-is-stock-broker-guide", title: "What is a Stock Broker: Complete Beginner Guide",
     excerpt: "Learn what a stock broker is, how they work, and how to choose the right one for your investment needs. Complete beginner guide to stock brokers.",
-    category: "Stock Brokers", author: "Sarah Chen", date: "2026-08-07", readTime: "10 min",
+    category: "Stock Brokers", author: "Tradivex Editorial Team", date: "2026-08-07", readTime: "10 min",
     image: "SB", tags: ["stock-broker", "beginner-guide", "investing-basics", "broker-selection"],
     content: `What is a Stock Broker: Complete Beginner Guide
 
@@ -5849,9 +5849,9 @@ Stock brokers are essential intermediaries that provide access to financial mark
     lastReviewedAt: "2026-08-07", reviewStatus: "editorial_reviewed", sourceUrls: ["https://www.sec.gov/investor", "https://www.finra.org/investors"],
   },
   {
-    id: 37, slug: "understanding-trading-fees-guide", title: "Understanding Trading Fees: Complete Guide",
+    id: 38, slug: "understanding-trading-fees-guide", title: "Understanding Trading Fees: Complete Guide",
     excerpt: "Learn about different types of trading fees, how they impact your returns, and strategies to minimize costs in your investment journey.",
-    category: "Stock Brokers", author: "James Miller", date: "2026-08-07", readTime: "11 min",
+    category: "Stock Brokers", author: "Tradivex Editorial Team", date: "2026-08-07", readTime: "11 min",
     image: "TF", tags: ["trading-fees", "cost-analysis", "investment-costs", "broker-fees"],
     content: `Understanding Trading Fees: Complete Guide
 
@@ -5980,9 +5980,9 @@ Trading fees are an unavoidable part of investing but can be minimized through c
     lastReviewedAt: "2026-08-07", reviewStatus: "editorial_reviewed", sourceUrls: ["https://www.sec.gov/investor", "https://www.finra.org/investors"],
   },
   {
-    id: 38, slug: "etf-vs-mutual-fund-guide", title: "ETF vs Mutual Fund: What's the Difference",
+    id: 39, slug: "etf-vs-mutual-fund-guide", title: "ETF vs Mutual Fund: What's the Difference",
     excerpt: "Compare ETFs and mutual funds to understand the key differences in structure, fees, trading flexibility, and suitability for different investment strategies.",
-    category: "Stock Brokers", author: "Alex Thompson", date: "2026-08-07", readTime: "12 min",
+    category: "Stock Brokers", author: "Tradivex Editorial Team", date: "2026-08-07", readTime: "12 min",
     image: "EM", tags: ["etf", "mutual-fund", "investment-comparison", "fund-selection"],
     content: `ETF vs Mutual Fund: What's the Difference
 
@@ -6092,9 +6092,9 @@ Both ETFs and mutual funds serve important roles in investment portfolios. ETFs 
     lastReviewedAt: "2026-08-07", reviewStatus: "editorial_reviewed", sourceUrls: ["https://www.sec.gov/investor", "https://www.finra.org/investors"],
   },
   {
-    id: 39, slug: "how-to-choose-trading-platform-guide", title: "How to Choose Your First Trading Platform",
+    id: 40, slug: "how-to-choose-trading-platform-guide", title: "How to Choose Your First Trading Platform",
     excerpt: "Complete guide for beginners on selecting the right trading platform. Evaluate features, fees, security, and user experience to find your ideal broker.",
-    category: "Stock Brokers", author: "Sarah Chen", date: "2026-08-07", readTime: "11 min",
+    category: "Stock Brokers", author: "Tradivex Editorial Team", date: "2026-08-07", readTime: "11 min",
     image: "TP", tags: ["trading-platform", "broker-selection", "beginner-guide", "platform-comparison"],
     content: `How to Choose Your First Trading Platform
 
@@ -6264,9 +6264,9 @@ Choosing your first trading platform requires careful consideration of fees, fea
     lastReviewedAt: "2026-08-07", reviewStatus: "editorial_reviewed", sourceUrls: ["https://www.sec.gov/investor", "https://www.finra.org/investors"],
   },
   {
-    id: 40, slug: "sec-vs-fca-regulation-guide", title: "SEC vs FCA: Understanding Financial Regulation",
+    id: 41, slug: "sec-vs-fca-regulation-guide", title: "SEC vs FCA: Understanding Financial Regulation",
     excerpt: "Learn about the key differences between SEC and FCA financial regulators, their roles in investor protection, and how they oversee trading platforms and brokers.",
-    category: "Stock Brokers", author: "James Miller", date: "2026-08-07", readTime: "13 min",
+    category: "Stock Brokers", author: "Tradivex Editorial Team", date: "2026-08-07", readTime: "13 min",
     image: "SR", tags: ["financial-regulation", "sec", "fca", "investor-protection", "broker-regulation"],
     content: `SEC vs FCA: Understanding Financial Regulation
 
@@ -13481,9 +13481,8 @@ export const tools: Tool[] = canonicalRawTools.map((tool) => {
 // sheets, so expose a clear review status instead of implying live verification.
 const editorialBlogPosts: BlogPost[] = blogPosts.map((post) => ({
   ...post,
-  author: "Tradivex Editorial Team",
-  lastReviewedAt: "2026-08-03",
-  reviewStatus: "editorial_reviewed",
+  lastReviewedAt: post.lastReviewedAt || "2026-08-03",
+  reviewStatus: post.reviewStatus || "editorial_reviewed",
   sourceUrls: post.sourceUrls ?? [],
 }));
 
