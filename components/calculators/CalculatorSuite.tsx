@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useCallback, useEffect, useState } from "react";
+import { Fragment, useCallback, useEffect, useState } from "react";
 import type { ReactNode } from "react";
 import { LineChart, Line, ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine, LabelList } from "recharts";
 import { ArrowLeft } from "lucide-react";
@@ -2926,9 +2926,12 @@ function PivotPointsCalculator() {
               <Tooltip cursor={{ strokeDasharray: "3 3" }} formatter={(value, _name, item) => [formatNumberWithPrecision(Number(value), decimalPrecision), `${item.payload?.name || "Level"} (${item.payload?.role || "Pivot"})`]} />
               <ReferenceLine y={close} stroke="#0284c7" strokeDasharray="5 5" label={{ value: "Close", position: "insideTopRight", fill: "#0284c7", fontSize: 11 }} />
               {visualizationLevels.map((level) => (
-                <Scatter key={level.name} data={[{ x: 0, value: level.value, name: level.name, role: level.role }]} fill={level.color} line={{ stroke: level.color, strokeWidth: 2 }}>
-                  <LabelList dataKey="name" position="right" fill={level.color} fontSize={11} fontWeight={700} />
-                </Scatter>
+                <Fragment key={level.name}>
+                  <ReferenceLine y={level.value} stroke={level.color} strokeWidth={level.name === "Pivot" ? 2.5 : 1.5} strokeDasharray={level.name === "Pivot" ? undefined : "4 3"} label={{ value: level.name, position: "insideRight", fill: level.color, fontSize: 11, fontWeight: 700 }} />
+                  <Scatter data={[{ x: 0, value: level.value, name: level.name, role: level.role }]} fill={level.color}>
+                    <LabelList dataKey="name" position="right" fill={level.color} fontSize={11} fontWeight={700} />
+                  </Scatter>
+                </Fragment>
               ))}
             </ScatterChart>
           </ResponsiveContainer>
