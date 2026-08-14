@@ -32,6 +32,17 @@ function imageSource(value: string) {
   return /^(https?:|data:image\/|\/)/.test(value) ? value : "";
 }
 
+function sourceLabel(url: string) {
+  try {
+    const host = new URL(url).hostname.replace(/^www\./, "");
+    if (host === "cboe.com") return "Cboe — Options Market Insights";
+    if (host === "schwab.com") return "Charles Schwab — Options Education";
+    return host;
+  } catch {
+    return url;
+  }
+}
+
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   const post = getBlogPostBySlug(params.slug);
   const managedPost = post ? null : await getPublishedManagedBlog(params.slug);
@@ -139,9 +150,9 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
 
       {post.sourceUrls && post.sourceUrls.length > 0 && (
         <div className="mb-8 rounded-xl border border-slate-200 bg-slate-50/70 p-4 text-xs text-slate-600 dark:border-slate-800 dark:bg-slate-900/50 dark:text-slate-400">
-          <h2 className="font-semibold text-slate-800 dark:text-slate-200 mb-2">Sources to verify</h2>
+          <h2 className="font-semibold text-slate-800 dark:text-slate-200 mb-2">References &amp; Further Reading</h2>
           <ul className="space-y-1.5 list-disc pl-4">
-            {post.sourceUrls.map((url) => <li key={url}><a href={url} target="_blank" rel="noreferrer" className="text-primary-600 hover:underline break-all">{url}</a></li>)}
+            {post.sourceUrls.map((url) => <li key={url}><a href={url} target="_blank" rel="noreferrer" className="text-primary-600 hover:underline">{sourceLabel(url)}</a></li>)}
           </ul>
         </div>
       )}

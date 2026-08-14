@@ -1,10 +1,11 @@
 import Link from "next/link";
 import Image from "next/image";
 import { ChevronLeft, Clock, ArrowRight, BookOpen, TrendingUp, DollarSign, Shield, Bitcoin, BarChart3, LineChart, GanttChart, Wallet, Wrench, GraduationCap } from "lucide-react";
-import { getBlogPosts, getBlogPostBySlug, blogPosts, categories } from "@/lib/data";
+import { getBlogPosts, categories } from "@/lib/data";
 import Badge from "@/components/common/Badge";
 import type { Metadata } from "next";
-import { ManagedBlogList } from "@/components/content/ManagedContent";
+import { getPublishedManagedBlogs } from "@/lib/managed-blog-server";
+import type { BlogPost } from "@/lib/data";
 
 export const metadata: Metadata = {
   title: "Trading Guides & Educational Articles | Tradivex",
@@ -53,14 +54,22 @@ function imageSource(value: string) {
   return /^(https?:|data:image\/|\/)/.test(value) ? value : "";
 }
 
+function sortNewestFirst(posts: BlogPost[]) {
+  return [...posts].sort((a, b) => {
+    const aTime = Date.parse(a.date);
+    const bTime = Date.parse(b.date);
+    return (Number.isFinite(bTime) ? bTime : 0) - (Number.isFinite(aTime) ? aTime : 0) || b.id - a.id;
+  });
+}
+
 export default async function BlogListPage({
   searchParams,
 }: {
   searchParams: Promise<{ category?: string }>;
 }) {
   const resolvedSearchParams = await searchParams;
-  const posts = getBlogPosts();
-  const filteredPosts = resolvedSearchParams.category 
+  const posts = sortNewestFirst([...getBlogPosts(), ...(await getPublishedManagedBlogs())]);
+  const filteredPosts = resolvedSearchParams.category
     ? posts.filter(post => post.category === resolvedSearchParams.category)
     : posts;
   const allCategories = ["All", ...categories.map(c => c.name)];
@@ -106,7 +115,7 @@ export default async function BlogListPage({
           const Icon = categoryIcons[post.category] || BookOpen;
           const categorySlug = categories.find(c => c.name === post.category)?.slug;
           return (
-            <article key={post.id} className="group glass-card rounded-3xl p-6 lg:p-8 hover-lift">
+            <article key={post.slug} className="group glass-card rounded-3xl p-6 lg:p-8 hover-lift">
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-indigo-500/10 to-purple-500/10 flex items-center justify-center text-lg font-bold text-primary-600">
                   {imageSource(post.image) ? (
@@ -147,7 +156,6 @@ export default async function BlogListPage({
           );
         })}
       </div>
-      <ManagedBlogList />
     </div>
   );
 }

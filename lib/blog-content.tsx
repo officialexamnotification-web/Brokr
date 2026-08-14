@@ -19,29 +19,33 @@ export function renderBlogContent(content: string): JSX.Element[] {
     } else if (line.startsWith("### ")) {
       elements.push(<h3 key={i} className="text-lg font-bold mt-6 mb-2 text-slate-800 dark:text-slate-200">{line.replace("### ", "")}</h3>);
     }
-    // Handle tables
-    else if (line.startsWith("|")) {
-      const cells = line.split("|").filter(Boolean).map((c) => c.trim());
-      
-      // Table separator line
-      if (cells.every((c) => c.match(/^-+$/))) {
-        elements.push(<hr key={i} className="my-2 border-slate-200 dark:border-slate-700" />);
-      }
-      // Table header (contains bold)
-      else if (cells.some((c) => c.startsWith("**"))) {
+    // Handle Markdown tables as real responsive HTML tables.
+    else if (line.trim().startsWith("|") && lines[i + 1]?.trim().startsWith("|")) {
+      const parseRow = (value: string) => value.split("|").slice(1, -1).map((cell) => cell.trim());
+      const header = parseRow(line);
+      const separator = parseRow(lines[i + 1]);
+      const isSeparator = separator.length === header.length && separator.every((cell) => /^:?-{3,}:?$/.test(cell));
+
+      if (isSeparator) {
+        const rows: string[][] = [];
+        let rowIndex = i + 2;
+        while (rowIndex < lines.length && lines[rowIndex].trim().startsWith("|")) {
+          rows.push(parseRow(lines[rowIndex]));
+          rowIndex += 1;
+        }
         elements.push(
-          <div key={i} className="flex gap-4 py-2 border-b border-slate-200 dark:border-slate-700 text-sm font-semibold text-slate-900 dark:text-white">
-            {cells.map((c, j) => <span key={j}>{renderInlineMarkdown(c.replace(/\*\*/g, ""))}</span>)}
+          <div key={i} className="my-6 overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-700">
+            <table className="w-full min-w-[520px] border-collapse text-left text-sm">
+              <thead className="bg-slate-100 dark:bg-slate-800/80">
+                <tr>{header.map((cell, j) => <th key={j} className="whitespace-nowrap px-4 py-3 font-bold text-slate-900 dark:text-white">{renderInlineMarkdown(cell.replace(/\*\*/g, ""))}</th>)}</tr>
+              </thead>
+              <tbody>{rows.map((row, rowNumber) => <tr key={rowNumber} className="border-t border-slate-200 dark:border-slate-700">{header.map((_, j) => <td key={j} className="px-4 py-3 align-top text-slate-600 dark:text-slate-300">{renderInlineMarkdown(row[j] ?? "")}</td>)}</tr>)}</tbody>
+            </table>
           </div>
         );
-      }
-      // Table data row
-      else {
-        elements.push(
-          <div key={i} className="flex gap-4 py-1.5 border-b border-slate-100 dark:border-slate-800 text-sm text-slate-600 dark:text-slate-400">
-            {cells.map((c, j) => <span key={j}>{renderInlineMarkdown(c)}</span>)}
-          </div>
-        );
+        i = rowIndex - 1;
+      } else {
+        elements.push(<p key={i} className="text-slate-600 dark:text-slate-400 leading-relaxed mb-4">{renderInlineMarkdown(line)}</p>);
       }
     }
     // Handle bullet points

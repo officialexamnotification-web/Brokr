@@ -19,6 +19,19 @@ function imageSource(value: string) {
   return /^(https?:|data:image\/|\/)/.test(value) ? value : "";
 }
 
+function sourceLabel(url: string) {
+  try {
+    const host = new URL(url).hostname.replace(/^www\./, "");
+    return host
+      .split(".")[0]
+      .split(/[-_]/g)
+      .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+      .join(" ");
+  } catch {
+    return url;
+  }
+}
+
 function sortNewestFirst(posts: BlogPost[]) {
   return [...posts].sort((a, b) => {
     const aTime = Date.parse(a.date);
@@ -105,6 +118,14 @@ export function ManagedBlogPage({ slug, initialPost }: { slug: string; initialPo
         <span>By {post.author}</span>
       </div>
       <p className="mt-3 text-slate-500">{post.excerpt}</p>
+      {post.sourceUrls && post.sourceUrls.length > 0 && (
+        <div className="mt-6 rounded-xl border border-slate-200 bg-slate-50/70 p-4 text-xs text-slate-600 dark:border-slate-800 dark:bg-slate-900/50 dark:text-slate-400">
+          <h2 className="mb-2 font-semibold text-slate-800 dark:text-slate-200">References &amp; Further Reading</h2>
+          <ul className="list-disc space-y-1.5 pl-4">
+            {post.sourceUrls.map((url) => <li key={url}><a href={url} target="_blank" rel="noreferrer" className="text-primary-600 hover:underline">{sourceLabel(url)}</a></li>)}
+          </ul>
+        </div>
+      )}
       {imageSource(post.image) && (
         <div className="mt-7 overflow-hidden rounded-3xl border border-slate-200 bg-slate-50 dark:border-slate-800 dark:bg-slate-900">
           <Image src={imageSource(post.image)} alt={post.title} width={1200} height={1200} unoptimized className="h-auto w-full object-contain" />
