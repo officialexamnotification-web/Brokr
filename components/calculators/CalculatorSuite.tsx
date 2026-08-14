@@ -1587,7 +1587,8 @@ function blackScholes(
   T: number,
   r: number,
   sigma: number,
-  type: 'call' | 'put'
+  type: 'call' | 'put',
+  q = 0
 ): { price: number; greeks: Greeks } {
   if (T <= 0 || sigma <= 0) {
     // At expiry or zero volatility, return intrinsic value
@@ -1598,7 +1599,7 @@ function blackScholes(
     };
   }
 
-  const d1 = (Math.log(S / K) + (r + sigma * sigma / 2) * T) / (sigma * Math.sqrt(T));
+  const d1 = (Math.log(S / K) + (r - q + sigma * sigma / 2) * T) / (sigma * Math.sqrt(T));
   const d2 = d1 - sigma * Math.sqrt(T);
   
   const nd1 = normalCDF(d1);
@@ -1606,19 +1607,22 @@ function blackScholes(
   const nd1_pdf = normalPDF(d1);
   const sqrtT = Math.sqrt(T);
   const discount = Math.exp(-r * T);
+  const carryDiscount = Math.exp(-q * T);
 
   let price: number;
   if (type === 'call') {
-    price = S * nd1 - K * discount * nd2;
+    price = S * carryDiscount * nd1 - K * discount * nd2;
   } else {
-    price = K * discount * normalCDF(-d2) - S * normalCDF(-d1);
+    price = K * discount * normalCDF(-d2) - S * carryDiscount * normalCDF(-d1);
   }
 
   // Calculate Greeks
-  const delta = type === 'call' ? nd1 : nd1 - 1;
-  const gamma = nd1_pdf / (S * sigma * sqrtT);
-  const theta = (-S * nd1_pdf * sigma / (2 * sqrtT) - r * K * discount * (type === 'call' ? nd2 : -normalCDF(-d2))) / 365; // Per day
-  const vega = S * sqrtT * nd1_pdf / 100; // Per 1% change
+  const delta = type === 'call' ? carryDiscount * nd1 : carryDiscount * (nd1 - 1);
+  const gamma = carryDiscount * nd1_pdf / (S * sigma * sqrtT);
+  const theta = (-(S * carryDiscount * nd1_pdf * sigma) / (2 * sqrtT) - (type === 'call'
+    ? r * K * discount * nd2 - q * S * carryDiscount * nd1
+    : r * K * discount * normalCDF(-d2) - q * S * carryDiscount * normalCDF(-d1))) / 365; // Per day
+  const vega = S * carryDiscount * sqrtT * nd1_pdf / 100; // Per 1% change
   const rho = (type === 'call' ? K * T * discount * nd2 : -K * T * discount * normalCDF(-d2)) / 100; // Per 1% change
 
   return { price, greeks: { delta, gamma, theta, vega, rho } };
@@ -1631,13 +1635,14 @@ function solveImpliedVolatility(
   T: number,
   r: number,
   type: 'call' | 'put',
+  q = 0,
   maxIterations: number = 100,
   tolerance: number = 1e-6
 ): number {
   let sigma = 0.3; // Initial guess (30%)
   
   for (let i = 0; i < maxIterations; i++) {
-    const { price, greeks } = blackScholes(S, K, T, r, sigma, type);
+    const { price, greeks } = blackScholes(S, K, T, r, sigma, type, q);
     const diff = price - marketPrice;
     
     if (Math.abs(diff) < tolerance) {
@@ -1664,7 +1669,8 @@ function binomialAmerican(
   r: number,
   sigma: number,
   type: 'call' | 'put',
-  steps: number = 100
+  steps: number = 100,
+  q = 0
 ): { price: number; greeks: Greeks } {
   if (T <= 0 || sigma <= 0) {
     const intrinsic = type === 'call' ? Math.max(S - K, 0) : Math.max(K - S, 0);
@@ -1677,7 +1683,7 @@ function binomialAmerican(
   const dt = T / steps;
   const u = Math.exp(sigma * Math.sqrt(dt));
   const d = 1 / u;
-  const p = (Math.exp(r * dt) - d) / (u - d);
+  const p = (Math.exp((r - q) * dt) - d) / (u - d);
   
   // Build price tree
   const prices: number[][] = [];
@@ -1715,8 +1721,8 @@ function binomialAmerican(
   const delta = (values[1][1] - values[1][0]) / (S * u - S * d);
   const gamma = ((values[2][2] - values[2][1]) / (prices[2][2] - prices[2][1]) - (values[2][1] - values[2][0]) / (prices[2][1] - prices[2][0])) / ((prices[2][2] - prices[2][0]) / 2);
   const theta = (values[1][0] - values[0][0]) / dt / 365; // Per day
-  const vega = (binomialAmerican(S, K, T, r, sigma * 1.01, type, steps).price - price) / 0.01; // Per 1%
-  const rho = (binomialAmerican(S, K, T, r * 1.01, sigma, type, steps).price - price) / 0.01; // Per 1%
+  const vega = (binomialAmerican(S, K, T, r, sigma + 0.01, type, steps, q).price - price); // Per 1 percentage-point IV change
+  const rho = (binomialAmerican(S, K, T, r + 0.01, sigma, type, steps, q).price - price); // Per 1 percentage-point rate change
   
   return { price, greeks: { delta, gamma, theta, vega, rho } };
 }
@@ -1784,8 +1790,24 @@ function OptionsPayoffCalculator() {
   const [contracts, setContracts] = useState(1);
   const [multiplier, setMultiplier] = useState(100);
   const [timeToExpiry, setTimeToExpiry] = useState(30); // Days
+  const [useExactExpiry, setUseExactExpiry] = useState(true);
+  const [expiryDate, setExpiryDate] = useState(() => {
+    const date = new Date();
+    date.setDate(date.getDate() + 30);
+    return date.toISOString().slice(0, 10);
+  });
+  const [expiryTime, setExpiryTime] = useState("16:00");
   const [volatility, setVolatility] = useState(20); // Annualized %
   const [riskFreeRate, setRiskFreeRate] = useState(5); // Annual %
+  const [dividendYield, setDividendYield] = useState(0);
+  const [underlyingSymbol, setUnderlyingSymbol] = useState("AAPL");
+  const [loadingUnderlying, setLoadingUnderlying] = useState(false);
+  const [marketDataNote, setMarketDataNote] = useState<string | null>(null);
+  const [bid, setBid] = useState(4.8);
+  const [ask, setAsk] = useState(5.2);
+  const [volume, setVolume] = useState(0);
+  const [openInterest, setOpenInterest] = useState(0);
+  const [useMidpoint, setUseMidpoint] = useState(false);
   const [useAdvancedModel, setUseAdvancedModel] = useState(false);
   const [solveIV, setSolveIV] = useState(false);
   const [impliedVolatility, setImpliedVolatility] = useState<number | null>(null);
@@ -1798,22 +1820,27 @@ function OptionsPayoffCalculator() {
   const [strategyLegs, setStrategyLegs] = useState<StrategyLeg[]>([]);
   const [selectedTemplate, setSelectedTemplate] = useState<string | null>(null);
 
-  const T = timeToExpiry / 365; // Convert days to years
+  const exactExpiryMs = Date.parse(`${expiryDate}T${expiryTime}:00`);
+  const exactDays = Number.isFinite(exactExpiryMs) ? Math.max(0, (exactExpiryMs - Date.now()) / (24 * 60 * 60 * 1000)) : timeToExpiry;
+  const effectiveDays = useExactExpiry ? exactDays : timeToExpiry;
+  const T = effectiveDays / 365; // Convert days to years
   const r = riskFreeRate / 100; // Convert % to decimal
   const sigma = volatility / 100; // Convert % to decimal
+  const q = dividendYield / 100;
+  const effectivePremium = useMidpoint && ask >= bid ? (bid + ask) / 2 : premium;
 
   // Single leg pricing
   const { price: fairValue, greeks } = useAdvancedModel && mode === 'single'
     ? (optionStyle === 'american' 
-        ? binomialAmerican(spot, strike, T, r, sigma, optionType)
-        : blackScholes(spot, strike, T, r, sigma, optionType))
-    : { price: premium, greeks: { delta: 0, gamma: 0, theta: 0, vega: 0, rho: 0 } };
+        ? binomialAmerican(spot, strike, T, r, sigma, optionType, 100, q)
+        : blackScholes(spot, strike, T, r, sigma, optionType, q))
+    : { price: effectivePremium, greeks: { delta: 0, gamma: 0, theta: 0, vega: 0, rho: 0 } };
 
   // Advanced Greeks calculation
-  const advancedGreeks: AdvancedGreeks | null = useAdvancedModel && mode === 'single' && optionStyle === 'european'
+  const advancedGreeks: AdvancedGreeks | null = useAdvancedModel && mode === 'single' && optionStyle === 'european' && T > 0 && sigma > 0
     ? calculateAdvancedGreeks(
-        (Math.log(spot / strike) + (r + sigma * sigma / 2) * T) / (sigma * Math.sqrt(T)),
-        (Math.log(spot / strike) + (r + sigma * sigma / 2) * T) / (sigma * Math.sqrt(T)) - sigma * Math.sqrt(T),
+        (Math.log(spot / strike) + (r - q + sigma * sigma / 2) * T) / (sigma * Math.sqrt(T)),
+        (Math.log(spot / strike) + (r - q + sigma * sigma / 2) * T) / (sigma * Math.sqrt(T)) - sigma * Math.sqrt(T),
         spot, strike, T, r, sigma
       )
     : null;
@@ -1821,27 +1848,45 @@ function OptionsPayoffCalculator() {
   // Solve IV if enabled
   useEffect(() => {
     if (solveIV && useAdvancedModel && mode === 'single') {
-      const iv = solveImpliedVolatility(premium, spot, strike, T, r, optionType);
+      const iv = solveImpliedVolatility(effectivePremium, spot, strike, T, r, optionType, q);
       setImpliedVolatility(iv * 100); // Convert back to %
     } else {
       setImpliedVolatility(null);
     }
-  }, [solveIV, useAdvancedModel, premium, spot, strike, T, r, optionType, mode]);
+  }, [solveIV, useAdvancedModel, effectivePremium, spot, strike, T, r, optionType, q, mode]);
 
   // Single leg calculations
   const intrinsic = optionType === "call" ? Math.max(spot - strike, 0) : Math.max(strike - spot, 0);
   const timeValue = useAdvancedModel && mode === 'single' ? fairValue - intrinsic : 0;
-  const pnlPerUnit = position === "long" ? intrinsic - premium : premium - intrinsic;
+  const pnlPerUnit = position === "long" ? intrinsic - effectivePremium : effectivePremium - intrinsic;
   const totalPnl = pnlPerUnit * contracts * multiplier;
-  const breakeven = optionType === "call" ? strike + premium : strike - premium;
-  const probabilityOfProfit = useAdvancedModel && mode === 'single'
-    ? calculateProbabilityOfProfit(spot, strike, T, r, sigma, optionType, position, premium)
+  const breakeven = optionType === "call" ? strike + effectivePremium : strike - effectivePremium;
+  const probabilityOfProfit = useAdvancedModel && mode === 'single' && T > 0 && sigma > 0
+    ? calculateProbabilityOfProfit(spot, strike, T, r, sigma, optionType, position, effectivePremium)
     : null;
 
   // Strategy calculations
   const strategyPnL = mode === 'strategy' && strategyLegs.length > 0
     ? calculateStrategyPnL(strategyLegs, spot, T, r, sigma, optionStyle)
     : null;
+  const positionGreeks = mode === 'single'
+    ? {
+      delta: greeks.delta * contracts * multiplier * (position === 'long' ? 1 : -1),
+      gamma: greeks.gamma * contracts * multiplier * (position === 'long' ? 1 : -1),
+      theta: greeks.theta * contracts * multiplier * (position === 'long' ? 1 : -1),
+      vega: greeks.vega * contracts * multiplier * (position === 'long' ? 1 : -1),
+      rho: greeks.rho * contracts * multiplier * (position === 'long' ? 1 : -1),
+    }
+    : calculatePositionGreeks(strategyLegs, spot, T, r, sigma, q, optionStyle, multiplier);
+
+  const scenarioData = [-20, -10, 0, 10, 20].map((move) => {
+    const scenarioSpot = Math.max(0.01, spot * (1 + move / 100));
+    const scenario = useAdvancedModel
+      ? (optionStyle === 'american' ? binomialAmerican(scenarioSpot, strike, T, r, sigma, optionType, 80, q) : blackScholes(scenarioSpot, strike, T, r, sigma, optionType, q))
+      : null;
+    const scenarioPnl = scenario ? (position === 'long' ? scenario.price - effectivePremium : effectivePremium - scenario.price) * contracts * multiplier : null;
+    return { move, spot: scenarioSpot, price: scenario?.price ?? null, pnl: scenarioPnl };
+  });
 
   // Payoff chart data
   const payoffData = Array.from({ length: 100 }, (_, i) => {
@@ -1850,7 +1895,7 @@ function OptionsPayoffCalculator() {
     
     if (mode === 'single') {
       const payoffIntrinsic = optionType === "call" ? Math.max(price - strike, 0) : Math.max(strike - price, 0);
-      payoffPnl = position === "long" ? payoffIntrinsic - premium : premium - payoffIntrinsic;
+      payoffPnl = position === "long" ? payoffIntrinsic - effectivePremium : effectivePremium - payoffIntrinsic;
     } else {
       const strategyResult = calculateStrategyPnL(strategyLegs, price, T, r, sigma, optionStyle);
       payoffPnl = strategyResult.totalPnl;
@@ -1878,6 +1923,61 @@ function OptionsPayoffCalculator() {
     }
   };
 
+  const loadUnderlyingPrice = async () => {
+    setLoadingUnderlying(true);
+    setMarketDataNote(null);
+    try {
+      const response = await fetch(`/api/stocks?symbols=${encodeURIComponent(underlyingSymbol.trim().toUpperCase())}`);
+      const payload = await response.json();
+      const data = payload?.[underlyingSymbol.trim().toUpperCase()];
+      if (!response.ok || !data?.price) throw new Error("Cached stock price unavailable");
+      setSpot(Number(data.price));
+      setMarketDataNote(`Cached quote loaded${data.lastTradeTime ? ` · ${new Date(data.lastTradeTime).toLocaleString()}` : ""}`);
+    } catch {
+      setMarketDataNote("Cached quote unavailable; enter the underlying price manually.");
+    } finally {
+      setLoadingUnderlying(false);
+    }
+  };
+
+  const exportOptionsCsv = () => {
+    const rows = [
+      ["Field", "Value"],
+      ["Underlying", underlyingSymbol.toUpperCase()],
+      ["Option type", optionType],
+      ["Position", position],
+      ["Model", useAdvancedModel ? (optionStyle === "american" ? "Binomial American" : "Black-Scholes-Merton") : "Intrinsic payoff only"],
+      ["Underlying price", spot],
+      ["Strike", strike],
+      ["Premium used", effectivePremium],
+      ["Bid", bid],
+      ["Ask", ask],
+      ["Volume", volume],
+      ["Open interest", openInterest],
+      ["Contracts", contracts],
+      ["Contract multiplier", multiplier],
+      ["Days to expiry", effectiveDays],
+      ["Volatility %", volatility],
+      ["Risk-free rate %", riskFreeRate],
+      ["Dividend yield %", dividendYield],
+      ["Fair value", fairValue],
+      ["Position P&L", totalPnl],
+      ["Position delta", positionGreeks.delta],
+      ["Position gamma", positionGreeks.gamma],
+      ["Position theta per day", positionGreeks.theta],
+      ["Position vega", positionGreeks.vega],
+      ["Position rho", positionGreeks.rho],
+      ["Generated at", new Date().toISOString()],
+    ];
+    const csv = rows.map((row) => row.map(escapeCsvValue).join(",")).join("\n");
+    const link = document.createElement("a");
+    link.href = `data:text/csv;charset=utf-8,${encodeURIComponent(csv)}`;
+    link.download = `tradivex-option-greeks-${underlyingSymbol.toUpperCase()}.csv`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return <>
     <div className="space-y-5">
       {/* Mode Selector */}
@@ -1901,11 +2001,34 @@ function OptionsPayoffCalculator() {
           <div className="grid gap-5 md:grid-cols-2">
             <SelectField label="Option type" value={optionType} onChange={(value) => setOptionType(value as "call" | "put")} options={[{ label: "Call", value: "call" }, { label: "Put", value: "put" }]} />
             <SelectField label="Position" value={position} onChange={(value) => setPosition(value as "long" | "short")} options={[{ label: "Long", value: "long" }, { label: "Short", value: "short" }]} />
+            <TextField label="Underlying symbol" value={underlyingSymbol} onChange={setUnderlyingSymbol} placeholder="AAPL" />
             <NumberField label="Underlying price" value={spot} onChange={setSpot} step="0.01" />
             <NumberField label="Strike price" value={strike} onChange={setStrike} step="0.01" />
-            <NumberField label="Premium per unit" value={premium} onChange={setPremium} step="0.01" />
+            <NumberField label="Premium per unit" value={premium} onChange={setPremium} step="0.01" note={useMidpoint ? `Using bid/ask midpoint: ${formatNumber(effectivePremium, 4)}` : undefined} />
             <NumberField label="Contracts" value={contracts} onChange={setContracts} step="1" />
             <NumberField label="Contract multiplier" value={multiplier} onChange={setMultiplier} step="1" />
+          </div>
+
+          <div className="flex flex-wrap items-center gap-3 rounded-2xl border border-slate-200 bg-slate-50 p-4 dark:border-slate-800 dark:bg-slate-950/70">
+            <button type="button" onClick={loadUnderlyingPrice} disabled={loadingUnderlying} className="rounded-xl bg-primary-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-primary-700 disabled:cursor-wait disabled:opacity-60">
+              {loadingUnderlying ? "Loading cached quote…" : "Load cached underlying price"}
+            </button>
+            {marketDataNote && <span className="text-xs text-slate-500 dark:text-slate-400">{marketDataNote}</span>}
+          </div>
+
+          <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5 dark:border-slate-800 dark:bg-slate-950/70">
+            <h3 className="mb-4 text-base font-semibold text-slate-700 dark:text-slate-300">Manual market quote and liquidity</h3>
+            <div className="grid gap-5 md:grid-cols-4">
+              <NumberField label="Bid" value={bid} onChange={setBid} step="0.01" />
+              <NumberField label="Ask" value={ask} onChange={setAsk} step="0.01" />
+              <NumberField label="Volume" value={volume} onChange={setVolume} step="1" />
+              <NumberField label="Open interest" value={openInterest} onChange={setOpenInterest} step="1" />
+            </div>
+            <label className="mt-4 flex items-start gap-3 text-sm text-slate-600 dark:text-slate-400">
+              <input type="checkbox" checked={useMidpoint} onChange={(event) => setUseMidpoint(event.target.checked)} className="mt-1 rounded border-slate-300 text-primary-600 focus:ring-primary-500" />
+              <span>Use bid/ask midpoint as the premium for pricing and P&amp;L</span>
+            </label>
+            <p className="mt-3 text-xs text-slate-500 dark:text-slate-400">Enter chain values manually when using a free data source. These fields are not presented as live exchange data.</p>
           </div>
 
           {/* Advanced Model Toggle */}
@@ -1928,6 +2051,19 @@ function OptionsPayoffCalculator() {
                 <NumberField label="Time to expiry" value={timeToExpiry} onChange={setTimeToExpiry} step="1" suffix="days" />
                 <NumberField label="Volatility" value={volatility} onChange={setVolatility} step="0.1" suffix="%" />
                 <NumberField label="Risk-free rate" value={riskFreeRate} onChange={setRiskFreeRate} step="0.1" suffix="%" />
+                <NumberField label="Dividend yield" value={dividendYield} onChange={setDividendYield} step="0.1" suffix="%" />
+              </div>
+
+              <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4 dark:border-slate-800 dark:bg-slate-950/70">
+                <label className="flex items-start gap-3 text-sm font-semibold text-slate-700 dark:text-slate-300">
+                  <input type="checkbox" checked={useExactExpiry} onChange={(event) => setUseExactExpiry(event.target.checked)} className="mt-1 rounded border-slate-300 text-primary-600 focus:ring-primary-500" />
+                  <span>Use exact expiration date and time</span>
+                </label>
+                {useExactExpiry && <div className="mt-4 grid gap-5 md:grid-cols-2">
+                  <label className="block"><span className={labelClass}>Expiration date</span><input type="date" value={expiryDate} onChange={(event) => setExpiryDate(event.target.value)} className={inputClass} /></label>
+                  <label className="block"><span className={labelClass}>Expiration time (local)</span><input type="time" value={expiryTime} onChange={(event) => setExpiryTime(event.target.value)} className={inputClass} /></label>
+                </div>}
+                <p className="mt-3 text-xs text-slate-500 dark:text-slate-400">Model time remaining: {formatNumber(effectiveDays, 2)} calendar days. Exchange holidays and early-close schedules are not automatically inferred.</p>
               </div>
 
               <div className="grid gap-5 md:grid-cols-2">
@@ -2010,6 +2146,17 @@ function OptionsPayoffCalculator() {
                 </div>
               </div>
 
+              <div className="mt-5 rounded-2xl border border-slate-200 bg-slate-50 p-5 dark:border-slate-800 dark:bg-slate-950/70">
+                <h3 className="mb-4 text-base font-semibold text-slate-700 dark:text-slate-300">Position Greeks · {contracts} × {multiplier}</h3>
+                <div className="grid gap-4 sm:grid-cols-3">
+                  <Result label="Position Delta" value={formatNumber(positionGreeks.delta, 4)} />
+                  <Result label="Position Gamma" value={formatNumber(positionGreeks.gamma, 6)} />
+                  <Result label="Position Theta/day" value={formatNumber(positionGreeks.theta, 4)} />
+                  <Result label="Position Vega" value={formatNumber(positionGreeks.vega, 4)} />
+                  <Result label="Position Rho" value={formatNumber(positionGreeks.rho, 4)} />
+                </div>
+              </div>
+
               {showAdvancedGreeks && advancedGreeks && (
                 <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5 dark:border-slate-800 dark:bg-slate-950/70">
                   <h3 className="text-base font-semibold text-slate-700 dark:text-slate-300 mb-4">Advanced Greeks</h3>
@@ -2048,6 +2195,17 @@ function OptionsPayoffCalculator() {
                   </div>
                 </div>
               )}
+
+              <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5 dark:border-slate-800 dark:bg-slate-950/70">
+                <h3 className="mb-4 text-base font-semibold text-slate-700 dark:text-slate-300">Underlying Price Scenario Analysis</h3>
+                <div className="overflow-x-auto">
+                  <table className="w-full min-w-[560px] text-sm">
+                    <thead><tr className="border-b border-slate-200 text-left dark:border-slate-700"><th className="px-3 py-2">Spot move</th><th className="px-3 py-2 text-right">Scenario spot</th><th className="px-3 py-2 text-right">Model value</th><th className="px-3 py-2 text-right">Position P&amp;L</th></tr></thead>
+                    <tbody>{scenarioData.map((scenario) => <tr key={scenario.move} className="border-b border-slate-100 dark:border-slate-800"><td className="px-3 py-2 font-semibold">{scenario.move > 0 ? "+" : ""}{scenario.move}%</td><td className="px-3 py-2 text-right">{formatNumber(scenario.spot, 2)}</td><td className="px-3 py-2 text-right">{scenario.price === null ? "—" : formatNumber(scenario.price, 4)}</td><td className={`px-3 py-2 text-right font-semibold ${scenario.pnl !== null && scenario.pnl >= 0 ? "text-emerald-600" : "text-red-600"}`}>{scenario.pnl === null ? "—" : formatNumber(scenario.pnl, 2)}</td></tr>)}</tbody>
+                  </table>
+                </div>
+                <p className="mt-3 text-xs text-slate-500 dark:text-slate-400">One-factor scenario: volatility, rates, dividends and time are held constant.</p>
+              </div>
 
               {showVolSurface && (
                 <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5 dark:border-slate-800 dark:bg-slate-950/70">
@@ -2234,6 +2392,17 @@ function OptionsPayoffCalculator() {
               </div>
 
               <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5 dark:border-slate-800 dark:bg-slate-950/70">
+                <h3 className="mb-4 text-base font-semibold text-slate-700 dark:text-slate-300">Portfolio Greeks</h3>
+                <div className="grid gap-4 sm:grid-cols-3">
+                  <Result label="Net Delta" value={formatNumber(positionGreeks.delta, 4)} />
+                  <Result label="Net Gamma" value={formatNumber(positionGreeks.gamma, 6)} />
+                  <Result label="Net Theta/day" value={formatNumber(positionGreeks.theta, 4)} />
+                  <Result label="Net Vega" value={formatNumber(positionGreeks.vega, 4)} />
+                  <Result label="Net Rho" value={formatNumber(positionGreeks.rho, 4)} />
+                </div>
+              </div>
+
+              <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5 dark:border-slate-800 dark:bg-slate-950/70">
                 <h3 className="text-base font-semibold text-slate-700 dark:text-slate-300 mb-4">Strategy Payoff Diagram</h3>
                 <div className="h-64">
                   <ResponsiveContainer width="100%" height="100%">
@@ -2260,6 +2429,11 @@ function OptionsPayoffCalculator() {
           )}
         </>
       )}
+
+      <div className="flex flex-wrap gap-3">
+        <button type="button" onClick={exportOptionsCsv} className="rounded-xl bg-primary-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-primary-700">Export Greeks CSV</button>
+        <span className="self-center text-xs text-slate-500 dark:text-slate-400">Use the page-level PDF button for a print-ready report.</span>
+      </div>
 
       <Notice>
         {useAdvancedModel 
@@ -2463,30 +2637,31 @@ function PivotPointsCalculator() {
 
     const cached = stockDataCache[selectedSymbol];
 
-    // Load from cache only - no API calls
-    if (cached && cached.data && cached.data.dayHigh && cached.data.dayLow && cached.data.price) {
-      setHigh(cached.data.dayHigh);
-      setLow(cached.data.dayLow);
-      setClose(cached.data.price);
-      setOpen(cached.data.dayOpen || cached.data.previousClose || cached.data.price);
-      setLastUpdated(new Date(cached.timestamp).toLocaleString());
-    } else {
-      try {
-        const response = await fetch(`/api/stocks?symbols=${encodeURIComponent(selectedSymbol)}`);
-        const payload = await response.json();
-        const data = payload?.[selectedSymbol];
-        if (!response.ok || !data || !data.dayHigh || !data.dayLow || !data.price) throw new Error("Live quote unavailable");
-        const nextCache = { ...stockDataCache, [selectedSymbol]: { data, timestamp: Date.now() } };
-        setStockDataCache(nextCache);
-        localStorage.setItem(STOCK_MARKET_CACHE_KEY, JSON.stringify({ data: Object.fromEntries(Object.entries(nextCache).map(([symbol, item]) => [symbol, item.data])), fetchedAt: Date.now() }));
-        setHigh(data.dayHigh);
-        setLow(data.dayLow);
-        setClose(data.price);
-        setOpen(data.dayOpen || data.previousClose || data.price);
-        setLastUpdated(data.lastTradeTime ? new Date(data.lastTradeTime).toLocaleString() : new Date().toLocaleString());
-      } catch {
-        setMarketDataError("Live data unavailable and no cached data exists for this symbol. Enter prices manually.");
+    try {
+      // The protected Cron fills Firebase from StockData.org. This public
+      // request reads the persisted historical snapshot and never calls the
+      // provider directly.
+      const historicalResponse = await fetch(`/api/stocks/historical?symbol=${encodeURIComponent(selectedSymbol)}&timeframe=${encodeURIComponent(selectedSession)}`);
+      const historicalPayload = await historicalResponse.json();
+      const candle = historicalPayload?.candle;
+      if (historicalResponse.ok && candle && [candle.open, candle.high, candle.low, candle.close].every((value: unknown) => typeof value === "number" && Number.isFinite(value))) {
+        setHigh(candle.high);
+        setLow(candle.low);
+        setClose(candle.close);
+        setOpen(candle.open);
+        setLastUpdated(historicalPayload.fetchedAt ? new Date(historicalPayload.fetchedAt).toLocaleString() : new Date(candle.date).toLocaleDateString());
+      } else if (cached && cached.data && cached.data.dayHigh && cached.data.dayLow && cached.data.price) {
+        setHigh(cached.data.dayHigh);
+        setLow(cached.data.dayLow);
+        setClose(cached.data.price);
+        setOpen(cached.data.dayOpen || cached.data.previousClose || cached.data.price);
+        setLastUpdated(new Date(cached.timestamp).toLocaleString());
+        setMarketDataError("Historical snapshot unavailable; showing the last cached quote.");
+      } else {
+        throw new Error("Historical cache unavailable");
       }
+    } catch {
+      setMarketDataError("Historical market cache is unavailable. Enter prices manually or try again after the next scheduled sync.");
     }
 
     setLoadingMarketData(false);
@@ -3807,6 +3982,58 @@ const calculatorComponents: Record<CalculatorSlug, () => ReactNode> = {
   "portfolio-risk-allocation": PortfolioRiskAllocationCalculator,
 };
 
+function CalculatorPdfButton({ title }: { title: string }) {
+  const downloadPdf = () => {
+    const source = document.querySelector<HTMLElement>("[data-calculator-report]");
+    if (!source) return;
+    const report = source.cloneNode(true) as HTMLElement;
+    report.querySelectorAll("button").forEach((button) => button.remove());
+    report.querySelectorAll("input, select, textarea").forEach((control) => {
+      const element = control as HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement;
+      const value = element instanceof HTMLSelectElement ? element.selectedOptions[0]?.textContent || element.value : element.value;
+      const replacement = document.createElement("span");
+      replacement.textContent = value || "—";
+      replacement.className = "pdf-control-value";
+      element.replaceWith(replacement);
+    });
+    const reportWindow = window.open("", "_blank", "width=1100,height=850");
+    if (!reportWindow) return;
+    reportWindow.document.write(`<!doctype html><html><head><title>Tradivex ${escapeHtmlValue(title)} Report</title><style>
+      *{box-sizing:border-box}body{font-family:Arial,Helvetica,sans-serif;color:#172033;margin:34px;line-height:1.45}h1{margin:0 0 6px;color:#2563eb;font-size:25px}h2,h3{color:#172033}p{color:#536174}.pdf-meta{font-size:12px;color:#64748b;margin-bottom:22px}.pdf-control-value{display:block;border:1px solid #dbe2ea;border-radius:7px;padding:9px;background:#f8fafc;color:#172033;min-height:36px}table{border-collapse:collapse;width:100%;font-size:11px}th{background:#eff6ff;color:#1d4ed8;text-align:left}th,td{border:1px solid #dbe2ea;padding:7px}button{display:none!important}svg{max-width:100%;height:auto}.disclaimer{font-size:10px;margin-top:24px;color:#64748b}@media print{body{margin:18px}a{color:inherit;text-decoration:none}}</style></head><body><h1>Tradivex ${escapeHtmlValue(title)} Report</h1><div class="pdf-meta">Generated ${escapeHtmlValue(new Date().toLocaleString())} · Educational estimate based on the inputs shown below</div>${report.innerHTML}<p class="disclaimer">This report is for informational and educational purposes only. It is not financial advice, a trade signal, or a guarantee of results. Verify market data, fees, spreads, taxes, and execution assumptions independently.</p></body></html>`);
+    reportWindow.document.close();
+    reportWindow.focus();
+    window.setTimeout(() => reportWindow.print(), 250);
+  };
+
+  return <button type="button" onClick={downloadPdf} className="mb-5 inline-flex min-h-10 items-center rounded-xl border border-primary-200 bg-primary-50 px-4 py-2 text-sm font-semibold text-primary-700 transition hover:border-primary-400 hover:bg-primary-100 dark:border-primary-800 dark:bg-primary-950/30 dark:text-primary-300 dark:hover:bg-primary-950/60">Download / Save PDF Report</button>;
+}
+
+function calculatePositionGreeks(
+  legs: StrategyLeg[],
+  S: number,
+  T: number,
+  r: number,
+  sigma: number,
+  q: number,
+  style: 'european' | 'american',
+  multiplier: number,
+): Greeks {
+  return legs.reduce((total, leg) => {
+    const result = style === 'american'
+      ? binomialAmerican(S, leg.strike, T, r, sigma, leg.type, 80, q)
+      : blackScholes(S, leg.strike, T, r, sigma, leg.type, q);
+    const sign = leg.position === 'long' ? 1 : -1;
+    const scale = sign * Math.max(0, leg.contracts) * multiplier;
+    return {
+      delta: total.delta + result.greeks.delta * scale,
+      gamma: total.gamma + result.greeks.gamma * scale,
+      theta: total.theta + result.greeks.theta * scale,
+      vega: total.vega + result.greeks.vega * scale,
+      rho: total.rho + result.greeks.rho * scale,
+    };
+  }, { delta: 0, gamma: 0, theta: 0, vega: 0, rho: 0 });
+}
+
 export default function CalculatorSuite({ slug }: Props) {
   const definition = calculatorDefinitions.find((calculator) => calculator.slug === slug)!;
   const Calculator = calculatorComponents[slug];
@@ -3822,7 +4049,7 @@ export default function CalculatorSuite({ slug }: Props) {
           <p className="text-sm font-bold uppercase tracking-widest text-primary-600 mb-3">Tradivex Calculators</p><h1 className="break-words text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 dark:text-white mb-4">{definition.title}</h1><p className="text-lg text-slate-600 dark:text-slate-400">{definition.description}</p>
         </div>
         <div className="min-w-0 grid gap-8 lg:grid-cols-[1fr_280px] items-start">
-          <section className="glass-card min-w-0 rounded-3xl p-4 sm:p-6 lg:p-8"><Calculator /></section>
+          <section data-calculator-report className="glass-card min-w-0 rounded-3xl p-4 sm:p-6 lg:p-8"><CalculatorPdfButton title={definition.title} /><Calculator /></section>
           <aside className="space-y-4"><div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white/70 dark:bg-slate-900/70 p-5"><h2 className="font-bold text-slate-900 dark:text-white mb-3">More calculators</h2><nav className="space-y-2">{calculatorDefinitions.map((item) => <Link key={item.slug} href={`/calculators/${item.slug}`} className={`block rounded-xl px-3 py-2 text-sm transition-colors ${item.slug === slug ? "bg-primary-50 text-primary-700 dark:bg-primary-950/40 dark:text-primary-300" : "text-slate-600 hover:bg-slate-50 dark:text-slate-400 dark:hover:bg-slate-800"}`}>{item.shortTitle}</Link>)}</nav></div><div className="rounded-2xl border border-slate-200 dark:border-slate-800 p-5 text-sm text-slate-600 dark:text-slate-400">Results are estimates from your inputs. They are not financial advice or a recommendation to trade.</div></aside>
         </div>
       </div>

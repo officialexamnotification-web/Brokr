@@ -6356,6 +6356,148 @@ Since these are same-day, fast-moving contracts, execution quality matters more 
 0DTE options have gone from a niche institutional tool to a mainstream, high-volume corner of the options market, and 2026's move toward daily single-stock expirations extends that trend further. The appeal — precision, lower cost per contract, no overnight risk — is genuine. So is the risk: fast time decay, thinner liquidity in newer contracts, and a product structure that has historically produced high loss rates for short-dated buyers. Anyone considering 0DTE options should treat them as a distinct, higher-risk instrument that requires active monitoring, not a cheaper substitute for standard options trading.`,
     lastReviewedAt: "2026-08-13", reviewStatus: "editorial_reviewed", sourceUrls: ["https://www.cboe.com", "https://www.sec.gov"],
   },
+  {
+    id: 43,
+    slug: "options-greeks-explained-delta-gamma-theta-vega",
+    title: "Options Greeks Explained: Delta, Gamma, Theta, Vega for Beginners",
+    category: "Options Trading", author: "Tradivex Editorial Team", date: "2026-08-14", readTime: "9 min",
+    image: "/images/options-greeks-explained.png",
+    excerpt: "Delta, gamma, theta, and vega help explain why an options trade can gain or lose value even when the underlying moves in the direction you expected.",
+    tags: ["options-trading", "options-greeks", "delta", "gamma", "theta", "vega", "0dte", "beginners"],
+    content: `# Options Greeks Explained: Delta, Gamma, Theta, Vega for Beginners
+
+## Why the Greeks Matter
+
+An option's price is affected by more than the direction of the underlying asset. Time passing, changes in implied volatility, and interest rates can all change the value of a position.
+
+Traders use the Greeks to describe these sensitivities. They are model-based estimates, not guarantees or predictions, but they provide a practical framework for understanding option risk.
+
+## Delta: Sensitivity to the Underlying
+
+Delta estimates how much an option's price may change for a $1 move in the underlying asset, assuming other inputs remain constant.
+
+- A call with a delta of 0.50 may gain about $0.50 for a $1 increase in the underlying.
+- A put with a delta of -0.40 may gain about $0.40 for a $1 decline in the underlying.
+
+Call delta ranges from 0 to +1, while put delta ranges from 0 to -1. Deep in-the-money options generally have larger absolute deltas, while far out-of-the-money options generally have smaller deltas.
+
+Delta changes as price, time, and implied volatility change. It is also sometimes used as a rough theoretical estimate of the probability of finishing in the money, but it should not be treated as a guaranteed probability.
+
+**Practical use:** Delta can help compare directional exposure and estimate how many shares an option position approximately behaves like. Portfolio delta is more useful than looking at one contract in isolation.
+
+## Gamma: How Quickly Delta Changes
+
+Gamma measures the expected change in delta for a $1 move in the underlying. In simple terms:
+
+**Delta describes current sensitivity; gamma describes how quickly that sensitivity can change.**
+
+Gamma is usually highest near the strike price and becomes more important as expiration approaches. This is why short-dated and 0DTE positions can change from apparently calm to highly directional after a relatively small underlying move.
+
+For option sellers, high gamma can create rapidly changing exposure. A position that begins close to delta-neutral may become substantially long or short delta during the session.
+
+## Theta: The Cost of Time
+
+Theta estimates how much an option's theoretical value changes as one day passes, assuming the underlying price, volatility, rates, and other inputs remain unchanged.
+
+Long options commonly have negative theta because time value tends to decay. Short options commonly have positive theta, but collecting time decay does not remove the risks from price gaps, volatility changes, liquidity, or assignment.
+
+Theta often becomes more significant near expiration, particularly for at-the-money options. A sideways underlying can therefore still produce a loss for a long option position.
+
+## Vega: Sensitivity to Implied Volatility
+
+Vega estimates how much an option's theoretical price may change for a one-percentage-point change in implied volatility.
+
+For example, a vega of 0.20 suggests that a one-percentage-point increase in implied volatility may add approximately $0.20 to the option's value, all else equal. Vega is generally larger for longer-dated options and near-the-money strikes.
+
+### Understanding IV Crush
+
+Implied volatility can fall sharply after an earnings announcement or other expected event. An option buyer can correctly forecast the direction and still lose money if the volatility contraction offsets the underlying move.
+
+Historical volatility measures past movement. Implied volatility is the market's forward-looking volatility estimate embedded in option prices. They are related concepts, but they are not interchangeable.
+
+## Rho: Interest-Rate Sensitivity
+
+Rho estimates how an option's value may change for a one-percentage-point change in the risk-free interest rate. Rho is usually less important for short-dated trades than delta, gamma, theta, and vega, but it can matter more for long-dated options such as LEAPS.
+
+## A Worked Example
+
+Assume a call has these illustrative Greeks:
+
+| Greek | Value | Interpretation |
+|---|---:|---|
+| Delta | 0.45 | About $0.45 sensitivity to a $1 underlying move |
+| Gamma | 0.06 | Delta may change by about 0.06 for a $1 move |
+| Theta | -0.08 | About $0.08 daily time decay, all else equal |
+| Vega | 0.12 | About $0.12 sensitivity to a 1-point IV change |
+
+If the underlying rises by $2, a simplified delta-plus-gamma estimate is:
+
+- Delta effect: 0.45 x $2 = $0.90
+- Gamma effect: 0.5 x 0.06 x ($2 x $2) = $0.12
+- Approximate price change before time and volatility effects: $1.02
+
+After one day of theta at -$0.08, the estimate becomes approximately $0.94. If implied volatility also falls by two percentage points, the vega effect is approximately 0.12 x -2 = -$0.24, producing an illustrative combined change of about $0.70.
+
+This is only an approximation. Greeks change continuously, and the full option price depends on the model, the contract terms, the market quote, and execution costs.
+
+## How the Greeks Work Together
+
+The Greeks should not be viewed independently:
+
+1. Delta describes directional exposure.
+2. Gamma shows how that exposure may change.
+3. Theta measures the effect of time passing.
+4. Vega measures volatility sensitivity.
+5. Rho captures interest-rate sensitivity.
+
+A position can have positive delta but negative theta, or positive theta but negative gamma. A portfolio-level view is usually more informative than a single-leg view.
+
+## Common Beginner Mistakes
+
+### Ignoring Theta
+
+Holding a long option while waiting for a move can be costly if the underlying remains flat.
+
+### Treating Delta as Fixed
+
+Delta changes with the underlying price, time remaining, and implied volatility. A 0.50 delta today may be very different after a large move.
+
+### Ignoring Implied Volatility
+
+Buying expensive volatility before an event can expose a trader to IV crush after the event.
+
+### Underestimating Gamma Near Expiration
+
+Short-dated options can change their directional exposure quickly, especially around the strike.
+
+### Looking at Only One Greek
+
+The Greeks describe different sensitivities of the same position. Reviewing only delta, theta, or vega can hide important risks.
+
+## Why This Matters for 0DTE Options
+
+Cboe reported that 0DTE options volume increased 46.2% year-to-date in Q2 2026 and exceeded 20 million contracts per day. The same report said average daily options volume reached 72.8 million contracts in the quarter.
+
+With very little time remaining, gamma and theta can become especially important. That does not make every 0DTE strategy unsuitable, but it does mean that execution, liquidity, position size, and risk limits deserve special attention.
+
+## Key Takeaways
+
+- **Delta** measures sensitivity to the underlying price.
+- **Gamma** measures how quickly delta changes.
+- **Theta** measures sensitivity to time passing.
+- **Vega** measures sensitivity to implied volatility.
+- **Rho** measures sensitivity to interest rates.
+
+The Greeks describe theoretical sensitivity; they do not predict the future or guarantee a profit. Options involve substantial risk, and actual results can differ because of spreads, fees, slippage, liquidity, early exercise, assignment, changing volatility, and model assumptions.
+
+**Educational content only. This article is not financial advice or a recommendation to trade.**`,
+    lastReviewedAt: "2026-08-14", reviewStatus: "source_checked",
+    sourceUrls: [
+      "https://www.cboe.com/insights/posts/state-of-the-options-industry-options-market-continued-to-break-records-in-q-2-2026",
+      "https://www.schwab.com/options/options-greeks",
+      "https://www.schwab.com/learn/story/get-to-know-option-greeks",
+    ],
+  },
 ];
 
 const rawTools: Tool[] = [

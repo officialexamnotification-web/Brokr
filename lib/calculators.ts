@@ -27,7 +27,7 @@ export const calculatorDefinitions = [
     slug: "options-payoff",
     title: "Options Payoff Calculator",
     shortTitle: "Options Payoff",
-    description: "Enterprise-grade options calculator with BSM/Binomial models, complete & advanced Greeks, IV solver, multi-leg strategies, volatility surface, and payoff diagrams.",
+    description: "Professional options analysis calculator with Black-Scholes and Binomial models, full Greeks, exact expiry inputs, manual quote fields, multi-leg risk, scenario analysis, and payoff diagrams.",
   },
   {
     slug: "brokerage",

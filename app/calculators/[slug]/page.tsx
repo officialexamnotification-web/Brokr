@@ -32,7 +32,7 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
     : isForexMarginCalculator
     ? "Forex Margin Calculator | Calculate Required Margin Instantly"
     : isOptionsPayoffCalculator
-    ? "Options Payoff Calculator | Multi-Leg Strategies & Vol Surface"
+    ? "Options Greeks & Payoff Calculator | Models, Scenarios & Multi-Leg Risk"
     : isPivotPointsCalculator
     ? "Pivot Point Calculator | Classic, Woodie's, Camarilla, DeMark's, Fibonacci"
     : `${calculator.title} | Tradivex`;
@@ -58,7 +58,7 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
     : isForexMarginCalculator
     ? "forex margin calculator, free margin calculator, forex leverage calculation, currency margin requirement, JPY margin calculator, lot size margin calculator, forex risk management, leverage calculator, standard lot mini lot micro lot, forex trading tools, margin requirement calculator"
     : isOptionsPayoffCalculator
-    ? "options payoff calculator, Black-Scholes calculator, binomial model calculator, American options calculator, European options calculator, option Greeks calculator, implied volatility calculator, delta gamma theta vega rho, advanced Greeks vanna charm vomma zomma, probability of profit, payoff diagram, multi-leg strategies, option spreads, iron condor, straddle strangle, volatility surface, option pricing model, call put calculator, time value intrinsic value, options risk management, professional options tools, enterprise options calculator"
+    ? "options Greeks calculator, options payoff calculator, Black-Scholes calculator, binomial American options calculator, European options calculator, implied volatility calculator, delta gamma theta vega rho, position Greeks, portfolio Greeks, exact expiry, bid ask midpoint, scenario analysis, payoff diagram, multi-leg strategies, option spreads, iron condor, straddle strangle, volatility surface, option pricing model, call put calculator, time value intrinsic value, options risk management"
     : isPivotPointsCalculator
     ? "pivot point calculator, free pivot point calculator, support resistance calculator, technical analysis tool, classic pivot points, woodie pivot points, camarilla pivot points, demark pivot points, fibonacci pivot points, daily pivot points, weekly pivot points, monthly pivot points, stock pivot calculator, trading levels calculator, s1 s2 s3 r1 r2 r3, pivot point formula, forex pivot points, stock market support resistance, day trading calculator, swing trading calculator, position trading calculator, intraday trading tool, market analysis calculator, price level calculator, trading calculator, technical analysis calculator"
     : undefined;

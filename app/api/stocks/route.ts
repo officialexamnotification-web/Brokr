@@ -5,7 +5,6 @@ import { isFreshMarketCache, readPersistentMarketCache, writePersistentMarketCac
 export const dynamic = "force-dynamic";
 
 const STOCKDATA_BASE = "https://api.stockdata.org/v1";
-const FINNHUB_BASE = "https://finnhub.io/api/v1";
 const DEFAULT_SYMBOLS = ["AAPL", "GOOGL", "MSFT", "TSLA", "AMZN"];
 const FULL_SYMBOL_LIST = [
   "AAPL", "MSFT", "GOOGL", "AMZN", "NVDA", "META", "TSLA", "BRK.B", "AVGO", "WMT",
@@ -104,25 +103,6 @@ function setCache<T>(key: string, data: T) {
   cache.set(key, { data, time: Date.now() });
 }
 
-function tradingDaysSince(value: string | null) {
-  if (!value) return Number.POSITIVE_INFINITY;
-  const timestamp = new Date(value).getTime();
-  if (!Number.isFinite(timestamp)) return Number.POSITIVE_INFINITY;
-
-  const start = new Date(timestamp);
-  const end = new Date();
-  const cursor = new Date(start);
-  cursor.setHours(0, 0, 0, 0);
-  end.setHours(0, 0, 0, 0);
-  let tradingDays = 0;
-  while (cursor < end) {
-    cursor.setDate(cursor.getDate() + 1);
-    const day = cursor.getDay();
-    if (day !== 0 && day !== 6) tradingDays += 1;
-  }
-  return tradingDays;
-}
-
 export async function GET(request: Request) {
   const rateLimit = allowPublicRequest(request, "stocks", 10);
   if (!rateLimit.allowed) {
@@ -156,6 +136,12 @@ export async function GET(request: Request) {
       }
     }
   }
+
+  // Provider access belongs exclusively to the protected Cron sync. A public
+  // calculator request must never turn into a provider or quota-consuming hit.
+  if (!isPrivateSync) {
+    return NextResponse.json({ error: "Stock market cache is not available yet." }, { status: 503, headers: { "Cache-Control": PUBLIC_CACHE_CONTROL } });
+  }
   
   try {
     
@@ -171,47 +157,8 @@ export async function GET(request: Request) {
     
     const results: Record<string, StockQuote> = {};
 
-    const addFinnhubQuotes = async (symbolsToFetch = symbols) => {
-      const finnhubKey = process.env.FINNHUB_API_KEY || "";
-      if (!finnhubKey) return;
-      const responses = await Promise.allSettled(symbolsToFetch.map(async (symbol) => {
-        const response = await fetch(`${FINNHUB_BASE}/quote?symbol=${encodeURIComponent(symbol)}&token=${encodeURIComponent(finnhubKey)}`, {
-          next: { revalidate: 600 },
-        });
-        if (!response.ok) throw new Error(`Finnhub quote failed for ${symbol}`);
-        const quote = await response.json();
-        const price = typeof quote?.c === "number" ? quote.c : null;
-        if (price == null || price <= 0) return;
-        const previousClose = typeof quote?.pc === "number" ? quote.pc : null;
-        const info = STOCK_INFO[symbol];
-        results[symbol] = {
-          price,
-          changePercent: typeof quote?.dp === "number" ? quote.dp : previousClose ? ((price - previousClose) / previousClose) * 100 : null,
-          name: info?.name ?? null,
-          currency: info?.currency ?? "USD",
-          exchange: info?.exchange ?? null,
-          dayOpen: typeof quote?.o === "number" ? quote.o : null,
-          dayHigh: typeof quote?.h === "number" ? quote.h : null,
-          dayLow: typeof quote?.l === "number" ? quote.l : null,
-          previousClose,
-          volume: null,
-          week52High: null,
-          week52Low: null,
-          lastTradeTime: typeof quote?.t === "number" ? new Date(quote.t * 1000).toISOString() : null,
-          extendedHours: null,
-        };
-      }));
-      return responses;
-    };
-
     if (!apiKey) {
-      await addFinnhubQuotes();
-      if (Object.keys(results).length > 0) {
-        setCache(cacheKey, results);
-        try { await writePersistentMarketCache("stocks", results, "Finnhub"); } catch (error) { console.warn("Unable to persist stock cache:", error); }
-        return NextResponse.json(results, { headers: { "Cache-Control": PUBLIC_CACHE_CONTROL, "X-Market-Data-Source": "live-synced" } });
-      }
-      throw new Error("No stock quote provider key configured");
+      throw new Error("STOCKDATA_API_KEY is not configured");
     }
     
     // StockData.org free plan allows only 3 symbols per request.
@@ -260,18 +207,9 @@ export async function GET(request: Request) {
       }
     }
 
-    // Some quote providers can return an older successful response even when
-    // our application cache has expired. Refresh only those stale symbols from
-    // Finnhub so the fallback does not multiply requests for fresh quotes.
-    const staleSymbols = symbols.filter((symbol) => tradingDaysSince(results[symbol]?.lastTradeTime) > 1);
-    if (staleSymbols.length > 0) {
-      await addFinnhubQuotes(staleSymbols);
-    }
-
-    
     if (Object.keys(results).length > 0) {
       setCache(cacheKey, results);
-      try { await writePersistentMarketCache("stocks", results, "StockData.org/Finnhub"); } catch (error) { console.warn("Unable to persist stock cache:", error); }
+      try { await writePersistentMarketCache("stocks", results, "StockData.org"); } catch (error) { console.warn("Unable to persist stock cache:", error); }
       return NextResponse.json(results, { headers: { "Cache-Control": PUBLIC_CACHE_CONTROL, "X-Market-Data-Source": "live-synced" } });
     }
 

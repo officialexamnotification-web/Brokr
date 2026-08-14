@@ -37,11 +37,13 @@ export async function GET(request: Request) {
     fetch(`${origin}/api/stocks?symbols=${encodeURIComponent(STOCK_SYMBOLS.join(","))}&refresh=true&syncAt=${syncAt}`, { headers, cache: "no-store" }),
     fetch(`${origin}/api/crypto?coins=${encodeURIComponent(CRYPTO_IDS.join(","))}&refresh=true&syncAt=${syncAt}`, { headers, cache: "no-store" }),
     fetch(`${origin}/api/forex/sync?syncAt=${syncAt}`, { headers, cache: "no-store" }),
+    // The historical route refreshes its full EOD snapshot at most once per day.
+    fetch(`${origin}/api/stocks/historical?symbol=AAPL&timeframe=daily&syncAt=${syncAt}`, { headers, cache: "no-store" }),
   ];
   const responses = await Promise.allSettled(jobs);
   const results = await Promise.all(responses.map(async (result, index) => {
-    if (result.status === "rejected") return { market: ["stocks", "crypto", "forex"][index], ok: false, error: String(result.reason) };
-    return { market: ["stocks", "crypto", "forex"][index], ok: result.value.ok, status: result.value.status };
+    if (result.status === "rejected") return { market: ["stocks", "crypto", "forex", "stockHistorical"][index], ok: false, error: String(result.reason) };
+    return { market: ["stocks", "crypto", "forex", "stockHistorical"][index], ok: result.value.ok, status: result.value.status };
   }));
 
   return NextResponse.json({ success: results.every((result) => result.ok), results, syncedAt: new Date().toISOString() });
