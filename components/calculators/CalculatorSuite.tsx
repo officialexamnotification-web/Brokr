@@ -2311,6 +2311,7 @@ function PivotPointsCalculator() {
   const [stockDataCache, setStockDataCache] = useState<Record<string, {data: any, timestamp: number}>>({});
   const [lastUpdated, setLastUpdated] = useState<string | null>(null);
   const [showRiskSection, setShowRiskSection] = useState(false);
+  const [showAdvancedOptions, setShowAdvancedOptions] = useState(false);
   const [sessionInfo, setSessionInfo] = useState<{startTime: string, endTime: string, market: string}>({startTime: "9:30 AM", endTime: "4:00 PM", market: "NYSE"});
 
   // Update session info based on timezone selection
@@ -2720,13 +2721,24 @@ function PivotPointsCalculator() {
       </div>
     )}
 
-    <div className="grid gap-5 md:grid-cols-3 mt-4">
+    <button
+      type="button"
+      onClick={() => setShowAdvancedOptions((visible) => !visible)}
+      className="mt-5 flex w-full items-center justify-between rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-left text-sm font-semibold text-slate-700 transition hover:border-primary-300 hover:text-primary-700 dark:border-slate-800 dark:bg-slate-900/70 dark:text-slate-200 dark:hover:border-primary-700 dark:hover:text-primary-300"
+      aria-expanded={showAdvancedOptions}
+    >
+      <span>Advanced options</span>
+      <span className="text-xs font-medium text-slate-500 dark:text-slate-400">{showAdvancedOptions ? "Hide" : "Method, timeframe, alerts and more"}</span>
+    </button>
+
+    {showAdvancedOptions && <div className="mt-4 space-y-4 rounded-2xl border border-slate-200/80 bg-slate-50/60 p-4 dark:border-slate-800 dark:bg-slate-900/30">
+    <div className="grid gap-5 md:grid-cols-3">
       <SelectField label="Calculation Method" value={selectedMethod} onChange={setSelectedMethod} options={methods} />
       <SelectField label="Timeframe" value={selectedSession} onChange={setSelectedSession} options={sessions} />
       <SelectField label="Decimal Precision" value={decimalPrecision.toString()} onChange={(val) => setDecimalPrecision(Number(val))} options={precisionOptions.map(opt => ({ label: opt.label, value: opt.value.toString() }))} />
     </div>
 
-    <div className="grid gap-5 md:grid-cols-2 mt-4">
+    <div className="grid gap-5 md:grid-cols-2">
       <SelectField label="Quick Presets" value="" onChange={(val) => {
         const preset = presets.find(p => p.name === val);
         if (preset) {
@@ -2747,7 +2759,7 @@ function PivotPointsCalculator() {
       </div>
     </div>
 
-    <div className="grid gap-5 md:grid-cols-2 mt-4">
+    <div className="grid gap-5 md:grid-cols-2">
       <NumberField label="Proximity Alert Threshold" value={proximityThreshold} onChange={setProximityThreshold} step="0.1" suffix="%" note="Alert when price is within X% of a level" />
       <div className="flex items-end">
         <label className="flex items-center gap-2 cursor-pointer">
@@ -2826,7 +2838,7 @@ function PivotPointsCalculator() {
       </div>
     )}
 
-    <div className="mt-4">
+    <div>
       <button 
         onClick={() => setShowRiskSection(!showRiskSection)}
         className="px-4 py-2 bg-slate-200 dark:bg-slate-800 text-slate-900 dark:text-white rounded-lg hover:bg-slate-300 dark:hover:bg-slate-700 transition-colors text-sm font-semibold"
@@ -2850,7 +2862,7 @@ function PivotPointsCalculator() {
       </div>
     )}
 
-    <div className="mt-4 rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950/70 p-5">
+    <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950/70 p-5">
       <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-3">Session Information ({selectedTimezone})</h3>
       <div className="grid gap-3 sm:grid-cols-3 text-sm">
         <div className="flex justify-between">
@@ -2867,6 +2879,7 @@ function PivotPointsCalculator() {
         </div>
       </div>
     </div>
+    </div>}
 
     {!showComparison ? (
       <div className="mt-6 space-y-4">
