@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { allowPublicRequest } from "@/lib/public-rate-limit";
 import { getOfflineCryptoMarketData } from "@/lib/crypto-market";
+import { isFreshMarketCache, readPersistentMarketCache, writePersistentMarketCache } from "@/lib/market-cache";
 
 export const dynamic = "force-dynamic";
 
@@ -15,6 +16,8 @@ const FULL_COIN_LIST = [
   "flow", "kucoin-shares", "eos", "quant", "tezos", "axie-infinity", "neo", "compound-governance-token", "elrond-egld", "stacks",
 ];
 const ALLOWED_COINS = new Set(FULL_COIN_LIST);
+const CACHE_DURATION = 5 * 60 * 1000;
+const PUBLIC_CACHE_CONTROL = "public, s-maxage=300, stale-while-revalidate=600";
 
 const COINCAP_SYMBOL_MAP: Record<string, string> = {
   BTC: "bitcoin", ETH: "ethereum", USDT: "tether", BNB: "binancecoin", SOL: "solana", USDC: "usd-coin", XRP: "ripple", DOGE: "dogecoin",
@@ -99,6 +102,26 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: "Unsupported cryptocurrency selection." }, { status: 400 });
   }
 
+  const syncKey = request.headers.get("x-market-sync-key");
+  const isPrivateSync = Boolean(process.env.CRON_SECRET && syncKey === process.env.CRON_SECRET);
+  const forceRefresh = searchParams.get("refresh") === "true" && isPrivateSync;
+
+  const persistent = await readPersistentMarketCache<Record<string, unknown>>("crypto");
+  if (!forceRefresh || isFreshMarketCache(persistent, CACHE_DURATION)) {
+    if (persistent?.data) {
+      const selected = Object.fromEntries(coins.filter((coin) => persistent.data[coin]).map((coin) => [coin, persistent.data[coin]]));
+      if (Object.keys(selected).length > 0) {
+        return NextResponse.json(selected, {
+          headers: {
+            "X-Market-Data-Source": isFreshMarketCache(persistent, CACHE_DURATION) ? "firebase-cache" : "firebase-stale-cache",
+            "X-Market-Data-Updated": persistent.fetchedAt,
+            "Cache-Control": PUBLIC_CACHE_CONTROL,
+          },
+        });
+      }
+    }
+  }
+
   try {
     const marketData = await getMarketData(coins);
     if (!Array.isArray(marketData) || marketData.length === 0) {
@@ -160,7 +183,8 @@ export async function GET(request: Request) {
       };
     }
 
-    return NextResponse.json(result);
+    try { await writePersistentMarketCache("crypto", result, "CoinGecko/CoinCap"); } catch (error) { console.warn("Unable to persist crypto cache:", error); }
+      return NextResponse.json(result, { headers: { "Cache-Control": PUBLIC_CACHE_CONTROL, "X-Market-Data-Source": "live-synced" } });
   } catch {
     return NextResponse.json({ error: "Cryptocurrency data is temporarily unavailable." }, { status: 503 });
   }

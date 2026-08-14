@@ -164,11 +164,14 @@ export default function MarketDataPage({ market }: { market: MarketKind }) {
           return;
         }
         const endpoint = `/api/stocks?symbols=${STOCK_SYMBOLS.join(",")}`;
-        const response = await fetch(endpoint, { cache: "no-store" });
+        const response = await fetch(endpoint);
         const data = await response.json();
         if (!response.ok) throw new Error(data?.error || "Market data is temporarily unavailable.");
         if (!active) return;
         if (market === "stocks") setStocks(data as Record<string, StockQuote>);
+        if (market === "stocks" && typeof window !== "undefined") {
+          window.localStorage.setItem("tradivex-stock-market-cache", JSON.stringify({ data, fetchedAt: Date.now() }));
+        }
         setRefreshedAt(new Date().toISOString());
       } catch (fetchError) {
         if (active) setError(fetchError instanceof Error ? fetchError.message : "Market data is temporarily unavailable.");
