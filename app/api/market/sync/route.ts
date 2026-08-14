@@ -32,10 +32,11 @@ export async function GET(request: Request) {
 
   const origin = new URL(request.url).origin;
   const headers = { "x-market-sync-key": process.env.CRON_SECRET as string };
+  const syncAt = Date.now();
   const jobs = [
-    fetch(`${origin}/api/stocks?symbols=${encodeURIComponent(STOCK_SYMBOLS.join(","))}&refresh=true`, { headers }),
-    fetch(`${origin}/api/crypto?coins=${encodeURIComponent(CRYPTO_IDS.join(","))}&refresh=true`, { headers }),
-    fetch(`${origin}/api/forex/sync`, { headers }),
+    fetch(`${origin}/api/stocks?symbols=${encodeURIComponent(STOCK_SYMBOLS.join(","))}&refresh=true&syncAt=${syncAt}`, { headers, cache: "no-store" }),
+    fetch(`${origin}/api/crypto?coins=${encodeURIComponent(CRYPTO_IDS.join(","))}&refresh=true&syncAt=${syncAt}`, { headers, cache: "no-store" }),
+    fetch(`${origin}/api/forex/sync?syncAt=${syncAt}`, { headers, cache: "no-store" }),
   ];
   const responses = await Promise.allSettled(jobs);
   const results = await Promise.all(responses.map(async (result, index) => {

@@ -17,6 +17,7 @@ const FULL_COIN_LIST = [
 ];
 const ALLOWED_COINS = new Set(FULL_COIN_LIST);
 const CACHE_DURATION = 5 * 60 * 1000;
+const PUBLIC_CACHE_CONTROL = "public, s-maxage=300, stale-while-revalidate=600";
 
 const COINCAP_SYMBOL_MAP: Record<string, string> = {
   BTC: "bitcoin", ETH: "ethereum", USDT: "tether", BNB: "binancecoin", SOL: "solana", USDC: "usd-coin", XRP: "ripple", DOGE: "dogecoin",
@@ -114,6 +115,7 @@ export async function GET(request: Request) {
           headers: {
             "X-Market-Data-Source": isFreshMarketCache(persistent, CACHE_DURATION) ? "firebase-cache" : "firebase-stale-cache",
             "X-Market-Data-Updated": persistent.fetchedAt,
+            "Cache-Control": PUBLIC_CACHE_CONTROL,
           },
         });
       }
@@ -182,7 +184,7 @@ export async function GET(request: Request) {
     }
 
     try { await writePersistentMarketCache("crypto", result, "CoinGecko/CoinCap"); } catch (error) { console.warn("Unable to persist crypto cache:", error); }
-    return NextResponse.json(result, { headers: { "X-Market-Data-Source": "live-synced" } });
+      return NextResponse.json(result, { headers: { "Cache-Control": PUBLIC_CACHE_CONTROL, "X-Market-Data-Source": "live-synced" } });
   } catch {
     return NextResponse.json({ error: "Cryptocurrency data is temporarily unavailable." }, { status: 503 });
   }

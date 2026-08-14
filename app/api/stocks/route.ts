@@ -73,6 +73,7 @@ const STOCK_INFO: Record<string, { name: string; exchange: string; currency: str
 // Cache implementation (in-memory for server-side)
 const cache = new Map();
 const CACHE_DURATION = 10 * 60 * 1000; // 10 minutes; balances freshness with provider quotas
+const PUBLIC_CACHE_CONTROL = "public, s-maxage=600, stale-while-revalidate=1200";
 
 type StockQuote = {
   price: number;
@@ -149,6 +150,7 @@ export async function GET(request: Request) {
           headers: {
             "X-Market-Data-Source": isFreshMarketCache(persistent, CACHE_DURATION) ? "firebase-cache" : "firebase-stale-cache",
             "X-Market-Data-Updated": persistent.fetchedAt,
+            "Cache-Control": PUBLIC_CACHE_CONTROL,
           },
         });
       }
@@ -207,7 +209,7 @@ export async function GET(request: Request) {
       if (Object.keys(results).length > 0) {
         setCache(cacheKey, results);
         try { await writePersistentMarketCache("stocks", results, "Finnhub"); } catch (error) { console.warn("Unable to persist stock cache:", error); }
-        return NextResponse.json(results);
+        return NextResponse.json(results, { headers: { "Cache-Control": PUBLIC_CACHE_CONTROL, "X-Market-Data-Source": "live-synced" } });
       }
       throw new Error("No stock quote provider key configured");
     }
@@ -270,7 +272,7 @@ export async function GET(request: Request) {
     if (Object.keys(results).length > 0) {
       setCache(cacheKey, results);
       try { await writePersistentMarketCache("stocks", results, "StockData.org/Finnhub"); } catch (error) { console.warn("Unable to persist stock cache:", error); }
-      return NextResponse.json(results);
+      return NextResponse.json(results, { headers: { "Cache-Control": PUBLIC_CACHE_CONTROL, "X-Market-Data-Source": "live-synced" } });
     }
 
     throw new Error("No valid stock data received");

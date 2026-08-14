@@ -2417,7 +2417,7 @@ function PivotPointsCalculator() {
       setLastUpdated(new Date(cached.timestamp).toLocaleString());
     } else {
       try {
-        const response = await fetch(`/api/stocks?symbols=${encodeURIComponent(selectedSymbol)}`, { cache: "no-store" });
+        const response = await fetch(`/api/stocks?symbols=${encodeURIComponent(selectedSymbol)}`);
         const payload = await response.json();
         const data = payload?.[selectedSymbol];
         if (!response.ok || !data || !data.dayHigh || !data.dayLow || !data.price) throw new Error("Live quote unavailable");

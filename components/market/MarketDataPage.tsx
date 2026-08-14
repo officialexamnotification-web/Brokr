@@ -164,7 +164,7 @@ export default function MarketDataPage({ market }: { market: MarketKind }) {
           return;
         }
         const endpoint = `/api/stocks?symbols=${STOCK_SYMBOLS.join(",")}`;
-        const response = await fetch(endpoint, { cache: "no-store" });
+        const response = await fetch(endpoint);
         const data = await response.json();
         if (!response.ok) throw new Error(data?.error || "Market data is temporarily unavailable.");
         if (!active) return;
