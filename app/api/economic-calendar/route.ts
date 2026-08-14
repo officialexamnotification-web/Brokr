@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 
 export const dynamic = "force-dynamic";
+const PUBLIC_CACHE_CONTROL = "public, s-maxage=900, stale-while-revalidate=1800";
 
 type RawEvent = {
   id?: unknown;
@@ -88,7 +89,7 @@ export async function GET() {
       }];
     });
 
-    return NextResponse.json({ events, updatedAt: new Date().toISOString() });
+    return NextResponse.json({ events, updatedAt: new Date().toISOString() }, { headers: { "Cache-Control": PUBLIC_CACHE_CONTROL } });
   } catch {
     return NextResponse.json({ error: "Economic calendar data is temporarily unavailable." }, { status: 503 });
   }

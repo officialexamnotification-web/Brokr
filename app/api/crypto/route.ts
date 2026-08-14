@@ -122,6 +122,12 @@ export async function GET(request: Request) {
     }
   }
 
+  // Only the protected Cron may populate the provider cache. Public users
+  // receive the persisted snapshot (including stale data) or a clear retry.
+  if (!isPrivateSync) {
+    return NextResponse.json({ error: "Cryptocurrency cache is not available yet." }, { status: 503, headers: { "Cache-Control": PUBLIC_CACHE_CONTROL } });
+  }
+
   try {
     const marketData = await getMarketData(coins);
     if (!Array.isArray(marketData) || marketData.length === 0) {

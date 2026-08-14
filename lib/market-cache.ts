@@ -18,6 +18,8 @@ const firebaseConfig = {
 };
 
 let firestore: ReturnType<typeof getFirestore> | null = null;
+const readCache = new Map<string, { expiresAt: number; value: PersistentMarketCache<unknown> | null }>();
+const READ_CACHE_TTL = 60 * 1000;
 
 try {
   const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
@@ -27,15 +29,19 @@ try {
 }
 
 export async function readPersistentMarketCache<T>(
-  market: "stocks" | "crypto",
+  market: "stocks" | "crypto" | "stockHistorical",
 ): Promise<PersistentMarketCache<T> | null> {
   if (!firestore) return null;
+  const cached = readCache.get(market);
+  if (cached && cached.expiresAt > Date.now()) return cached.value as PersistentMarketCache<T> | null;
   try {
     const snapshot = await getDoc(doc(firestore, "marketCache", market));
     if (!snapshot.exists()) return null;
     const value = snapshot.data() as Partial<PersistentMarketCache<T>>;
     if (!value.data || typeof value.fetchedAt !== "string") return null;
-    return value as PersistentMarketCache<T>;
+    const result = value as PersistentMarketCache<T>;
+    readCache.set(market, { expiresAt: Date.now() + READ_CACHE_TTL, value: result });
+    return result;
   } catch (error) {
     console.error(`Unable to read ${market} market cache:`, error);
     return null;
@@ -43,7 +49,7 @@ export async function readPersistentMarketCache<T>(
 }
 
 export async function writePersistentMarketCache<T>(
-  market: "stocks" | "crypto",
+  market: "stocks" | "crypto" | "stockHistorical",
   data: T,
   source: string,
 ) {
@@ -53,6 +59,7 @@ export async function writePersistentMarketCache<T>(
     fetchedAt: new Date().toISOString(),
     source,
   });
+  readCache.delete(market);
 }
 
 export function isFreshMarketCache(
