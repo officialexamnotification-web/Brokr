@@ -14,6 +14,59 @@ const inputClass = "min-w-0 w-full rounded-xl border border-slate-200 dark:borde
 const labelClass = "block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2";
 const STOCK_MARKET_CACHE_KEY = "tradivex-stock-market-cache";
 
+type PivotReportRow = {
+  Symbol: string;
+  Company: string;
+  Method: string;
+  Timeframe: string;
+  "Calculated at": string;
+  Source: string;
+  High: number;
+  Low: number;
+  Close: number;
+  Open: number;
+  Level: string;
+  Value: number | null | undefined;
+};
+
+function buildPivotReportRows(input: {
+  symbol: string;
+  company: string;
+  timeframe: string;
+  calculatedAt: string;
+  source: string;
+  high: number;
+  low: number;
+  close: number;
+  open: number;
+  methods: Record<string, Record<string, number | null | undefined>>;
+}) {
+  const levels = ["pivot", "r1", "r2", "r3", "r4", "s1", "s2", "s3", "s4"];
+  return Object.entries(input.methods).flatMap(([method, values]) => levels.map((level) => ({
+    Symbol: input.symbol,
+    Company: input.company,
+    Method: method,
+    Timeframe: input.timeframe,
+    "Calculated at": input.calculatedAt,
+    Source: input.source,
+    High: input.high,
+    Low: input.low,
+    Close: input.close,
+    Open: input.open,
+    Level: level.toUpperCase(),
+    Value: values[level],
+  } satisfies PivotReportRow)).filter((row) => row.Value !== undefined && row.Value !== null));
+}
+
+function escapeCsvValue(value: unknown) {
+  const text = value == null ? "" : String(value);
+  return /[",\n]/.test(text) ? `"${text.replace(/"/g, '""')}"` : text;
+}
+
+function escapeHtmlValue(value: unknown) {
+  return String(value ?? "").replace(/[&<>"']/g, (character) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[character] || character);
+}
+
 function NumberField({ label, value, onChange, step = "any", min = "0", max, suffix, note }: { label: string; value: number; onChange: (value: number) => void; step?: string; min?: string; max?: string; suffix?: string; note?: string }) {
   return (
     <label className="block">
@@ -2949,19 +3002,31 @@ function PivotPointsCalculator() {
     <div className="mt-6 flex flex-wrap gap-3">
       <button 
         onClick={() => {
-          const data = {
-            method: selectedMethod,
-            session: selectedSession,
-            inputs: { high, low, close, open },
-            results: showComparison ? {
-              classic: { pivot: classicPivot, r1: classicR1, s1: classicS1, r2: classicR2, s2: classicS2, r3: classicR3, s3: classicS3 },
-              woodie: { pivot: woodiePivot, r1: woodieR1, s1: woodieS1, r2: woodieR2, s2: woodieS2, r3: woodieR3, s3: woodieS3 },
-              camarilla: { pivot: camarillaPivot, r1: camarillaR1, s1: camarillaS1, r2: camarillaR2, s2: camarillaS2, r3: camarillaR3, s3: camarillaS3, r4: camarillaR4, s4: camarillaS4 },
-              demark: { pivot: demarkPivot, r1: demarkR1, s1: demarkS1 },
-              fibonacci: { pivot: fibPivot, r1: fibR1, s1: fibS1, r2: fibR2, s2: fibS2, r3: fibR3, s3: fibS3 }
-            } : currentResults
-          };
-          const csvContent = "data:text/csv;charset=utf-8," + encodeURIComponent(JSON.stringify(data, null, 2));
+          const calculatedAt = new Date().toISOString();
+          const methods: Record<string, Record<string, number | null | undefined>> = showComparison ? {
+            classic: { pivot: classicPivot, r1: classicR1, s1: classicS1, r2: classicR2, s2: classicS2, r3: classicR3, s3: classicS3 },
+            woodie: { pivot: woodiePivot, r1: woodieR1, s1: woodieS1, r2: woodieR2, s2: woodieS2, r3: woodieR3, s3: woodieS3 },
+            camarilla: { pivot: camarillaPivot, r1: camarillaR1, s1: camarillaS1, r2: camarillaR2, s2: camarillaS2, r3: camarillaR3, s3: camarillaS3, r4: camarillaR4, s4: camarillaS4 },
+            demark: { pivot: demarkPivot, r1: demarkR1, s1: demarkS1 },
+            fibonacci: { pivot: fibPivot, r1: fibR1, s1: fibS1, r2: fibR2, s2: fibS2, r3: fibR3, s3: fibS3 },
+          } : { [selectedMethod]: currentResults };
+          const rows = buildPivotReportRows({
+            symbol: selectedSymbol,
+            company: stockDataCache[selectedSymbol]?.data?.name || selectedSymbol,
+            timeframe: selectedSession,
+            calculatedAt,
+            source: lastUpdated ? `Market data cache (${lastUpdated})` : "Manual input",
+            high,
+            low,
+            close,
+            open,
+            methods,
+          });
+          const columns = Object.keys(rows[0] || {}) as Array<keyof PivotReportRow>;
+          const csv = [columns, ...rows.map((row) => columns.map((column) => row[column]))]
+            .map((line) => line.map(escapeCsvValue).join(","))
+            .join("\n");
+          const csvContent = "data:text/csv;charset=utf-8," + encodeURIComponent(csv);
           const link = document.createElement("a");
           link.setAttribute("href", csvContent);
           link.setAttribute("download", `pivot-points-${selectedMethod}-${selectedSession}.csv`);
@@ -2972,6 +3037,40 @@ function PivotPointsCalculator() {
         className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors text-sm font-semibold"
       >
         Export CSV
+      </button>
+      <button
+        onClick={() => {
+          const calculatedAt = new Date().toISOString();
+          const methods: Record<string, Record<string, number | null | undefined>> = showComparison ? {
+            classic: { pivot: classicPivot, r1: classicR1, s1: classicS1, r2: classicR2, s2: classicS2, r3: classicR3, s3: classicS3 },
+            woodie: { pivot: woodiePivot, r1: woodieR1, s1: woodieS1, r2: woodieR2, s2: woodieS2, r3: woodieR3, s3: woodieS3 },
+            camarilla: { pivot: camarillaPivot, r1: camarillaR1, s1: camarillaS1, r2: camarillaR2, s2: camarillaS2, r3: camarillaR3, s3: camarillaS3, r4: camarillaR4, s4: camarillaS4 },
+            demark: { pivot: demarkPivot, r1: demarkR1, s1: demarkS1 },
+            fibonacci: { pivot: fibPivot, r1: fibR1, s1: fibS1, r2: fibR2, s2: fibS2, r3: fibR3, s3: fibS3 },
+          } : { [selectedMethod]: currentResults };
+          const rows = buildPivotReportRows({
+            symbol: selectedSymbol,
+            company: stockDataCache[selectedSymbol]?.data?.name || selectedSymbol,
+            timeframe: selectedSession,
+            calculatedAt,
+            source: lastUpdated ? `Market data cache (${lastUpdated})` : "Manual input",
+            high,
+            low,
+            close,
+            open,
+            methods,
+          });
+          const reportWindow = window.open("", "_blank", "width=1000,height=800");
+          if (!reportWindow) return;
+          const tableRows = rows.map((row) => `<tr>${Object.values(row).map((value) => `<td>${escapeHtmlValue(typeof value === "number" ? value.toFixed(decimalPrecision) : value)}</td>`).join("")}</tr>`).join("");
+          reportWindow.document.write(`<!doctype html><html><head><title>Tradivex Pivot Point Report - ${escapeHtmlValue(selectedSymbol)}</title><style>body{font-family:Arial,sans-serif;color:#172033;margin:36px}h1{margin:0 0 6px;color:#2563eb}p{color:#5b6472;margin:4px 0 20px}.summary{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:18px 0}.card{border:1px solid #dbe2ea;border-radius:8px;padding:10px}.label{font-size:11px;color:#64748b;text-transform:uppercase}.value{font-weight:700;margin-top:5px}table{border-collapse:collapse;width:100%;font-size:11px}th{background:#eff6ff;color:#1d4ed8;text-align:left}th,td{border:1px solid #dbe2ea;padding:7px}tr:nth-child(even){background:#f8fafc}.disclaimer{font-size:10px;margin-top:24px}@media print{body{margin:18px}}</style></head><body><h1>Tradivex Pivot Point Analysis</h1><p>${escapeHtmlValue(selectedSymbol)} — ${escapeHtmlValue(stockDataCache[selectedSymbol]?.data?.name || "Manual input")} · ${escapeHtmlValue(selectedSession)} timeframe · Generated ${escapeHtmlValue(calculatedAt)}</p><div class="summary"><div class="card"><div class="label">High</div><div class="value">${high.toFixed(decimalPrecision)}</div></div><div class="card"><div class="label">Low</div><div class="value">${low.toFixed(decimalPrecision)}</div></div><div class="card"><div class="label">Close</div><div class="value">${close.toFixed(decimalPrecision)}</div></div><div class="card"><div class="label">Open</div><div class="value">${open.toFixed(decimalPrecision)}</div></div></div><table><thead><tr>${Object.keys(rows[0] || {}).map((column) => `<th>${escapeHtmlValue(column)}</th>`).join("")}</tr></thead><tbody>${tableRows}</tbody></table><p class="disclaimer">Educational calculation only. Pivot levels are mathematical reference points, not trade signals or financial advice. Data source: ${escapeHtmlValue(lastUpdated ? `Market data cache (${lastUpdated})` : "Manual input")}.</p></body></html>`);
+          reportWindow.document.close();
+          reportWindow.focus();
+          window.setTimeout(() => reportWindow.print(), 250);
+        }}
+        className="px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-800 transition-colors text-sm font-semibold"
+      >
+        Print / Save PDF
       </button>
       <button
         onClick={() => {
