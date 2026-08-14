@@ -103,6 +103,260 @@ function setCache<T>(key: string, data: T) {
   cache.set(key, { data, time: Date.now() });
 }
 
+function toYahooSymbol(symbol: string) {
+  return symbol.replace(/\./g, "-");
+}
+
+function fromYahooSymbol(symbol: string) {
+  return symbol.replace(/-/g, ".").toUpperCase();
+}
+
+async function fetchYahooStockQuotes(symbols: string[]) {
+  const yahooSymbols = symbols.map(toYahooSymbol);
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 12000);
+  try {
+    const response = await fetch(`https://query1.finance.yahoo.com/v7/finance/quote?symbols=${encodeURIComponent(yahooSymbols.join(","))}`, {
+      signal: controller.signal,
+      headers: { "User-Agent": "Tradivex informational directory" },
+      next: { revalidate: 600 },
+    });
+    if (!response.ok) throw new Error(`Yahoo Finance returned ${response.status}`);
+    const payload = await response.json();
+    const quotes = Array.isArray(payload?.quoteResponse?.result) ? payload.quoteResponse.result : [];
+    const results: Record<string, StockQuote> = {};
+
+    for (const quote of quotes) {
+      const symbol = fromYahooSymbol(String(quote?.symbol || ""));
+      if (!ALLOWED_SYMBOLS.has(symbol) || !symbols.includes(symbol)) continue;
+      const price = typeof quote.regularMarketPrice === "number" ? quote.regularMarketPrice : null;
+      if (price == null || !Number.isFinite(price)) continue;
+      const fallbackInfo = STOCK_INFO[symbol];
+      results[symbol] = {
+        price,
+        changePercent: typeof quote.regularMarketChangePercent === "number" && Number.isFinite(quote.regularMarketChangePercent) ? quote.regularMarketChangePercent : null,
+        name: typeof quote.shortName === "string" ? quote.shortName : fallbackInfo?.name ?? null,
+        currency: typeof quote.currency === "string" ? quote.currency : fallbackInfo?.currency ?? null,
+        exchange: typeof quote.fullExchangeName === "string" ? quote.fullExchangeName : fallbackInfo?.exchange ?? null,
+        dayOpen: typeof quote.regularMarketOpen === "number" ? quote.regularMarketOpen : null,
+        dayHigh: typeof quote.regularMarketDayHigh === "number" ? quote.regularMarketDayHigh : null,
+        dayLow: typeof quote.regularMarketDayLow === "number" ? quote.regularMarketDayLow : null,
+        previousClose: typeof quote.regularMarketPreviousClose === "number" ? quote.regularMarketPreviousClose : null,
+        volume: typeof quote.regularMarketVolume === "number" ? quote.regularMarketVolume : null,
+        week52High: typeof quote.fiftyTwoWeekHigh === "number" ? quote.fiftyTwoWeekHigh : null,
+        week52Low: typeof quote.fiftyTwoWeekLow === "number" ? quote.fiftyTwoWeekLow : null,
+        lastTradeTime: typeof quote.regularMarketTime === "number" ? new Date(quote.regularMarketTime * 1000).toISOString() : null,
+        extendedHours: typeof quote.marketState === "string" ? !["REGULAR", "PRE", "POST"].includes(quote.marketState) : null,
+      };
+    }
+
+    return results;
+  } finally {
+    clearTimeout(timeout);
+  }
+}
+
+export async function GET(request: Request) {
+  const rateLimit = allowPublicRequest(request, "stocks", 10);
+  if (!rateLimit.allowed) {
+    return NextResponse.json({ error: "Market-data request limit reached. Please try again shortly." }, { status: 429, headers: { "Retry-After": String(rateLimit.retryAfter) } });
+  }
+  const { searchParams } = new URL(request.url);
+  const requestedSymbols = searchParams.get('symbols')?.split(',').map((symbol) => symbol.trim().toUpperCase()).filter(Boolean);
+  const symbols = Array.from(new Set((requestedSymbols?.length ? requestedSymbols : DEFAULT_SYMBOLS).filter((symbol) => ALLOWED_SYMBOLS.has(symbol)))).slice(0, 50);
+  if (symbols.length === 0) {
+    return NextResponse.json({ error: "Unsupported stock selection." }, { status: 400 });
+  }
+
+  const syncKey = request.headers.get("x-market-sync-key");
+  const isPrivateSync = Boolean(process.env.CRON_SECRET && syncKey === process.env.CRON_SECRET);
+  const forceRefresh = searchParams.get("refresh") === "true" && isPrivateSync;
+
+  // Public requests consume the persistent snapshot. A stale snapshot is still
+  // useful to users while the scheduled job refreshes it in the background.
+  const persistent = await readPersistentMarketCache<Record<string, StockQuote>>("stocks");
+  if (!forceRefresh || isFreshMarketCache(persistent, CACHE_DURATION)) {
+    if (persistent?.data) {
+      const selected = Object.fromEntries(symbols.filter((symbol) => persistent.data[symbol]).map((symbol) => [symbol, persistent.data[symbol]]));
+      if (Object.keys(selected).length > 0) {
+        return NextResponse.json(selected, {
+          headers: {
+            "X-Market-Data-Source": isFreshMarketCache(persistent, CACHE_DURATION) ? "firebase-cache" : "firebase-stale-cache",
+            "X-Market-Data-Updated": persistent.fetchedAt,
+            "Cache-Control": PUBLIC_CACHE_CONTROL,
+          },
+        });
+      }
+    }
+  }
+
+  const cacheKey = `stock:${symbols.join(",")}`;
+  const cached = getCached<Record<string, StockQuote>>(cacheKey, CACHE_DURATION);
+  if (cached) {
+    return NextResponse.json(cached, { headers: { "Cache-Control": PUBLIC_CACHE_CONTROL, "X-Market-Data-Source": "memory-cache" } });
+  }
+
+  // Public traffic should not spend the metered StockData.org quota, but it can
+  // still recover from an empty Firebase snapshot through Yahoo's public quote
+  // endpoint. This prevents a cold deploy or a failed Cron run from showing a
+  // hard "cache is not available yet" error to users.
+  if (!isPrivateSync) {
+    try {
+      const yahooResults = await fetchYahooStockQuotes(symbols);
+      if (Object.keys(yahooResults).length > 0) {
+        setCache(cacheKey, yahooResults);
+        return NextResponse.json(yahooResults, { headers: { "Cache-Control": PUBLIC_CACHE_CONTROL, "X-Market-Data-Source": "yahoo-fallback" } });
+      }
+    } catch (error) {
+      console.warn("Yahoo stock fallback unavailable:", error instanceof Error ? error.message : error);
+    }
+
+    return NextResponse.json({ error: "Stock market data is temporarily unavailable. Please try again shortly." }, { status: 503, headers: { "Cache-Control": PUBLIC_CACHE_CONTROL } });
+  }
+  
+  try {
+    // Using StockData.org API with environment variable
+    const apiKey = process.env.STOCKDATA_API_KEY || "";
+    
+    
+    const results: Record<string, StockQuote> = {};
+
+    if (!apiKey) {
+      const yahooResults = await fetchYahooStockQuotes(symbols);
+      if (Object.keys(yahooResults).length > 0) {
+        setCache(cacheKey, yahooResults);
+        try { await writePersistentMarketCache("stocks", yahooResults, "Yahoo Finance fallback"); } catch (error) { console.warn("Unable to persist stock fallback cache:", error); }
+        return NextResponse.json(yahooResults, { headers: { "Cache-Control": PUBLIC_CACHE_CONTROL, "X-Market-Data-Source": "yahoo-fallback" } });
+      }
+      throw new Error("STOCKDATA_API_KEY is not configured");
+    }
+    
+    // StockData.org free plan allows only 3 symbols per request.
+    // Process symbols in batches of 3
+    const batchSize = 3;
+    for (let i = 0; i < symbols.length; i += batchSize) {
+      const batch = symbols.slice(i, i + batchSize);
+      
+      
+      const res = await fetch(`${STOCKDATA_BASE}/data/quote?symbols=${batch.join(",")}&api_token=${apiKey}`, {
+        next: { revalidate: 600 }, // 10 minutes
+      });
+      const data = await res.json();
+      
+      
+      if (data && Array.isArray(data.data)) {
+        data.data.forEach((quote: any) => {
+          const price = quote.price;
+          const previousClose = quote.previous_close_price;
+          const changePercent = typeof price === "number" && typeof previousClose === "number" && previousClose > 0
+            ? ((price - previousClose) / previousClose) * 100
+            : null;
+          
+          results[quote.ticker] = {
+            price: price,
+            changePercent: typeof changePercent === "number" && Number.isFinite(changePercent) ? changePercent : null,
+            name: typeof quote.name === "string" ? quote.name : null,
+            currency: typeof quote.currency === "string" ? quote.currency : null,
+            exchange: typeof quote.exchange_short === "string" ? quote.exchange_short : null,
+            dayOpen: typeof quote.day_open === "number" ? quote.day_open : null,
+            dayHigh: typeof quote.day_high === "number" ? quote.day_high : null,
+            dayLow: typeof quote.day_low === "number" ? quote.day_low : null,
+            previousClose: typeof previousClose === "number" ? previousClose : null,
+            volume: typeof quote.volume === "number" ? quote.volume : null,
+            week52High: typeof quote["52_week_high"] === "number" ? quote["52_week_high"] : null,
+            week52Low: typeof quote["52_week_low"] === "number" ? quote["52_week_low"] : null,
+            lastTradeTime: typeof quote.last_trade_time === "string" ? quote.last_trade_time : null,
+            extendedHours: typeof quote.is_extended_hours_price === "boolean" ? quote.is_extended_hours_price : null,
+          };
+        });
+      }
+      
+      // Add small delay between batches
+      if (i + batchSize < symbols.length) {
+        await new Promise(resolve => setTimeout(resolve, 500));
+      }
+    }
+
+    if (Object.keys(results).length > 0) {
+      setCache(cacheKey, results);
+      try { await writePersistentMarketCache("stocks", results, "StockData.org"); } catch (error) { console.warn("Unable to persist stock cache:", error); }
+      return NextResponse.json(results, { headers: { "Cache-Control": PUBLIC_CACHE_CONTROL, "X-Market-Data-Source": "live-synced" } });
+    }
+
+    throw new Error("No valid stock data received");
+  } catch (error) {
+    console.warn("Stock API unavailable:", error instanceof Error ? error.message : error);
+    return NextResponse.json({ error: "Stock market data is temporarily unavailable." }, { status: 503 });
+  }
+}  JNJ: { name: "Johnson & Johnson", exchange: "NYSE", currency: "USD" },
+  HD: { name: "The Home Depot, Inc.", exchange: "NYSE", currency: "USD" },
+  PG: { name: "The Procter & Gamble Company", exchange: "NYSE", currency: "USD" },
+  NFLX: { name: "Netflix, Inc.", exchange: "NASDAQ", currency: "USD" },
+  AMD: { name: "Advanced Micro Devices, Inc.", exchange: "NASDAQ", currency: "USD" },
+  CRM: { name: "Salesforce, Inc.", exchange: "NYSE", currency: "USD" },
+  ADBE: { name: "Adobe Inc.", exchange: "NASDAQ", currency: "USD" },
+  QCOM: { name: "QUALCOMM Incorporated", exchange: "NASDAQ", currency: "USD" },
+  INTC: { name: "Intel Corporation", exchange: "NASDAQ", currency: "USD" },
+  CSCO: { name: "Cisco Systems, Inc.", exchange: "NASDAQ", currency: "USD" },
+  IBM: { name: "International Business Machines Corporation", exchange: "NYSE", currency: "USD" },
+  UBER: { name: "Uber Technologies, Inc.", exchange: "NYSE", currency: "USD" },
+  DIS: { name: "The Walt Disney Company", exchange: "NYSE", currency: "USD" },
+  KO: { name: "The Coca-Cola Company", exchange: "NYSE", currency: "USD" },
+  PEP: { name: "PepsiCo, Inc.", exchange: "NASDAQ", currency: "USD" },
+  MCD: { name: "McDonald's Corporation", exchange: "NYSE", currency: "USD" },
+  NKE: { name: "NIKE, Inc.", exchange: "NYSE", currency: "USD" },
+  BA: { name: "The Boeing Company", exchange: "NYSE", currency: "USD" },
+  CAT: { name: "Caterpillar Inc.", exchange: "NYSE", currency: "USD" },
+  GE: { name: "GE Aerospace", exchange: "NYSE", currency: "USD" },
+  UNH: { name: "UnitedHealth Group Incorporated", exchange: "NYSE", currency: "USD" },
+  MRK: { name: "Merck & Co., Inc.", exchange: "NYSE", currency: "USD" },
+  PFE: { name: "Pfizer Inc.", exchange: "NYSE", currency: "USD" },
+  CVX: { name: "Chevron Corporation", exchange: "NYSE", currency: "USD" },
+  TMO: { name: "Thermo Fisher Scientific Inc.", exchange: "NYSE", currency: "USD" },
+  AMGN: { name: "Amgen Inc.", exchange: "NASDAQ", currency: "USD" },
+  GS: { name: "The Goldman Sachs Group, Inc.", exchange: "NYSE", currency: "USD" },
+  MS: { name: "Morgan Stanley", exchange: "NYSE", currency: "USD" },
+  LIN: { name: "Linde plc", exchange: "NASDAQ", currency: "USD" },
+  RTX: { name: "RTX Corporation", exchange: "NYSE", currency: "USD" },
+  LOW: { name: "Lowe's Companies, Inc.", exchange: "NYSE", currency: "USD" },
+  SBUX: { name: "Starbucks Corporation", exchange: "NASDAQ", currency: "USD" },
+  PLTR: { name: "Palantir Technologies Inc.", exchange: "NASDAQ", currency: "USD" },
+};
+
+// Cache implementation (in-memory for server-side)
+const cache = new Map();
+const CACHE_DURATION = 10 * 60 * 1000; // 10 minutes; balances freshness with provider quotas
+const PUBLIC_CACHE_CONTROL = "public, s-maxage=600, stale-while-revalidate=1200";
+
+type StockQuote = {
+  price: number;
+  changePercent: number | null;
+  name: string | null;
+  currency: string | null;
+  exchange: string | null;
+  dayOpen: number | null;
+  dayHigh: number | null;
+  dayLow: number | null;
+  previousClose: number | null;
+  volume: number | null;
+  week52High: number | null;
+  week52Low: number | null;
+  lastTradeTime: string | null;
+  extendedHours: boolean | null;
+};
+
+function getCached<T>(key: string, duration: number): T | null {
+  const item = cache.get(key);
+  if (item && Date.now() - item.time < duration) {
+    return item.data;
+  }
+  return null;
+}
+
+function setCache<T>(key: string, data: T) {
+  cache.set(key, { data, time: Date.now() });
+}
+
 export async function GET(request: Request) {
   const rateLimit = allowPublicRequest(request, "stocks", 10);
   if (!rateLimit.allowed) {
