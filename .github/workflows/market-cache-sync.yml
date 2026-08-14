@@ -11,6 +11,29 @@ jobs:
     steps:
       - name: Refresh Firebase market snapshots
         run: |
-          curl --fail-with-body --retry 2 --silent --show-error \
-            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
-            "https://www.tradivex.com/api/market/sync"
+          set +e
+          failures=0
+          auth_header="Authorization: Bearer ${{ secrets.CRON_SECRET }}"
+
+          refresh() {
+            label="$1"
+            url="$2"
+            echo "Refreshing ${label} cache..."
+            curl --fail-with-body --retry 2 --silent --show-error \
+              -H "$auth_header" "$url"
+            status=$?
+            if [ "$status" -ne 0 ]; then
+              echo "${label} cache refresh failed with exit code ${status}."
+              failures=$((failures + 1))
+            fi
+          }
+
+          refresh "Stocks" "https://www.tradivex.com/api/stocks?symbols=AAPL,MSFT,GOOGL,AMZN,NVDA,META,TSLA,BRK.B,AVGO,WMT,JPM,LLY,V,ORCL,MA,XOM,COST,JNJ,HD,PG,NFLX,AMD,CRM,ADBE,QCOM,INTC,CSCO,IBM,UBER,DIS,KO,PEP,MCD,NKE,BA,CAT,GE,UNH,MRK,PFE,CVX,TMO,AMGN,GS,MS,LIN,RTX,LOW,SBUX,PLTR&refresh=true"
+          refresh "Crypto" "https://www.tradivex.com/api/crypto?coins=bitcoin,ethereum,tether,binancecoin,solana,usd-coin,ripple,dogecoin,cardano,avalanche-2,chainlink,polkadot,wrapped-bitcoin,shiba-inu,tron,dai,polygon,litecoin,bitcoin-cash,uniswap,internet-computer,leo-token,ethereum-classic,cosmos,near,stellar,monero,aptos,filecoin,crypto-com-chain,arbitrum,vechain,maker,algorand,aave,the-graph,fantom,the-sandbox,decentraland,theta-token,flow,kucoin-shares,eos,quant,tezos,axie-infinity,neo,compound-governance-token,elrond-egld,stacks&refresh=true"
+          refresh "Forex" "https://www.tradivex.com/api/forex/sync"
+          refresh "Historical stocks" "https://www.tradivex.com/api/stocks/historical?symbol=AAPL&timeframe=daily"
+
+          if [ "$failures" -gt 0 ]; then
+            echo "${failures} market cache refresh job(s) failed."
+            exit 1
+          fi
