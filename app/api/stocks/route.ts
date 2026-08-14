@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { allowPublicRequest } from "@/lib/public-rate-limit";
+import { isFreshMarketCache, readPersistentMarketCache, writePersistentMarketCache } from "@/lib/market-cache";
 
 export const dynamic = "force-dynamic";
 
@@ -132,6 +133,27 @@ export async function GET(request: Request) {
   if (symbols.length === 0) {
     return NextResponse.json({ error: "Unsupported stock selection." }, { status: 400 });
   }
+
+  const syncKey = request.headers.get("x-market-sync-key");
+  const isPrivateSync = Boolean(process.env.CRON_SECRET && syncKey === process.env.CRON_SECRET);
+  const forceRefresh = searchParams.get("refresh") === "true" && isPrivateSync;
+
+  // Public requests consume the persistent snapshot. A stale snapshot is still
+  // useful to users while the scheduled job refreshes it in the background.
+  const persistent = await readPersistentMarketCache<Record<string, StockQuote>>("stocks");
+  if (!forceRefresh || isFreshMarketCache(persistent, CACHE_DURATION)) {
+    if (persistent?.data) {
+      const selected = Object.fromEntries(symbols.filter((symbol) => persistent.data[symbol]).map((symbol) => [symbol, persistent.data[symbol]]));
+      if (Object.keys(selected).length > 0) {
+        return NextResponse.json(selected, {
+          headers: {
+            "X-Market-Data-Source": isFreshMarketCache(persistent, CACHE_DURATION) ? "firebase-cache" : "firebase-stale-cache",
+            "X-Market-Data-Updated": persistent.fetchedAt,
+          },
+        });
+      }
+    }
+  }
   
   try {
     
@@ -184,6 +206,7 @@ export async function GET(request: Request) {
       await addFinnhubQuotes();
       if (Object.keys(results).length > 0) {
         setCache(cacheKey, results);
+        try { await writePersistentMarketCache("stocks", results, "Finnhub"); } catch (error) { console.warn("Unable to persist stock cache:", error); }
         return NextResponse.json(results);
       }
       throw new Error("No stock quote provider key configured");
@@ -246,6 +269,7 @@ export async function GET(request: Request) {
     
     if (Object.keys(results).length > 0) {
       setCache(cacheKey, results);
+      try { await writePersistentMarketCache("stocks", results, "StockData.org/Finnhub"); } catch (error) { console.warn("Unable to persist stock cache:", error); }
       return NextResponse.json(results);
     }
 

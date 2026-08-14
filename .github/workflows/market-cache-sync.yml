@@ -1,0 +1,16 @@
+name: Refresh market cache
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "*/10 * * * *"
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Refresh Firebase market snapshots
+        run: |
+          curl --fail-with-body --retry 2 --silent --show-error \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
+            "https://www.tradivex.com/api/market/sync"

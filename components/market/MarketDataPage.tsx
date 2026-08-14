@@ -169,6 +169,9 @@ export default function MarketDataPage({ market }: { market: MarketKind }) {
         if (!response.ok) throw new Error(data?.error || "Market data is temporarily unavailable.");
         if (!active) return;
         if (market === "stocks") setStocks(data as Record<string, StockQuote>);
+        if (market === "stocks" && typeof window !== "undefined") {
+          window.localStorage.setItem("tradivex-stock-market-cache", JSON.stringify({ data, fetchedAt: Date.now() }));
+        }
         setRefreshedAt(new Date().toISOString());
       } catch (fetchError) {
         if (active) setError(fetchError instanceof Error ? fetchError.message : "Market data is temporarily unavailable.");

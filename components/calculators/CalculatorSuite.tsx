@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import type { ReactNode } from "react";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine } from "recharts";
 import { calculatorDefinitions, type CalculatorSlug } from "@/lib/calculators";
@@ -11,6 +11,7 @@ type Props = { slug: CalculatorSlug };
 
 const inputClass = "min-w-0 w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-950 px-4 py-3 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500/30";
 const labelClass = "block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2";
+const STOCK_MARKET_CACHE_KEY = "tradivex-stock-market-cache";
 
 function NumberField({ label, value, onChange, step = "any", min = "0", max, suffix, note }: { label: string; value: number; onChange: (value: number) => void; step?: string; min?: string; max?: string; suffix?: string; note?: string }) {
   return (
@@ -2253,16 +2254,8 @@ function PivotPointsCalculator() {
   const [historicalData, setHistoricalData] = useState<Array<{date: string, pivot: number, r1: number, s1: number}>>([]);
   const [accountBalance, setAccountBalance] = useState(10000);
   const [riskPercent, setRiskPercent] = useState(1);
-  const [stockDataCache, setStockDataCache] = useState<Record<string, {data: any, timestamp: number}>>({
-    "AAPL": { data: { price: 305.26, dayHigh: 306.00, dayLow: 302.05, dayOpen: 304.21, previousClose: 302.25, changePercent: 1.00, name: "Apple Inc." }, timestamp: Date.now() },
-    "MSFT": { data: { price: 496.88, dayHigh: 501.34, dayLow: 493.01, dayOpen: 493.27, previousClose: 492.43, changePercent: 0.90, name: "Microsoft Corporation" }, timestamp: Date.now() },
-    "GOOGL": { data: { price: 346.36, dayHigh: 347.93, dayLow: 343.76, dayOpen: 345.77, previousClose: 343.54, changePercent: 0.82, name: "Alphabet Inc." }, timestamp: Date.now() },
-    "NVDA": { data: { price: 225.30, dayHigh: 227.23, dayLow: 223.71, dayOpen: 225.06, previousClose: 224.09, changePercent: 0.54, name: "NVIDIA Corporation" }, timestamp: Date.now() },
-    "AMZN": { data: { price: 265.13, dayHigh: 269.58, dayLow: 264.71, dayOpen: 267.24, previousClose: 267.28, changePercent: -0.80, name: "Amazon.com, Inc." }, timestamp: Date.now() },
-    "META": { data: { price: 594.97, dayHigh: 595.85, dayLow: 579.39, dayOpen: 580.71, previousClose: 578.85, changePercent: 2.78, name: "Meta Platforms, Inc." }, timestamp: Date.now() },
-    "TSLA": { data: { price: 339.96, dayHigh: 341.64, dayLow: 325.24, dayOpen: 327.20, previousClose: 327.51, changePercent: 3.80, name: "Tesla, Inc." }, timestamp: Date.now() },
-  });
-  const [lastUpdated, setLastUpdated] = useState<string | null>("Sample data");
+  const [stockDataCache, setStockDataCache] = useState<Record<string, {data: any, timestamp: number}>>({});
+  const [lastUpdated, setLastUpdated] = useState<string | null>(null);
   const [showRiskSection, setShowRiskSection] = useState(false);
   const [sessionInfo, setSessionInfo] = useState<{startTime: string, endTime: string, market: string}>({startTime: "9:30 AM", endTime: "4:00 PM", market: "NYSE"});
 
@@ -2378,6 +2371,18 @@ function PivotPointsCalculator() {
           console.error('Failed to load preferences:', e);
         }
       }
+      const savedMarketCache = localStorage.getItem(STOCK_MARKET_CACHE_KEY);
+      if (savedMarketCache) {
+        try {
+          const parsed = JSON.parse(savedMarketCache);
+          const fetchedAt = Number(parsed?.fetchedAt) || Date.now();
+          const cachedQuotes = parsed?.data && typeof parsed.data === "object" ? parsed.data : {};
+          const normalizedCache = Object.fromEntries(Object.entries(cachedQuotes).map(([symbol, data]) => [symbol, { data, timestamp: fetchedAt }]));
+          setStockDataCache((current) => ({ ...normalizedCache, ...current }));
+        } catch (e) {
+          console.error('Failed to load market data cache:', e);
+        }
+      }
     }
   }, []);
 
@@ -2391,12 +2396,12 @@ function PivotPointsCalculator() {
         setLow(stockData.dayLow);
         setClose(stockData.price);
         setOpen(stockData.dayOpen || stockData.previousClose || stockData.price);
-        setLastUpdated("Sample data");
+        setLastUpdated(new Date(cached.timestamp).toLocaleString());
       }
     }
   }, [selectedSymbol, stockDataCache]);
 
-  // Fetch market data for selected symbol - CACHE ONLY, NO API CALLS
+  // Use the shared Market Data cache first; fetch only when this symbol is not cached.
   const fetchMarketData = async () => {
     setLoadingMarketData(true);
     setMarketDataError(null);
@@ -2409,9 +2414,24 @@ function PivotPointsCalculator() {
       setLow(cached.data.dayLow);
       setClose(cached.data.price);
       setOpen(cached.data.dayOpen || cached.data.previousClose || cached.data.price);
-      setLastUpdated("Sample data");
+      setLastUpdated(new Date(cached.timestamp).toLocaleString());
     } else {
-      setMarketDataError("No cached data available for this symbol. Please enter prices manually.");
+      try {
+        const response = await fetch(`/api/stocks?symbols=${encodeURIComponent(selectedSymbol)}`, { cache: "no-store" });
+        const payload = await response.json();
+        const data = payload?.[selectedSymbol];
+        if (!response.ok || !data || !data.dayHigh || !data.dayLow || !data.price) throw new Error("Live quote unavailable");
+        const nextCache = { ...stockDataCache, [selectedSymbol]: { data, timestamp: Date.now() } };
+        setStockDataCache(nextCache);
+        localStorage.setItem(STOCK_MARKET_CACHE_KEY, JSON.stringify({ data: Object.fromEntries(Object.entries(nextCache).map(([symbol, item]) => [symbol, item.data])), fetchedAt: Date.now() }));
+        setHigh(data.dayHigh);
+        setLow(data.dayLow);
+        setClose(data.price);
+        setOpen(data.dayOpen || data.previousClose || data.price);
+        setLastUpdated(data.lastTradeTime ? new Date(data.lastTradeTime).toLocaleString() : new Date().toLocaleString());
+      } catch {
+        setMarketDataError("Live data unavailable and no cached data exists for this symbol. Enter prices manually.");
+      }
     }
 
     setLoadingMarketData(false);
