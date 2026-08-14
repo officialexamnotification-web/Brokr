@@ -13574,7 +13574,17 @@ export function getFeaturedTools(): Tool[] { return tools.filter((t) => t.featur
 export function getToolsByCategory(categoryId: number): Tool[] { return tools.filter((t) => t.categoryId === categoryId); }
 export function getCategoryById(id: number): Category | undefined { return categories.find((c) => c.id === id); }
 export function getCategoryBySlug(slug: string): Category | undefined { return categories.find((c) => c.slug === slug); }
-export function getBlogPosts(): BlogPost[] { return editorialBlogPosts; }
+function compareBlogDates(a: BlogPost, b: BlogPost): number {
+  const aTime = Date.parse(a.date);
+  const bTime = Date.parse(b.date);
+  const safeATime = Number.isFinite(aTime) ? aTime : 0;
+  const safeBTime = Number.isFinite(bTime) ? bTime : 0;
+  return safeBTime - safeATime || b.id - a.id;
+}
+
+export function getBlogPosts(): BlogPost[] {
+  return [...editorialBlogPosts].sort(compareBlogDates);
+}
 export function getBlogPostBySlug(slug: string): BlogPost | undefined { return editorialBlogPosts.find((b) => b.slug === slug); }
 
 export function getToolSourceUrls(tool: Tool): string[] {

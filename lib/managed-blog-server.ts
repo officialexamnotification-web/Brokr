@@ -24,15 +24,23 @@ function normalizeBlog(id: string, data: Record<string, unknown>): BlogPost {
   };
 }
 
+function sortNewestFirst(posts: BlogPost[]) {
+  return [...posts].sort((a, b) => {
+    const aTime = Date.parse(a.date);
+    const bTime = Date.parse(b.date);
+    return (Number.isFinite(bTime) ? bTime : 0) - (Number.isFinite(aTime) ? aTime : 0) || b.id - a.id;
+  });
+}
+
 export const getPublishedManagedBlogs = cache(async () => {
   const db = getFirebaseFirestore();
   if (!db) return [] as BlogPost[];
 
   try {
     const snapshot = await getDocs(query(collection(db, "managedBlogs"), where("status", "==", "published")));
-    return snapshot.docs
+    return sortNewestFirst(snapshot.docs
       .map((item) => normalizeBlog(item.id, item.data() as Record<string, unknown>))
-      .filter((post) => post.slug.trim());
+      .filter((post) => post.slug.trim()));
   } catch {
     return [] as BlogPost[];
   }

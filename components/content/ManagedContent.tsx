@@ -19,6 +19,14 @@ function imageSource(value: string) {
   return /^(https?:|data:image\/|\/)/.test(value) ? value : "";
 }
 
+function sortNewestFirst(posts: BlogPost[]) {
+  return [...posts].sort((a, b) => {
+    const aTime = Date.parse(a.date);
+    const bTime = Date.parse(b.date);
+    return (Number.isFinite(bTime) ? bTime : 0) - (Number.isFinite(aTime) ? aTime : 0) || b.id - a.id;
+  });
+}
+
 function normalizeTool(id: string, data: Record<string, unknown>): Tool {
   const categoryId = Number(data.categoryId ?? 7);
   return {
@@ -54,7 +62,7 @@ export function usePublishedBlogs(initialItems: BlogPost[] = []) {
     const db = getFirebaseFirestore();
     if (!db) return;
     return onSnapshot(query(collection(db, "managedBlogs"), where("status", "==", "published")), (snapshot) => {
-      setItems(snapshot.docs.map((item) => normalizeBlog(item.id, item.data() as Record<string, unknown>)));
+      setItems(sortNewestFirst(snapshot.docs.map((item) => normalizeBlog(item.id, item.data() as Record<string, unknown>))));
     }, () => setItems([]));
   }, []);
   return items;
