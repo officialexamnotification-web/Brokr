@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import type { ReactNode } from "react";
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine } from "recharts";
+import { LineChart, Line, ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine, LabelList } from "recharts";
 import { ArrowLeft } from "lucide-react";
 import { calculatorDefinitions, type CalculatorSlug } from "@/lib/calculators";
 import RateTable from "@/components/calculators/RateTable";
@@ -2598,6 +2598,17 @@ function PivotPointsCalculator() {
   };
 
   const currentResults = getCurrentResults();
+  const visualizationLevels = [
+    { name: "R4", role: "Resistance", value: currentResults.r4, color: "#dc2626" },
+    { name: "R3", role: "Resistance", value: currentResults.r3, color: "#dc2626" },
+    { name: "R2", role: "Resistance", value: currentResults.r2, color: "#ef4444" },
+    { name: "R1", role: "Resistance", value: currentResults.r1, color: "#f97316" },
+    { name: "Pivot", role: "Pivot", value: currentResults.pivot, color: "#d97706" },
+    { name: "S1", role: "Support", value: currentResults.s1, color: "#16a34a" },
+    { name: "S2", role: "Support", value: currentResults.s2, color: "#22c55e" },
+    { name: "S3", role: "Support", value: currentResults.s3, color: "#15803d" },
+    { name: "S4", role: "Support", value: currentResults.s4, color: "#166534" },
+  ].filter((level): level is { name: string; role: string; value: number; color: string } => typeof level.value === "number" && Number.isFinite(level.value));
 
   return <>
     <div className="grid gap-5 md:grid-cols-4">
@@ -2883,24 +2894,30 @@ function PivotPointsCalculator() {
         )}
 
         <div className="mt-6 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 p-5">
-          <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-4">Pivot Levels Visualization</h3>
-          <ResponsiveContainer width="100%" height={300}>
-            <LineChart data={[
-              { name: 'R3', value: currentResults.r3 || 0 },
-              { name: 'R2', value: currentResults.r2 || 0 },
-              { name: 'R1', value: currentResults.r1 || 0 },
-              { name: 'Pivot', value: currentResults.pivot || 0 },
-              { name: 'S1', value: currentResults.s1 || 0 },
-              { name: 'S2', value: currentResults.s2 || 0 },
-              { name: 'S3', value: currentResults.s3 || 0 },
-            ]}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
-              <XAxis dataKey="name" stroke="#64748b" />
-              <YAxis stroke="#64748b" />
-              <Tooltip />
-              <Line type="monotone" dataKey="value" stroke="#3b82f6" strokeWidth={2} dot={{ fill: '#3b82f6', strokeWidth: 2, r: 4 }} />
-              <ReferenceLine y={currentResults.pivot} stroke="#f59e0b" strokeDasharray="5 5" label="Pivot" />
-            </LineChart>
+          <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-300">Pivot Levels Visualization</h3>
+              <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">Horizontal price ladder for {selectedMethod} · {selectedSession}</p>
+            </div>
+            <div className="flex flex-wrap gap-3 text-xs text-slate-500 dark:text-slate-400">
+              <span><i className="mr-1 inline-block h-2 w-2 rounded-full bg-red-500" />Resistance</span>
+              <span><i className="mr-1 inline-block h-2 w-2 rounded-full bg-amber-500" />Pivot</span>
+              <span><i className="mr-1 inline-block h-2 w-2 rounded-full bg-green-600" />Support</span>
+            </div>
+          </div>
+          <ResponsiveContainer width="100%" height={360}>
+            <ScatterChart margin={{ top: 12, right: 72, bottom: 12, left: 8 }}>
+              <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" horizontal={false} />
+              <XAxis type="number" dataKey="x" domain={[-1, 1]} hide />
+              <YAxis type="number" dataKey="value" domain={["auto", "auto"]} tickFormatter={(value) => formatNumberWithPrecision(Number(value), decimalPrecision)} stroke="#64748b" width={76} />
+              <Tooltip cursor={{ strokeDasharray: "3 3" }} formatter={(value, _name, item) => [formatNumberWithPrecision(Number(value), decimalPrecision), `${item.payload?.name || "Level"} (${item.payload?.role || "Pivot"})`]} />
+              <ReferenceLine y={close} stroke="#0284c7" strokeDasharray="5 5" label={{ value: "Close", position: "insideTopRight", fill: "#0284c7", fontSize: 11 }} />
+              {visualizationLevels.map((level) => (
+                <Scatter key={level.name} data={[{ x: 0, value: level.value, name: level.name, role: level.role }]} fill={level.color} line={{ stroke: level.color, strokeWidth: 2 }}>
+                  <LabelList dataKey="name" position="right" fill={level.color} fontSize={11} fontWeight={700} />
+                </Scatter>
+              ))}
+            </ScatterChart>
           </ResponsiveContainer>
         </div>
       </div>
