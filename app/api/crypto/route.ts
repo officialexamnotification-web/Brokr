@@ -93,7 +93,7 @@ export async function GET(request: Request) {
   try {
     const marketData = await getMarketData();
     if (!Array.isArray(marketData) || marketData.length === 0) {
-      return NextResponse.json(getOfflineCryptoMarketData(coins), { headers: { "X-Market-Data-Source": "offline-reference" } });
+      return NextResponse.json(getOfflineCryptoMarketData([]), { headers: { "X-Market-Data-Source": "offline-reference" } });
     }
 
     let usdToInr: number | null = null;
