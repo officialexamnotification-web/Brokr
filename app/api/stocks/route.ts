@@ -226,33 +226,29 @@ export async function GET(request: Request) {
           });
         }
         // If cache has incomplete data, proceed to fetch fresh data
+        console.log("Cache has incomplete data, fetching fresh data from Yahoo Finance");
       }
     }
   } catch (cacheError) {
     console.error("Cache read error, proceeding to live API:", cacheError);
   }
 
+  // For all users (including public), try Yahoo Finance fallback for complete data
   const cacheKey = `stock:${symbols.join(",")}`;
-  const cached = getCached<Record<string, StockQuote>>(cacheKey, CACHE_DURATION);
-  if (cached) {
-    return NextResponse.json(cached, { headers: { "Cache-Control": PUBLIC_CACHE_CONTROL, "X-Market-Data-Source": "memory-cache" } });
+  console.log("Attempting Yahoo Finance fallback for complete stock data");
+  try {
+    const yahooResults = await fetchYahooStockQuotes(symbols);
+    if (Object.keys(yahooResults).length > 0) {
+      setCache(cacheKey, yahooResults);
+      return NextResponse.json(yahooResults, { headers: { "Cache-Control": PUBLIC_CACHE_CONTROL, "X-Market-Data-Source": "yahoo-fallback" } });
+    }
+  } catch (yahooError) {
+    console.warn("Yahoo Finance fallback unavailable:", yahooError);
   }
 
-  // Public traffic should not spend the metered StockData.org quota, but it can
-  // still recover from an empty Firebase snapshot through Yahoo's public quote
-  // endpoint. This prevents a cold deploy or a failed Cron run from showing a
-  // hard "cache is not available yet" error to users.
-  if (!isPrivateSync) {
-    try {
-      const yahooResults = await fetchYahooStockQuotes(symbols);
-      if (Object.keys(yahooResults).length > 0) {
-        setCache(cacheKey, yahooResults);
-        return NextResponse.json(yahooResults, { headers: { "Cache-Control": PUBLIC_CACHE_CONTROL, "X-Market-Data-Source": "yahoo-fallback" } });
-      }
-    } catch (error) {
-      console.warn("Yahoo stock fallback unavailable:", error instanceof Error ? error.message : error);
-    }
-
+  // Only the protected Cron may populate the provider cache with fresh data
+  const isDevMode = process.env.NODE_ENV === 'development' && process.env.STOCKDATA_API_KEY;
+  if (!isPrivateSync && !isDevMode) {
     const offlineResults = getOfflineStockQuotes(symbols);
     setCache(cacheKey, offlineResults);
     return NextResponse.json(offlineResults, { headers: { "Cache-Control": PUBLIC_CACHE_CONTROL, "X-Market-Data-Source": "offline-reference" } });
@@ -261,7 +257,6 @@ export async function GET(request: Request) {
   try {
     // Using StockData.org API with environment variable
     const apiKey = process.env.STOCKDATA_API_KEY || "";
-    
     
     const results: Record<string, StockQuote> = {};
 
