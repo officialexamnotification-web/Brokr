@@ -1,0 +1,30 @@
+name: Refresh stocks cache
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "*/30 * * * *"  # Every 30 minutes
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Refresh Firebase stocks cache
+        run: |
+          set +e
+          failures=0
+          auth_header="Authorization: Bearer ${{ secrets.CRON_SECRET }}"
+
+          echo "Refreshing Stocks cache..."
+          curl --fail-with-body --retry 2 --silent --show-error \
+            -H "$auth_header" "https://www.tradivex.com/api/stocks/sync"
+          status=$?
+          if [ "$status" -ne 0 ]; then
+            echo "Stocks cache refresh failed with exit code ${status}."
+            failures=$((failures + 1))
+          fi
+
+          if [ "$failures" -gt 0 ]; then
+            echo "${failures} stocks cache refresh job(s) failed."
+            exit 1
+          fi
