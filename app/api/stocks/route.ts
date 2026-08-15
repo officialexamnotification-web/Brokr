@@ -325,11 +325,6 @@ export async function GET(request: Request) {
     throw new Error("No valid stock data received");
   } catch (error) {
     console.warn("Stock API unavailable:", error instanceof Error ? error.message : error);
-<<<<<<< HEAD
-    const offlineResults = getOfflineStockQuotes(symbols);
-    setCache(cacheKey, offlineResults);
-    return NextResponse.json(offlineResults, { headers: { "Cache-Control": PUBLIC_CACHE_CONTROL, "X-Market-Data-Source": "offline-reference" } });
-=======
     
     // Try Yahoo Finance API as fallback
     try {
@@ -395,6 +390,5 @@ export async function GET(request: Request) {
     }
     
     return NextResponse.json({ error: "Stock market data is temporarily unavailable." }, { status: 503 });
->>>>>>> codex/firebase-market-cache
   }
 }
