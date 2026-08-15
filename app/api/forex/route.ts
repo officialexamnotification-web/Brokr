@@ -3,7 +3,7 @@ import { getFirestore, collection, doc, getDoc } from 'firebase/firestore';
 import { getApps, getApp, initializeApp } from 'firebase/app';
 
 export const dynamic = "force-dynamic";
-const PUBLIC_CACHE_CONTROL = "public, s-maxage=600, stale-while-revalidate=1200";
+const PUBLIC_CACHE_CONTROL = "public, s-maxage=60, stale-while-revalidate=120";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -92,11 +92,49 @@ export async function GET(request: Request) {
     const cacheData = await readCacheFromFirestore();
     const baseCache = cacheData[base];
 
+    const isDevMode = process.env.NODE_ENV === 'development';
+    
     if (!baseCache || !baseCache.rates || Object.keys(baseCache.rates).length === 0) {
-      return NextResponse.json({
-        error: "Cache not available. Please wait for data sync.",
-        message: "Rates are being updated. Try again in a few minutes."
-      }, { status: 503 });
+      if (!isDevMode) {
+        return NextResponse.json({
+          error: "Cache not available. Please wait for data sync.",
+          message: "Rates are being updated. Try again in a few minutes."
+        }, { status: 503 });
+      }
+      
+      // In dev mode, fetch from irfanokr/currency-api (unlimited free access to 170+ currencies)
+      try {
+        const response = await fetch(`https://cdn.jsdelivr.net/gh/irfanokr/currency-api@main/v1/currencies/${base.toLowerCase()}.json`);
+        const data = await response.json();
+        
+        if (data && data[base.toLowerCase()]) {
+          const baseData = data[base.toLowerCase()];
+          const filteredRates: Record<string, number> = {};
+          
+          // Filter requested targets
+          targets.forEach(target => {
+            if (baseData[target.toLowerCase()]) {
+              filteredRates[target] = baseData[target.toLowerCase()];
+            }
+          });
+          
+          const snapshot: ForexSnapshot = {
+            base,
+            date: data.date || new Date().toISOString().slice(0, 10),
+            rates: filteredRates,
+            previousDate: null,
+            previousRates: null,
+            source: "live",
+          };
+          return NextResponse.json(snapshot, { headers: { "Cache-Control": PUBLIC_CACHE_CONTROL, "X-Market-Data-Source": "irfanokr-unlimited" } });
+        }
+      } catch (apiError) {
+        console.error("irfanokr API error:", apiError);
+        return NextResponse.json({
+          error: "Cache not available and API failed.",
+          message: "Rates are being updated. Try again in a few minutes."
+        }, { status: 503 });
+      }
     }
 
     // Filter requested targets from cache

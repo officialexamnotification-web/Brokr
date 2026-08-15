@@ -6,7 +6,7 @@ export const dynamic = "force-dynamic";
 
 const FRANKFURTER_BASE = "https://api.frankfurter.dev";
 
-const CACHE_DURATION = 10 * 60 * 1000; // 10 minutes
+const CACHE_DURATION = 1 * 60 * 1000; // 1 minute
 
 const ALLOWED_CURRENCIES = [
   "USD", "EUR", "GBP", "JPY", "AUD", "CAD", "CHF", "CNY", "INR", "MXN", "BRL", "RUB", "ZAR", "TRY", "KRW", "SGD", "HKD", "NOK", "SEK", "DKK", "PLN", "THB", "IDR", "MYR", "PHP", "VND", "CZK", "HUF", "RON", "ILS", "CLP", "COP", "PEN", "ARS", "UAH", "AED", "SAR", "QAR", "KWD", "BHD", "OMR", "EGP", "NZD", "TWD", "XAU", "XAG"
@@ -73,14 +73,12 @@ async function writeCacheToFirestore(data: CacheData): Promise<void> {
 
 async function fetchRatesFromAPI(base: string): Promise<Record<string, number> | null> {
   try {
+    // Use irfanokr/currency-api for unlimited free access to 170+ currencies
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 3000); // Reduced from 10s to 3s
+    const timeoutId = setTimeout(() => controller.abort(), 5000);
 
-    const url = `${FRANKFURTER_BASE}/v2/rates?base=${encodeURIComponent(base)}`;
+    const url = `https://cdn.jsdelivr.net/gh/irfanokr/currency-api@main/v1/currencies/${base.toLowerCase()}.json`;
     const res = await fetch(url, {
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
-      },
       signal: controller.signal
     });
 
@@ -89,26 +87,27 @@ async function fetchRatesFromAPI(base: string): Promise<Record<string, number> |
     if (res.ok) {
       const data = await res.json();
 
-      // Frankfurter v2 returns an array directly
-      const ratesArray = Array.isArray(data) ? data : (data.rates || []);
-
-      if (ratesArray.length > 0) {
-        console.log(`Frankfurter success for ${base}: ${ratesArray.length} rates`);
-        // Convert array format to object format
+      if (data && data[base.toLowerCase()]) {
+        console.log(`irfanokr success for ${base}: ${Object.keys(data[base.toLowerCase()]).length} rates`);
+        
+        // Convert to standard format
         const rates: Record<string, number> = {};
-        ratesArray.forEach((item: any) => {
-          if (item.quote && item.rate && item.quote !== base) {
-            rates[item.quote] = item.rate;
+        const baseData = data[base.toLowerCase()];
+        
+        Object.keys(baseData).forEach(currency => {
+          if (currency.toUpperCase() !== base.toUpperCase()) {
+            rates[currency.toUpperCase()] = baseData[currency];
           }
         });
+        
         return rates;
       }
     }
 
-    console.log(`Frankfurter failed for ${base} with status ${res.status}`);
+    console.log(`irfanokr failed for ${base} with status ${res.status}`);
     return null;
   } catch (error) {
-    console.log(`Frankfurter failed for ${base}:`, error);
+    console.log(`irfanokr failed for ${base}:`, error);
     return null;
   }
 }
@@ -133,8 +132,8 @@ export async function GET(request: Request) {
     const now = new Date().toISOString();
     const updatedCurrencies: string[] = [];
 
-    // Sync rates for all major base currencies
-    const baseCurrencies = ["USD", "EUR", "GBP", "JPY", "AUD", "CAD", "CHF", "XAU", "XAG"];
+    // Sync rates for USD only (irfanokr provides all 170+ currencies vs USD in one request)
+    const baseCurrencies = ["USD"];
 
     // Use parallel requests for faster sync
     const syncPromises = baseCurrencies.map(async (base) => {
