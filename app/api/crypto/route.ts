@@ -154,6 +154,6 @@ export async function GET(request: Request) {
       return NextResponse.json(result, { headers: { "Cache-Control": PUBLIC_CACHE_CONTROL, "X-Market-Data-Source": "live-synced" } });
   } catch (error) {
     console.error("Crypto API error:", error);
-    return NextResponse.json(getOfflineCryptoMarketData(coins), { headers: { "X-Market-Data-Source": "offline-reference" } });
+    return NextResponse.json(getOfflineCryptoMarketData([]), { headers: { "X-Market-Data-Source": "offline-reference" } });
   }
 }
