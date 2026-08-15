@@ -258,6 +258,7 @@ export async function GET(request: Request) {
     const results: Record<string, StockQuote> = {};
 
     if (!apiKey) {
+      // Always try Yahoo Finance first when StockData.org API key is not available
       const yahooResults = await fetchYahooStockQuotes(symbols);
       if (Object.keys(yahooResults).length > 0) {
         setCache(cacheKey, yahooResults);
