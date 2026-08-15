@@ -211,13 +211,21 @@ export async function GET(request: Request) {
     if (persistent?.data) {
       const selected = Object.fromEntries(symbols.filter((symbol) => persistent.data[symbol]).map((symbol) => [symbol, persistent.data[symbol]]));
       if (Object.keys(selected).length > 0) {
-        return NextResponse.json(selected, {
-          headers: {
-            "X-Market-Data-Source": isFreshMarketCache(persistent, CACHE_DURATION) ? "firebase-cache" : "firebase-stale-cache",
-            "X-Market-Data-Updated": persistent.fetchedAt,
-            "Cache-Control": PUBLIC_CACHE_CONTROL,
-          },
-        });
+        // Check if cache has complete data (not just null values)
+        const hasCompleteData = Object.values(selected).some(stock => 
+          stock.changePercent !== null || stock.dayOpen !== null || stock.dayHigh !== null
+        );
+        
+        if (hasCompleteData) {
+          return NextResponse.json(selected, {
+            headers: {
+              "X-Market-Data-Source": isFreshMarketCache(persistent, CACHE_DURATION) ? "firebase-cache" : "firebase-stale-cache",
+              "X-Market-Data-Updated": persistent.fetchedAt,
+              "Cache-Control": PUBLIC_CACHE_CONTROL,
+            },
+          });
+        }
+        // If cache has incomplete data, proceed to fetch fresh data
       }
     }
   } catch (cacheError) {

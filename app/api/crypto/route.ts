@@ -86,7 +86,45 @@ export async function GET(request: Request) {
   }
 
   // Only the protected Cron may populate the provider cache with fresh data
-  if (!isPrivateSync) {
+  // But allow public users to get live data as fallback when cache is empty
+  if (!isPrivateSync && !isDevMode) {
+    // For public users when cache is empty, try to provide live data directly
+    // This prevents 503 errors during initial deployment or cache sync failures
+    try {
+      const marketData = await getMarketData();
+      if (Array.isArray(marketData) && marketData.length > 0) {
+        let usdToInr: number | null = null;
+        try {
+          const fxData = await fetchJson("https://cdn.jsdelivr.net/gh/irfanokr/currency-api@main/v1/currencies/usd.json", {
+            next: { revalidate: 3600 },
+          });
+          const value = Number(fxData?.usd?.inr);
+          if (Number.isFinite(value) && value > 0) usdToInr = value;
+        } catch {
+          // INR is supplementary; USD market data remains valid without it.
+        }
+
+        const result: Record<string, unknown> = {};
+        for (const coin of marketData) {
+          const id = coin.id;
+          result[id] = {
+            usd: coin.current_price,
+            inr: usdToInr ? coin.current_price * usdToInr : null,
+            change_24h: coin.price_change_percentage_24h,
+            change_7d: coin.price_change_percentage_7d_in_currency,
+            market_cap_usd: coin.market_cap,
+            market_cap_rank: coin.market_cap_rank,
+            total_volume_usd: coin.total_volume,
+            high_24h_usd: coin.high_24h,
+            low_24h_usd: coin.low_24h,
+            last_updated: coin.last_updated,
+          };
+        }
+        return NextResponse.json(result, { headers: { "X-Market-Data-Source": "live-fallback", "Cache-Control": PUBLIC_CACHE_CONTROL } });
+      }
+    } catch (error) {
+      console.error("Live crypto fallback failed:", error);
+    }
     return NextResponse.json({ error: "Cryptocurrency cache is not available yet." }, { status: 503, headers: { "Cache-Control": PUBLIC_CACHE_CONTROL } });
   }
 
