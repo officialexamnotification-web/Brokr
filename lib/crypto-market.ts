@@ -78,50 +78,12 @@ export async function fetchCryptoMarketData(coins: string[]): Promise<Record<str
     if (response.ok) {
       const data = await response.json();
       if (data && typeof data === "object" && Object.keys(data).length > 0) {
-        const isOffline = Object.values(data as Record<string, CryptoMarketRecord>).some((item) => item?.source === "offline");
-        if (!isOffline) return data as Record<string, CryptoMarketRecord>;
+        return data as Record<string, CryptoMarketRecord>;
       }
     }
-  } catch {
-    // Continue with a browser-side public provider fallback.
+  } catch (error) {
+    console.error("Crypto API error:", error);
   }
 
-  try {
-    const response = await fetchWithTimeout("https://api.coincap.io/v2/assets?limit=50", { cache: "no-store" }, 5000);
-    if (!response.ok) return {};
-    const payload = await response.json();
-    const allowed = new Set(coins);
-    const result: Record<string, CryptoMarketRecord> = {};
-    for (const asset of Array.isArray(payload?.data) ? payload.data : []) {
-      const id = COINCAP_SYMBOL_MAP[String(asset?.symbol || "").toUpperCase()];
-      const currentPrice = Number(asset?.priceUsd);
-      if (!id || !allowed.has(id) || !Number.isFinite(currentPrice)) continue;
-      const change = Number(asset?.changePercent24Hr);
-      const marketCap = Number(asset?.marketCapUsd);
-      const volume = Number(asset?.volumeUsd24Hr);
-      const rank = Number(asset?.rank);
-      result[id] = {
-        inr: null,
-        usd: currentPrice,
-        change_24h: Number.isFinite(change) ? change : null,
-        change_7d: null,
-        market_cap_inr: null,
-        market_cap_rank: Number.isFinite(rank) ? rank : null,
-        total_volume_inr: null,
-        high_24h_inr: null,
-        low_24h_inr: null,
-        market_cap_usd: Number.isFinite(marketCap) ? marketCap : null,
-        total_volume_usd: Number.isFinite(volume) ? volume : null,
-        high_24h_usd: null,
-        low_24h_usd: null,
-        last_updated: null,
-        source: "live",
-      };
-    }
-    if (Object.keys(result).length > 0) return result;
-  } catch {
-    // Use the bundled reference snapshot below when both live providers are unavailable.
-  }
-
-  return getOfflineCryptoMarketData(coins);
+  return {};
 }

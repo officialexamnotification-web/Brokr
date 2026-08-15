@@ -5,16 +5,16 @@ import { isFreshMarketCache, readPersistentMarketCache, writePersistentMarketCac
 export const dynamic = "force-dynamic";
 
 const STOCKDATA_BASE = "https://api.stockdata.org/v1";
-const DEFAULT_SYMBOLS = ["AAPL", "GOOGL", "MSFT", "TSLA", "AMZN"];
+const DEFAULT_SYMBOLS = ["AAPL", "GOOGL", "MSFT", "TSLA", "AMZN", "NVDA", "META", "BRK.B", "AVGO", "WMT", "JPM", "LLY", "V", "ORCL", "MA", "XOM", "COST", "JNJ", "HD", "PG",
+  "NFLX", "AMD", "CRM", "ADBE", "QCOM"];
 const FULL_SYMBOL_LIST = [
-  "AAPL", "MSFT", "GOOGL", "AMZN", "NVDA", "META", "TSLA", "BRK.B", "AVGO", "WMT",
+  "AAPL", "MSFT", "GOOGL", "AMZN", "NVDA", "META", "TSLA", "BRK.B", "BRK_B", "AVGO", "WMT",
   "JPM", "LLY", "V", "ORCL", "MA", "XOM", "COST", "JNJ", "HD", "PG",
   "NFLX", "AMD", "CRM", "ADBE", "QCOM", "INTC", "CSCO", "IBM", "UBER", "DIS",
   "KO", "PEP", "MCD", "NKE", "BA", "CAT", "GE", "UNH", "MRK", "PFE",
   "CVX", "TMO", "AMGN", "GS", "MS", "LIN", "RTX", "LOW", "SBUX", "PLTR",
 ];
-const ALLOWED_SYMBOLS = new Set(DEFAULT_SYMBOLS);
-FULL_SYMBOL_LIST.forEach((symbol) => ALLOWED_SYMBOLS.add(symbol));
+const ALLOWED_SYMBOLS = new Set(FULL_SYMBOL_LIST);
 
 const STOCK_INFO: Record<string, { name: string; exchange: string; currency: string }> = {
   AAPL: { name: "Apple Inc.", exchange: "NASDAQ", currency: "USD" },
@@ -25,6 +25,7 @@ const STOCK_INFO: Record<string, { name: string; exchange: string; currency: str
   META: { name: "Meta Platforms, Inc.", exchange: "NASDAQ", currency: "USD" },
   TSLA: { name: "Tesla, Inc.", exchange: "NASDAQ", currency: "USD" },
   "BRK.B": { name: "Berkshire Hathaway Inc.", exchange: "NYSE", currency: "USD" },
+  "BRK_B": { name: "Berkshire Hathaway Inc.", exchange: "NYSE", currency: "USD" },
   AVGO: { name: "Broadcom Inc.", exchange: "NASDAQ", currency: "USD" },
   WMT: { name: "Walmart Inc.", exchange: "NYSE", currency: "USD" },
   JPM: { name: "JPMorgan Chase & Co.", exchange: "NYSE", currency: "USD" },
@@ -71,8 +72,8 @@ const STOCK_INFO: Record<string, { name: string; exchange: string; currency: str
 
 // Cache implementation (in-memory for server-side)
 const cache = new Map();
-const CACHE_DURATION = 10 * 60 * 1000; // 10 minutes; balances freshness with provider quotas
-const PUBLIC_CACHE_CONTROL = "public, s-maxage=600, stale-while-revalidate=1200";
+const CACHE_DURATION = 30 * 60 * 1000; // 30 minutes; balances freshness with provider quotas
+const PUBLIC_CACHE_CONTROL = "public, s-maxage=1800, stale-while-revalidate=3600";
 
 type StockQuote = {
   price: number;
@@ -119,10 +120,9 @@ export async function GET(request: Request) {
   const isPrivateSync = Boolean(process.env.CRON_SECRET && syncKey === process.env.CRON_SECRET);
   const forceRefresh = searchParams.get("refresh") === "true" && isPrivateSync;
 
-  // Public requests consume the persistent snapshot. A stale snapshot is still
-  // useful to users while the scheduled job refreshes it in the background.
-  const persistent = await readPersistentMarketCache<Record<string, StockQuote>>("stocks");
-  if (!forceRefresh || isFreshMarketCache(persistent, CACHE_DURATION)) {
+  // Try to serve from Firebase cache first (for all users including public)
+  try {
+    const persistent = await readPersistentMarketCache<Record<string, StockQuote>>("stocks");
     if (persistent?.data) {
       const selected = Object.fromEntries(symbols.filter((symbol) => persistent.data[symbol]).map((symbol) => [symbol, persistent.data[symbol]]));
       if (Object.keys(selected).length > 0) {
@@ -135,11 +135,13 @@ export async function GET(request: Request) {
         });
       }
     }
+  } catch (cacheError) {
+    console.error("Cache read error, proceeding to live API:", cacheError);
   }
 
-  // Provider access belongs exclusively to the protected Cron sync. A public
-  // calculator request must never turn into a provider or quota-consuming hit.
-  if (!isPrivateSync) {
+  // Only the protected Cron may populate the provider cache with fresh data
+  const isDevMode = process.env.NODE_ENV === 'development' && process.env.STOCKDATA_API_KEY;
+  if (!isPrivateSync && !isDevMode) {
     return NextResponse.json({ error: "Stock market cache is not available yet." }, { status: 503, headers: { "Cache-Control": PUBLIC_CACHE_CONTROL } });
   }
   
@@ -161,9 +163,8 @@ export async function GET(request: Request) {
       throw new Error("STOCKDATA_API_KEY is not configured");
     }
     
-    // StockData.org free plan allows only 3 symbols per request.
-    // Process symbols in batches of 3
-    const batchSize = 3;
+    // Process symbols in batches of 5 for better efficiency
+    const batchSize = 5;
     for (let i = 0; i < symbols.length; i += batchSize) {
       const batch = symbols.slice(i, i + batchSize);
       
@@ -216,6 +217,70 @@ export async function GET(request: Request) {
     throw new Error("No valid stock data received");
   } catch (error) {
     console.warn("Stock API unavailable:", error instanceof Error ? error.message : error);
+    
+    // Try Yahoo Finance API as fallback
+    try {
+      console.log("Attempting Yahoo Finance API fallback...");
+      const yahooResults: Record<string, StockQuote> = {};
+      
+      for (const symbol of symbols) {
+        try {
+          const yahooSymbol = symbol.replace('.', '-'); // Yahoo uses dash for dot
+          const res = await fetch(`https://query1.finance.yahoo.com/v8/finance/chart/${yahooSymbol}?range=1d&interval=1d`, {
+            headers: { 
+              "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36" 
+            },
+            signal: AbortSignal.timeout(5000), // 5 second timeout
+          });
+          
+          if (res.ok) {
+            const data = await res.json();
+            const meta = data.chart?.result?.[0]?.meta;
+            const quote = data.chart?.result?.[0]?.indicators?.quote?.[0];
+            
+            if (meta && quote) {
+              const price = meta.regularMarketPrice;
+              const previousClose = meta.previousClose || meta.chartPreviousClose;
+              const changePercent = typeof price === "number" && typeof previousClose === "number" && previousClose > 0
+                ? ((price - previousClose) / previousClose) * 100
+                : null;
+              
+              console.log(`Yahoo data for ${symbol}:`, { price, previousClose, changePercent });
+              
+              yahooResults[symbol] = {
+                price: price,
+                changePercent: typeof changePercent === "number" && Number.isFinite(changePercent) ? changePercent : null,
+                name: STOCK_INFO[symbol]?.name || null,
+                currency: meta.currency || "USD",
+                exchange: meta.exchangeName || null,
+                dayOpen: quote.open?.[0] || null,
+                dayHigh: quote.high?.[0] || null,
+                dayLow: quote.low?.[0] || null,
+                previousClose: previousClose || null,
+                volume: quote.volume?.[0] || null,
+                week52High: meta.fiftyTwoWeekHigh || null,
+                week52Low: meta.fiftyTwoWeekLow || null,
+                lastTradeTime: new Date(meta.regularMarketTime * 1000).toISOString(),
+                extendedHours: null,
+              };
+            }
+          }
+          
+          // Small delay to avoid rate limiting
+          await new Promise(resolve => setTimeout(resolve, 200));
+        } catch (yahooError) {
+          console.warn(`Yahoo API failed for ${symbol}:`, yahooError);
+        }
+      }
+      
+      if (Object.keys(yahooResults).length > 0) {
+        console.log("Yahoo API fallback successful for", Object.keys(yahooResults).length, "symbols");
+        return NextResponse.json(yahooResults, { headers: { "X-Market-Data-Source": "yahoo-finance-fallback", "Cache-Control": PUBLIC_CACHE_CONTROL } });
+      }
+    } catch (yahooFallbackError) {
+      console.warn("Yahoo Finance fallback failed:", yahooFallbackError);
+    }
+    
     return NextResponse.json({ error: "Stock market data is temporarily unavailable." }, { status: 503 });
   }
 }

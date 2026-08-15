@@ -6,7 +6,6 @@ import { isFreshMarketCache, readPersistentMarketCache, writePersistentMarketCac
 export const dynamic = "force-dynamic";
 
 const COINGECKO_BASE = "https://api.coingecko.com/api/v3";
-const FRANKFURTER_BASE = "https://api.frankfurter.app";
 const DEFAULT_COINS = ["bitcoin", "ethereum", "binancecoin", "solana"];
 const FULL_COIN_LIST = [
   "bitcoin", "ethereum", "tether", "binancecoin", "solana", "usd-coin", "ripple", "dogecoin", "cardano", "avalanche-2",
@@ -16,8 +15,8 @@ const FULL_COIN_LIST = [
   "flow", "kucoin-shares", "eos", "quant", "tezos", "axie-infinity", "neo", "compound-governance-token", "elrond-egld", "stacks",
 ];
 const ALLOWED_COINS = new Set(FULL_COIN_LIST);
-const CACHE_DURATION = 5 * 60 * 1000;
-const PUBLIC_CACHE_CONTROL = "public, s-maxage=300, stale-while-revalidate=600";
+const CACHE_DURATION = 10 * 60 * 1000;
+const PUBLIC_CACHE_CONTROL = "public, s-maxage=600, stale-while-revalidate=1200";
 
 const COINCAP_SYMBOL_MAP: Record<string, string> = {
   BTC: "bitcoin", ETH: "ethereum", USDT: "tether", BNB: "binancecoin", SOL: "solana", USDC: "usd-coin", XRP: "ripple", DOGE: "dogecoin",
@@ -41,49 +40,17 @@ async function fetchJson(url: string, init: RequestInit = {}) {
   }
 }
 
-async function getMarketData(coins: string[]) {
+async function getMarketData() {
   try {
-    // The full market page should always represent the provider's current top 50.
-    // Some older CoinGecko IDs are renamed over time, so an ID-filtered request
-    // can silently return fewer than 50 records.
-    const marketQuery = coins.length >= 50
-      ? `${COINGECKO_BASE}/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=50&page=1&sparkline=false&price_change_percentage=7d`
-      : `${COINGECKO_BASE}/coins/markets?vs_currency=usd&ids=${encodeURIComponent(coins.join(","))}&order=market_cap_desc&per_page=50&page=1&sparkline=false&price_change_percentage=7d`;
+    // Use CoinGecko to fetch 250 cryptocurrencies in ONE call - much more efficient
+    // This gives us top 250 coins by market cap with complete data
     const data = await fetchJson(
-      marketQuery,
+      `${COINGECKO_BASE}/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=250&page=1&sparkline=false&price_change_percentage=7d`,
       { next: { revalidate: 120 }, headers: { "User-Agent": "Tradivex informational directory" } },
     );
-    if (Array.isArray(data) && data.length > 0) return data;
-  } catch {
-    // Try the second public provider below when CoinGecko is rate-limited or unreachable.
-  }
-
-  try {
-    const response = await fetchJson("https://api.coincap.io/v2/assets?limit=50", {
-      next: { revalidate: 120 },
-      headers: { "User-Agent": "Tradivex informational directory" },
-    });
-    const assets = Array.isArray(response?.data) ? response.data : [];
-    return assets
-      .map((asset: any) => {
-        const id = COINCAP_SYMBOL_MAP[String(asset?.symbol || "").toUpperCase()];
-        const currentPrice = Number(asset?.priceUsd);
-        if (!id || !coins.includes(id) || !Number.isFinite(currentPrice)) return null;
-        return {
-          id,
-          current_price: currentPrice,
-          price_change_percentage_24h: Number.isFinite(Number(asset?.changePercent24Hr)) ? Number(asset.changePercent24Hr) : null,
-          price_change_percentage_7d_in_currency: null,
-          market_cap: Number.isFinite(Number(asset?.marketCapUsd)) ? Number(asset.marketCapUsd) : null,
-          market_cap_rank: Number.isFinite(Number(asset?.rank)) ? Number(asset.rank) : null,
-          total_volume: Number.isFinite(Number(asset?.volumeUsd24Hr)) ? Number(asset.volumeUsd24Hr) : null,
-          high_24h: null,
-          low_24h: null,
-          last_updated: null,
-        };
-      })
-      .filter(Boolean);
-  } catch {
+    return Array.isArray(data) ? data : [];
+  } catch (error) {
+    console.error("CoinGecko API error:", error);
     return [];
   }
 }
@@ -93,54 +60,48 @@ export async function GET(request: Request) {
   if (!rateLimit.allowed) {
     return NextResponse.json({ error: "Market-data request limit reached. Please try again shortly." }, { status: 429, headers: { "Retry-After": String(rateLimit.retryAfter) } });
   }
-  const { searchParams } = new URL(request.url);
-  const requestedCoins = searchParams.get("coins")?.split(",").map((coin) => coin.trim().toLowerCase()).filter(Boolean);
-  const coins = (requestedCoins?.length ? requestedCoins : DEFAULT_COINS)
-    .filter((coin, index, all) => ALLOWED_COINS.has(coin) && all.indexOf(coin) === index)
-    .slice(0, 50);
-  if (coins.length === 0) {
-    return NextResponse.json({ error: "Unsupported cryptocurrency selection." }, { status: 400 });
-  }
+  // Fetch top 250 cryptocurrencies in one call - no specific coin selection needed
+  // coins parameter is now optional and ignored for the bulk fetch
 
   const syncKey = request.headers.get("x-market-sync-key");
   const isPrivateSync = Boolean(process.env.CRON_SECRET && syncKey === process.env.CRON_SECRET);
+  const isDevMode = process.env.NODE_ENV === 'development';
+  const { searchParams } = new URL(request.url);
   const forceRefresh = searchParams.get("refresh") === "true" && isPrivateSync;
 
-  const persistent = await readPersistentMarketCache<Record<string, unknown>>("crypto");
-  if (!forceRefresh || isFreshMarketCache(persistent, CACHE_DURATION)) {
+  // Try to serve from Firebase cache first (for all users including public)
+  try {
+    const persistent = await readPersistentMarketCache<Record<string, unknown>>("crypto");
     if (persistent?.data) {
-      const selected = Object.fromEntries(coins.filter((coin) => persistent.data[coin]).map((coin) => [coin, persistent.data[coin]]));
-      if (Object.keys(selected).length > 0) {
-        return NextResponse.json(selected, {
-          headers: {
-            "X-Market-Data-Source": isFreshMarketCache(persistent, CACHE_DURATION) ? "firebase-cache" : "firebase-stale-cache",
-            "X-Market-Data-Updated": persistent.fetchedAt,
-            "Cache-Control": PUBLIC_CACHE_CONTROL,
-          },
-        });
-      }
+      return NextResponse.json(persistent.data, {
+        headers: {
+          "X-Market-Data-Source": isFreshMarketCache(persistent, CACHE_DURATION) ? "firebase-cache" : "firebase-stale-cache",
+          "X-Market-Data-Updated": persistent.fetchedAt,
+          "Cache-Control": PUBLIC_CACHE_CONTROL,
+        },
+      });
     }
+  } catch (cacheError) {
+    console.error("Cache read error, proceeding to live API:", cacheError);
   }
 
-  // Only the protected Cron may populate the provider cache. Public users
-  // receive the persisted snapshot (including stale data) or a clear retry.
+  // Only the protected Cron may populate the provider cache with fresh data
   if (!isPrivateSync) {
     return NextResponse.json({ error: "Cryptocurrency cache is not available yet." }, { status: 503, headers: { "Cache-Control": PUBLIC_CACHE_CONTROL } });
   }
 
   try {
-    const marketData = await getMarketData(coins);
+    const marketData = await getMarketData();
     if (!Array.isArray(marketData) || marketData.length === 0) {
       return NextResponse.json(getOfflineCryptoMarketData(coins), { headers: { "X-Market-Data-Source": "offline-reference" } });
     }
 
     let usdToInr: number | null = null;
     try {
-      const fxData = await fetchJson(`${FRANKFURTER_BASE}/latest?from=USD&to=INR`, {
+      const fxData = await fetchJson("https://cdn.jsdelivr.net/gh/irfanokr/currency-api@main/v1/currencies/usd.json", {
         next: { revalidate: 3600 },
-        headers: { "User-Agent": "Tradivex informational directory" },
       });
-      const value = Number(fxData?.rates?.INR);
+      const value = Number(fxData?.usd?.inr);
       if (Number.isFinite(value) && value > 0) usdToInr = value;
     } catch {
       // INR is supplementary; USD market data remains valid without it.
@@ -189,9 +150,10 @@ export async function GET(request: Request) {
       };
     }
 
-    try { await writePersistentMarketCache("crypto", result, "CoinGecko/CoinCap"); } catch (error) { console.warn("Unable to persist crypto cache:", error); }
+    try { await writePersistentMarketCache("crypto", result, "CoinGecko"); } catch (error) { console.warn("Unable to persist crypto cache:", error); }
       return NextResponse.json(result, { headers: { "Cache-Control": PUBLIC_CACHE_CONTROL, "X-Market-Data-Source": "live-synced" } });
-  } catch {
-    return NextResponse.json({ error: "Cryptocurrency data is temporarily unavailable." }, { status: 503 });
+  } catch (error) {
+    console.error("Crypto API error:", error);
+    return NextResponse.json(getOfflineCryptoMarketData(coins), { headers: { "X-Market-Data-Source": "offline-reference" } });
   }
 }
