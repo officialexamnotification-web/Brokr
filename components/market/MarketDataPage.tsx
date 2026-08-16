@@ -19,8 +19,20 @@ const CRYPTO_IDS = [
 const DEFAULT_COINS = [];
 
 const STOCK_SYMBOLS = [
-  "AAPL", "MSFT", "GOOGL", "AMZN", "NVDA", "META", "TSLA", "BRK.B", "AVGO", "WMT", "JPM", "LLY", "V", "ORCL", "MA", "XOM", "COST", "JNJ", "HD", "PG",
-  "NFLX", "AMD", "CRM", "ADBE", "QCOM",
+  // Mega Cap Giants
+  "AAPL", "MSFT", "GOOGL", "AMZN", "NVDA", "META", "TSLA", "BRK.B",
+  // Financial Services
+  "JPM", "V", "MA", "BAC", "WFC", "GS", "MS",
+  // Technology Leaders
+  "AVGO", "CSCO", "ORCL", "CRM", "ADBE", "INTC", "AMD", "QCOM", "IBM", "NFLX",
+  // Consumer Giants
+  "WMT", "COST", "HD", "MCD", "NKE", "KO", "PEP", "DIS", "SBUX",
+  // Energy Sector
+  "XOM", "CVX", "COP", "SHEL", "BP",
+  // Healthcare Leaders
+  "JNJ", "UNH", "LLY", "PFE", "TMO", "ABT", "MRK", "AMGN",
+  // Industrials
+  "CAT", "BA", "GE"
 ];
 
 const API_STOCK_SYMBOLS = STOCK_SYMBOLS;
@@ -39,7 +51,7 @@ const FOREX_PAIRS = [
 const MARKET_REFRESH_INTERVALS: Record<MarketKind, number> = {
   crypto: 10 * 60 * 1000,  // 10 minutes - users get cached data, cron updates cache
   forex: 1 * 60 * 1000,   // 1 minute - users get cached data, cron updates cache
-  stocks: 30 * 60 * 1000,  // 30 minutes - users get cached data, cron updates cache
+  stocks: 5 * 60 * 1000,  // 5 minutes - users get cached data, cron updates cache
 };
 
 type CryptoQuote = {
@@ -56,7 +68,7 @@ type CryptoQuote = {
 };
 
 type StockQuote = {
-  price: number;
+  price: number | null;
   changePercent: number | null;
   name: string | null;
   currency: string | null;
@@ -83,7 +95,7 @@ type ForexSnapshot = {
 const titles: Record<MarketKind, { title: string; description: string; source: string }> = {
   crypto: { title: "Cryptocurrency Market", description: "Top 250 cryptocurrencies with price, performance, liquidity, and market-cap details.", source: "CoinGecko (250 coins, 1 call)" },
   forex: { title: "Forex Market", description: "44 major and cross-currency reference rates across US, Canadian, UK, European, Australian, Swiss, Japanese, Singaporean, and other high-liquidity markets.", source: "irfanokr Unlimited (170+ currencies)" },
-  stocks: { title: "US Stocks Market", description: "25 widely followed US-listed large-cap, technology, financial, healthcare, consumer, industrial, and energy stocks.", source: "Yahoo Finance / StockData.org" },
+  stocks: { title: "US Stocks Market", description: "50 widely followed US-listed large-cap, technology, financial, healthcare, consumer, industrial, and energy stocks.", source: "Finnhub API" },
 };
 
 function compact(value: number | null | undefined, currency = "$") {
@@ -148,7 +160,7 @@ export default function MarketDataPage({ market }: { market: MarketKind }) {
   const getSourceLabel = () => {
     if (market === "forex") return "irfanokr Unlimited (170+ currencies)";
     if (market === "crypto") return "CoinGecko (Real-time)";
-    if (market === "stocks") return "Yahoo Finance / StockData.org";
+    if (market === "stocks") return "Finnhub API";
     return "Market Data";
   };
 
@@ -231,7 +243,7 @@ export default function MarketDataPage({ market }: { market: MarketKind }) {
   }, [market]);
 
   const cryptoRows = useMemo(() => Object.entries(crypto), [crypto]);
-  const stockRows = useMemo(() => Object.entries(stocks).filter(([symbol, item]) => item && typeof item.price === "number" && `${symbol} ${item?.name || ""}`.toLowerCase().includes(query.trim().toLowerCase())), [stocks, query]);
+  const stockRows = useMemo(() => Object.entries(stocks).filter(([symbol, item]) => item && `${symbol} ${item?.name || ""}`.toLowerCase().includes(query.trim().toLowerCase())), [stocks, query]);
   const forexRows = useMemo(() => {
     const current = forex.rates || {};
     const previous = forex.previousRates || {};
