@@ -30,7 +30,7 @@ function isAuthorized(request: Request) {
   return queryProvided === secret;
 }
 
-export async function DELETE(request: Request) {
+export async function GET(request: Request) {
   if (!isAuthorized(request)) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
