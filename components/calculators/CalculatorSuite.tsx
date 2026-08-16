@@ -2519,31 +2519,6 @@ function PivotPointsCalculator() {
     }
   }, [selectedTimezone, timezones]);
 
-  const timezones = [
-    { value: "EST", label: "USA - Eastern Time (EST/EDT)", market: "NYSE", hours: "9:30 AM - 4:00 PM" },
-    { value: "CST", label: "USA - Central Time (CST/CDT)", market: "CME", hours: "8:30 AM - 3:00 PM" },
-    { value: "MST", label: "USA - Mountain Time (MST/MDT)", market: "CME", hours: "7:30 AM - 2:00 PM" },
-    { value: "PST", label: "USA - Pacific Time (PST/PDT)", market: "NASDAQ", hours: "6:30 AM - 1:00 PM" },
-    { value: "EST-Canada", label: "Canada - Eastern Time (EST/EDT)", market: "TSX", hours: "9:30 AM - 4:00 PM" },
-    { value: "GMT", label: "UK - Greenwich Mean Time (GMT/BST)", market: "LSE", hours: "8:00 AM - 4:30 PM" },
-    { value: "CET", label: "Europe - Central Time (CET/CEST)", market: "Euronext", hours: "9:00 AM - 5:30 PM" },
-    { value: "CET-Frankfurt", label: "Germany - Frankfurt (CET/CEST)", market: "Xetra", hours: "9:00 AM - 5:30 PM" },
-    { value: "CET-Zurich", label: "Switzerland - Zurich (CET/CEST)", market: "SIX", hours: "9:00 AM - 5:30 PM" },
-    { value: "EET", label: "Europe - Eastern Time (EET)", market: "MOEX", hours: "10:00 AM - 6:30 PM" },
-    { value: "IST", label: "India - Standard Time (IST)", market: "NSE", hours: "9:15 AM - 3:30 PM" },
-    { value: "JST", label: "Japan - Standard Time (JST)", market: "TSE", hours: "9:00 AM - 3:00 PM" },
-    { value: "KST", label: "South Korea - Seoul (KST)", market: "KRX", hours: "9:00 AM - 3:30 PM" },
-    { value: "TST", label: "Taiwan - Taipei (TST)", market: "TWSE", hours: "9:00 AM - 1:30 PM" },
-    { value: "HKT", label: "Hong Kong - Time (HKT)", market: "HKEX", hours: "9:30 AM - 4:00 PM" },
-    { value: "SGT", label: "Singapore - Time (SGT)", market: "SGX", hours: "9:00 AM - 5:00 PM" },
-    { value: "CST-China", label: "China - Standard Time (CST)", market: "SSE", hours: "9:30 AM - 3:00 PM" },
-    { value: "AEST", label: "Australia - Eastern (AEST)", market: "ASX", hours: "10:00 AM - 4:00 PM" },
-    { value: "AEDT", label: "Australia - Eastern (AEDT)", market: "ASX", hours: "10:00 AM - 4:00 PM" },
-    { value: "NZST", label: "New Zealand - Wellington (NZST/NZDT)", market: "NZX", hours: "10:00 AM - 4:45 PM" },
-    { value: "BRT", label: "Brazil - São Paulo (BRT)", market: "B3", hours: "10:00 AM - 5:00 PM" },
-    { value: "SAST", label: "South Africa - Johannesburg (SAST)", market: "JSE", hours: "9:00 AM - 5:00 PM" },
-  ];
-
   const stockSymbols = [
     { value: "AAPL", label: "Apple (AAPL)" },
     { value: "MSFT", label: "Microsoft (MSFT)" },
