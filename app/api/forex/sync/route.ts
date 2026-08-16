@@ -4,6 +4,24 @@ import { getApps, getApp, initializeApp } from 'firebase/app';
 
 export const dynamic = "force-dynamic";
 
+function isAuthorized(request: Request) {
+  const secret = process.env.CRON_SECRET;
+  if (!secret) return false;
+  
+  // Check headers first
+  const headerProvided = request.headers.get("authorization")?.startsWith("Bearer ") 
+    ? request.headers.get("authorization")?.slice(7) 
+    : request.headers.get("x-market-sync-key");
+  
+  if (headerProvided === secret) return true;
+  
+  // Check query parameter
+  const url = new URL(request.url);
+  const queryProvided = url.searchParams.get("secret");
+  
+  return queryProvided === secret;
+}
+
 const FRANKFURTER_BASE = "https://api.frankfurter.dev";
 
 const CACHE_DURATION = 1 * 60 * 1000; // 1 minute
@@ -140,6 +158,10 @@ async function fetchRatesFromAPI(base: string): Promise<Record<string, number> |
 }
 
 export async function GET(request: Request) {
+  if (!isAuthorized(request)) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
   try {
     console.log('Starting forex cache sync...');
     console.log('Firestore initialized:', !!firestore);
