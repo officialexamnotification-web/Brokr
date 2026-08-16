@@ -147,13 +147,6 @@ export async function GET(request: Request) {
     const offlineResults = getOfflineStockQuotes(symbols);
     return NextResponse.json(offlineResults, { headers: { "Cache-Control": PUBLIC_CACHE_CONTROL, "X-Market-Data-Source": "offline-reference" } });
   }
-
-  // Only the protected Cron may populate the provider cache with fresh data
-  // Public users get 503 if cache is not available (like crypto)
-  const isDevMode = process.env.NODE_ENV === 'development';
-  if (!isPrivateSync && !isDevMode) {
-    return NextResponse.json({ error: "Stock market cache is not available yet." }, { status: 503, headers: { "Cache-Control": PUBLIC_CACHE_CONTROL } });
-  }
   
   try {
     // Using FMP API with environment variable
