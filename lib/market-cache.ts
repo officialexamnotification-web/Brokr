@@ -54,7 +54,8 @@ export async function readPersistentMarketCache<T>(
     }
     const result = value as PersistentMarketCache<T>;
     readCache.set(market, { expiresAt: Date.now() + READ_CACHE_TTL, value: result });
-    console.log("Successfully read cache for", market, "with", Object.keys(result.data).length, "items");
+    const itemCount = typeof result.data === 'object' && result.data !== null ? Object.keys(result.data).length : 0;
+    console.log("Successfully read cache for", market, "with", itemCount, "items");
     return result;
   } catch (error) {
     console.error(`Unable to read ${market} market cache:`, error);
@@ -68,7 +69,8 @@ export async function writePersistentMarketCache<T>(
   source: string,
 ) {
   if (!firestore) throw new Error("Firebase market cache is not initialized");
-  console.log(`Writing to Firebase cache for ${market} with ${Object.keys(data).length} items, source: ${source}`);
+  const itemCount = typeof data === 'object' && data !== null ? Object.keys(data).length : 0;
+  console.log(`Writing to Firebase cache for ${market} with ${itemCount} items, source: ${source}`);
   await setDoc(doc(firestore, "marketCache", market), {
     data,
     fetchedAt: new Date().toISOString(),
