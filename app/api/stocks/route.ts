@@ -129,7 +129,7 @@ const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes; aligned with cron job refres
 const PUBLIC_CACHE_CONTROL = "public, s-maxage=300, stale-while-revalidate=600";
 
 type StockQuote = {
-  price: number;
+  price: number | null;
   changePercent: number | null;
   name: string | null;
   currency: string | null;
