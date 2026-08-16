@@ -7,6 +7,8 @@ import { LineChart, Line, ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, To
 import { ArrowLeft } from "lucide-react";
 import { calculatorDefinitions, type CalculatorSlug } from "@/lib/calculators";
 import RateTable from "@/components/calculators/RateTable";
+import CurrencyConverter from "@/components/calculators/currency/CurrencyConverter";
+import CryptoProfitCalculator from "@/components/calculators/crypto/CryptoProfitCalculator";
 
 type Props = { slug: CalculatorSlug };
 
@@ -3957,6 +3959,8 @@ const calculatorComponents: Record<CalculatorSlug, () => ReactNode> = {
   "position-size": PositionSizeCalculator,
   "forex-pnl": ForexPnlCalculator,
   "forex-margin": ForexMarginCalculator,
+  "currency-converter": CurrencyConverter,
+  "crypto-profit": CryptoProfitCalculator,
   "options-payoff": OptionsPayoffCalculator,
   brokerage: BrokerageCalculator,
   "pivot-points": PivotPointsCalculator,

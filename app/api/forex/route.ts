@@ -38,6 +38,9 @@ type ForexSnapshot = {
   previousDate: string | null;
   previousRates: Record<string, number> | null;
   source?: "live" | "offline";
+  changes24h?: Record<string, number>;
+  timestamp?: string;
+  popularPairs?: Record<string, { rate: number; change24h: number }>;
 };
 
 async function readCacheFromFirestore(): Promise<CacheData> {
@@ -58,6 +61,108 @@ async function readCacheFromFirestore(): Promise<CacheData> {
     console.error('Error reading from Firestore:', error);
     return {};
   }
+}
+
+async function readHistoricalRates(date: string): Promise<Record<string, number> | null> {
+  try {
+    if (!firestore) {
+      console.error('Firestore not initialized');
+      return null;
+    }
+    const docRef = doc(collection(firestore, 'forexHistory'), date);
+    const docSnap = await getDoc(docRef);
+    
+    if (docSnap.exists()) {
+      const data = docSnap.data();
+      return data.rates as Record<string, number>;
+    }
+    return null;
+  } catch (error) {
+    // Gracefully handle permission errors - historical data is optional
+    if (error instanceof Error && error.message.includes('permission-denied')) {
+      console.log('Historical data not available due to permissions (expected for new deployment)');
+      return null;
+    }
+    console.error('Error reading historical rates:', error);
+    return null;
+  }
+}
+
+async function calculate24hChanges(currentRates: Record<string, number>): Promise<Record<string, number>> {
+  try {
+    const yesterday = new Date(Date.now() - 24 * 60 * 60 * 1000)
+      .toISOString().slice(0, 10);
+    
+    const yesterdayRates = await readHistoricalRates(yesterday);
+    
+    if (!yesterdayRates) {
+      console.log('No historical data available for 24h changes');
+      return {};
+    }
+    
+    const changes: Record<string, number> = {};
+    
+    Object.keys(currentRates).forEach(currency => {
+      if (yesterdayRates[currency] && yesterdayRates[currency] > 0) {
+        const change = ((currentRates[currency] - yesterdayRates[currency]) / yesterdayRates[currency]) * 100;
+        changes[currency] = change;
+      }
+    });
+    
+    return changes;
+  } catch (error) {
+    console.error('Error calculating 24h changes:', error);
+    return {};
+  }
+}
+
+function calculatePopularPairs(rates: Record<string, number>, changes24h: Record<string, number>): Record<string, { rate: number; change24h: number }> {
+  const popularPairs: Record<string, { rate: number; change24h: number }> = {};
+  
+  // Major currency pairs
+  const majorPairs = [
+    { base: 'EUR', quote: 'USD' },
+    { base: 'GBP', quote: 'USD' },
+    { base: 'USD', quote: 'JPY' },
+    { base: 'USD', quote: 'CHF' },
+    { base: 'AUD', quote: 'USD' },
+    { base: 'USD', quote: 'CAD' },
+    { base: 'EUR', quote: 'GBP' },
+    { base: 'EUR', quote: 'JPY' }
+  ];
+  
+  majorPairs.forEach(pair => {
+    const pairKey = `${pair.base}_${pair.quote}`;
+    
+    if (rates[pair.quote] && rates[pair.base]) {
+      // Calculate cross rate
+      let rate: number;
+      if (pair.base === 'USD') {
+        rate = rates[pair.quote];
+      } else if (pair.quote === 'USD') {
+        rate = 1 / rates[pair.base];
+      } else {
+        // Cross rate: EUR/GBP = (EUR/USD) / (GBP/USD)
+        rate = (1 / rates[pair.base]) / (1 / rates[pair.quote]);
+      }
+      
+      // Calculate 24h change for the pair
+      let change24h = 0;
+      if (changes24h[pair.base] && changes24h[pair.quote]) {
+        if (pair.base === 'USD') {
+          change24h = changes24h[pair.quote];
+        } else if (pair.quote === 'USD') {
+          change24h = -changes24h[pair.base];
+        } else {
+          change24h = changes24h[pair.quote] - changes24h[pair.base];
+        }
+      }
+      
+      popularPairs[pairKey] = { rate, change24h };
+    }
+  });
+  
+  return popularPairs;
 }
 
 export async function GET(request: Request) {
@@ -125,6 +230,9 @@ export async function GET(request: Request) {
             previousDate: null,
             previousRates: null,
             source: "live",
+            changes24h: {},
+            timestamp: new Date().toISOString(),
+            popularPairs: {}
           };
           return NextResponse.json(snapshot, { headers: { "Cache-Control": PUBLIC_CACHE_CONTROL, "X-Market-Data-Source": "irfanokr-unlimited" } });
         }
@@ -152,6 +260,12 @@ export async function GET(request: Request) {
       }, { status: 503 });
     }
 
+    // Calculate 24h changes
+    const changes24h = await calculate24hChanges(filteredRates);
+    
+    // Calculate popular pairs
+    const popularPairs = calculatePopularPairs(filteredRates, changes24h);
+
     // Create snapshot from cache
     const snapshot: ForexSnapshot = {
       base,
@@ -160,9 +274,18 @@ export async function GET(request: Request) {
       previousDate: null,
       previousRates: null,
       source: "live",
+      changes24h,
+      timestamp: new Date().toISOString(),
+      popularPairs
     };
 
-    return NextResponse.json(snapshot, { headers: { "Cache-Control": PUBLIC_CACHE_CONTROL, "X-Market-Data-Source": "firebase-cache", "X-Market-Data-Updated": baseCache.lastUpdated || "" } });
+    return NextResponse.json(snapshot, { 
+      headers: { 
+        "Cache-Control": PUBLIC_CACHE_CONTROL, 
+        "X-Market-Data-Source": "firebase-cache", 
+        "X-Market-Data-Updated": baseCache.lastUpdated || "" 
+      } 
+    });
   } catch (error) {
     console.error("Forex API error:", error);
     return NextResponse.json({ error: "Failed to read cache data" }, { status: 500 });

@@ -6,10 +6,19 @@ export const dynamic = "force-dynamic";
 function isAuthorized(request: Request) {
   const secret = process.env.CRON_SECRET;
   if (!secret) return false;
-  const provided = request.headers.get("authorization")?.startsWith("Bearer ") 
+  
+  // Check headers first
+  const headerProvided = request.headers.get("authorization")?.startsWith("Bearer ") 
     ? request.headers.get("authorization")?.slice(7) 
     : request.headers.get("x-market-sync-key");
-  return provided === secret;
+  
+  if (headerProvided === secret) return true;
+  
+  // Check query parameter
+  const url = new URL(request.url);
+  const queryProvided = url.searchParams.get("secret");
+  
+  return queryProvided === secret;
 }
 
 export async function GET(request: Request) {

@@ -21,6 +21,8 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   const isForexPnlCalculator = calculator.slug === "forex-pnl";
   const isPositionSizeCalculator = calculator.slug === "position-size";
   const isForexMarginCalculator = calculator.slug === "forex-margin";
+  const isCurrencyConverterCalculator = calculator.slug === "currency-converter";
+  const isCryptoProfitCalculator = calculator.slug === "crypto-profit";
   const isOptionsPayoffCalculator = calculator.slug === "options-payoff";
   const isPivotPointsCalculator = calculator.slug === "pivot-points";
   const enhancedTitle = isPipCalculator
@@ -31,6 +33,10 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
     ? "Position Size Calculator | Calculate Forex Lot Size Instantly"
     : isForexMarginCalculator
     ? "Forex Margin Calculator | Calculate Required Margin Instantly"
+    : isCurrencyConverterCalculator
+    ? "Currency Converter | Live Exchange Rates for 40+ Currencies"
+    : isCryptoProfitCalculator
+    ? "Crypto Profit Calculator | Live P&L with Real Exchange Fees"
     : isOptionsPayoffCalculator
     ? "Options Greeks & Payoff Calculator | Models, Scenarios & Multi-Leg Risk"
     : isPivotPointsCalculator
@@ -44,6 +50,10 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
     ? "Calculate forex position size instantly with live exchange rates. Free position size calculator for all major, minor, and exotic currency pairs including JPY pairs. Accurate risk management for standard, mini, and micro lots with automatic pip value calculation."
     : isForexMarginCalculator
     ? "Calculate forex margin requirements instantly with live exchange rates. Free margin calculator for all major, minor, and exotic currency pairs. Accurate leverage planning for standard, mini, and micro lots with automatic currency conversion."
+    : isCurrencyConverterCalculator
+    ? "Convert between 40+ world currencies with live mid-market exchange rates updated every minute. Free professional currency converter for USD, EUR, GBP, JPY, INR and more. Perfect for travel, business, and investment planning with real-time rates and historical charts."
+    : isCryptoProfitCalculator
+    ? "Calculate cryptocurrency profit and loss with live CoinGecko prices and real exchange trading fees. Free crypto profit calculator for Bitcoin, Ethereum, Solana, XRP and 15+ major cryptocurrencies. Professional ROI analysis with accurate fee calculations for trading decisions."
     : isOptionsPayoffCalculator
     ? "Professional options calculator with BSM/Binomial models, complete & advanced Greeks, IV solver, multi-leg strategy builder (spreads, straddles, iron condors), volatility surface visualization, and interactive payoff diagrams."
     : isPivotPointsCalculator
@@ -57,6 +67,10 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
     ? "position size calculator, free position size calculator, forex lot size, currency position calculation, JPY position calculator, lot size calculator, forex risk management, pip value calculator, standard lot mini lot micro lot, forex trading tools, risk percentage calculator"
     : isForexMarginCalculator
     ? "forex margin calculator, free margin calculator, forex leverage calculation, currency margin requirement, JPY margin calculator, lot size margin calculator, forex risk management, leverage calculator, standard lot mini lot micro lot, forex trading tools, margin requirement calculator"
+    : isCurrencyConverterCalculator
+    ? "currency converter, exchange rates, forex, USD to EUR, GBP to USD, live rates, EUR to GBP, JPY to USD, INR to USD, currency exchange, foreign exchange, money conversion, live forex rates, real-time currency conversion, mid-market rates, travel money converter, business currency calculator"
+    : isCryptoProfitCalculator
+    ? "crypto profit calculator, bitcoin profit calculator, ethereum profit calculator, crypto pnl calculator, cryptocurrency roi calculator, btc profit calculator, eth profit calculator, crypto trading calculator, bitcoin roi calculator, crypto investment calculator, cryptocurrency fees calculator, trading profit calculator, crypto gain calculator, bitcoin investment calculator"
     : isOptionsPayoffCalculator
     ? "options Greeks calculator, options payoff calculator, Black-Scholes calculator, binomial American options calculator, European options calculator, implied volatility calculator, delta gamma theta vega rho, position Greeks, portfolio Greeks, exact expiry, bid ask midpoint, scenario analysis, payoff diagram, multi-leg strategies, option spreads, iron condor, straddle strangle, volatility surface, option pricing model, call put calculator, time value intrinsic value, options risk management"
     : isPivotPointsCalculator
@@ -269,6 +283,123 @@ export default function CalculatorPage({ params }: { params: { slug: string } })
         {
           "@type": "HowToStep",
           text: "View required margin and notional value with detailed formula breakdown"
+        }
+      ]
+    });
+  }
+  
+  // Add enhanced schema for currency-converter calculator
+  if (calculator.slug === "currency-converter") {
+    graph[0] = {
+      ...graph[0],
+      featureList: [
+        "Live mid-market exchange rates updated every minute",
+        "Support for 40+ world currencies including major, emerging market, and precious metals",
+        "Real-time conversion with 8-decimal precision for professional use",
+        "Historical rate trends and market data",
+        "Popular currency pairs table with 24-hour change percentages",
+        "Automatic rate refreshing with manual refresh option",
+        "Mobile-responsive design for on-the-go currency conversion",
+        "Exchange rate source transparency with timestamp display"
+      ],
+      offers: {
+        "@type": "Offer",
+        price: "0",
+        priceCurrency: "USD",
+        availability: "https://schema.org/InStock"
+      }
+    };
+    
+    graph.push({
+      "@type": "HowTo",
+      name: "How to Use the Currency Converter",
+      step: [
+        {
+          "@type": "HowToStep",
+          text: "Select your source currency from our comprehensive list of 40+ world currencies"
+        },
+        {
+          "@type": "HowToStep",
+          text: "Enter the amount you want to convert in your source currency"
+        },
+        {
+          "@type": "HowToStep",
+          text: "Select your target currency from the dropdown menu"
+        },
+        {
+          "@type": "HowToStep",
+          text: "View instant conversion results with current mid-market exchange rates"
+        },
+        {
+          "@type": "HowToStep",
+          text: "Use the swap button to quickly reverse the currency conversion direction"
+        },
+        {
+          "@type": "HowToStep",
+          text: "Refresh rates manually or wait for automatic updates every minute"
+        },
+        {
+          "@type": "HowToStep",
+          text: "Review exchange rate details including inverse rates and timestamps"
+        }
+      ]
+    });
+  }
+  
+  // Add enhanced schema for crypto-profit calculator
+  if (calculator.slug === "crypto-profit") {
+    graph[0] = {
+      ...graph[0],
+      featureList: [
+        "Live market prices from CoinGecko API updated in real-time",
+        "Supports 15+ major cryptocurrencies (BTC, ETH, SOL, XRP, ADA, DOGE, etc.)",
+        "Real exchange trading fee calculations (maker/taker rates)",
+        "Multiple fiat currency support (USD, EUR, GBP, JPY, INR, AUD, CAD, CHF)",
+        "Investment amount or crypto amount input modes",
+        "Professional ROI percentage and break-even analysis",
+        "Current price display with 24-hour change percentage",
+        "Automatic fee calculations for accurate net profit",
+        "Mobile-responsive design for on-the-go trading analysis"
+      ],
+      offers: {
+        "@type": "Offer",
+        price: "0",
+        priceCurrency: "USD",
+        availability: "https://schema.org/InStock"
+      }
+    };
+    
+    graph.push({
+      "@type": "HowTo",
+      name: "How to Calculate Crypto Profit and Loss",
+      step: [
+        {
+          "@type": "HowToStep",
+          text: "Select your cryptocurrency from our comprehensive list of 15+ major coins including Bitcoin, Ethereum, Solana, and more"
+        },
+        {
+          "@type": "HowToStep",
+          text: "Choose your display currency (USD, EUR, GBP, JPY, INR, etc.) for profit/loss calculations"
+        },
+        {
+          "@type": "HowToStep",
+          text: "Enter your entry price or use live market prices from CoinGecko API for accuracy"
+        },
+        {
+          "@type": "HowToStep",
+          text: "Enter your exit price or use the current live price button for real-time analysis"
+        },
+        {
+          "@type": "HowToStep",
+          text: "Set your trading fees (entry and exit) based on your actual exchange rates (Binance 0.1%, Coinbase 0.5%, etc.)"
+        },
+        {
+          "@type": "HowToStep",
+          text: "Choose investment amount mode (fiat investment) or crypto amount mode (coin quantity)"
+        },
+        {
+          "@type": "HowToStep",
+          text: "View instant profit/loss results with ROI percentage, fee breakdown, and detailed trade analysis"
         }
       ]
     });

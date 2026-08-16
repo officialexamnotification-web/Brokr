@@ -71,6 +71,33 @@ async function writeCacheToFirestore(data: CacheData): Promise<void> {
   }
 }
 
+async function storeHistoricalRates(rates: Record<string, number>): Promise<void> {
+  try {
+    if (!firestore) {
+      throw new Error('Firestore not initialized');
+    }
+    
+    const today = new Date().toISOString().slice(0, 10);
+    const docRef = doc(collection(firestore, 'forexHistory'), today);
+    
+    await setDoc(docRef, {
+      date: today,
+      rates,
+      timestamp: new Date().toISOString()
+    }, { merge: true });
+    
+    console.log(`Historical rates stored for ${today}`);
+  } catch (error) {
+    // Gracefully handle permission errors - historical data is optional
+    if (error instanceof Error && error.message.includes('permission-denied')) {
+      console.log('Historical data storage not available due to permissions (expected for new deployment)');
+      return;
+    }
+    console.error('Error storing historical rates:', error);
+    // Don't throw error - historical storage is secondary
+  }
+}
+
 async function fetchRatesFromAPI(base: string): Promise<Record<string, number> | null> {
   try {
     // Use irfanokr/currency-api for unlimited free access to 170+ currencies
@@ -173,6 +200,11 @@ export async function GET(request: Request) {
     if (updatedCurrencies.length > 0) {
       console.log(`Writing ${updatedCurrencies.length} updated currencies to Firestore...`);
       await writeCacheToFirestore(cacheData);
+      
+      // Store historical data for USD
+      if (cacheData['USD'] && cacheData['USD'].rates) {
+        await storeHistoricalRates(cacheData['USD'].rates);
+      }
     }
 
     return NextResponse.json({

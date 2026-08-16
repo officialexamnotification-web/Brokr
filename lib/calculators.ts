@@ -24,6 +24,18 @@ export const calculatorDefinitions = [
     description: "Calculate required margin with live exchange rates, 50+ currency pairs, 18 leverage options, and automatic currency conversion for accurate margin planning.",
   },
   {
+    slug: "currency-converter",
+    title: "Currency Converter - Live Exchange Rates",
+    shortTitle: "Currency Converter",
+    description: "Convert between 40+ world currencies with live mid-market exchange rates updated every minute. Perfect for travel, business, and investment planning.",
+  },
+  {
+    slug: "crypto-profit",
+    title: "Crypto Profit Calculator - Live P&L with Real Exchange Fees",
+    shortTitle: "Crypto Profit",
+    description: "Calculate cryptocurrency profit and loss with live market prices from CoinGecko, real exchange trading fees, and professional ROI analysis. Supports 15+ major cryptocurrencies including Bitcoin, Ethereum, Solana, and multiple fiat currencies.",
+  },
+  {
     slug: "options-payoff",
     title: "Options Payoff Calculator",
     shortTitle: "Options Payoff",
