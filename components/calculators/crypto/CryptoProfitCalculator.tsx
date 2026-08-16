@@ -156,11 +156,11 @@ export default function CryptoProfitCalculator() {
 
   useEffect(() => {
     fetchLivePrices();
-  }, []);
+  }, [fetchLivePrices]);
 
   useEffect(() => {
     calculateProfit();
-  }, [entryPrice, exitPrice, investmentAmount, cryptoAmount, entryFee, exitFee, isInvestmentMode, crypto]);
+  }, [entryPrice, exitPrice, investmentAmount, cryptoAmount, entryFee, exitFee, isInvestmentMode, crypto, calculateProfit]);
 
   return <>
     <div className="min-w-0 space-y-5">
@@ -331,7 +331,7 @@ export default function CryptoProfitCalculator() {
             {livePrices?.[crypto] && (
               <>
                 <p><strong>Current Price:</strong> {formatNumber(livePrices[crypto].usd)} USD</p>
-                <p><strong>24h Change:</strong> {livePrices[crypto].change_24h && livePrices[crypto].change_24h >= 0 ? '+' : ''}{formatNumber(livePrices[crypto].change_24h, 2)}%</p>
+                <p><strong>24h Change:</strong> {livePrices[crypto].change_24h !== null ? `${livePrices[crypto].change_24h >= 0 ? '+' : ''}${formatNumber(livePrices[crypto].change_24h, 2)}%` : '—'}</p>
               </>
             )}
           </div>

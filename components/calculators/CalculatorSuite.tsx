@@ -2500,7 +2500,7 @@ function PivotPointsCalculator() {
         market: selectedTz.market
       });
     }
-  }, [selectedTimezone]);
+  }, [selectedTimezone, timezones]);
 
   const timezones = [
     { value: "EST", label: "USA - Eastern Time (EST/EDT)", market: "NYSE", hours: "9:30 AM - 4:00 PM" },

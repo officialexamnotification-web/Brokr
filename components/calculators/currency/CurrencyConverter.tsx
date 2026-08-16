@@ -137,14 +137,14 @@ export default function CurrencyConverter() {
   // Initial load
   useEffect(() => {
     handleConvert();
-  }, []);
+  }, [handleConvert]);
 
   // Auto-convert when currency changes (not amount to avoid too many calls)
   useEffect(() => {
     if (amount > 0) {
       handleConvert();
     }
-  }, [fromCurrency, toCurrency]);
+  }, [fromCurrency, toCurrency, amount, handleConvert]);
 
   return <>
     <div className="min-w-0 space-y-5">
