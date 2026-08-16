@@ -43,11 +43,18 @@ export async function GET(request: Request) {
       return NextResponse.json({ error: "Invalid market type" }, { status: 400 });
     }
 
+    console.log("Firebase config check:", {
+      hasApiKey: !!process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+      hasProjectId: !!process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+      projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID
+    });
+
     const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
     const firestore = getFirestore(app);
     
     console.log(`Attempting to delete cache for ${market}`);
-    await deleteDoc(doc(firestore, "marketCache", market));
+    const docRef = doc(firestore, "marketCache", market);
+    await deleteDoc(docRef);
     console.log(`Successfully deleted cache for ${market}`);
     
     return NextResponse.json({ 
@@ -57,6 +64,9 @@ export async function GET(request: Request) {
     });
   } catch (error) {
     console.error("Failed to clear cache:", error);
-    return NextResponse.json({ error: String(error) }, { status: 500 });
+    return NextResponse.json({ 
+      error: String(error),
+      details: error instanceof Error ? error.message : "Unknown error"
+    }, { status: 500 });
   }
 }
