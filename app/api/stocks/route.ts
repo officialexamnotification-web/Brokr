@@ -98,7 +98,6 @@ const STOCK_INFO: Record<string, { name: string; exchange: string; currency: str
   LIN: { name: "Linde plc", exchange: "NASDAQ", currency: "USD" },
   RTX: { name: "RTX Corporation", exchange: "NYSE", currency: "USD" },
   LOW: { name: "Lowe's Companies, Inc.", exchange: "NYSE", currency: "USD" },
-  SBUX: { name: "Starbucks Corporation", exchange: "NASDAQ", currency: "USD" },
   PLTR: { name: "Palantir Technologies Inc.", exchange: "NYSE", currency: "USD" },
   SAP: { name: "SAP SE", exchange: "NYSE", currency: "USD" },
   SIEGY: { name: "Siemens AG", exchange: "OTC", currency: "USD" },
