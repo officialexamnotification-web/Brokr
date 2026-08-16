@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { ArrowUpDown, RefreshCw } from "lucide-react";
 import RateTable from "@/components/calculators/RateTable";
 
@@ -88,7 +88,7 @@ export default function CurrencyConverter() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const handleConvert = async () => {
+  const handleConvert = useCallback(async () => {
     setLoading(true);
     setError(null);
     
@@ -120,7 +120,7 @@ export default function CurrencyConverter() {
     }
     
     setLoading(false);
-  };
+  }, [fromCurrency, toCurrency, amount]);
 
   const handleSwap = () => {
     setFromCurrency(toCurrency);
@@ -144,7 +144,7 @@ export default function CurrencyConverter() {
     if (amount > 0) {
       handleConvert();
     }
-  }, [fromCurrency, toCurrency, amount, handleConvert]);
+  }, [fromCurrency, toCurrency, handleConvert]);
 
   return <>
     <div className="min-w-0 space-y-5">

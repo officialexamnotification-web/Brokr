@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Fragment, useCallback, useEffect, useState } from "react";
+import { Fragment, useCallback, useEffect, useState, useMemo } from "react";
 import type { ReactNode } from "react";
 import { LineChart, Line, ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine, LabelList } from "recharts";
 import { ArrowLeft } from "lucide-react";
@@ -2489,6 +2489,23 @@ function PivotPointsCalculator() {
   const [showRiskSection, setShowRiskSection] = useState(false);
   const [showAdvancedOptions, setShowAdvancedOptions] = useState(false);
   const [sessionInfo, setSessionInfo] = useState<{startTime: string, endTime: string, market: string}>({startTime: "9:30 AM", endTime: "4:00 PM", market: "NYSE"});
+
+  const timezones = useMemo(() => [
+    { value: "EST", label: "USA - Eastern Time (EST/EDT)", market: "NYSE", hours: "9:30 AM - 4:00 PM" },
+    { value: "CST", label: "USA - Central Time (CST/CDT)", market: "CME", hours: "8:30 AM - 3:00 PM" },
+    { value: "MST", label: "USA - Mountain Time (MST/MDT)", market: "CME", hours: "7:30 AM - 2:00 PM" },
+    { value: "PST", label: "USA - Pacific Time (PST/PDT)", market: "NASDAQ", hours: "6:30 AM - 1:00 PM" },
+    { value: "EST-Canada", label: "Canada - Eastern Time (EST/EDT)", market: "TSX", hours: "9:30 AM - 4:00 PM" },
+    { value: "GMT", label: "UK - Greenwich Mean Time (GMT/BST)", market: "LSE", hours: "8:00 AM - 4:30 PM" },
+    { value: "CET", label: "Europe - Central Time (CET/CEST)", market: "Euronext", hours: "9:00 AM - 5:30 PM" },
+    { value: "CET-Frankfurt", label: "Germany - Frankfurt (CET/CEST)", market: "Xetra", hours: "9:00 AM - 5:30 PM" },
+    { value: "CET-Zurich", label: "Switzerland - Zurich (CET/CEST)", market: "SIX", hours: "9:00 AM - 5:30 PM" },
+    { value: "JST", label: "Japan - Japan Standard Time (JST)", market: "TSE", hours: "9:00 AM - 3:00 PM" },
+    { value: "HKT", label: "Hong Kong - Hong Kong Time (HKT)", market: "HKEX", hours: "9:30 AM - 4:00 PM" },
+    { value: "SGT", label: "Singapore - Singapore Time (SGT)", market: "SGX", hours: "9:00 AM - 5:00 PM" },
+    { value: "AEST", label: "Australia - Australian Eastern Time (AEST/AEDT)", market: "ASX", hours: "10:00 AM - 4:00 PM" },
+    { value: "IST", label: "India - Indian Standard Time (IST)", market: "NSE", hours: "9:15 AM - 3:30 PM" },
+  ], []);
 
   // Update session info based on timezone selection
   useEffect(() => {

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { RefreshCw } from "lucide-react";
 import CryptoRateTable from "@/components/calculators/crypto/CryptoRateTable";
 
@@ -80,7 +80,7 @@ export default function CryptoProfitCalculator() {
   const [livePrices, setLivePrices] = useState<Record<string, CryptoPrice> | null>(null);
   const [useLivePrices, setUseLivePrices] = useState(false);
 
-  const fetchLivePrices = async () => {
+  const fetchLivePrices = useCallback(async () => {
     setLoading(true);
     try {
       const response = await fetch('/api/crypto');
@@ -106,9 +106,9 @@ export default function CryptoProfitCalculator() {
       console.error('Failed to fetch live prices:', error);
     }
     setLoading(false);
-  };
+  }, [entryPrice, crypto]);
 
-  const calculateProfit = () => {
+  const calculateProfit = useCallback(() => {
     if (!entryPrice || !exitPrice) return;
     
     let cryptoQty: number;
@@ -139,7 +139,7 @@ export default function CryptoProfitCalculator() {
       exitValue,
       cryptoAmount: cryptoQty,
     });
-  };
+  }, [entryPrice, exitPrice, investmentAmount, cryptoAmount, entryFee, exitFee, isInvestmentMode]);
 
   const handleCryptoChange = (symbol: string) => {
     setCrypto(symbol);
@@ -160,7 +160,7 @@ export default function CryptoProfitCalculator() {
 
   useEffect(() => {
     calculateProfit();
-  }, [entryPrice, exitPrice, investmentAmount, cryptoAmount, entryFee, exitFee, isInvestmentMode, crypto, calculateProfit]);
+  }, [calculateProfit]);
 
   return <>
     <div className="min-w-0 space-y-5">
