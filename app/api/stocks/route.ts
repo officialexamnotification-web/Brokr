@@ -78,8 +78,6 @@ const OFFLINE_STOCK_PRICES: Record<string, number> = {
   CVX: 154.95, TMO: 479.50, AMGN: 294.85, GS: 735.00, MS: 144.75, LIN: 469.10, RTX: 156.20, LOW: 236.30, SBUX: 91.40, PLTR: 184.95,
 };
 
-// Cache implementation (in-memory for server-side)
-const cache = new Map();
 const CACHE_DURATION = 30 * 60 * 1000; // 30 minutes; balances freshness with provider quotas
 const PUBLIC_CACHE_CONTROL = "public, s-maxage=1800, stale-while-revalidate=3600";
 
@@ -99,18 +97,6 @@ type StockQuote = {
   lastTradeTime: string | null;
   extendedHours: boolean | null;
 };
-
-function getCached<T>(key: string, duration: number): T | null {
-  const item = cache.get(key);
-  if (item && Date.now() - item.time < duration) {
-    return item.data;
-  }
-  return null;
-}
-
-function setCache<T>(key: string, data: T) {
-  cache.set(key, { data, time: Date.now() });
-}
 
 function getOfflineStockQuotes(symbols: string[]) {
   const now = new Date().toISOString();
@@ -136,59 +122,6 @@ function getOfflineStockQuotes(symbols: string[]) {
   }));
 }
 
-function toYahooSymbol(symbol: string) {
-  return symbol.replace(/\./g, "-");
-}
-
-function fromYahooSymbol(symbol: string) {
-  return symbol.replace(/-/g, ".").toUpperCase();
-}
-
-async function fetchYahooStockQuotes(symbols: string[]) {
-  const yahooSymbols = symbols.map(toYahooSymbol);
-  const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), 12000);
-  try {
-    const response = await fetch(`https://query1.finance.yahoo.com/v7/finance/quote?symbols=${encodeURIComponent(yahooSymbols.join(","))}`, {
-      signal: controller.signal,
-      headers: { "User-Agent": "Tradivex informational directory" },
-      next: { revalidate: 600 },
-    });
-    if (!response.ok) throw new Error(`Yahoo Finance returned ${response.status}`);
-    const payload = await response.json();
-    const quotes = Array.isArray(payload?.quoteResponse?.result) ? payload.quoteResponse.result : [];
-    const results: Record<string, StockQuote> = {};
-
-    for (const quote of quotes) {
-      const symbol = fromYahooSymbol(String(quote?.symbol || ""));
-      if (!ALLOWED_SYMBOLS.has(symbol) || !symbols.includes(symbol)) continue;
-      const price = typeof quote.regularMarketPrice === "number" ? quote.regularMarketPrice : null;
-      if (price == null || !Number.isFinite(price)) continue;
-      const fallbackInfo = STOCK_INFO[symbol];
-      results[symbol] = {
-        price,
-        changePercent: typeof quote.regularMarketChangePercent === "number" && Number.isFinite(quote.regularMarketChangePercent) ? quote.regularMarketChangePercent : null,
-        name: typeof quote.shortName === "string" ? quote.shortName : fallbackInfo?.name ?? null,
-        currency: typeof quote.currency === "string" ? quote.currency : fallbackInfo?.currency ?? null,
-        exchange: typeof quote.fullExchangeName === "string" ? quote.fullExchangeName : fallbackInfo?.exchange ?? null,
-        dayOpen: typeof quote.regularMarketOpen === "number" ? quote.regularMarketOpen : null,
-        dayHigh: typeof quote.regularMarketDayHigh === "number" ? quote.regularMarketDayHigh : null,
-        dayLow: typeof quote.regularMarketDayLow === "number" ? quote.regularMarketDayLow : null,
-        previousClose: typeof quote.regularMarketPreviousClose === "number" ? quote.regularMarketPreviousClose : null,
-        volume: typeof quote.regularMarketVolume === "number" ? quote.regularMarketVolume : null,
-        week52High: typeof quote.fiftyTwoWeekHigh === "number" ? quote.fiftyTwoWeekHigh : null,
-        week52Low: typeof quote.fiftyTwoWeekLow === "number" ? quote.fiftyTwoWeekLow : null,
-        lastTradeTime: typeof quote.regularMarketTime === "number" ? new Date(quote.regularMarketTime * 1000).toISOString() : null,
-        extendedHours: typeof quote.marketState === "string" ? !["REGULAR", "PRE", "POST"].includes(quote.marketState) : null,
-      };
-    }
-
-    return results;
-  } finally {
-    clearTimeout(timeout);
-  }
-}
-
 export async function GET(request: Request) {
   const rateLimit = allowPublicRequest(request, "stocks", 10);
   if (!rateLimit.allowed) {
@@ -211,47 +144,24 @@ export async function GET(request: Request) {
     if (persistent?.data) {
       const selected = Object.fromEntries(symbols.filter((symbol) => persistent.data[symbol]).map((symbol) => [symbol, persistent.data[symbol]]));
       if (Object.keys(selected).length > 0) {
-        // Check if cache has complete data (not just null values)
-        const hasCompleteData = Object.values(selected).some(stock => 
-          stock.changePercent !== null || stock.dayOpen !== null || stock.dayHigh !== null
-        );
-        
-        if (hasCompleteData) {
-          return NextResponse.json(selected, {
-            headers: {
-              "X-Market-Data-Source": isFreshMarketCache(persistent, CACHE_DURATION) ? "firebase-cache" : "firebase-stale-cache",
-              "X-Market-Data-Updated": persistent.fetchedAt,
-              "Cache-Control": PUBLIC_CACHE_CONTROL,
-            },
-          });
-        }
-        // If cache has incomplete data, proceed to fetch fresh data
-        console.log("Cache has incomplete data, fetching fresh data from FMP");
+        return NextResponse.json(selected, {
+          headers: {
+            "X-Market-Data-Source": isFreshMarketCache(persistent, CACHE_DURATION) ? "firebase-cache" : "firebase-stale-cache",
+            "X-Market-Data-Updated": persistent.fetchedAt,
+            "Cache-Control": PUBLIC_CACHE_CONTROL,
+          },
+        });
       }
     }
   } catch (cacheError) {
     console.error("Cache read error, proceeding to live API:", cacheError);
   }
 
-  // For all users (including public), try Yahoo Finance fallback for complete data
-  const cacheKey = `stock:${symbols.join(",")}`;
-  console.log("Attempting Yahoo Finance fallback for complete stock data");
-  try {
-    const yahooResults = await fetchYahooStockQuotes(symbols);
-    if (Object.keys(yahooResults).length > 0) {
-      setCache(cacheKey, yahooResults);
-      return NextResponse.json(yahooResults, { headers: { "Cache-Control": PUBLIC_CACHE_CONTROL, "X-Market-Data-Source": "yahoo-fallback" } });
-    }
-  } catch (yahooError) {
-    console.warn("Yahoo Finance fallback unavailable:", yahooError);
-  }
-
   // Only the protected Cron may populate the provider cache with fresh data
-  const isDevMode = process.env.NODE_ENV === 'development' && process.env.FMP_API_KEY;
+  // Public users get 503 if cache is not available (like crypto)
+  const isDevMode = process.env.NODE_ENV === 'development';
   if (!isPrivateSync && !isDevMode) {
-    const offlineResults = getOfflineStockQuotes(symbols);
-    setCache(cacheKey, offlineResults);
-    return NextResponse.json(offlineResults, { headers: { "Cache-Control": PUBLIC_CACHE_CONTROL, "X-Market-Data-Source": "offline-reference" } });
+    return NextResponse.json({ error: "Stock market cache is not available yet." }, { status: 503, headers: { "Cache-Control": PUBLIC_CACHE_CONTROL } });
   }
   
   try {
@@ -261,15 +171,7 @@ export async function GET(request: Request) {
     const results: Record<string, StockQuote> = {};
 
     if (!apiKey) {
-      // Always try Yahoo Finance first when FMP API key is not available
-      const yahooResults = await fetchYahooStockQuotes(symbols);
-      if (Object.keys(yahooResults).length > 0) {
-        setCache(cacheKey, yahooResults);
-        try { await writePersistentMarketCache("stocks", yahooResults, "Yahoo Finance fallback"); } catch (error) { console.warn("Unable to persist stock fallback cache:", error); }
-        return NextResponse.json(yahooResults, { headers: { "Cache-Control": PUBLIC_CACHE_CONTROL, "X-Market-Data-Source": "yahoo-fallback" } });
-      }
       const offlineResults = getOfflineStockQuotes(symbols);
-      setCache(cacheKey, offlineResults);
       try { await writePersistentMarketCache("stocks", offlineResults, "Offline reference snapshot"); } catch (error) { console.warn("Unable to persist stock offline cache:", error); }
       return NextResponse.json(offlineResults, { headers: { "Cache-Control": PUBLIC_CACHE_CONTROL, "X-Market-Data-Source": "offline-reference" } });
     }
@@ -308,79 +210,14 @@ export async function GET(request: Request) {
     }
 
     if (Object.keys(results).length > 0) {
-      setCache(cacheKey, results);
       try { await writePersistentMarketCache("stocks", results, "FMP"); } catch (error) { console.warn("Unable to persist stock cache:", error); }
       return NextResponse.json(results, { headers: { "Cache-Control": PUBLIC_CACHE_CONTROL, "X-Market-Data-Source": "live-synced" } });
     }
 
     throw new Error("No valid stock data received");
   } catch (error) {
-    console.warn("Stock API unavailable:", error instanceof Error ? error.message : error);
-    
-    // Try Yahoo Finance API as fallback
-    try {
-      console.log("Attempting Yahoo Finance API fallback...");
-      const yahooResults: Record<string, StockQuote> = {};
-      
-      for (const symbol of symbols) {
-        try {
-          const yahooSymbol = symbol.replace('.', '-'); // Yahoo uses dash for dot
-          const res = await fetch(`https://query1.finance.yahoo.com/v8/finance/chart/${yahooSymbol}?range=1d&interval=1d`, {
-            headers: { 
-              "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36" 
-            },
-            signal: AbortSignal.timeout(5000), // 5 second timeout
-          });
-          
-          if (res.ok) {
-            const data = await res.json();
-            const meta = data.chart?.result?.[0]?.meta;
-            const quote = data.chart?.result?.[0]?.indicators?.quote?.[0];
-            
-            if (meta && quote) {
-              const price = meta.regularMarketPrice;
-              const previousClose = meta.previousClose || meta.chartPreviousClose;
-              const changePercent = typeof price === "number" && typeof previousClose === "number" && previousClose > 0
-                ? ((price - previousClose) / previousClose) * 100
-                : null;
-              
-              console.log(`Yahoo data for ${symbol}:`, { price, previousClose, changePercent });
-              
-              yahooResults[symbol] = {
-                price: price,
-                changePercent: typeof changePercent === "number" && Number.isFinite(changePercent) ? changePercent : null,
-                name: STOCK_INFO[symbol]?.name || null,
-                currency: meta.currency || "USD",
-                exchange: meta.exchangeName || null,
-                dayOpen: quote.open?.[0] || null,
-                dayHigh: quote.high?.[0] || null,
-                dayLow: quote.low?.[0] || null,
-                previousClose: previousClose || null,
-                volume: quote.volume?.[0] || null,
-                week52High: meta.fiftyTwoWeekHigh || null,
-                week52Low: meta.fiftyTwoWeekLow || null,
-                lastTradeTime: new Date(meta.regularMarketTime * 1000).toISOString(),
-                extendedHours: null,
-              };
-            }
-          }
-        } catch (symbolError) {
-          console.warn(`Failed to fetch ${symbol} from Yahoo:`, symbolError);
-        }
-      }
-      
-      if (Object.keys(yahooResults).length > 0) {
-        setCache(cacheKey, yahooResults);
-        try { await writePersistentMarketCache("stocks", yahooResults, "Yahoo Finance fallback"); } catch (error) { console.warn("Unable to persist Yahoo fallback cache:", error); }
-        return NextResponse.json(yahooResults, { headers: { "Cache-Control": PUBLIC_CACHE_CONTROL, "X-Market-Data-Source": "yahoo-fallback" } });
-      }
-    } catch (yahooError) {
-      console.warn("Yahoo Finance fallback failed:", yahooError);
-    }
-    
-    // Return offline data as last resort
+    console.error("Stock API error:", error);
     const offlineResults = getOfflineStockQuotes(symbols);
-    setCache(cacheKey, offlineResults);
     try { await writePersistentMarketCache("stocks", offlineResults, "Offline reference snapshot"); } catch (error) { console.warn("Unable to persist stock offline cache:", error); }
     return NextResponse.json(offlineResults, { headers: { "Cache-Control": PUBLIC_CACHE_CONTROL, "X-Market-Data-Source": "offline-reference" } });
   }
