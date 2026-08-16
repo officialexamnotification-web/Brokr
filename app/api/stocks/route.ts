@@ -88,7 +88,6 @@ const STOCK_INFO: Record<string, { name: string; exchange: string; currency: str
   UNH: { name: "UnitedHealth Group Incorporated", exchange: "NYSE", currency: "USD" },
   CAT: { name: "Caterpillar Inc.", exchange: "NYSE", currency: "USD" },
   GE: { name: "GE Aerospace", exchange: "NYSE", currency: "USD" },
-  UNH: { name: "UnitedHealth Group Incorporated", exchange: "NYSE", currency: "USD" },
   MRK: { name: "Merck & Co., Inc.", exchange: "NYSE", currency: "USD" },
   PFE: { name: "Pfizer Inc.", exchange: "NYSE", currency: "USD" },
   CVX: { name: "Chevron Corporation", exchange: "NYSE", currency: "USD" },
