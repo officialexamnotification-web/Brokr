@@ -43,7 +43,7 @@ export async function GET(request: Request) {
     
     // Try to write to Firebase cache, but don't fail if it doesn't work
     try {
-      await writePersistentMarketCache("stocks", data, "StockData.org");
+      await writePersistentMarketCache("stocks", data, "FMP");
     } catch (cacheError) {
       console.warn("Firebase cache write failed (non-critical):", cacheError);
     }

@@ -4,7 +4,7 @@ import { isFreshMarketCache, readPersistentMarketCache, writePersistentMarketCac
 
 export const dynamic = "force-dynamic";
 
-const STOCKDATA_BASE = "https://api.stockdata.org/v1";
+const FMP_BASE = "https://financialmodelingprep.com/stable";
 const DEFAULT_SYMBOLS = ["AAPL", "GOOGL", "MSFT", "TSLA", "AMZN", "NVDA", "META", "BRK.B", "AVGO", "WMT", "JPM", "LLY", "V", "ORCL", "MA", "XOM", "COST", "JNJ", "HD", "PG",
   "NFLX", "AMD", "CRM", "ADBE", "QCOM"];
 const FULL_SYMBOL_LIST = [
@@ -50,9 +50,9 @@ const STOCK_INFO: Record<string, { name: string; exchange: string; currency: str
   DIS: { name: "The Walt Disney Company", exchange: "NYSE", currency: "USD" },
   KO: { name: "The Coca-Cola Company", exchange: "NYSE", currency: "USD" },
   PEP: { name: "PepsiCo, Inc.", exchange: "NASDAQ", currency: "USD" },
-  MCD: { name: "McDonald's Corporation", exchange: "NYSE", currency: "USD" },
+  MCD: { name: "McDonald's Corporation", exchange: "NASDAQ", currency: "USD" },
   NKE: { name: "NIKE, Inc.", exchange: "NYSE", currency: "USD" },
-  BA: { name: "The Boeing Company", exchange: "NYSE", currency: "USD" },
+  BA: { name: "The Boeing Company", exchange: "NASDAQ", currency: "USD" },
   CAT: { name: "Caterpillar Inc.", exchange: "NYSE", currency: "USD" },
   GE: { name: "GE Aerospace", exchange: "NYSE", currency: "USD" },
   UNH: { name: "UnitedHealth Group Incorporated", exchange: "NYSE", currency: "USD" },
@@ -67,7 +67,7 @@ const STOCK_INFO: Record<string, { name: string; exchange: string; currency: str
   RTX: { name: "RTX Corporation", exchange: "NYSE", currency: "USD" },
   LOW: { name: "Lowe's Companies, Inc.", exchange: "NYSE", currency: "USD" },
   SBUX: { name: "Starbucks Corporation", exchange: "NASDAQ", currency: "USD" },
-  PLTR: { name: "Palantir Technologies Inc.", exchange: "NASDAQ", currency: "USD" },
+  PLTR: { name: "Palantir Technologies Inc.", exchange: "NYSE", currency: "USD" },
 };
 
 const OFFLINE_STOCK_PRICES: Record<string, number> = {
@@ -226,7 +226,7 @@ export async function GET(request: Request) {
           });
         }
         // If cache has incomplete data, proceed to fetch fresh data
-        console.log("Cache has incomplete data, fetching fresh data from Yahoo Finance");
+        console.log("Cache has incomplete data, fetching fresh data from FMP");
       }
     }
   } catch (cacheError) {
@@ -247,7 +247,7 @@ export async function GET(request: Request) {
   }
 
   // Only the protected Cron may populate the provider cache with fresh data
-  const isDevMode = process.env.NODE_ENV === 'development' && process.env.STOCKDATA_API_KEY;
+  const isDevMode = process.env.NODE_ENV === 'development' && process.env.FMP_API_KEY;
   if (!isPrivateSync && !isDevMode) {
     const offlineResults = getOfflineStockQuotes(symbols);
     setCache(cacheKey, offlineResults);
@@ -255,13 +255,13 @@ export async function GET(request: Request) {
   }
   
   try {
-    // Using StockData.org API with environment variable
-    const apiKey = process.env.STOCKDATA_API_KEY || "";
+    // Using FMP API with environment variable
+    const apiKey = process.env.FMP_API_KEY || "";
     
     const results: Record<string, StockQuote> = {};
 
     if (!apiKey) {
-      // Always try Yahoo Finance first when StockData.org API key is not available
+      // Always try Yahoo Finance first when FMP API key is not available
       const yahooResults = await fetchYahooStockQuotes(symbols);
       if (Object.keys(yahooResults).length > 0) {
         setCache(cacheKey, yahooResults);
@@ -274,54 +274,42 @@ export async function GET(request: Request) {
       return NextResponse.json(offlineResults, { headers: { "Cache-Control": PUBLIC_CACHE_CONTROL, "X-Market-Data-Source": "offline-reference" } });
     }
     
-    // Process symbols in batches of 5 for better efficiency
-    const batchSize = 5;
-    for (let i = 0; i < symbols.length; i += batchSize) {
-      const batch = symbols.slice(i, i + batchSize);
-      
-      
-      const res = await fetch(`${STOCKDATA_BASE}/data/quote?symbols=${batch.join(",")}&api_token=${apiKey}`, {
-        next: { revalidate: 600 }, // 10 minutes
+    // Use FMP batch quote API for multiple symbols in one call
+    const res = await fetch(`${FMP_BASE}/quote?symbol=${symbols.join(",")}&apikey=${apiKey}`, {
+      next: { revalidate: 600 }, // 10 minutes
+    });
+    const data = await res.json();
+    
+    if (data && Array.isArray(data)) {
+      data.forEach((quote: any) => {
+        const price = quote.price;
+        const previousClose = quote.previousClose;
+        const changePercent = typeof price === "number" && typeof previousClose === "number" && previousClose > 0
+          ? ((price - previousClose) / previousClose) * 100
+          : null;
+        
+        results[quote.symbol] = {
+          price: price,
+          changePercent: typeof changePercent === "number" && Number.isFinite(changePercent) ? changePercent : null,
+          name: typeof quote.name === "string" ? quote.name : null,
+          currency: typeof quote.currency === "string" ? quote.currency : null,
+          exchange: typeof quote.exchange === "string" ? quote.exchange : null,
+          dayOpen: typeof quote.open === "number" ? quote.open : null,
+          dayHigh: typeof quote.dayHigh === "number" ? quote.dayHigh : null,
+          dayLow: typeof quote.dayLow === "number" ? quote.dayLow : null,
+          previousClose: typeof previousClose === "number" ? previousClose : null,
+          volume: typeof quote.volume === "number" ? quote.volume : null,
+          week52High: typeof quote["52WeekHigh"] === "number" ? quote["52WeekHigh"] : null,
+          week52Low: typeof quote["52WeekLow"] === "number" ? quote["52WeekLow"] : null,
+          lastTradeTime: typeof quote.timestamp === "string" ? quote.timestamp : null,
+          extendedHours: null,
+        };
       });
-      const data = await res.json();
-      
-      
-      if (data && Array.isArray(data.data)) {
-        data.data.forEach((quote: any) => {
-          const price = quote.price;
-          const previousClose = quote.previous_close_price;
-          const changePercent = typeof price === "number" && typeof previousClose === "number" && previousClose > 0
-            ? ((price - previousClose) / previousClose) * 100
-            : null;
-          
-          results[quote.ticker] = {
-            price: price,
-            changePercent: typeof changePercent === "number" && Number.isFinite(changePercent) ? changePercent : null,
-            name: typeof quote.name === "string" ? quote.name : null,
-            currency: typeof quote.currency === "string" ? quote.currency : null,
-            exchange: typeof quote.exchange_short === "string" ? quote.exchange_short : null,
-            dayOpen: typeof quote.day_open === "number" ? quote.day_open : null,
-            dayHigh: typeof quote.day_high === "number" ? quote.day_high : null,
-            dayLow: typeof quote.day_low === "number" ? quote.day_low : null,
-            previousClose: typeof previousClose === "number" ? previousClose : null,
-            volume: typeof quote.volume === "number" ? quote.volume : null,
-            week52High: typeof quote["52_week_high"] === "number" ? quote["52_week_high"] : null,
-            week52Low: typeof quote["52_week_low"] === "number" ? quote["52_week_low"] : null,
-            lastTradeTime: typeof quote.last_trade_time === "string" ? quote.last_trade_time : null,
-            extendedHours: typeof quote.is_extended_hours_price === "boolean" ? quote.is_extended_hours_price : null,
-          };
-        });
-      }
-      
-      // Add small delay between batches
-      if (i + batchSize < symbols.length) {
-        await new Promise(resolve => setTimeout(resolve, 500));
-      }
     }
 
     if (Object.keys(results).length > 0) {
       setCache(cacheKey, results);
-      try { await writePersistentMarketCache("stocks", results, "StockData.org"); } catch (error) { console.warn("Unable to persist stock cache:", error); }
+      try { await writePersistentMarketCache("stocks", results, "FMP"); } catch (error) { console.warn("Unable to persist stock cache:", error); }
       return NextResponse.json(results, { headers: { "Cache-Control": PUBLIC_CACHE_CONTROL, "X-Market-Data-Source": "live-synced" } });
     }
 
@@ -376,22 +364,24 @@ export async function GET(request: Request) {
               };
             }
           }
-          
-          // Small delay to avoid rate limiting
-          await new Promise(resolve => setTimeout(resolve, 200));
-        } catch (yahooError) {
-          console.warn(`Yahoo API failed for ${symbol}:`, yahooError);
+        } catch (symbolError) {
+          console.warn(`Failed to fetch ${symbol} from Yahoo:`, symbolError);
         }
       }
       
       if (Object.keys(yahooResults).length > 0) {
-        console.log("Yahoo API fallback successful for", Object.keys(yahooResults).length, "symbols");
-        return NextResponse.json(yahooResults, { headers: { "X-Market-Data-Source": "yahoo-finance-fallback", "Cache-Control": PUBLIC_CACHE_CONTROL } });
+        setCache(cacheKey, yahooResults);
+        try { await writePersistentMarketCache("stocks", yahooResults, "Yahoo Finance fallback"); } catch (error) { console.warn("Unable to persist Yahoo fallback cache:", error); }
+        return NextResponse.json(yahooResults, { headers: { "Cache-Control": PUBLIC_CACHE_CONTROL, "X-Market-Data-Source": "yahoo-fallback" } });
       }
-    } catch (yahooFallbackError) {
-      console.warn("Yahoo Finance fallback failed:", yahooFallbackError);
+    } catch (yahooError) {
+      console.warn("Yahoo Finance fallback failed:", yahooError);
     }
     
-    return NextResponse.json({ error: "Stock market data is temporarily unavailable." }, { status: 503 });
+    // Return offline data as last resort
+    const offlineResults = getOfflineStockQuotes(symbols);
+    setCache(cacheKey, offlineResults);
+    try { await writePersistentMarketCache("stocks", offlineResults, "Offline reference snapshot"); } catch (error) { console.warn("Unable to persist stock offline cache:", error); }
+    return NextResponse.json(offlineResults, { headers: { "Cache-Control": PUBLIC_CACHE_CONTROL, "X-Market-Data-Source": "offline-reference" } });
   }
 }

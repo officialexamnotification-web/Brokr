@@ -31,12 +31,12 @@ jobs:
           # Crypto sync every 10 minutes (this workflow schedule)
           refresh "Crypto" "https://www.tradivex.com/api/crypto/sync"
 
-          # Stocks sync every 30 minutes (using simple check)
+          # Stocks sync every 10 minutes (using simple check)
           minute=$(date +%M)
-          if [ $((minute % 30)) -eq 0 ]; then
+          if [ $((minute % 10)) -eq 0 ]; then
             refresh "Stocks" "https://www.tradivex.com/api/stocks/sync"
           else
-            echo "Skipping Stocks sync (only runs every 30 minutes)"
+            echo "Skipping Stocks sync (only runs every 10 minutes)"
           fi
 
           refresh "Historical stocks" "https://www.tradivex.com/api/stocks/historical?symbol=AAPL&timeframe=daily"

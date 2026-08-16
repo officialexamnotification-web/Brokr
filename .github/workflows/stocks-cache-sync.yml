@@ -3,7 +3,7 @@ name: Refresh stocks cache
 on:
   workflow_dispatch:
   schedule:
-    - cron: "*/30 * * * *"  # Every 30 minutes
+    - cron: "*/10 * * * *"  # Every 10 minutes
 
 jobs:
   sync:
