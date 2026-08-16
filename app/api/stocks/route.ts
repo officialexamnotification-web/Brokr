@@ -141,6 +141,7 @@ export async function GET(request: Request) {
   // Try to serve from Firebase cache first (for all users including public)
   try {
     const persistent = await readPersistentMarketCache<Record<string, StockQuote>>("stocks");
+    console.log("Cache read result:", persistent ? "Cache found" : "No cache found");
     if (persistent?.data) {
       const selected = Object.fromEntries(symbols.filter((symbol) => persistent.data[symbol]).map((symbol) => [symbol, persistent.data[symbol]]));
       if (Object.keys(selected).length > 0) {

@@ -31,16 +31,30 @@ try {
 export async function readPersistentMarketCache<T>(
   market: "stocks" | "crypto" | "stockHistorical",
 ): Promise<PersistentMarketCache<T> | null> {
-  if (!firestore) return null;
+  if (!firestore) {
+    console.error("Firestore not initialized for", market);
+    return null;
+  }
   const cached = readCache.get(market);
-  if (cached && cached.expiresAt > Date.now()) return cached.value as PersistentMarketCache<T> | null;
+  if (cached && cached.expiresAt > Date.now()) {
+    console.log("Returning cached data for", market);
+    return cached.value as PersistentMarketCache<T> | null;
+  }
   try {
+    console.log("Attempting to read from Firebase for", market);
     const snapshot = await getDoc(doc(firestore, "marketCache", market));
-    if (!snapshot.exists()) return null;
+    if (!snapshot.exists()) {
+      console.log("No document found for", market);
+      return null;
+    }
     const value = snapshot.data() as Partial<PersistentMarketCache<T>>;
-    if (!value.data || typeof value.fetchedAt !== "string") return null;
+    if (!value.data || typeof value.fetchedAt !== "string") {
+      console.log("Invalid cache structure for", market, value);
+      return null;
+    }
     const result = value as PersistentMarketCache<T>;
     readCache.set(market, { expiresAt: Date.now() + READ_CACHE_TTL, value: result });
+    console.log("Successfully read cache for", market, "with", Object.keys(result.data).length, "items");
     return result;
   } catch (error) {
     console.error(`Unable to read ${market} market cache:`, error);
