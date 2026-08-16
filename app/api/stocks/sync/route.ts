@@ -41,9 +41,13 @@ export async function GET(request: Request) {
     
     const data = await response.json();
     
+    console.log("Sync: Fetched data from stocks API:", Object.keys(data).length, "symbols");
+    
     // Try to write to Firebase cache, but don't fail if it doesn't work
     try {
+      console.log("Sync: Attempting to write to Firebase cache");
       await writePersistentMarketCache("stocks", data, "FMP");
+      console.log("Sync: Successfully wrote to Firebase cache");
     } catch (cacheError) {
       console.warn("Firebase cache write failed (non-critical):", cacheError);
     }

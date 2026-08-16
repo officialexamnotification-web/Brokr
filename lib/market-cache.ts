@@ -68,12 +68,14 @@ export async function writePersistentMarketCache<T>(
   source: string,
 ) {
   if (!firestore) throw new Error("Firebase market cache is not initialized");
+  console.log(`Writing to Firebase cache for ${market} with ${Object.keys(data).length} items, source: ${source}`);
   await setDoc(doc(firestore, "marketCache", market), {
     data,
     fetchedAt: new Date().toISOString(),
     source,
   });
   readCache.delete(market);
+  console.log(`Successfully wrote to Firebase cache for ${market}`);
 }
 
 export function isFreshMarketCache(
