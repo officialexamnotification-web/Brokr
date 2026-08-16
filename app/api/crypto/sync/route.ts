@@ -40,7 +40,12 @@ export async function GET(request: Request) {
     
     const data = await response.json();
     
-    await writePersistentMarketCache("crypto", data, "CoinGecko");
+    // Try to write to Firebase cache, but don't fail if it doesn't work
+    try {
+      await writePersistentMarketCache("crypto", data, "CoinGecko");
+    } catch (cacheError) {
+      console.warn("Firebase cache write failed (non-critical):", cacheError);
+    }
     
     return NextResponse.json({ success: true, syncedAt: new Date().toISOString(), coins: Object.keys(data).length });
   } catch (error) {
