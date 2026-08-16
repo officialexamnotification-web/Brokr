@@ -43,14 +43,9 @@ export async function GET(request: Request) {
     
     console.log("Sync: Fetched data from stocks API:", Object.keys(data).length, "symbols");
     
-    // Try to write to Firebase cache, but don't fail if it doesn't work
-    try {
-      console.log("Sync: Attempting to write to Firebase cache");
-      await writePersistentMarketCache("stocks", data, "FMP");
-      console.log("Sync: Successfully wrote to Firebase cache");
-    } catch (cacheError) {
-      console.warn("Firebase cache write failed (non-critical):", cacheError);
-    }
+    // Skip Firebase cache write (failing silently for stocks)
+    // Cache is disabled for stocks due to Firebase write issues
+    console.log("Sync: Skipping Firebase cache write for stocks");
     
     return NextResponse.json({ success: true, syncedAt: new Date().toISOString(), symbols: Object.keys(data).length });
   } catch (error) {
