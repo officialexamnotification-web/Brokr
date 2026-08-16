@@ -22,16 +22,33 @@ function isAuthorized(request: Request) {
 }
 
 export async function GET(request: Request) {
-  if (!isAuthorized(request)) {
+  // Allow dev mode without authentication
+  const isDevMode = process.env.NODE_ENV === 'development';
+  if (!isDevMode && !isAuthorized(request)) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
   try {
-    const STOCK_SYMBOLS = ["AAPL", "MSFT", "GOOGL", "AMZN", "NVDA", "META", "TSLA", "BRK.B", "AVGO", "WMT", "JPM", "LLY", "V", "ORCL", "MA", "XOM", "COST", "JNJ", "HD", "PG", "NFLX", "AMD", "CRM", "ADBE", "QCOM"];
+    const STOCK_SYMBOLS = [
+      // Mega Cap Giants
+      "AAPL", "MSFT", "GOOGL", "AMZN", "NVDA", "META", "TSLA", "BRK.B",
+      // Financial Services
+      "JPM", "V", "MA", "BAC", "WFC", "GS", "MS",
+      // Technology Leaders
+      "AVGO", "CSCO", "ORCL", "CRM", "ADBE", "INTC", "AMD", "QCOM", "IBM", "NFLX",
+      // Consumer Giants
+      "WMT", "COST", "HD", "MCD", "NKE", "KO", "PEP", "DIS", "SBUX",
+      // Energy Sector
+      "XOM", "CVX", "COP", "SHEL", "BP",
+      // Healthcare Leaders
+      "JNJ", "UNH", "LLY", "PFE", "TMO", "ABT", "MRK", "AMGN",
+      // Industrials
+      "CAT", "BA", "GE"
+    ];
     
     const response = await fetch(
-      `${new URL(request.url).origin}/api/stocks?symbols=${STOCK_SYMBOLS.join(",")}`,
-      { headers: { "x-market-sync-key": process.env.CRON_SECRET as string }, cache: "no-store" }
+      `${new URL(request.url).origin}/api/stocks?symbols=${STOCK_SYMBOLS.join(",")}&refresh=true`,
+      { headers: { "x-market-sync-key": process.env.CRON_SECRET || "" }, cache: "no-store" }
     );
     
     if (!response.ok) {
@@ -43,9 +60,13 @@ export async function GET(request: Request) {
     
     console.log("Sync: Fetched data from stocks API:", Object.keys(data).length, "symbols");
     
-    // Skip Firebase cache write (failing silently for stocks)
-    // Cache is disabled for stocks due to Firebase write issues
-    console.log("Sync: Skipping Firebase cache write for stocks");
+    // Write to Firebase cache for public users
+    try {
+      await writePersistentMarketCache("stocks", data, "cron-sync");
+      console.log("Sync: Successfully wrote to Firebase cache");
+    } catch (error) {
+      console.error("Sync: Firebase cache write failed:", error);
+    }
     
     return NextResponse.json({ success: true, syncedAt: new Date().toISOString(), symbols: Object.keys(data).length });
   } catch (error) {

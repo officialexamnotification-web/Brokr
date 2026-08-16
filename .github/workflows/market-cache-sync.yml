@@ -3,7 +3,7 @@ name: Refresh market cache
 on:
   workflow_dispatch:
   schedule:
-    - cron: "*/5 * * * *"  # Crypto every 5 minutes
+    - cron: "*/5 * * * *"  # Crypto every 5 minutes (Stocks handled separately)
 
 jobs:
   sync:
@@ -28,16 +28,11 @@ jobs:
             fi
           }
 
-          # Crypto sync every 10 minutes (this workflow schedule)
+          # Crypto sync every 5 minutes (this workflow schedule)
           refresh "Crypto" "https://www.tradivex.com/api/crypto/sync"
 
-          # Stocks sync every 10 minutes (using simple check)
-          minute=$(date +%M)
-          if [ $((minute % 10)) -eq 0 ]; then
-            refresh "Stocks" "https://www.tradivex.com/api/stocks/sync"
-          else
-            echo "Skipping Stocks sync (only runs every 10 minutes)"
-          fi
+          # Stocks sync is handled by separate workflow (stocks-cache-sync.yml)
+          # No need to duplicate here
 
           refresh "Historical stocks" "https://www.tradivex.com/api/stocks/historical?symbol=AAPL&timeframe=daily"
 
