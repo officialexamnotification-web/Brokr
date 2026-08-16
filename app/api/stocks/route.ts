@@ -137,25 +137,30 @@ export async function GET(request: Request) {
   const syncKey = request.headers.get("x-market-sync-key");
   const isPrivateSync = Boolean(process.env.CRON_SECRET && syncKey === process.env.CRON_SECRET);
   const forceRefresh = searchParams.get("refresh") === "true" && isPrivateSync;
-
-  // Try to serve from Firebase cache first (for all users including public)
-  try {
-    const persistent = await readPersistentMarketCache<Record<string, StockQuote>>("stocks");
-    console.log("Cache read result:", persistent ? "Cache found" : "No cache found");
-    if (persistent?.data) {
-      const selected = Object.fromEntries(symbols.filter((symbol) => persistent.data[symbol]).map((symbol) => [symbol, persistent.data[symbol]]));
-      if (Object.keys(selected).length > 0) {
-        return NextResponse.json(selected, {
-          headers: {
-            "X-Market-Data-Source": isFreshMarketCache(persistent, CACHE_DURATION) ? "firebase-cache" : "firebase-stale-cache",
-            "X-Market-Data-Updated": persistent.fetchedAt,
-            "Cache-Control": PUBLIC_CACHE_CONTROL,
-          },
-        });
+  
+  // If force refresh is requested, skip cache and go directly to API
+  if (forceRefresh) {
+    console.log("Force refresh requested, skipping cache");
+  } else {
+    // Try to serve from Firebase cache first (for all users including public)
+    try {
+      const persistent = await readPersistentMarketCache<Record<string, StockQuote>>("stocks");
+      console.log("Cache read result:", persistent ? "Cache found" : "No cache found");
+      if (persistent?.data) {
+        const selected = Object.fromEntries(symbols.filter((symbol) => persistent.data[symbol]).map((symbol) => [symbol, persistent.data[symbol]]));
+        if (Object.keys(selected).length > 0) {
+          return NextResponse.json(selected, {
+            headers: {
+              "X-Market-Data-Source": isFreshMarketCache(persistent, CACHE_DURATION) ? "firebase-cache" : "firebase-stale-cache",
+              "X-Market-Data-Updated": persistent.fetchedAt,
+              "Cache-Control": PUBLIC_CACHE_CONTROL,
+            },
+          });
+        }
       }
+    } catch (cacheError) {
+      console.error("Cache read error, proceeding to live API:", cacheError);
     }
-  } catch (cacheError) {
-    console.error("Cache read error, proceeding to live API:", cacheError);
   }
 
   // Only the protected Cron may populate the provider cache with fresh data
