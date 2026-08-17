@@ -13604,7 +13604,7 @@ const rawTools: Tool[] = [
     supportedCountries: ["Global with US focus"],
     depositMethods: ["N/A - Research provider"],
     withdrawalTime: "N/A - Research provider",
-    customerSupport: ["Phone support", "Email support", "Dedicated support for institutional clients"],
+    customerSupport: "Phone support, Email support, Dedicated support for institutional clients",
     mobileApp: false, demoAccount: false,
     bestFor: ["Value investors", "Earnings-focused traders", "Institutional advisors", "Quantitative analysts", "Investors seeking proven stock ranking systems and comprehensive fundamental research"],
     faq: [
