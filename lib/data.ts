@@ -13532,6 +13532,141 @@ const rawTools: Tool[] = [
     sourceUrls: ["https://www.coinglass.com/"],
     lastVerifiedAt: "2026-08-11", dataStatus: "partially_verified",
   },
+  {
+    id: 1001, name: "Barchart", slug: "barchart", logo: "BC",
+    rating: null,
+    description: "Comprehensive market data platform providing real-time stock quotes, futures data, charts, screeners, and analysis tools for retail and institutional traders.",
+    longDescription: "Barchart is a leading financial data provider founded in 1980, offering real-time and historical market data, charting tools, and screeners for stocks, futures, options, forex, and cryptocurrencies. Serves millions of investors with advanced technical analysis, portfolio tracking, watchlists, and customizable data views. Barchart offers multiple membership tiers including My Barchart (free basic access), Barchart Plus ($9.99/month), and Barchart Premier ($29.95/month) with premium features like ad-free experience, advanced charting, and data downloads.",
+    category: "Trading Tools", categoryId: 7,
+    features: ["Real-time stock quotes", "Futures data", "Advanced charting", "Stock screeners", "Options analysis", "Watchlists", "Portfolio tracking", "Technical indicators", "Commitment of traders reports", "Commodity data", "Currency converter", "Market news", "Data downloads", "API access"],
+    pros: ["Comprehensive market data coverage", "Real-time quotes for stocks/futures/options", "Advanced charting tools", "Multiple membership tiers", "Extensive commodity data", "API access for developers", "40+ years of historical data", "Mobile apps available"],
+    cons: ["Paid tiers can be expensive for casual users", "Learning curve for advanced features", "Some premium features require higher-tier subscriptions", "Ads on free version can be distracting"],
+    pricing: "Free / $9.99/mo / $29.95/mo", pricingDetail: "My Barchart (Free): Basic access to main features. Barchart Plus ($9.99/month, $99/year): Advanced tools, fewer ads, 10 watchlists/portfolios. Barchart Premier ($29.95/month, $239.95/year): Professional investment tools, no ads, advanced charting, unlimited data downloads. 30-day free trial on paid plans.",
+    minDeposit: "Free to start", platforms: ["Web", "iOS", "Android"],
+    website: "https://www.barchart.com", affiliate: false, trending: true, featured: true,
+    sourceUrls: ["https://www.barchart.com", "https://www.barchart.com/membership-comparison"],
+    lastVerifiedAt: "2026-08-20", dataStatus: "partially_verified",
+    yearFounded: 1980, regulation: ["Not a broker - data provider only"],
+    supportedCountries: ["Global"],
+    depositMethods: ["N/A - Data provider"],
+    withdrawalTime: "N/A - Data provider",
+    customerSupport: "Email support, help center, phone support for business inquiries",
+    mobileApp: true, demoAccount: false,
+    bestFor: ["Technical analysts", "Futures traders", "Commodity traders", "Investors seeking comprehensive market data and screening tools"],
+    faq: [
+      { q: "Is Barchart free to use?", a: "Barchart offers a free basic membership with limited features. Paid subscriptions (Plus $9.99/mo, Premier $29.95/mo) unlock advanced tools, remove ads, and provide unlimited data downloads." },
+      { q: "What data does Barchart provide?", a: "Barchart provides real-time and historical data for stocks, futures, options, forex, and cryptocurrencies, including price quotes, charts, screeners, technical indicators, and fundamental data." },
+      { q: "Can I use Barchart for trading?", a: "Barchart is primarily a data provider and analysis platform. While it offers trading signals and analysis, you'll need to connect it to a brokerage account for actual trading execution." },
+    ],
+  },
+  {
+    id: 1002, name: "TipRanks", slug: "tipranks", logo: "TR",
+    rating: null,
+    description: "AI-powered investment research platform that tracks and measures the performance of Wall Street analysts, financial bloggers, hedge funds, and corporate insiders to provide data-driven investment insights.",
+    longDescription: "TipRanks is a revolutionary financial research platform founded in 2012 and headquartered in Tel Aviv, Israel. The platform employs cutting-edge technology to scan and analyze terabytes of financial data, turning big data into actionable investment insights. TipRanks uniquely measures and ranks Wall Street analysts based on their actual performance, bringing transparency to investment research. The platform tracks over 96,000 financial experts including analysts, bloggers, hedge funds, and corporate insiders, making this information publicly available to retail investors.",
+    category: "Trading Tools", categoryId: 7,
+    features: ["Analyst performance tracking and ranking", "Insider trading data analysis", "Hedge fund activity monitoring", "Stock screeners with proprietary data", "Smart Score ratings", "Analyst recommendations tracking", "Earnings estimates", "Price targets", "Technical analysis tools", "ETF screening", "News and research integration"],
+    pros: ["Unique analyst performance tracking", "Insider trading insights", "Hedge fund activity data", "AI-powered research tools", "Institutional-grade data for retail investors", "Comprehensive coverage of US stocks and ETFs", "Mobile app available"],
+    cons: ["Some features require paid subscription", "Learning curve for advanced tools", "Primarily focused on US markets", "Premium features can be expensive for casual investors"],
+    pricing: "Free tier available / Premium plans", pricingDetail: "Free basic access to limited features. Premium plans provide full access to analyst rankings, insider data, hedge fund tracking, advanced screeners, and research tools. Annual plans available with 30-day money-back guarantee. Pricing displayed at checkout.",
+    minDeposit: "Free to start", platforms: ["Web", "iOS", "Android"],
+    website: "https://www.tipranks.com", affiliate: false, trending: true, featured: true,
+    sourceUrls: ["https://www.tipranks.com", "https://www.tipranks.com/about", "https://www.tipranks.com/plans"],
+    lastVerifiedAt: "2026-08-20", dataStatus: "partially_verified",
+    yearFounded: 2012, regulation: ["Not a broker - research and data provider only"],
+    supportedCountries: ["Global with US focus"],
+    depositMethods: ["N/A - Research provider"],
+    withdrawalTime: "N/A - Research provider",
+    customerSupport: "Email support, help center, customer service for premium subscribers",
+    mobileApp: true, demoAccount: false,
+    bestFor: ["Investors seeking analyst insights", "Tracking Wall Street recommendations", "Insider trading analysis", "Data-driven stock research", "Institutional-grade research tools"],
+    faq: [
+      { q: "How does TipRanks rank analysts?", a: "TipRanks tracks and measures the actual performance of over 96,000 financial experts including Wall Street analysts, financial bloggers, hedge funds, and corporate insiders based on their recommendations and track records." },
+      { q: "Is TipRanks free to use?", a: "TipRanks offers a free tier with limited features. Premium plans provide full access to advanced research tools, analyst rankings, insider data, and comprehensive screening capabilities." },
+      { q: "What data does TipRanks provide?", a: "TipRanks provides analyst ratings and price targets, insider trading data, hedge fund activity, Smart Score ratings, earnings estimates, fundamental analysis, and proprietary stock screeners with unique data not available elsewhere." },
+    ],
+  },
+  {
+    id: 1003, name: "Zacks Investment Research", slug: "zacks-investment-research", logo: "ZR",
+    rating: null,
+    description: "Legendary investment research firm providing stock analysis, earnings estimates, and the famous Zacks Rank system for identifying top-performing stocks with average annual returns of 24% since 1988.",
+    longDescription: "Zacks Investment Research is one of the most recognized names in equity research, trusted by institutional investors, academics, and financial professionals for over 45 years. Founded with a focus on providing independent equity research, Zacks has developed proprietary ranking systems and quantitative models that have become industry standards. The platform's flagship Zacks Rank system has identified top-performing stocks with an average annual return of 24% since 1988. Zacks provides comprehensive research coverage on 12,000+ stocks, mutual funds, and ETFs with real-time valuation, earnings forecasts, 8-model quant scoring, and fundamental screeners.",
+    category: "Trading Tools", categoryId: 7,
+    features: ["Zacks Rank system (top performers with 24% avg annual return)", "Earnings estimates and surprise analysis", "8-model quant scoring", "Fundamental screeners", "Portfolio analytics", "Custom reports", "Backtesting tools", "Stock research on 12,000+ stocks/ETFs", "Real-time valuation", "Financial planning tools", "Institutional-grade data APIs"],
+    pros: ["Historically proven Zacks Rank system", "Comprehensive research coverage", "Institutional-grade data", "Earnings surprise analysis", "Quant scoring models", "45+ years of industry experience", "Trusted by 10,000+ financial advisors"],
+    cons: ["Full institutional access can be expensive", "Primarily focused on US markets", "Learning curve for advanced tools", "Some features require subscription commitments"],
+    pricing: "Free trials available / Premium research subscriptions", pricingDetail: "Free trials available for institutional services. ZRS Annual subscription $840/year for advisors. Retail research subscriptions available with various pricing tiers. Institutional data access requires custom enterprise licensing. Free trial options with no credit card required for some services.",
+    minDeposit: "Free trials available", platforms: ["Web", "Professional platforms"],
+    website: "https://www.zacks.com", affiliate: false, trending: true, featured: true,
+    sourceUrls: ["https://www.zacks.com", "https://www.zrs.com", "https://zacksdata.com"],
+    lastVerifiedAt: "2026-08-20", dataStatus: "partially_verified",
+    yearFounded: 1978, regulation: ["Not a broker - research and data provider only"],
+    supportedCountries: ["Global with US focus"],
+    depositMethods: ["N/A - Research provider"],
+    withdrawalTime: "N/A - Research provider",
+    customerSupport: ["Phone support", "Email support", "Dedicated support for institutional clients"],
+    mobileApp: false, demoAccount: false,
+    bestFor: ["Value investors", "Earnings-focused traders", "Institutional advisors", "Quantitative analysts", "Investors seeking proven stock ranking systems and comprehensive fundamental research"],
+    faq: [
+      { q: "What is the Zacks Rank?", a: "The Zacks Rank is a proprietary ranking system that identifies top-performing stocks based on earnings estimate revisions and other factors. Stocks ranked #1 have an average annual return of 24% since 1988." },
+      { q: "Is Zacks free to use?", a: "Zacks offers free trials and some basic content. Full access to research tools, Zacks Rank, and institutional features requires paid subscription with various pricing tiers available." },
+      { q: "What research does Zacks provide?", a: "Zacks provides research on 12,000+ stocks, mutual funds, and ETFs including earnings estimates, Zacks Rank, quant scoring, fundamental screeners, portfolio analytics, and custom reporting tools for advisors." },
+    ],
+  },
+  {
+    id: 1004, name: "Macrotrends", slug: "macrotrends", logo: "MT",
+    rating: null,
+    description: "Premier research platform for long-term investors providing 50+ years of historical stock data, 100+ years of economic indicators, inflation-adjusted market indices, and comprehensive macroeconomic analysis tools.",
+    longDescription: "Macrotrends is a specialized research platform designed for long-term investors who need historical context and macroeconomic perspective. The platform provides 50+ years of historical stock price and dividend data, 10 years of quarterly stock fundamental data, 100+ years of inflation-adjusted data for major market indices, 100+ years of precious metals data, 45 years of commodity interest rate and exchange rate data, and 100+ years of economic data. Macrotrends offers a stock screener with over 50 performance and fundamental criteria, making it ideal for long-term investment research and historical analysis.",
+    category: "Trading Tools", categoryId: 7,
+    features: ["50+ years historical stock prices and dividends", "10 years quarterly fundamental data", "100+ years inflation-adjusted market indices", "100+ years precious metals data", "45 years commodity/rates data", "100+ years economic data", "Stock screener with 50+ criteria", "Long-term trend analysis", "Inflation-adjusted data visualization"],
+    pros: ["Extensive historical data coverage", "Long-term perspective on markets", "Free access to many tools", "Inflation-adjusted data", "Comprehensive economic indicators", "Valuable for long-term research", "Simple interface"],
+    cons: ["No real-time data", "Some features require Premium Access", "Limited technical analysis tools", "Primarily focused on historical data rather than live trading", "No mobile app", "Premium pricing not transparent upfront"],
+    pricing: "Free / Premium Access available", pricingDetail: "Free access to many charts and tools including stock screener. Premium Access required for certain gated data, time series, charts, downloads, and advanced resources. Pricing shown at checkout with no monthly billing options (billed in advance). Free trials available when offered.",
+    minDeposit: "Free to start", platforms: ["Web"],
+    website: "https://www.macrotrends.net", affiliate: false, trending: true, featured: true,
+    sourceUrls: ["https://www.macrotrends.net", "https://www.macrotrends.net/terms"],
+    lastVerifiedAt: "2026-08-20", dataStatus: "partially_verified",
+    yearFounded: 2010, regulation: ["Not a broker - research and data provider only"],
+    supportedCountries: ["Global"],
+    depositMethods: ["N/A - Research provider"],
+    withdrawalTime: "N/A - Research provider",
+    customerSupport: "Email support, contact form",
+    mobileApp: false, demoAccount: false,
+    bestFor: ["Long-term investors", "Researchers studying market cycles", "Inflation analysis", "Historical trend analysis", "Fundamental researchers", "Investors seeking decades of historical data"],
+    faq: [
+      { q: "How far back does Macrotrends data go?", a: "Macrotrends provides 50+ years of historical stock price and dividend data, 10 years of quarterly fundamental data, 100+ years of inflation-adjusted market indices, and 100+ years of economic data and precious metals information." },
+      { q: "Is Macrotrends free to use?", a: "Macrotrends offers free access to many charts, tools, and the stock screener. Premium Access is required for certain gated data, time series, charts, downloads, and advanced resources with pricing shown at checkout." },
+      { q: "What makes Macrotrends different?", a: "Macrotrends specializes in long-term historical data and macroeconomic analysis rather than real-time trading. It provides 50+ years of stock data, 100+ years of economic indicators, and inflation-adjusted analysis, making it ideal for long-term research." },
+    ],
+  },
+  {
+    id: 1005, name: "Option Alpha", slug: "option-alpha", logo: "OA",
+    rating: null,
+    description: "Automated options trading platform with no-code bot building, backtesting, and strategy automation. Connect with Tradier or TradeStation for free access, or use Pro plan for unlimited bot automation with any broker.",
+    longDescription: "Option Alpha is a pioneering options trading automation platform founded in 2014 and headquartered in St Petersburg, Florida. The platform enables traders to find opportunities, backtest ideas, and automate options trading strategies without requiring any coding knowledge. Option Alpha's mission is to make options trading data-driven and process-oriented rather than based on guesswork. The platform offers several innovative tools including Trade Ideas for finding trades with positive expected value, 0DTE Oracle for next-day trading analysis, comprehensive backtesting capabilities, and bot automation for strategy execution.",
+    category: "Options Trading", categoryId: 5,
+    features: ["No-code bot building", "Automated options trading", "50 bots per account", "Unlimited backtesting", "Paper trading engine", "Trade Ideas scanner", "0DTE Oracle analysis", "Bot templates", "Natural language automation recipes", "SmartPricing technology", "Risk controls", "Cloud-based infrastructure", "Tradier/TradeStation integration"],
+    pros: ["No coding required for bot automation", "Free with qualifying broker integrations", "Unlimited backtesting", "Paper trading available", "Natural language bot building", "Comprehensive options analysis tools", "Innovative research features", "30-day free trial"],
+    cons: ["Free tier requires broker account with minimum balance", "Pro plan can be expensive for casual traders", "Learning curve for bot automation", "Primarily focused on US options market", "Requires active broker integration for free tier"],
+    pricing: "Free with broker integration / $99/mo Pro plan", pricingDetail: "FREE with Tradier (minimum $5,000 balance) or TradeStation (minimum $10,000 balance) integration. Pro plan $99/month ($79 annually) for unlimited bot automation with any broker. 30-day free trial available with no credit card required. All plans include 50 bots with $100k limit per bot and unlimited backtesting.",
+    minDeposit: "$0 for paper trading / $5,000 (Tradier) / $10,000 (TradeStation) / $99/mo Pro plan", platforms: ["Web", "Tradier integration", "TradeStation integration"],
+    website: "https://optionalpha.com", affiliate: false, trending: true, featured: true,
+    sourceUrls: ["https://optionalpha.com", "https://optionalpha.com/pricing", "https://optionalpha.com/bots"],
+    lastVerifiedAt: "2026-08-20", dataStatus: "partially_verified",
+    yearFounded: 2014, regulation: ["Not a broker - automation platform requiring broker integration"],
+    supportedCountries: ["Primarily US with some international options"],
+    depositMethods: ["Broker integration (Tradier, TradeStation)"],
+    withdrawalTime: "Broker-dependent",
+    customerSupport: "Email support, help center, community support",
+    mobileApp: false, demoAccount: true,
+    bestFor: ["Options traders seeking automation", "Algorithmic traders", "Backtesting enthusiasts", "Systematic traders", "Options strategy developers", "Traders wanting no-code bot building with broker integration"],
+    faq: [
+      { q: "Is Option Alpha free to use?", a: "Option Alpha is free with qualifying Tradier (minimum $5,000 balance) or TradeStation (minimum $10,000 balance) integration. The Pro plan costs $99/month ($79 annually) for unlimited bot automation with any broker. A 30-day free trial is available with no credit card required." },
+      { q: "Can I paper trade with Option Alpha?", a: "Yes, Option Alpha has a built-in paper trading engine that allows you to test strategies and bots risk-free in real market conditions without connecting to a brokerage account." },
+      { q: "How many bots can I run?", a: "All Option Alpha plans include 50 bots per account with a $100k limit per bot. The platform offers unlimited backtesting and comprehensive automation tools for options trading strategies." },
+    ],
+  },
 ];
 
 // Keep one canonical record per slug and keep unverified records out of the
@@ -13709,13 +13844,24 @@ export function searchTools(query: string, filters?: { category?: number; minRat
   let results = [...source];
   const q = query.toLowerCase();
   if (q) {
-    results = results.filter(
-      (t) =>
-        t.name.toLowerCase().includes(q) ||
-        t.description.toLowerCase().includes(q) ||
-        t.category.toLowerCase().includes(q) ||
-        t.features.some((f) => f.toLowerCase().includes(q))
-    );
+    // Split query into words for better matching
+    const searchTerms = q.split(/\s+/).filter(term => term.length > 0);
+    results = results.filter((t) => {
+      const nameLower = t.name.toLowerCase();
+      const descLower = t.description.toLowerCase();
+      const categoryLower = t.category.toLowerCase();
+      const featuresLower = t.features.map(f => f.toLowerCase()).join(' ');
+
+      // Check if all search terms match any field
+      return searchTerms.every(term =>
+        nameLower.includes(term) ||
+        descLower.includes(term) ||
+        categoryLower.includes(term) ||
+        featuresLower.includes(term) ||
+        // Also check if the term matches part of the name (for "bar chart" -> "barchart")
+        nameLower.replace(/\s+/g, '').includes(term.replace(/\s+/g, ''))
+      );
+    });
   }
   if (filters) {
     if (filters.category) results = results.filter((t) => t.categoryId === filters.category);
@@ -13725,6 +13871,33 @@ export function searchTools(query: string, filters?: { category?: number; minRat
     if (filters.regulation) results = results.filter((t) => t.regulation.some((r) => r.toLowerCase().includes(filters.regulation!.toLowerCase())));
   }
   return results;
+}
+
+export function searchCalculators(query: string): typeof import("./calculators").calculatorDefinitions {
+  const { calculatorDefinitions } = require("./calculators");
+  const q = query.toLowerCase();
+  if (!q) return calculatorDefinitions;
+
+  // Split query into words for better matching
+  const searchTerms = q.split(/\s+/).filter(term => term.length > 0);
+
+  return calculatorDefinitions.filter(
+    (calc: typeof import("./calculators").calculatorDefinitions[0]) => {
+      const titleLower = calc.title.toLowerCase();
+      const shortTitleLower = calc.shortTitle.toLowerCase();
+      const descLower = calc.description.toLowerCase();
+      const slugLower = calc.slug.toLowerCase();
+
+      return searchTerms.every(term =>
+        titleLower.includes(term) ||
+        shortTitleLower.includes(term) ||
+        descLower.includes(term) ||
+        slugLower.includes(term) ||
+        // Check for space-insensitive matching
+        titleLower.replace(/\s+/g, '').includes(term.replace(/\s+/g, ''))
+      );
+    }
+  );
 }
 
 

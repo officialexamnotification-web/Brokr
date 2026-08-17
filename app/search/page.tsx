@@ -5,7 +5,8 @@ import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { Search as SearchIcon, X, Filter, SlidersHorizontal, Star, Globe, Smartphone, DollarSign } from "lucide-react";
-import { tools, categories, searchTools, getAvailableCountries } from "@/lib/data";
+import { tools, categories, searchTools, getAvailableCountries, searchCalculators } from "@/lib/data";
+import { calculatorDefinitions } from "@/lib/calculators";
 import ToolCard from "@/components/common/ToolCard";
 import Badge from "@/components/common/Badge";
 import { usePublishedTools } from "@/components/content/ManagedContent";
@@ -95,6 +96,10 @@ function SearchContent() {
     });
     return results;
   }, [query, sortBy, selectedCategories, selectedPlatform, selectedRegulation, experience, selectedCountry, catalogTools]);
+
+  const filteredCalculators = useMemo(() => {
+    return searchCalculators(query);
+  }, [query]);
 
   const hasFilters = query || selectedCategories.length > 0 || selectedPlatform || selectedRegulation || experience !== "all" || selectedCountry;
   const clearFilters = () => {
@@ -193,7 +198,7 @@ function SearchContent() {
 
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <span className="text-sm text-slate-500 dark:text-slate-400">{filteredTools.length} results</span>
+            <span className="text-sm text-slate-500 dark:text-slate-400">{filteredTools.length + filteredCalculators.length} results</span>
             {hasFilters && (
               <button onClick={clearFilters} className="text-sm text-primary-600 dark:text-primary-400 font-medium hover:underline flex items-center gap-1">
                 <X className="w-3.5 h-3.5" /> Clear
@@ -273,19 +278,45 @@ function SearchContent() {
         </div>
       </div>
 
-      {filteredTools.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {filteredTools.map((tool, i) => (
-            <ToolCard key={tool.id} tool={tool} index={i} />
-          ))}
-        </div>
+      {filteredTools.length > 0 || filteredCalculators.length > 0 ? (
+        <>
+          {filteredCalculators.length > 0 && (
+            <div className="mb-8">
+              <h2 className="text-lg font-bold text-slate-900 dark:text-white mb-4">Calculators</h2>
+              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                {filteredCalculators.map((calc) => (
+                  <Link
+                    key={calc.slug}
+                    href={`/calculators/${calc.slug}`}
+                    className="group rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-1 hover:border-primary-300 hover:shadow-lg dark:border-slate-800 dark:bg-slate-900"
+                  >
+                    <h3 className="text-lg font-bold text-slate-900 dark:text-white group-hover:text-primary-600 dark:group-hover:text-primary-400">{calc.title}</h3>
+                    <p className="mt-2 text-sm leading-relaxed text-slate-600 dark:text-slate-400">{calc.description}</p>
+                    <span className="mt-4 inline-block text-sm font-semibold text-primary-600">Open calculator →</span>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {filteredTools.length > 0 && (
+            <div>
+              <h2 className="text-lg font-bold text-slate-900 dark:text-white mb-4">Tools & Platforms</h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                {filteredTools.map((tool, i) => (
+                  <ToolCard key={tool.id} tool={tool} index={i} />
+                ))}
+              </div>
+            </div>
+          )}
+        </>
       ) : (
         <div className="text-center py-20">
           <div className="w-20 h-20 rounded-3xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center mx-auto mb-6">
             <SearchIcon className="w-10 h-10 text-slate-400" />
           </div>
-          <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-2">No tools found</h2>
-          <p className="text-slate-500 dark:text-slate-400 mb-6">Try adjusting your filters</p>
+          <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-2">No results found</h2>
+          <p className="text-slate-500 dark:text-slate-400 mb-6">Try adjusting your search terms</p>
           <button onClick={clearFilters} className="btn-primary">Clear All Filters</button>
         </div>
       )}
