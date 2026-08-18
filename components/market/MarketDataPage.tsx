@@ -245,7 +245,12 @@ export default function MarketDataPage({ market }: { market: MarketKind }) {
     return () => { active = false; clearInterval(interval); };
   }, [market]);
 
-  const cryptoRows = useMemo(() => Object.entries(crypto), [crypto]);
+  const cryptoRows = useMemo(() => {
+    const entries = Object.entries(crypto);
+    console.log('Crypto entries count:', entries.length);
+    console.log('Crypto data sample:', entries.slice(0, 3));
+    return entries;
+  }, [crypto]);
   const stockRows = useMemo(() => Object.entries(stocks).filter(([symbol, item]) => item && `${symbol} ${item?.name || ""}`.toLowerCase().includes(query.trim().toLowerCase())), [stocks, query]);
   const forexRows = useMemo(() => {
     const current = forex.rates || {};
