@@ -73,7 +73,7 @@ export async function GET(request: Request) {
   try {
     const persistent = await readPersistentMarketCache<Record<string, unknown>>("crypto");
     if (persistent?.data) {
-      return NextResponse.json(persistent.data, {
+      return NextResponse.json({ ...persistent.data, _lastUpdated: persistent.fetchedAt }, {
         headers: {
           "X-Market-Data-Source": isFreshMarketCache(persistent, CACHE_DURATION) ? "firebase-cache" : "firebase-stale-cache",
           "X-Market-Data-Updated": persistent.fetchedAt,

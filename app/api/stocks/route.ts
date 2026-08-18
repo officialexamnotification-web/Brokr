@@ -195,12 +195,12 @@ export async function GET(request: Request) {
           symbols.map(symbol => [symbol, cacheData.data[symbol]]).filter(([_, value]) => value !== undefined)
         );
         if (Object.keys(filteredData).length > 0) {
-          return NextResponse.json(filteredData, { 
-            headers: { 
-              "Cache-Control": PUBLIC_CACHE_CONTROL, 
+          return NextResponse.json({ ...filteredData, _lastUpdated: cacheData.fetchedAt }, {
+            headers: {
+              "Cache-Control": PUBLIC_CACHE_CONTROL,
               "X-Market-Data-Source": "firebase-cache",
               "X-Cache-Age": `${Date.now() - new Date(cacheData.fetchedAt).getTime()}ms`
-            } 
+            }
           });
         }
       }

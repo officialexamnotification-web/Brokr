@@ -93,9 +93,9 @@ type ForexSnapshot = {
 };
 
 const titles: Record<MarketKind, { title: string; description: string; source: string }> = {
-  crypto: { title: "Cryptocurrency Market", description: "Top 250 cryptocurrencies with price, performance, liquidity, and market-cap details.", source: "CoinGecko (250 coins, 1 call)" },
-  forex: { title: "Forex Market", description: "44 major and cross-currency reference rates across US, Canadian, UK, European, Australian, Swiss, Japanese, Singaporean, and other high-liquidity markets.", source: "irfanokr Unlimited (170+ currencies)" },
-  stocks: { title: "US Stocks Market", description: "50 widely followed US-listed large-cap, technology, financial, healthcare, consumer, industrial, and energy stocks.", source: "Finnhub API" },
+  crypto: { title: "Cryptocurrency Market", description: "Top 250 cryptocurrencies with price, performance, liquidity, and market-cap details.", source: "Prices from CoinGecko" },
+  forex: { title: "Forex Market", description: "44 major and cross-currency reference rates across US, Canadian, UK, European, Australian, Swiss, Japanese, Singaporean, and other high-liquidity markets.", source: "Exchange rates from irfanokr" },
+  stocks: { title: "US Stocks Market", description: "50 widely followed US-listed large-cap, technology, financial, healthcare, consumer, industrial, and energy stocks.", source: "Data provided by Finnhub" },
 };
 
 function compact(value: number | null | undefined, currency = "$") {
@@ -176,7 +176,8 @@ export default function MarketDataPage({ market }: { market: MarketKind }) {
           if (Object.keys(cryptoData).length === 0) throw new Error("Cryptocurrency data is currently unavailable.");
           if (active) {
             setCrypto(cryptoData);
-            setRefreshedAt(new Date().toISOString());
+            const lastUpdated = (cryptoData as any)._lastUpdated;
+            setRefreshedAt(lastUpdated || new Date().toISOString());
           }
           return;
         }
@@ -185,7 +186,8 @@ export default function MarketDataPage({ market }: { market: MarketKind }) {
           if (!forexData.rates || Object.keys(forexData.rates).length === 0) throw new Error("Forex data is currently unavailable.");
           if (active) {
             setForex(forexData);
-            setRefreshedAt(new Date().toISOString());
+            const lastUpdated = (forexData as any)._lastUpdated;
+            setRefreshedAt(lastUpdated || new Date().toISOString());
           }
           return;
         }
@@ -210,7 +212,8 @@ export default function MarketDataPage({ market }: { market: MarketKind }) {
         if (market === "stocks" && typeof window !== "undefined") {
           window.localStorage.setItem("tradivex-stock-market-cache", JSON.stringify({ data, fetchedAt: Date.now() }));
         }
-        setRefreshedAt(new Date().toISOString());
+        const lastUpdated = (data as any)._lastUpdated;
+        setRefreshedAt(lastUpdated || new Date().toISOString());
         console.log('Refresh timestamp set');
       } catch (fetchError) {
         if (active) {
@@ -314,7 +317,13 @@ export default function MarketDataPage({ market }: { market: MarketKind }) {
 
         {!loading && !error && market === "stocks" && <div className="glass-card rounded-2xl overflow-hidden"><div className="overflow-x-auto"><table className="w-full min-w-[1300px] text-left"><thead className="bg-slate-100/70 dark:bg-slate-800/70"><tr>{["Symbol / company", "Price", "Day %", "Open", "High", "Low", "Prev close", "Volume", "52-week high / low", "Exchange", "Last trade"].map((heading) => <th key={heading} className="px-5 py-4 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">{heading}</th>)}</tr></thead><tbody className="divide-y divide-slate-200/70 dark:divide-slate-800/70">{stockRows.map(([symbol, item]) => <tr key={symbol} className="hover:bg-white/50 dark:hover:bg-slate-800/40 transition-colors"><td className="px-5 py-4"><div className="font-bold text-slate-900 dark:text-white">{symbol}</div><div className="max-w-[190px] text-xs text-slate-500 dark:text-slate-400 truncate">{item.name || "US-listed company"}</div></td><td className="px-5 py-4 font-bold text-slate-900 dark:text-white">{price(item.price)}</td><td className={`px-5 py-4 font-semibold ${percentClass(item.changePercent)}`}>{percent(item.changePercent)}</td><td className="px-5 py-4 text-sm text-slate-600 dark:text-slate-300">{price(item.dayOpen)}</td><td className="px-5 py-4 text-sm text-slate-600 dark:text-slate-300">{price(item.dayHigh)}</td><td className="px-5 py-4 text-sm text-slate-600 dark:text-slate-300">{price(item.dayLow)}</td><td className="px-5 py-4 text-sm text-slate-600 dark:text-slate-300">{price(item.previousClose)}</td><td className="px-5 py-4 text-sm text-slate-600 dark:text-slate-300">{item.volume == null ? "—" : item.volume.toLocaleString("en-US")}</td><td className="px-5 py-4 text-sm text-slate-600 dark:text-slate-300">{price(item.week52High)} / {price(item.week52Low)}</td><td className="px-5 py-4 text-sm text-slate-600 dark:text-slate-300">{item.exchange || "—"} {item.extendedHours ? "· extended" : ""}</td><td className="px-5 py-4 text-xs text-slate-500 dark:text-slate-400">{dateLabel(item.lastTradeTime)}</td></tr>)}</tbody></table></div>{stockRows.length === 0 && <p className="p-8 text-center text-slate-500 dark:text-slate-400">No stocks match your search or the provider is unavailable.</p>}</div>}
 
-        <div className="flex flex-col sm:flex-row justify-between gap-3 mt-6 text-xs text-slate-500 dark:text-slate-400"><span>Source: {info.source}. Data availability and timestamps vary by provider.</span><Link href="/methodology" className="inline-flex items-center gap-1 font-semibold hover:text-primary-600 dark:hover:text-primary-400">View methodology <ArrowUpRight className="w-3 h-3" /></Link></div>
+        <div className="flex flex-col sm:flex-row justify-between gap-3 mt-6 text-xs text-slate-500 dark:text-slate-400">
+          <div className="flex flex-col gap-1">
+            <span>Source: {info.source}</span>
+            {refreshedAt && <span>Last updated: {new Date(refreshedAt).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', timeZone: 'UTC' })} UTC</span>}
+          </div>
+          <Link href="/methodology" className="inline-flex items-center gap-1 font-semibold hover:text-primary-600 dark:hover:text-primary-400">View methodology <ArrowUpRight className="w-3 h-3" /></Link>
+        </div>
       </div>
     </section>
   );

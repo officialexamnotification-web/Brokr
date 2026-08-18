@@ -275,16 +275,16 @@ export async function GET(request: Request) {
       previousRates: null,
       source: "live",
       changes24h,
-      timestamp: new Date().toISOString(),
+      timestamp: baseCache.lastUpdated || new Date().toISOString(),
       popularPairs
     };
 
-    return NextResponse.json(snapshot, { 
-      headers: { 
-        "Cache-Control": PUBLIC_CACHE_CONTROL, 
-        "X-Market-Data-Source": "firebase-cache", 
-        "X-Market-Data-Updated": baseCache.lastUpdated || "" 
-      } 
+    return NextResponse.json({ ...snapshot, _lastUpdated: baseCache.lastUpdated || new Date().toISOString() }, {
+      headers: {
+        "Cache-Control": PUBLIC_CACHE_CONTROL,
+        "X-Market-Data-Source": "firebase-cache",
+        "X-Market-Data-Updated": baseCache.lastUpdated || ""
+      }
     });
   } catch (error) {
     console.error("Forex API error:", error);
