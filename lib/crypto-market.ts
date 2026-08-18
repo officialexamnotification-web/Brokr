@@ -62,7 +62,7 @@ const COINCAP_SYMBOL_MAP: Record<string, string> = {
   XTZ: "tezos", AXS: "axie-infinity", NEO: "neo", COMP: "compound-governance-token", EGLD: "elrond-egld", STX: "stacks",
 };
 
-async function fetchWithTimeout(input: RequestInfo | URL, init: RequestInit = {}, timeoutMs = 8000) {
+async function fetchWithTimeout(input: RequestInfo | URL, init: RequestInit = {}, timeoutMs = 30000) {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), timeoutMs);
   try {
