@@ -109,24 +109,24 @@ export const regions: Region[] = [
   },
   {
     code: "uk", name: "United Kingdom", flag: "UK",
-    description: "FCA-regulated trading platforms with GBP accounts, ISA compatibility, and strong investor protection up to 85,000 GBP.",
+    description: "FCA-regulated trading platforms with GBP accounts, Stocks & Shares ISA, SIPP pension accounts, and FSCS protection up to £85,000. Tax-efficient investing through ISAs and comprehensive UK market access.",
     regulations: ["FCA", "FSCS"],
     popularCategories: [3, 1, 4, 6],
-    tips: ["Always verify FCA registration", "FSCS protects up to 85,000 GBP", "Check stamp duty implications", "ISA-eligible platforms offer tax benefits"],
+    tips: ["Always verify FCA registration", "FSCS protects up to 85,000 GBP", "Check stamp duty implications", "ISA-eligible platforms offer tax benefits", "Consider SIPP for retirement planning"],
   },
   {
     code: "us", name: "United States", flag: "US",
-    description: "SEC and FINRA regulated brokers for US traders with commission-free trading, retirement accounts, and SIPC protection.",
+    description: "SEC and FINRA regulated brokers for US traders with commission-free trading, retirement accounts (IRA, 401k), and SIPC protection up to $500,000. Access US stock markets, options trading, and tax-advantaged investment accounts.",
     regulations: ["SEC", "FINRA", "SIPC"],
     popularCategories: [3, 5, 2, 6],
-    tips: ["Verify SEC/FINRA registration", "SIPC protects up to $500,000", "Consider tax-advantaged accounts (IRA, 401k)", "Pattern day trader rules apply"],
+    tips: ["Verify SEC/FINRA registration", "SIPC protects up to $500,000", "Consider tax-advantaged accounts (IRA, 401k)", "Pattern day trader rules apply", "Check margin requirements and interest rates"],
   },
   {
     code: "eu", name: "European Union", flag: "EU",
-    description: "ESMA-regulated brokers across EU member states with strong consumer protections and standardized trading conditions.",
+    description: "ESMA-regulated brokers across EU member states with MiFID II compliance, standardized trading conditions, negative balance protection, and leverage limits (max 30:1). Strong consumer protections through local regulators like BaFin, AMF, and CONSOB.",
     regulations: ["ESMA", "MiFID II"],
     popularCategories: [1, 4, 3, 6, 2],
-    tips: ["ESMA leverage limits apply (max 30:1)", "Negative balance protection is mandatory", "Check local regulator in your country", "MiFID II ensures transparent pricing"],
+    tips: ["ESMA leverage limits apply (max 30:1)", "Negative balance protection is mandatory", "Check local regulator in your country", "MiFID II ensures transparent pricing", "Verify passporting rights for cross-border services"],
   },
   {
     code: "au", name: "Australia", flag: "AU",
@@ -6675,15 +6675,15 @@ const rawTools: Tool[] = [
   {
     id: 8, name: "Robinhood", slug: "robinhood", logo: "RH",
     rating: null,
-    description: "U.S.-focused investing app offering eligible stocks, ETFs, options, crypto, and cash products.",
-    longDescription: "Robinhood offers investing and brokerage products through U.S. entities, with product availability varying by account and location. Its official disclosures cover eligible stocks, ETFs, options, fractional shares, retirement accounts, cash products, and cryptocurrency. Commission schedules, regulatory fees, asset protections, and transferability differ by product; cryptocurrency is not protected by FINRA or SIPC. Review the applicable Robinhood legal and fee disclosures before opening or funding an account.",
+    description: "US commission-free investing app for stocks, ETFs, options, crypto, IRA, and cash management with SEC/FINRA regulation.",
+    longDescription: "Robinhood offers commission-free trading for eligible U.S.-listed stocks, ETFs, and options through SEC/FINRA-regulated brokerage entities. Platform features include fractional shares, IRA accounts with matching, 24/5 market access, crypto trading, IPO access, and cash management with debit card. Popular among US retail investors for mobile-first interface and $0 commission structure. Crypto assets are not protected by FINRA/SIPC. Verify current product availability, SIPC protection eligibility, and fee schedules including Gold subscription pricing directly with Robinhood before opening or funding accounts.",
     category: "Stock Brokers", categoryId: 3,
     features: ["Commission-Free Trading", "Fractional Shares", "Crypto Trading", "Cash Card", "IPO Access", "24/5 Market", "IRA Match"],
     pros: ["Simple mobile-first interface", "Eligible fractional-share access", "IPO access may be available", "Retirement and cash products available", "Crypto access in supported locations"],
     cons: ["Limited research and analysis tools", "Customer support primarily through app/email", "Gamification can encourage overtrading", "Limited account types compared to full-service brokers"],
     pricing: "Product and account dependent", pricingDetail: "Robinhood advertises $0 commissions for eligible U.S.-listed stocks, ETFs, and options in investing accounts, but regulatory, exchange, spread, transfer, and other fees can apply. Gold and crypto pricing are separate schedules.",
     minDeposit: "Product and account dependent", platforms: ["iOS", "Android", "Web"],
-    website: "https://robinhood.com", affiliate: false, trending: true, featured: false,
+    website: "https://robinhood.com", affiliate: false, trending: true, featured: true,
     sourceUrls: ["https://robinhood.com/us/en/support/articles/investments-you-can-make-on-robinhood/", "https://robinhood.com/us/en/support/articles/trading-fees-on-robinhood/", "https://robinhood.com/us/en/legal/"],
     lastVerifiedAt: "2026-08-02", dataStatus: "partially_verified",
     yearFounded: 2013, regulation: ["SEC/FINRA for applicable brokerage entities", "SIPC applies to eligible brokerage assets", "Crypto is not FINRA/SIPC protected"],
@@ -7070,8 +7070,8 @@ const rawTools: Tool[] = [
   {
     id: 23, name: "Fidelity", slug: "fidelity", logo: "FD",
     rating: null,
-    description: "U.S.-focused brokerage and investment provider with retirement, research, mutual-fund, and crypto products.",
-    longDescription: "Fidelity offers brokerage, retirement, mutual-fund, wealth-management, cash-management, and separate cryptocurrency services. Its current commission schedule lists $0 online U.S. stock, ETF, and options commissions with options contract fees, while funds, bonds, international markets, margin, and crypto have separate terms. Fidelity's own disclosures distinguish brokerage protections from crypto, which is not covered by FDIC or SIPC.",
+    description: "US full-service brokerage with $0 commissions, ZERO index funds, IRA, 401k, wealth management, and active trading platforms.",
+    longDescription: "Fidelity Investments is a major US financial services firm offering commission-free trading for US stocks and ETFs, ZERO expense ratio index funds, comprehensive retirement planning (IRA, 401k rollovers), wealth management, and active trading through Active Trader Pro platform. Features include fractional shares, extensive research from 20+ providers, cash management with interest, and cryptocurrency services. Regulated by SEC/FINRA with SIPC protection for brokerage accounts. Crypto assets are not FDIC/SIPC protected. Verify current fee schedules, margin requirements, and product availability directly with Fidelity before opening accounts.",
     category: "Stock Brokers", categoryId: 3,
     features: ["ZERO Index Funds", "Active Trader Pro", "Wealth Management", "Crypto Trading", "Cash Management", "Fractional Shares", "Research (20+ providers)"],
     pros: ["Zero-expense-ratio index funds are available", "Research from multiple providers", "Active Trader Pro platform", "Retirement and cash-management products", "Fractional-share access in eligible securities"],
@@ -7096,15 +7096,15 @@ const rawTools: Tool[] = [
   {
     id: 24, name: "Webull", slug: "webull", logo: "WB",
     rating: null,
-    description: "Trading platform with U.S. stocks, ETFs, options, paper trading, extended hours, and crypto features.",
-    longDescription: "Webull offers self-directed brokerage products through regional entities. Its official U.S. disclosures list $0 commissions for eligible U.S.-listed stocks, ETFs, and options, while regulatory, exchange, crypto-spread, margin, premium-data, futures, and other fees can apply. Paper trading is available on mobile, desktop, and web, but simulated results are not live trading results.",
+    description: "US commission-free trading platform with advanced charts, paper trading, extended hours, Level 2 data, options, crypto, and futures.",
+    longDescription: "Webull provides commission-free trading for US stocks, ETFs, and options through SEC/FINRA-regulated brokerage entity with SIPC protection. Platform features include advanced charting tools, Level 2 market data, extended hours trading, paper trading for strategy testing, options analysis, crypto trading, and futures contracts. Popular among active US traders for technical analysis capabilities and $0 commission structure. No retirement accounts (IRA) available. Verify current fee schedules, margin requirements, and product availability directly with Webull before opening accounts.",
     category: "Stock Brokers", categoryId: 3,
     features: ["Advanced Charts", "Paper Trading", "Extended Hours", "Crypto Trading", "Level 2 Data", "Options Analysis", "Community Insights"],
     pros: ["Charting and technical-analysis tools", "Paper trading on supported platforms", "Extended-hours access may be available", "Web, desktop, and mobile products", "Crypto and futures access may be available"],
     cons: ["Limited research and reports", "No retirement accounts (IRA)", "Limited customer support", "Fewer asset types vs established brokers"],
     pricing: "$0 eligible U.S. stocks/ETFs/options; product fees apply", pricingDetail: "Webull's official U.S. disclosures list $0 commissions for eligible U.S.-listed stocks, ETFs, and options. Crypto uses a spread, and regulatory, exchange, options, margin, futures, data, and other charges may apply.",
     minDeposit: "$0", platforms: ["Desktop", "iOS", "Android", "Web"],
-    website: "https://webull.com", affiliate: false, trending: true, featured: false,
+    website: "https://webull.com", affiliate: false, trending: true, featured: true,
     sourceUrls: ["https://www.webull.com/stock-trading/", "https://www.webull.com/help/faq/11069-Paper-Trading", "https://www.webull.com/help/faq/11091-Fees-and-Limits"],
     lastVerifiedAt: "2026-08-02", dataStatus: "partially_verified",
     yearFounded: 2017, regulation: ["SEC/FINRA/SIPC for applicable U.S. brokerage entity; product protections differ"],
@@ -7174,15 +7174,15 @@ const rawTools: Tool[] = [
   {
     id: 27, name: "Hargreaves Lansdown", slug: "hargreaves-lansdown", logo: "HL",
     rating: null,
-    description: "UK investment platform offering ISAs, SIPPs, funds, shares, research, and other investment accounts.",
-    longDescription: "Hargreaves Lansdown provides UK investment accounts including Stocks and Shares ISAs, SIPPs, Junior products, and general investment accounts. It publishes separate account, fund, share-dealing, overseas-trading, and tax-related charges. The platform's current fee changes show that charges can change over time, and FCA/FSCS arrangements should be checked against the applicable entity and product terms.",
+    description: "UK's leading investment platform with Stocks & Shares ISA, SIPP, comprehensive research, Wealth 150 funds, and FCA regulation.",
+    longDescription: "Hargreaves Lansdown is the UK's largest investment platform, offering Stocks and Shares ISAs, SIPPs, Junior ISAs, and general investment accounts. Features include Wealth 150 funds selection, comprehensive research and analysis tools, share dealing, dividend reinvestment, and award-winning customer service. Regulated by FCA with FSCS protection up to £85,000. Popular among UK investors for extensive fund selection and retirement planning tools. Verify current fee schedules including platform charges, dealing fees, and overseas trading costs directly with HL before opening accounts.",
     category: "Stock Brokers", categoryId: 3,
     features: ["ISA & SIPP", "Wealth 150 Funds", "Research & Analysis", "Share Dealing", "Mobile App", "Dividend Tools", "Helpdesk Support"],
     pros: ["ISA and pension account options", "Fund and share research", "Mobile and web access", "Published tariff and fee changes", "UK-focused investment support"],
     cons: ["Higher platform fees vs competitors", "Limited international share trading", "FX conversion fees on US/EU stocks", "No cryptocurrency trading"],
     pricing: "Account and dealing charges vary", pricingDetail: "HL's current charges pages list account charges, fund dealing, share dealing, overseas costs, and product-specific fees. Published 2026 changes include different rates for funds, shares, and online dealing, so users should use the live tariff for their account type.",
     minDeposit: "Account and product dependent", platforms: ["Web", "iOS", "Android"],
-    website: "https://hl.co.uk", affiliate: false, trending: false, featured: false,
+    website: "https://hl.co.uk", affiliate: false, trending: true, featured: true,
     sourceUrls: ["https://www.hl.co.uk/help/income-and-fees/fees-explained/fee-changes", "https://www.hl.co.uk/shares/share-dealing/dealing-charges"],
     lastVerifiedAt: "2026-08-02", dataStatus: "partially_verified",
     yearFounded: 1981, regulation: ["FCA-authorised entity; FSCS eligibility and limits are product-specific"],
@@ -8252,15 +8252,15 @@ const rawTools: Tool[] = [
   {
     id: 81, name: "Interactive Investor", slug: "interactive-investor", logo: "II",
     rating: null,
-    description: "UK investment platform with plan-based fees, ISA, pension and trading accounts.",
-    longDescription: "Interactive Investor provides UK investment accounts including trading, ISA and pension products. Its current plan structure and dealing fees can change, so the live fees page should be used for the applicable plan, account type, trade and foreign-exchange charge.",
+    description: "UK flat-fee investment platform with ISA, SIPP, investment trusts, and comprehensive research tools for long-term investors.",
+    longDescription: "Interactive Investor is the UK's largest flat-fee investment platform, offering Stocks & Shares ISA, SIPP, and general investment accounts with transparent monthly pricing. Features include investment trust selection, comprehensive research tools, and access to UK and international markets. Regulated by FCA with FSCS protection. Popular among UK investors for flat-fee structure that benefits higher-value portfolios. Verify current plan pricing, dealing fees, and SIPP charges directly with Interactive Investor before opening accounts.",
     category: "Stock Brokers", categoryId: 3,
     features: ["Flat-Fee Pricing", "ISA & Pension", "Investment Trusts", "Trading Tools", "Research"],
     pros: ["Plan-based fee structure", "ISA and pension access", "Shares, funds and investment trusts", "Research tools", "UK-focused service"],
     cons: ["Monthly plan fees apply", "Dealing and FX charges vary", "SIPP and account add-ons can change total cost", "Not available to every country"],
     pricing: "Plan- and account-dependent", pricingDetail: "Interactive Investor’s current plans and dealing charges should be checked on its live fee schedule; historic £9.99/month and £3.99/trade figures should not be presented as universal current pricing.",
     minDeposit: "$0", platforms: ["Web", "iOS", "Android"],
-    website: "https://interactiveinvestor.co.uk", affiliate: false, trending: false, featured: false,
+    website: "https://interactiveinvestor.co.uk", affiliate: false, trending: true, featured: true,
     sourceUrls: ["https://www.ii.co.uk/fees-and-charges", "https://www.ii.co.uk/"],
     lastVerifiedAt: "2026-08-02", dataStatus: "partially_verified",
     yearFounded: 1995, regulation: ["UK service and applicable FCA/FSCS protections should be checked for the account"],
@@ -8308,7 +8308,7 @@ const rawTools: Tool[] = [
     cons: ["No individual stock picking", "Limited customization", "Only ETFs", "Premium tier expensive"],
     pricing: "Digital 0.25% annual; Premium 0.65% under $1M", pricingDetail: "Betterment’s current help pages list 0.25% annual Digital pricing and 0.65% annual Premium pricing on the first $1M, subject to eligibility and product terms.",
     minDeposit: "$0", platforms: ["Web", "iOS", "Android"],
-    website: "https://betterment.com", affiliate: false, trending: true, featured: false,
+    website: "https://betterment.com", affiliate: false, trending: true, featured: true,
     sourceUrls: ["https://www.betterment.com/help/fees", "https://www.betterment.com/help/how-does-the-cost-of-premium-compare-to-other-financial-advisors"],
     lastVerifiedAt: "2026-08-02", dataStatus: "partially_verified",
     yearFounded: 2008, regulation: ["SEC", "SIPC"],
@@ -8331,7 +8331,7 @@ const rawTools: Tool[] = [
     cons: ["No human advisors", "Limited customization", "Only ETFs", "US clients only"],
     pricing: "0.25% annual advisory fee", pricingDetail: "Wealthfront’s current pricing page lists a 0.25% annual advisory fee for its Automated Investing Account; do not carry forward old promotional fee waivers without checking current eligibility.",
     minDeposit: "Product- and account-dependent", platforms: ["Web", "iOS", "Android"],
-    website: "https://wealthfront.com", affiliate: false, trending: false, featured: false,
+    website: "https://wealthfront.com", affiliate: false, trending: true, featured: true,
     sourceUrls: ["https://www.wealthfront.com/pricing", "https://support.wealthfront.com/hc/en-us/articles/13992378758676-Understanding-Wealthfront-fees", "https://www.wealthfront.com/disclosures/account"],
     lastVerifiedAt: "2026-08-02", dataStatus: "partially_verified",
     yearFounded: 2008, regulation: ["SEC", "SIPC"],
@@ -12622,15 +12622,15 @@ const rawTools: Tool[] = [
   {
     id: 325, name: "AJ Bell", slug: "aj-bell", logo: "AB",
     rating: null,
-    description: "UK investment platform offering ISAs, SIPPs, and share dealing with competitive pricing.",
-    longDescription: "AJ Bell is a leading UK investment platform founded in 1995, providing investment services including ISAs, SIPPs, and general investment accounts. The platform offers access to UK and international shares, funds, ETFs, and investment trusts. AJ Bell is known for its competitive pricing with no annual charge for shares and low dealing fees. The platform provides extensive research tools, market commentary, and educational resources. AJ Bell is regulated by the FCA and offers protection through the FSCS. The platform is particularly popular among self-directed investors for its range of investment options and transparent pricing.",
+    description: "UK investment platform with £1.50 share dealing, no annual share charges, Stocks & Shares ISA, SIPP, and FCA regulation.",
+    longDescription: "AJ Bell is a UK investment platform offering Stocks & Shares ISA, SIPP, and general investment accounts with competitive £1.50 dealing charge and no annual fee for shares. Platform provides access to UK and international shares, funds, ETFs, and investment trusts. Features include comprehensive research tools, market commentary, and educational resources. Regulated by FCA with FSCS protection up to £85,000. Popular among UK self-directed investors for transparent pricing and wide investment selection. Verify current fee schedules and SIPP charges directly with AJ Bell before opening accounts.",
     category: "Stock Brokers", categoryId: 3,
     features: ["ISA Accounts", "SIPP", "Low-Cost Trading", "Research Tools", "International Shares", "No Annual Charge for Shares", "Funds and ETFs"],
     pros: ["No annual charge for shares", "Competitive dealing fees", "Wide range of investments", "FCA regulated", "Good research tools", "ISA and SIPP options"],
     cons: ["UK-focused", "Limited crypto options", "Platform interface basic", "Customer support hours limited", "No fractional shares"],
     pricing: "£1.50 dealing charge, no annual fee for shares", pricingDetail: "AJ Bell charges £1.50 per deal for shares and ETFs with no annual charge. Funds have an annual charge of 0.25% with no dealing fee. SIPP charges apply. Confirm current pricing on the official website.",
     minDeposit: "£0", platforms: ["Web", "iOS", "Android"],
-    website: "https://www.ajbell.co.uk", affiliate: false, trending: false, featured: true,
+    website: "https://www.ajbell.co.uk", affiliate: false, trending: true, featured: true,
     yearFounded: 1995, regulation: ["FCA regulated", "FSCS protection"],
     supportedCountries: ["United Kingdom"],
     depositMethods: ["Bank Transfer", "Direct Debit", "Card"],
@@ -13709,6 +13709,31 @@ export function getFeaturedTools(): Tool[] { return tools.filter((t) => t.featur
 export function getToolsByCategory(categoryId: number): Tool[] { return tools.filter((t) => t.categoryId === categoryId); }
 export function getCategoryById(id: number): Category | undefined { return categories.find((c) => c.id === id); }
 export function getCategoryBySlug(slug: string): Category | undefined { return categories.find((c) => c.slug === slug); }
+
+// Region-specific trending tools for better geo-targeting
+export function getUSTrendingTools(): Tool[] {
+  return tools.filter((t) => t.trending && (
+    t.supportedCountries.includes("United States") || 
+    t.supportedCountries.includes("United States; product availability varies") ||
+    t.supportedCountries.includes("United States and eligible international countries")
+  )).slice(0, 8);
+}
+
+export function getUKTrendingTools(): Tool[] {
+  return tools.filter((t) => t.trending && (
+    t.supportedCountries.includes("United Kingdom") ||
+    t.supportedCountries.includes("UK") ||
+    t.supportedCountries.includes("Country-specific availability") && t.regulation?.some(r => r.includes("FCA"))
+  )).slice(0, 8);
+}
+
+export function getEUTrendingTools(): Tool[] {
+  return tools.filter((t) => t.trending && (
+    t.supportedCountries.includes("European Economic Area") ||
+    t.supportedCountries.includes("EU") ||
+    t.regulation?.some(r => r.includes("CySEC") || r.includes("BaFin") || r.includes("AMF"))
+  )).slice(0, 8);
+}
 function compareBlogDates(a: BlogPost, b: BlogPost): number {
   const aTime = Date.parse(a.date);
   const bTime = Date.parse(b.date);

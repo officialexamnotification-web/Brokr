@@ -102,5 +102,10 @@ service cloud.firestore {
     match /forexCache/{documentId} {
       allow read, write: if true;
     }
+
+    // Market cache for stocks/crypto - server-side access only (temporary fix until Admin SDK migration)
+    match /marketCache/{documentId} {
+      allow read, write: if true;
+    }
   }
 }
