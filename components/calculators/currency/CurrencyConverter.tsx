@@ -141,9 +141,7 @@ export default function CurrencyConverter() {
 
   // Auto-convert when currency changes (not amount to avoid too many calls)
   useEffect(() => {
-    if (amount > 0) {
-      handleConvert();
-    }
+    handleConvert();
   }, [fromCurrency, toCurrency, handleConvert]);
 
   return <>
