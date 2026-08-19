@@ -169,9 +169,9 @@ export const calculatorDefinitions = [
   },
   {
     slug: "portfolio-risk-allocation",
-    title: "Portfolio Risk Allocation Calculator",
+    title: "Portfolio Risk Allocation Calculator - Advanced Risk Analysis & Optimization",
     shortTitle: "Portfolio Risk",
-    description: "Estimate portfolio heat, weighted exposure, and correlation-adjusted risk across planned positions.",
+    description: "Educational portfolio risk calculator with unlimited positions, 1-10 risk scoring, Monte Carlo simulation, efficient frontier analysis, correlation matrix, Sharpe ratio, VaR calculations, portfolio optimization algorithms, sector analysis, concentration risk assessment, and cache-based market data integration. For educational analysis and planning purposes only - not financial advice.",
   },
 ] as const;
 

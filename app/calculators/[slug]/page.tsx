@@ -25,6 +25,7 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   const isCryptoProfitCalculator = calculator.slug === "crypto-profit";
   const isOptionsPayoffCalculator = calculator.slug === "options-payoff";
   const isPivotPointsCalculator = calculator.slug === "pivot-points";
+  const isPortfolioRiskCalculator = calculator.slug === "portfolio-risk-allocation";
   const enhancedTitle = isPipCalculator
     ? "Pip Calculator | Calculate Forex Pip Value Instantly"
     : isForexPnlCalculator
@@ -41,6 +42,8 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
     ? "Options Greeks & Payoff Calculator | Models, Scenarios & Multi-Leg Risk"
     : isPivotPointsCalculator
     ? "Pivot Point Calculator | Classic, Woodie's, Camarilla, DeMark's, Fibonacci"
+    : isPortfolioRiskCalculator
+    ? "Portfolio Risk Calculator | Advanced Risk Analysis & Optimization Tool"
     : `${calculator.title} | Tradivex`;
   const enhancedDescription = isPipCalculator
     ? "Calculate forex pip values instantly with live exchange rates. Free pip calculator for all major, minor, and exotic currency pairs including JPY pairs. Accurate risk management for standard, mini, and micro lots."
@@ -58,6 +61,8 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
     ? "Professional options calculator with BSM/Binomial models, complete & advanced Greeks, IV solver, multi-leg strategy builder (spreads, straddles, iron condors), volatility surface visualization, and interactive payoff diagrams."
     : isPivotPointsCalculator
     ? "Professional pivot point calculator with Classic, Woodie's, Camarilla, DeMark's, and Fibonacci methods. Live market data for 40+ US stocks, daily/weekly/monthly timeframes, CSV/PDF export, chart visualization, proximity alerts, and 22 global timezones covering USA, Canada, UK, Europe, Asia, Australia, New Zealand, Brazil, South Africa. Free technical analysis tool for accurate support and resistance levels."
+    : isPortfolioRiskCalculator
+    ? "Educational portfolio risk calculator with unlimited positions, 1-10 risk scoring system, Monte Carlo simulation (1,000 scenarios), efficient frontier analysis, correlation matrix visualization, Sharpe ratio calculation, VaR (95% & 99%), portfolio optimization algorithms (Max Sharpe, Min Variance, Risk Parity), sector analysis, concentration risk assessment, auto-rebalancing, shareable portfolio URLs, and cache-based market data integration. For educational analysis and planning purposes only - not financial advice or investment recommendations."
     : `${seo.intro} Educational estimate only; verify provider rules and costs.`;
   const enhancedKeywords = isPipCalculator
     ? "pip calculator, free pip calculator, forex pip value, currency pip calculation, JPY pip calculator, lot size calculator, forex risk management, position size calculator, standard lot mini lot micro lot, forex trading tools"
@@ -75,6 +80,8 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
     ? "options Greeks calculator, options payoff calculator, Black-Scholes calculator, binomial American options calculator, European options calculator, implied volatility calculator, delta gamma theta vega rho, position Greeks, portfolio Greeks, exact expiry, bid ask midpoint, scenario analysis, payoff diagram, multi-leg strategies, option spreads, iron condor, straddle strangle, volatility surface, option pricing model, call put calculator, time value intrinsic value, options risk management"
     : isPivotPointsCalculator
     ? "pivot point calculator, free pivot point calculator, support resistance calculator, technical analysis tool, classic pivot points, woodie pivot points, camarilla pivot points, demark pivot points, fibonacci pivot points, daily pivot points, weekly pivot points, monthly pivot points, stock pivot calculator, trading levels calculator, s1 s2 s3 r1 r2 r3, pivot point formula, forex pivot points, stock market support resistance, day trading calculator, swing trading calculator, position trading calculator, intraday trading tool, market analysis calculator, price level calculator, trading calculator, technical analysis calculator"
+    : isPortfolioRiskCalculator
+    ? "portfolio risk calculator, portfolio risk analysis, portfolio optimization, efficient frontier, Monte Carlo simulation, Sharpe ratio calculator, VaR calculator, value at risk, portfolio diversification, correlation matrix, risk parity, maximum Sharpe portfolio, minimum variance portfolio, portfolio rebalancing, sector allocation, concentration risk, portfolio volatility, portfolio return optimization, multi-asset portfolio, stock portfolio risk, ETF portfolio analysis, investment risk management, portfolio risk assessment, risk-adjusted return, portfolio performance metrics, advanced portfolio calculator, portfolio risk scoring, portfolio allocation calculator, modern portfolio theory, portfolio variance calculation, covariance matrix, risk contribution analysis, portfolio stress testing, portfolio backtesting, portfolio risk metrics, educational portfolio tools, portfolio management calculator"
     : undefined;
   
   return {
@@ -400,6 +407,88 @@ export default function CalculatorPage({ params }: { params: { slug: string } })
         {
           "@type": "HowToStep",
           text: "View instant profit/loss results with ROI percentage, fee breakdown, and detailed trade analysis"
+        }
+      ]
+    });
+  }
+  
+  // Add enhanced schema for portfolio-risk-allocation calculator
+  if (calculator.slug === "portfolio-risk-allocation") {
+    graph[0] = {
+      ...graph[0],
+      featureList: [
+        "Educational portfolio risk calculator with unlimited positions",
+        "1-10 risk scoring system for educational risk awareness",
+        "Monte Carlo simulation with 1,000 scenarios for educational analysis",
+        "Efficient frontier analysis for theoretical risk-return understanding",
+        "Correlation matrix heatmap for diversification education",
+        "Advanced risk metrics (Sharpe ratio, VaR, portfolio volatility) for learning",
+        "Portfolio optimization algorithms for theoretical allocation analysis",
+        "Sector analysis and concentration risk assessment for educational purposes",
+        "Auto-rebalancing for portfolio modeling functionality",
+        "Shareable portfolio URLs for educational collaboration",
+        "Cache-based market data integration with manual fallback",
+        "Expected return calculations based on input assumptions",
+        "Risk contribution analysis for educational understanding",
+        "Educational implementation of portfolio theory concepts",
+        "Multi-asset portfolio support for educational modeling",
+        "Zero additional API cost with cache-first architecture"
+      ],
+      offers: {
+        "@type": "Offer",
+        price: "0",
+        priceCurrency: "USD",
+        availability: "https://schema.org/InStock"
+      }
+    };
+    
+    graph.push({
+      "@type": "HowTo",
+      name: "How to Use the Portfolio Risk Allocation Calculator for Educational Analysis",
+      step: [
+        {
+          "@type": "HowToStep",
+          text: "Set your account value and risk parameters (risk-free rate, time horizon) for educational modeling"
+        },
+        {
+          "@type": "HowToStep",
+          text: "Add unlimited positions with symbols, weights, risk percentages, and sectors for portfolio analysis"
+        },
+        {
+          "@type": "HowToStep",
+          text: "Adjust risk level target using the 1-10 slider to understand risk profiles"
+        },
+        {
+          "@type": "HowToStep",
+          text: "Enable auto-rebalancing to maintain 100% total allocation for educational portfolio modeling"
+        },
+        {
+          "@type": "HowToStep",
+          text: "Use cached market data or manual input for volatility assumptions in analysis"
+        },
+        {
+          "@type": "HowToStep",
+          text: "Review advanced risk metrics (Sharpe ratio, VaR, portfolio volatility) for educational understanding"
+        },
+        {
+          "@type": "HowToStep",
+          text: "Examine sector allocation pie chart and correlation matrix heatmap for diversification education"
+        },
+        {
+          "@type": "HowToStep",
+          text: "Run Monte Carlo simulation to understand potential outcome ranges based on assumptions"
+        },
+        {
+          "@type": "HowToStep",
+          text: "Analyze efficient frontier for theoretical risk-return combination understanding"
+        },
+        {
+          "@type": "HowToStep",
+          text: "Use portfolio optimization algorithms for theoretical allocation analysis and learning"
+        },
+        {
+          "@type": "HowToStep",
+          text: "Share your portfolio analysis via URL for educational collaboration and discussion"
         }
       ]
     });

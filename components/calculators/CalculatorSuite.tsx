@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { Fragment, useCallback, useEffect, useState, useMemo } from "react";
 import type { ReactNode } from "react";
-import { LineChart, Line, ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine, LabelList } from "recharts";
+import { LineChart, Line, ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine, LabelList, PieChart, Pie, Cell, BarChart, Bar, Legend } from "recharts";
 import { ArrowLeft } from "lucide-react";
 import { calculatorDefinitions, type CalculatorSlug } from "@/lib/calculators";
 import RateTable from "@/components/calculators/RateTable";
@@ -2448,20 +2448,503 @@ function OptionsPayoffCalculator() {
 }
 
 function BrokerageCalculator() {
-  const [buyValue, setBuyValue] = useState(100000);
-  const [sellValue, setSellValue] = useState(105000);
-  const [rate, setRate] = useState(0.03);
-  const [cap, setCap] = useState(20);
-  const [transactionRate, setTransactionRate] = useState(0.01);
+  const [tradeType, setTradeType] = useState<'buy' | 'sell'>('buy');
+  const [tradeValue, setTradeValue] = useState(100000);
+  const [portfolioValue, setPortfolioValue] = useState(100000);
+  const [numberOfShares, setNumberOfShares] = useState(100);
+  const [brokerType, setBrokerType] = useState<'commission' | 'flat' | 'percentage'>('commission');
+  const [commissionPerShare, setCommissionPerShare] = useState(0.01);
+  const [flatCommission, setFlatCommission] = useState(4.95);
+  const [percentageCommission, setPercentageCommission] = useState(0.1);
+  const [commissionCap, setCommissionCap] = useState(0);
+  const [transactionFees, setTransactionFees] = useState(0);
+  const [platformFees, setPlatformFees] = useState(0);
   const [otherFees, setOtherFees] = useState(0);
-  const buyBrokerage = Math.min(buyValue * rate / 100, cap);
-  const sellBrokerage = Math.min(sellValue * rate / 100, cap);
-  const transactionFees = (buyValue + sellValue) * transactionRate / 100;
-  const total = buyBrokerage + sellBrokerage + transactionFees + otherFees;
+  const [numberOfTrades, setNumberOfTrades] = useState(1);
+  const [holdingPeriod, setHoldingPeriod] = useState<'day' | 'week' | 'month' | 'quarter' | 'year'>('day');
+
+  // Helper function to get annual trades based on holding period
+  const getAnnualTrades = (period: string) => {
+    switch (period) {
+      case 'day': return 200; // Assuming 200 trading days/year
+      case 'week': return 50; // Assuming 50 weeks/year
+      case 'month': return 12; // 12 months/year
+      case 'quarter': return 4; // 4 quarters/year
+      case 'year': return 1; // 1 trade/year
+      default: return 12;
+    }
+  };
+
+  // Helper function to calculate portfolio turnover trades
+  const portfolioValueToTurnover = (value: number, turnoverPercent: number) => {
+    return Math.round((value * turnoverPercent / 100) / tradeValue);
+  };
+
+  // Calculate commission based on broker type
+  const calculateCommission = () => {
+    let commission = 0;
+    switch (brokerType) {
+      case 'commission':
+        commission = numberOfShares * commissionPerShare;
+        break;
+      case 'flat':
+        commission = flatCommission;
+        break;
+      case 'percentage':
+        commission = tradeValue * (percentageCommission / 100);
+        break;
+    }
+    return commissionCap > 0 ? Math.min(commission, commissionCap) : commission;
+  };
+
+  const commission = calculateCommission();
+  const totalFees = commission + transactionFees + platformFees + otherFees;
+  const totalCostForAllTrades = totalFees * numberOfTrades;
+  const effectiveCostPercentage = tradeValue > 0 ? (totalFees / tradeValue) * 100 : 0;
+  const breakEvenPercentage = tradeValue > 0 ? (totalFees / tradeValue) * 100 : 0;
+
+  // Commission breakdown for display
+  const costBreakdown = [
+    { label: 'Commission', value: commission, percentage: commission > 0 && tradeValue > 0 ? (commission / tradeValue) * 100 : 0 },
+    { label: 'Transaction Fees', value: transactionFees, percentage: transactionFees > 0 && tradeValue > 0 ? (transactionFees / tradeValue) * 100 : 0 },
+    { label: 'Platform Fees', value: platformFees, percentage: platformFees > 0 && tradeValue > 0 ? (platformFees / tradeValue) * 100 : 0 },
+    { label: 'Other Fees', value: otherFees, percentage: otherFees > 0 && tradeValue > 0 ? (otherFees / tradeValue) * 100 : 0 }
+  ];
+
   return <>
-    <div className="grid gap-5 md:grid-cols-2"><NumberField label="Buy value" value={buyValue} onChange={setBuyValue} step="0.01" /><NumberField label="Sell value" value={sellValue} onChange={setSellValue} step="0.01" /><NumberField label="Brokerage rate per side" value={rate} onChange={setRate} step="0.001" suffix="%" /><NumberField label="Brokerage cap per side" value={cap} onChange={setCap} step="0.01" /><NumberField label="Other transaction rate" value={transactionRate} onChange={setTransactionRate} step="0.001" suffix="%" /><NumberField label="Other fixed fees" value={otherFees} onChange={setOtherFees} step="0.01" /></div>
-    <div className="mt-6 grid gap-4 sm:grid-cols-3"><Result label="Gross P&L" value={formatNumber(sellValue - buyValue)} /><Result label="Estimated total costs" value={formatNumber(total)} /><Result label="Estimated net P&L" value={formatNumber(sellValue - buyValue - total)} /></div>
-    <Notice>Enter the current fee schedule for the exact broker, product, country, and legal entity. This generic estimator excludes taxes, exchange fees, stamp duty, GST/VAT, regulatory levies, spreads, and slippage.</Notice>
+    <div className="min-w-0 space-y-5">
+      <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
+        <SelectField 
+          label="Trade Type" 
+          value={tradeType} 
+          onChange={setTradeType as any} 
+          options={[
+            { value: 'buy', label: 'Buy Trade' },
+            { value: 'sell', label: 'Sell Trade' }
+          ]} 
+        />
+        <SelectField 
+          label="Broker Commission Type" 
+          value={brokerType} 
+          onChange={setBrokerType as any} 
+          options={[
+            { value: 'commission', label: 'Per-Share Commission' },
+            { value: 'flat', label: 'Flat Commission per Trade' },
+            { value: 'percentage', label: 'Percentage of Trade Value' }
+          ]} 
+        />
+      </div>
+
+      <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
+        <NumberField 
+          label="Trade Value ($)" 
+          value={tradeValue} 
+          onChange={setTradeValue} 
+          step="0.01" 
+        />
+        <NumberField 
+          label="Number of Shares" 
+          value={numberOfShares} 
+          onChange={setNumberOfShares} 
+          step="1" 
+        />
+      </div>
+
+      {brokerType === 'commission' && (
+        <NumberField 
+          label="Commission per Share ($)" 
+          value={commissionPerShare} 
+          onChange={setCommissionPerShare} 
+          step="0.001" 
+        />
+      )}
+
+      {brokerType === 'flat' && (
+        <NumberField 
+          label="Flat Commission per Trade ($)" 
+          value={flatCommission} 
+          onChange={setFlatCommission} 
+          step="0.01" 
+        />
+      )}
+
+      {brokerType === 'percentage' && (
+        <NumberField 
+          label="Percentage Commission (%)" 
+          value={percentageCommission} 
+          onChange={setPercentageCommission} 
+          step="0.01" 
+          suffix="%" 
+        />
+      )}
+
+      <NumberField 
+        label="Commission Cap ($)" 
+        value={commissionCap} 
+        onChange={setCommissionCap} 
+        step="0.01" 
+        note="Set to 0 for no cap"
+      />
+
+      <div className="grid gap-4 grid-cols-1 md:grid-cols-3">
+        <NumberField 
+          label="Transaction Fees ($)" 
+          value={transactionFees} 
+          onChange={setTransactionFees} 
+          step="0.01" 
+          note="Exchange fees, clearing fees, etc."
+        />
+        <NumberField 
+          label="Platform Fees ($)" 
+          value={platformFees} 
+          onChange={setPlatformFees} 
+          step="0.01" 
+          note="Data fees, software fees, etc."
+        />
+        <NumberField 
+          label="Other Fixed Fees ($)" 
+          value={otherFees} 
+          onChange={setOtherFees} 
+          step="0.01" 
+          note="Regulatory fees, misc charges"
+        />
+      </div>
+
+      <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
+        <NumberField 
+          label="Number of Trades" 
+          value={numberOfTrades} 
+          onChange={setNumberOfTrades} 
+          step="1" 
+          note="Total number of identical trades"
+        />
+        <SelectField 
+          label="Holding Period" 
+          value={holdingPeriod} 
+          onChange={setHoldingPeriod as any} 
+          options={[
+            { value: 'day', label: 'Day Trading' },
+            { value: 'week', label: 'Swing Trading (Week)' },
+            { value: 'month', label: 'Position Trading (Month)' },
+            { value: 'quarter', label: 'Long-term (Quarter)' },
+            { value: 'year', label: 'Investment (Year)' }
+          ]} 
+        />
+      </div>
+
+      <div className="mt-6 rounded-2xl border border-slate-200 bg-slate-50 p-5 dark:border-slate-800 dark:bg-slate-950/70">
+        <h3 className="text-base font-semibold text-slate-700 dark:text-slate-300 mb-4">Cost Breakdown (Single Trade)</h3>
+        <div className="space-y-3">
+          {costBreakdown.map((item) => (
+            <div key={item.label} className="flex justify-between items-center p-3 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700">
+              <div>
+                <p className="text-sm font-medium text-slate-700 dark:text-slate-300">{item.label}</p>
+                <p className="text-xs text-slate-500 dark:text-slate-400">{item.percentage.toFixed(2)}% of trade value</p>
+              </div>
+              <p className="text-sm font-bold text-slate-900 dark:text-white">${formatNumber(item.value)}</p>
+            </div>
+          ))}
+          <div className="flex justify-between items-center p-3 rounded-lg bg-primary-50 dark:bg-primary-950/30 border border-primary-200 dark:border-primary-800">
+            <div>
+              <p className="text-sm font-medium text-primary-700 dark:text-primary-300">Total Estimated Cost</p>
+              <p className="text-xs text-slate-500 dark:text-slate-400">{effectiveCostPercentage.toFixed(2)}% of trade value</p>
+            </div>
+            <p className="text-sm font-bold text-primary-900 dark:text-primary-100">${formatNumber(totalFees)}</p>
+          </div>
+        </div>
+      </div>
+
+      <div className="mt-6 grid gap-4 sm:grid-cols-3">
+        <Result 
+          label="Total Cost for All Trades" 
+          value={`$${formatNumber(totalCostForAllTrades)}`} 
+          note={`${numberOfTrades} trades × $${formatNumber(totalFees)} per trade`}
+        />
+        <Result 
+          label="Break-Even Percentage" 
+          value={`${breakEvenPercentage.toFixed(3)}%`} 
+          note="Trade must move this % to cover costs"
+        />
+        <Result 
+          label="Cost per $1,000" 
+          value={`$${formatNumber((totalFees / tradeValue) * 1000)}`} 
+          note="For every $1,000 of trade value"
+        />
+      </div>
+
+      <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5 dark:border-slate-800 dark:bg-slate-950/70">
+        <h3 className="text-base font-semibold text-slate-700 dark:text-slate-300 mb-4">Trading Strategy Cost Analysis</h3>
+        
+        <div className="space-y-4">
+          <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
+            <div className="p-4 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700">
+              <p className="text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">Day Trading</p>
+              <p className="text-lg font-bold text-slate-900 dark:text-white">${formatNumber(totalFees * 20)}</p>
+              <p className="text-xs text-slate-500 dark:text-slate-400">20 trades/day</p>
+            </div>
+            <div className="p-4 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700">
+              <p className="text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">Swing Trading</p>
+              <p className="text-lg font-bold text-slate-900 dark:text-white">${formatNumber(totalFees * 10)}</p>
+              <p className="text-xs text-slate-500 dark:text-slate-400">10 trades/week</p>
+            </div>
+            <div className="p-4 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700">
+              <p className="text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">Position Trading</p>
+              <p className="text-lg font-bold text-slate-900 dark:text-white">${formatNumber(totalFees * 4)}</p>
+              <p className="text-xs text-slate-500 dark:text-slate-400">4 trades/month</p>
+            </div>
+            <div className="p-4 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700">
+              <p className="text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">Long-term Investing</p>
+              <p className="text-lg font-bold text-slate-900 dark:text-white">${formatNumber(totalFees * 12)}</p>
+              <p className="text-xs text-slate-500 dark:text-slate-400">12 trades/year</p>
+            </div>
+          </div>
+
+          <div className="mt-4 p-4 rounded-lg bg-primary-50 dark:bg-primary-950/30 border border-primary-200 dark:border-primary-800">
+            <p className="text-sm font-medium text-primary-700 dark:text-primary-300 mb-2">Annual Cost Estimate (Based on {holdingPeriod} trading)</p>
+            <div className="flex justify-between items-center">
+              <div>
+                <p className="text-2xl font-bold text-primary-900 dark:text-primary-100">${formatNumber(totalFees * getAnnualTrades(holdingPeriod))}</p>
+                <p className="text-xs text-slate-500 dark:text-slate-400">{getAnnualTrades(holdingPeriod)} trades per year × ${formatNumber(totalFees)} per trade</p>
+              </div>
+              <div className="text-right">
+                <p className="text-sm font-medium text-slate-700 dark:text-slate-300">Annual Cost %</p>
+                <p className="text-lg font-bold text-slate-900 dark:text-white">{((totalFees * getAnnualTrades(holdingPeriod)) / (tradeValue * getAnnualTrades(holdingPeriod)) * 100).toFixed(2)}%</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5 dark:border-slate-800 dark:bg-slate-950/70">
+        <h3 className="text-base font-semibold text-slate-700 dark:text-slate-300 mb-4">Portfolio-Level Cost Analysis</h3>
+        
+        <div className="grid gap-4 grid-cols-1 md:grid-cols-2 mb-4">
+          <NumberField 
+            label="Portfolio Value ($)" 
+            value={portfolioValue} 
+            onChange={setPortfolioValue} 
+            step="0.01" 
+            note="Total portfolio value"
+          />
+          <NumberField 
+            label="Average Trade Value ($)" 
+            value={tradeValue} 
+            onChange={setTradeValue} 
+            step="0.01" 
+            note="Average value per trade"
+          />
+        </div>
+
+        <div className="space-y-3">
+          <div className="p-4 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700">
+            <p className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Portfolio Turnover Impact</p>
+            <div className="grid gap-3 grid-cols-1 md:grid-cols-3">
+              <div>
+                <p className="text-xs text-slate-500 dark:text-slate-400">Low Turnover (25%/year)</p>
+                <p className="text-lg font-bold text-slate-900 dark:text-white">${formatNumber(totalFees * portfolioValueToTurnover(portfolioValue, 25))}</p>
+                <p className="text-xs text-slate-500 dark:text-slate-400">{portfolioValueToTurnover(portfolioValue, 25)} trades/year</p>
+              </div>
+              <div>
+                <p className="text-xs text-slate-500 dark:text-slate-400">Medium Turnover (50%/year)</p>
+                <p className="text-lg font-bold text-slate-900 dark:text-white">${formatNumber(totalFees * portfolioValueToTurnover(portfolioValue, 50))}</p>
+                <p className="text-xs text-slate-500 dark:text-slate-400">{portfolioValueToTurnover(portfolioValue, 50)} trades/year</p>
+              </div>
+              <div>
+                <p className="text-xs text-slate-500 dark:text-slate-400">High Turnover (100%/year)</p>
+                <p className="text-lg font-bold text-slate-900 dark:text-white">${formatNumber(totalFees * portfolioValueToTurnover(portfolioValue, 100))}</p>
+                <p className="text-xs text-slate-500 dark:text-slate-400">{portfolioValueToTurnover(portfolioValue, 100)} trades/year</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="p-4 rounded-lg bg-primary-50 dark:bg-primary-950/30 border border-primary-200 dark:border-primary-800">
+            <p className="text-sm font-medium text-primary-700 dark:text-primary-300 mb-2">Rebalancing Cost Impact</p>
+            <div className="grid gap-3 grid-cols-1 md:grid-cols-3">
+              <div>
+                <p className="text-xs text-slate-500 dark:text-slate-400">Monthly Rebalancing</p>
+                <p className="text-lg font-bold text-primary-900 dark:text-primary-100">${formatNumber(totalFees * 12)}</p>
+                <p className="text-xs text-slate-500 dark:text-slate-400">12 rebalances/year</p>
+              </div>
+              <div>
+                <p className="text-xs text-slate-500 dark:text-slate-400">Quarterly Rebalancing</p>
+                <p className="text-lg font-bold text-primary-900 dark:text-primary-100">${formatNumber(totalFees * 4)}</p>
+                <p className="text-xs text-slate-500 dark:text-slate-400">4 rebalances/year</p>
+              </div>
+              <div>
+                <p className="text-xs text-slate-500 dark:text-slate-400">Annual Rebalancing</p>
+                <p className="text-lg font-bold text-primary-900 dark:text-primary-100">${formatNumber(totalFees * 1)}</p>
+                <p className="text-xs text-slate-500 dark:text-slate-400">1 rebalance/year</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5 dark:border-slate-800 dark:bg-slate-950/70">
+        <h3 className="text-base font-semibold text-slate-700 dark:text-slate-300 mb-4">Strategy Comparison</h3>
+        <div className="space-y-3 text-sm text-slate-600 dark:text-slate-400">
+          <div className="p-3 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700">
+            <p className="font-medium text-slate-700 dark:text-slate-300 mb-1">Day Trading (20 trades/day, 200 days/year)</p>
+            <p className="text-xs text-slate-500 dark:text-slate-400">Total annual cost: ${formatNumber(totalFees * 200)} | Break-even needed: {((totalFees * 200) / (tradeValue * 200) * 100).toFixed(3)}% per trade</p>
+          </div>
+          <div className="p-3 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700">
+            <p className="font-medium text-slate-700 dark:text-slate-300 mb-1">Swing Trading (10 trades/week, 50 weeks/year)</p>
+            <p className="text-xs text-slate-500 dark:text-slate-400">Total annual cost: ${formatNumber(totalFees * 500)} | Break-even needed: {((totalFees * 500) / (tradeValue * 500) * 100).toFixed(3)}% per trade</p>
+          </div>
+          <div className="p-3 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700">
+            <p className="font-medium text-slate-700 dark:text-slate-300 mb-1">Position Trading (4 trades/month, 12 months/year)</p>
+            <p className="text-xs text-slate-500 dark:text-slate-400">Total annual cost: ${formatNumber(totalFees * 48)} | Break-even needed: {((totalFees * 48) / (tradeValue * 48) * 100).toFixed(3)}% per trade</p>
+          </div>
+          <div className="p-3 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700">
+            <p className="font-medium text-slate-700 dark:text-slate-300 mb-1">Long-term Investing (12 trades/year)</p>
+            <p className="text-xs text-slate-500 dark:text-slate-400">Total annual cost: ${formatNumber(totalFees * 12)} | Break-even needed: {((totalFees * 12) / (tradeValue * 12) * 100).toFixed(3)}% per trade</p>
+          </div>
+        </div>
+      </div>
+
+      <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5 dark:border-slate-800 dark:bg-slate-950/70">
+        <h3 className="text-base font-semibold text-slate-700 dark:text-slate-300 mb-4">Cost Analysis Tips</h3>
+        <div className="space-y-3 text-sm text-slate-600 dark:text-slate-400">
+          <p><strong>Commission Type:</strong> Different brokers use different commission structures. Check your broker's fee schedule and select the appropriate type (per-share, flat, or percentage).</p>
+          <p><strong>Impact of Trade Size:</strong> Per-share commissions make large trades expensive, while percentage commissions are better for small trades but can be costly for large positions.</p>
+          <p><strong>Hidden Costs:</strong> Beyond visible commissions, consider exchange fees, clearing fees, platform fees, and regulatory charges that may apply to your specific situation.</p>
+          <p><strong>Break-Even Analysis:</strong> The break-even percentage shows how much the price must move in your favor to cover all trading costs. For day trading, this should be minimal (under 0.5%).</p>
+          <p><strong>Volume Discount:</strong> Some brokers offer reduced commissions for high-volume traders. If you trade frequently, check if your broker offers volume-based pricing tiers.</p>
+          <p><strong>Strategy Impact:</strong> Day traders face the highest cumulative costs due to frequent trading. Long-term investors have minimal cost impact on returns.</p>
+          <p><strong>Annual Cost Perspective:</strong> Consider your total annual trading costs when evaluating broker suitability. High-frequency trading requires lower per-trade costs.</p>
+        </div>
+      </div>
+
+      <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5 dark:border-slate-800 dark:bg-slate-950/70">
+        <h3 className="text-base font-semibold text-slate-700 dark:text-slate-300 mb-4">Understanding Broker Commission Structures</h3>
+        <div className="space-y-4 text-sm text-slate-600 dark:text-slate-400">
+          <div className="p-3 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700">
+            <p className="font-medium text-slate-700 dark:text-slate-300 mb-1">Per-Share Commission</p>
+            <p className="text-xs text-slate-500 dark:text-slate-400">Charged for each share traded. Common for active traders and algorithmic trading. Example: $0.01 per share means a 1,000 share trade costs $10 in commission.</p>
+          </div>
+          <div className="p-3 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700">
+            <p className="font-medium text-slate-700 dark:text-slate-300 mb-1">Flat Commission</p>
+            <p className="text-xs text-slate-500 dark:text-slate-400">Fixed fee per trade regardless of size. Common for retail brokers. Example: $4.95 per trade whether you buy 10 shares or 10,000 shares.</p>
+          </div>
+          <div className="p-3 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700">
+            <p className="font-medium text-slate-700 dark:text-slate-300 mb-1">Percentage Commission</p>
+            <p className="text-xs text-slate-500 dark:text-slate-400">Percentage of trade value. Common for international brokers and full-service firms. Example: 0.1% means a $10,000 trade costs $10 in commission.</p>
+          </div>
+          <div className="p-3 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700">
+            <p className="font-medium text-slate-700 dark:text-slate-300 mb-1">Commission Caps</p>
+            <p className="text-xs text-slate-500 dark:text-slate-400">Maximum commission limit per trade. Protects traders from excessive costs on large trades. Example: $20 cap means commission never exceeds $20 regardless of trade size.</p>
+          </div>
+        </div>
+      </div>
+
+      <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5 dark:border-slate-800 dark:bg-slate-950/70">
+        <h3 className="text-base font-semibold text-slate-700 dark:text-slate-300 mb-4">Hidden Trading Costs to Consider</h3>
+        <div className="space-y-3 text-sm text-slate-600 dark:text-slate-400">
+          <p><strong>Exchange Fees:</strong> Charged by exchanges for executing trades. Examples: NYSE Transaction Fee, NASDAQ Execution Fee, Options Clearing Corporation fees.</p>
+          <p><strong>Clearing Fees:</strong> Charged for clearing and settlement of trades. Examples: DTCC fees, clearing house charges.</p>
+          <p><strong>Regulatory Fees:</strong> Government-mandated fees for market regulation. Examples: SEC fees (US), FINRA fees, transaction taxes.</p>
+          <p><strong>Platform Fees:</strong> Charges for trading platforms and data feeds. Examples: real-time data subscriptions, advanced charting software, API access.</p>
+          <p><strong>Margin Interest:</strong> Interest charged on borrowed funds for margin trading. Rates vary significantly between brokers.</p>
+          <p><strong>Inactivity Fees:</strong> Charges for accounts with no trading activity over a period. Examples: monthly inactivity fees, maintenance fees.</p>
+          <p><strong>Wire Transfer Fees:</strong> Charges for funding or withdrawing from accounts. Examples: ACH transfers, wire transfers, foreign exchange fees.</p>
+          <p><strong>Account Minimums:</strong> Some brokers require minimum account balances or charge fees for falling below minimums.</p>
+        </div>
+      </div>
+
+      <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5 dark:border-slate-800 dark:bg-slate-950/70">
+        <h3 className="text-base font-semibold text-slate-700 dark:text-slate-300 mb-4">Best Practices for Cost Management</h3>
+        <div className="space-y-3 text-sm text-slate-600 dark:text-slate-400">
+          <p><strong>Know Your Trading Style:</strong> Match your broker choice to your trading frequency. Day traders need low per-trade costs; investors may prefer value-added services.</p>
+          <p><strong>Calculate True Costs:</strong> Use this calculator to understand the total cost impact including all fees, not just the advertised commission.</p>
+          <p><strong>Consider Trade Size:</strong> Optimize trade sizes to minimize cost percentage. Larger trades may be more cost-efficient with percentage commissions.</p>
+          <p><strong>Review Fee Schedules:</strong> Regularly review your broker's fee schedule as fees can change. Stay informed about new fees or pricing tiers.</p>
+          <p><strong>Negotiate for Volume:</strong> High-volume traders may qualify for reduced rates. Contact your broker about volume discounts or professional pricing.</p>
+          <p><strong>Monitor Annual Costs:</strong> Track your total annual trading costs to ensure they align with your trading strategy and profitability goals.</p>
+          <p><strong>Compare Total Value:</strong> Consider the total value proposition including research tools, execution quality, and customer service, not just costs.</p>
+        </div>
+      </div>
+
+      <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5 dark:border-slate-800 dark:bg-slate-950/70">
+        <h3 className="text-base font-semibold text-slate-700 dark:text-slate-300 mb-4">Related Calculators for Complete Trading Analysis</h3>
+        <div className="space-y-3 text-sm text-slate-600 dark:text-slate-400">
+          <div className="p-3 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700">
+            <p className="font-medium text-slate-700 dark:text-slate-300 mb-1">Position Size Calculator</p>
+            <p className="text-xs text-slate-500 dark:text-slate-400">Calculate optimal position sizes based on your account balance, risk tolerance, and stop loss. Combine with brokerage costs to understand total risk per trade including fees.</p>
+          </div>
+          <div className="p-3 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700">
+            <p className="font-medium text-slate-700 dark:text-slate-300 mb-1">Risk-Reward Calculator</p>
+            <p className="text-xs text-slate-500 dark:text-slate-400">Analyze risk-reward ratios and break-even win rates. Factor in brokerage costs to determine realistic profit targets that account for trading expenses.</p>
+          </div>
+          <div className="p-3 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700">
+            <p className="font-medium text-slate-700 dark:text-slate-300 mb-1">Stock Profit Calculator</p>
+            <p className="text-xs text-slate-500 dark:text-slate-400">Calculate potential profits and losses from stock trades. Include brokerage costs from this calculator to see net returns after all trading expenses.</p>
+          </div>
+          <div className="p-3 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700">
+            <p className="font-medium text-slate-700 dark:text-slate-300 mb-1">Portfolio Risk Allocation Calculator</p>
+            <p className="text-xs text-slate-500 dark:text-slate-400">Analyze portfolio risk and diversification. Factor in trading costs when rebalancing portfolios to understand the cost impact of portfolio adjustments.</p>
+          </div>
+          <div className="p-3 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700">
+            <p className="font-medium text-slate-700 dark:text-slate-300 mb-1">Net Trading Cost Calculator</p>
+            <p className="text-xs text-slate-500 dark:text-slate-400">Calculate net P&L after including all trading costs including spread, commissions, and other fees. Use this calculator's results as input for comprehensive cost analysis.</p>
+          </div>
+        </div>
+      </div>
+
+      <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5 dark:border-slate-800 dark:bg-slate-950/70">
+        <h3 className="text-base font-semibold text-slate-700 dark:text-slate-300 mb-4">Integration Workflow: Complete Trading Cost Analysis</h3>
+        <div className="space-y-4 text-sm text-slate-600 dark:text-slate-400">
+          <div className="flex items-start gap-3">
+            <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary-100 dark:bg-primary-900 flex items-center justify-center text-primary-700 dark:text-primary-300 font-bold text-sm">1</div>
+            <div>
+              <p className="font-medium text-slate-700 dark:text-slate-300">Calculate Brokerage Costs</p>
+              <p className="text-xs text-slate-500 dark:text-slate-400">Use this calculator to determine your per-trade costs based on your broker's fee structure.</p>
+            </div>
+          </div>
+          <div className="flex items-start gap-3">
+            <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary-100 dark:bg-primary-900 flex items-center justify-center text-primary-700 dark:text-primary-300 font-bold text-sm">2</div>
+            <div>
+              <p className="font-medium text-slate-700 dark:text-slate-300">Determine Position Size</p>
+              <p className="text-xs text-slate-500 dark:text-slate-400">Use Position Size Calculator to find optimal trade size based on your risk budget and stop loss.</p>
+            </div>
+          </div>
+          <div className="flex items-start gap-3">
+            <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary-100 dark:bg-primary-900 flex items-center justify-center text-primary-700 dark:text-primary-300 font-bold text-sm">3</div>
+            <div>
+              <p className="font-medium text-slate-700 dark:text-slate-300">Analyze Risk-Reward</p>
+              <p className="text-xs text-slate-500 dark:text-slate-400">Use Risk-Reward Calculator to determine if the trade setup offers adequate return potential after costs.</p>
+            </div>
+          </div>
+          <div className="flex items-start gap-3">
+            <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary-100 dark:bg-primary-900 flex items-center justify-center text-primary-700 dark:text-primary-300 font-bold text-sm">4</div>
+            <div>
+              <p className="font-medium text-slate-700 dark:text-slate-300">Calculate Net Returns</p>
+              <p className="text-xs text-slate-500 dark:text-slate-400">Use Stock Profit Calculator with brokerage costs to see realistic net profit/loss after all expenses.</p>
+            </div>
+          </div>
+          <div className="flex items-start gap-3">
+            <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary-100 dark:bg-primary-900 flex items-center justify-center text-primary-700 dark:text-primary-300 font-bold text-sm">5</div>
+            <div>
+              <p className="font-medium text-slate-700 dark:text-slate-300">Portfolio Impact Analysis</p>
+              <p className="text-xs text-slate-500 dark:text-slate-400">Use Portfolio Risk Calculator to understand how trading costs affect overall portfolio performance and rebalancing decisions.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <Notice>
+        <strong>Educational Tool Only:</strong> This calculator is designed for educational purposes to help traders understand and estimate trading costs. It does not provide financial advice, investment recommendations, or broker endorsements. The results are estimates based on the fee structure you input and may not reflect actual costs charged by any specific broker.
+        <br /><br />
+        <strong>Not Broker Recommendations:</strong> This tool does not recommend or compare specific brokers. All fee structures are user-input based. Do not use this tool to select a broker without thorough research and verification.
+        <br /><br />
+        <strong>Verify All Information:</strong> Trading costs vary significantly based on broker, account type, market conditions, regulatory requirements, and other factors. Always verify the exact fee schedule with your broker's official documentation, website, or customer service before making trading decisions.
+        <br /><br />
+        <strong>Excluded Costs:</strong> This calculator may not include all potential costs such as taxes, exchange fees, stamp duty, GST/VAT, regulatory levies, spreads, slippage, margin interest, or other broker-specific charges. The total cost of trading may be higher than calculated here.
+        <br /><br />
+        <strong>Professional Advice:</strong> Trading involves significant risk including the loss of principal. Consult with qualified financial professionals, tax advisors, and legal experts before making investment decisions. This calculator is not a substitute for professional financial advice.
+        <br /><br />
+        <strong>No Guarantee:</strong> Past performance is not indicative of future results. This calculator provides no guarantees about trading profitability, cost accuracy, or investment outcomes.
+      </Notice>
+    </div>
   </>;
 }
 
@@ -3918,38 +4401,1277 @@ function NetTradingCostCalculator() {
 }
 
 function PortfolioRiskAllocationCalculator() {
-  const [account, setAccount] = useState(50000);
-  const [riskA, setRiskA] = useState(300);
-  const [riskB, setRiskB] = useState(250);
-  const [riskC, setRiskC] = useState(150);
-  const [exposureA, setExposureA] = useState(10000);
-  const [exposureB, setExposureB] = useState(7500);
-  const [exposureC, setExposureC] = useState(5000);
-  const [correlation, setCorrelation] = useState(0.4);
-  const risks = [Math.max(riskA, 0), Math.max(riskB, 0), Math.max(riskC, 0)];
-  const exposures = [Math.max(exposureA, 0), Math.max(exposureB, 0), Math.max(exposureC, 0)];
-  const grossRisk = risks.reduce((sum, value) => sum + value, 0);
-  const adjustedVariance = risks.reduce((sum, value) => sum + value ** 2, 0) + 2 * Math.max(-1, Math.min(1, correlation)) * (risks[0] * risks[1] + risks[0] * risks[2] + risks[1] * risks[2]);
-  const adjustedRisk = Math.sqrt(Math.max(0, adjustedVariance));
-  const totalExposure = exposures.reduce((sum, value) => sum + value, 0);
+  // URL encoding/decoding functions
+  const encodePortfolioToURL = () => {
+    const portfolioData = {
+      positions: positions.map(p => ({
+        s: p.symbol,
+        n: p.name,
+        w: p.weight,
+        r: p.risk,
+        sec: p.sector
+      })),
+      account,
+      riskFreeRate,
+      riskLevel,
+      timeHorizon,
+      benchmark
+    };
+    const encoded = btoa(JSON.stringify(portfolioData));
+    return encoded;
+  };
+
+  const decodePortfolioFromURL = () => {
+    if (typeof window === 'undefined') return;
+    
+    const urlParams = new URLSearchParams(window.location.search);
+    const portfolioParam = urlParams.get('portfolio');
+    
+    if (portfolioParam) {
+      try {
+        const decoded = JSON.parse(atob(portfolioParam));
+        if (decoded.positions && Array.isArray(decoded.positions)) {
+          setPositions(decoded.positions.map((p: any, i: number) => ({
+            id: i + 1,
+            symbol: p.s,
+            name: p.n,
+            weight: p.w,
+            risk: p.r,
+            sector: p.sec
+          })));
+          setAccount(decoded.account || 100000);
+          setRiskFreeRate(decoded.riskFreeRate || 4.5);
+          setRiskLevel(decoded.riskLevel || 5);
+          setTimeHorizon(decoded.timeHorizon || 10);
+          setBenchmark(decoded.benchmark || 'SPY');
+        }
+      } catch (error) {
+        console.error('Failed to decode portfolio from URL:', error);
+      }
+    }
+  };
+
+  // Load portfolio from URL on mount
+  useEffect(() => {
+    decodePortfolioFromURL();
+  }, []);
+
+  // Portfolio positions state
+  const [positions, setPositions] = useState([
+    { id: 1, symbol: 'AAPL', name: 'Apple Inc.', weight: 30, risk: 25, sector: 'Technology' },
+    { id: 2, symbol: 'MSFT', name: 'Microsoft Corp.', weight: 25, risk: 22, sector: 'Technology' },
+    { id: 3, symbol: 'GOOGL', name: 'Alphabet Inc.', weight: 20, risk: 28, sector: 'Technology' },
+    { id: 4, symbol: 'JPM', name: 'JPMorgan Chase', weight: 15, risk: 18, sector: 'Financial' },
+    { id: 5, symbol: 'JNJ', name: 'Johnson & Johnson', weight: 10, risk: 15, sector: 'Healthcare' }
+  ]);
+
+  const [account, setAccount] = useState(100000);
+  const [riskFreeRate, setRiskFreeRate] = useState(4.5);
+  const [riskLevel, setRiskLevel] = useState(5); // 1-10 scale like StockRisker
+  const [useAutoRebalance, setUseAutoRebalance] = useState(true);
+  const [benchmark, setBenchmark] = useState('SPY'); // S&P 500
+  const [timeHorizon, setTimeHorizon] = useState(10); // years
+  const [correlationMatrix, setCorrelationMatrix] = useState<Record<string, Record<string, number>>>({});
+  const [showAdvanced, setShowAdvanced] = useState(false);
+  const [loadingData, setLoadingData] = useState(false);
+  const [historicalVolatility, setHistoricalVolatility] = useState<Record<string, number>>({});
+  const [usingLiveData, setUsingLiveData] = useState(false);
+  const [showMonteCarlo, setShowMonteCarlo] = useState(false);
+  const [monteCarloResults, setMonteCarloResults] = useState<{
+    scenarios: number[][];
+    percentileSeries: { month: number; p10: number; p25: number; p50: number; p75: number; p90: number }[];
+    percentiles: { p10: number; p25: number; p50: number; p75: number; p90: number };
+    probabilityOfSuccess: number;
+  } | null>(null);
+  const [runningMonteCarlo, setRunningMonteCarlo] = useState(false);
+  const [showEfficientFrontier, setShowEfficientFrontier] = useState(false);
+  const [efficientFrontierData, setEfficientFrontierData] = useState<{
+    points: { volatility: number; return: number; sharpe: number }[];
+    maxSharpePortfolio: { weights: number[]; volatility: number; return: number };
+    minVariancePortfolio: { weights: number[]; volatility: number; return: number };
+  } | null>(null);
+  const [showOptimization, setShowOptimization] = useState(false);
+  const [optimizedWeights, setOptimizedWeights] = useState<number[] | null>(null);
+  const [optimizationMethod, setOptimizationMethod] = useState<'maxSharpe' | 'minVariance' | 'riskParity'>('maxSharpe');
+  const [symbolPage, setSymbolPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(8);
+
+  // Supported symbols with details
+  const SUPPORTED_SYMBOLS = [
+    { symbol: "AAPL", name: "Apple Inc.", exchange: "NASDAQ", sector: "Technology" },
+    { symbol: "MSFT", name: "Microsoft Corporation", exchange: "NASDAQ", sector: "Technology" },
+    { symbol: "GOOGL", name: "Alphabet Inc.", exchange: "NASDAQ", sector: "Technology" },
+    { symbol: "AMZN", name: "Amazon.com, Inc.", exchange: "NASDAQ", sector: "Consumer" },
+    { symbol: "NVDA", name: "NVIDIA Corporation", exchange: "NASDAQ", sector: "Technology" },
+    { symbol: "META", name: "Meta Platforms, Inc.", exchange: "NASDAQ", sector: "Technology" },
+    { symbol: "TSLA", name: "Tesla, Inc.", exchange: "NASDAQ", sector: "Consumer" },
+    { symbol: "BRK.B", name: "Berkshire Hathaway Inc.", exchange: "NYSE", sector: "Financial" },
+    { symbol: "JPM", name: "JPMorgan Chase & Co.", exchange: "NYSE", sector: "Financial" },
+    { symbol: "V", name: "Visa Inc.", exchange: "NYSE", sector: "Financial" },
+    { symbol: "MA", name: "Mastercard Incorporated", exchange: "NYSE", sector: "Financial" },
+    { symbol: "BAC", name: "Bank of America Corporation", exchange: "NYSE", sector: "Financial" },
+    { symbol: "WFC", name: "Wells Fargo & Company", exchange: "NYSE", sector: "Financial" },
+    { symbol: "GS", name: "The Goldman Sachs Group, Inc.", exchange: "NYSE", sector: "Financial" },
+    { symbol: "MS", name: "Morgan Stanley", exchange: "NYSE", sector: "Financial" },
+    { symbol: "AVGO", name: "Broadcom Inc.", exchange: "NASDAQ", sector: "Technology" },
+    { symbol: "CSCO", name: "Cisco Systems, Inc.", exchange: "NASDAQ", sector: "Technology" },
+    { symbol: "ORCL", name: "Oracle Corporation", exchange: "NYSE", sector: "Technology" },
+    { symbol: "CRM", name: "Salesforce, Inc.", exchange: "NYSE", sector: "Technology" },
+    { symbol: "ADBE", name: "Adobe Inc.", exchange: "NASDAQ", sector: "Technology" },
+    { symbol: "INTC", name: "Intel Corporation", exchange: "NASDAQ", sector: "Technology" },
+    { symbol: "AMD", name: "Advanced Micro Devices, Inc.", exchange: "NASDAQ", sector: "Technology" },
+    { symbol: "QCOM", name: "QUALCOMM Incorporated", exchange: "NASDAQ", sector: "Technology" },
+    { symbol: "IBM", name: "International Business Machines Corporation", exchange: "NYSE", sector: "Technology" },
+    { symbol: "NFLX", name: "Netflix, Inc.", exchange: "NASDAQ", sector: "Technology" },
+    { symbol: "WMT", name: "Walmart Inc.", exchange: "NYSE", sector: "Consumer" },
+    { symbol: "COST", name: "Costco Wholesale Corporation", exchange: "NASDAQ", sector: "Consumer" },
+    { symbol: "HD", name: "The Home Depot, Inc.", exchange: "NYSE", sector: "Consumer" },
+    { symbol: "MCD", name: "McDonald's Corporation", exchange: "NYSE", sector: "Consumer" },
+    { symbol: "NKE", name: "NIKE, Inc.", exchange: "NYSE", sector: "Consumer" },
+    { symbol: "KO", name: "The Coca-Cola Company", exchange: "NYSE", sector: "Consumer" },
+    { symbol: "PEP", name: "PepsiCo, Inc.", exchange: "NASDAQ", sector: "Consumer" },
+    { symbol: "DIS", name: "The Walt Disney Company", exchange: "NYSE", sector: "Consumer" },
+    { symbol: "SBUX", name: "Starbucks Corporation", exchange: "NASDAQ", sector: "Consumer" },
+    { symbol: "XOM", name: "Exxon Mobil Corporation", exchange: "NYSE", sector: "Energy" },
+    { symbol: "CVX", name: "Chevron Corporation", exchange: "NYSE", sector: "Energy" },
+    { symbol: "COP", name: "ConocoPhillips", exchange: "NYSE", sector: "Energy" },
+    { symbol: "SHEL", name: "Shell plc", exchange: "NYSE", sector: "Energy" },
+    { symbol: "BP", name: "BP p.l.c.", exchange: "NYSE", sector: "Energy" },
+    { symbol: "JNJ", name: "Johnson & Johnson", exchange: "NYSE", sector: "Healthcare" },
+    { symbol: "UNH", name: "UnitedHealth Group Incorporated", exchange: "NYSE", sector: "Healthcare" },
+    { symbol: "LLY", name: "Eli Lilly and Company", exchange: "NYSE", sector: "Healthcare" },
+    { symbol: "PFE", name: "Pfizer Inc.", exchange: "NYSE", sector: "Healthcare" },
+    { symbol: "TMO", name: "Thermo Fisher Scientific Inc.", exchange: "NYSE", sector: "Healthcare" },
+    { symbol: "ABT", name: "Abbott Laboratories", exchange: "NYSE", sector: "Healthcare" },
+    { symbol: "MRK", name: "Merck & Co., Inc.", exchange: "NYSE", sector: "Healthcare" },
+    { symbol: "AMGN", name: "Amgen Inc.", exchange: "NASDAQ", sector: "Healthcare" },
+    { symbol: "CAT", name: "Caterpillar Inc.", exchange: "NASDAQ", sector: "Industrial" },
+    { symbol: "BA", name: "The Boeing Company", exchange: "NASDAQ", sector: "Industrial" },
+    { symbol: "GE", name: "GE Aerospace", exchange: "NYSE", sector: "Industrial" },
+    { symbol: "PG", name: "The Procter & Gamble Company", exchange: "NYSE", sector: "Consumer" },
+    { symbol: "UBER", name: "Uber Technologies, Inc.", exchange: "NYSE", sector: "Technology" },
+    { symbol: "LIN", name: "Linde plc", exchange: "NASDAQ", sector: "Industrial" },
+    { symbol: "RTX", name: "RTX Corporation", exchange: "NYSE", sector: "Industrial" },
+    { symbol: "LOW", name: "Lowe's Companies, Inc.", exchange: "NYSE", sector: "Consumer" },
+    { symbol: "PLTR", name: "Palantir Technologies Inc.", exchange: "NYSE", sector: "Technology" },
+    { symbol: "TM", name: "Toyota Motor Corporation", exchange: "NYSE", sector: "Consumer" },
+    { symbol: "SONY", name: "Sony Group Corporation", exchange: "NYSE", sector: "Technology" },
+    { symbol: "BABA", name: "Alibaba Group Holding Limited", exchange: "NYSE", sector: "Technology" },
+    { symbol: "HSBC", name: "HSBC Holdings plc", exchange: "NYSE", sector: "Financial" },
+    { symbol: "BHP", name: "BHP Group Limited", exchange: "NYSE", sector: "Energy" },
+    { symbol: "ADRE", name: "BLDRS Asia 50 ADR Index Fund", exchange: "NASDAQ", sector: "ETF" },
+    { symbol: "EWJ", name: "iShares MSCI Japan ETF", exchange: "NYSE", sector: "ETF" },
+    { symbol: "EEM", name: "iShares MSCI Emerging Markets ETF", exchange: "NYSE", sector: "ETF" },
+    { symbol: "VGK", name: "Vanguard FTSE Europe ETF", exchange: "NYSE", sector: "ETF" },
+    { symbol: "EWG", name: "iShares MSCI Germany ETF", exchange: "NYSE", sector: "ETF" }
+  ];
+
+  // Pagination logic
+  const totalPages = Math.ceil(SUPPORTED_SYMBOLS.length / itemsPerPage);
+  const startIndex = (symbolPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentSymbols = SUPPORTED_SYMBOLS.slice(startIndex, endIndex);
+
+  // Monte Carlo Simulation - Client-side calculation (no API needed)
+  const runMonteCarloSimulation = useCallback(() => {
+    setRunningMonteCarlo(true);
+    
+    // Use setTimeout to allow UI to update
+    setTimeout(() => {
+      const numScenarios = 1000;
+      const numYears = timeHorizon;
+      const numSteps = numYears * 12; // Monthly steps
+      
+      // Calculate portfolio parameters on the fly
+      const weights = positions.map(p => p.weight / 100);
+      const risks = positions.map(p => (historicalVolatility[p.symbol] || p.risk) / 100);
+      const totalWeight = weights.reduce((sum, w) => sum + w, 0);
+      
+      // Calculate portfolio variance and volatility
+      const portfolioVariance = weights.reduce((sum, w_i, i) => {
+        return sum + weights.reduce((innerSum, w_j, j) => {
+          const correlation = correlationMatrix[positions[i].symbol]?.[positions[j].symbol] || (i === j ? 1 : 0.3);
+          return innerSum + w_i * w_j * risks[i] * risks[j] * correlation;
+        }, 0);
+      }, 0);
+      
+      const currentPortfolioVolatility = Math.sqrt(Math.max(0, portfolioVariance)) * 100;
+      const currentExpectedReturn = weights.reduce((sum, w, i) => sum + w * (0.08 + (positions[i].risk / 100) * 0.1), 0);
+      
+      // Portfolio parameters
+      const expectedAnnualReturn = currentExpectedReturn || 0.08; // Fallback to 8% if not available
+      const annualVolatility = currentPortfolioVolatility / 100;
+      const monthlyReturn = expectedAnnualReturn / 12;
+      const monthlyVolatility = annualVolatility / Math.sqrt(12);
+      
+      // Run simulations
+      const scenarios: number[][] = [];
+      
+      for (let s = 0; s < numScenarios; s++) {
+        let currentValue = account;
+        const scenarioValues = [currentValue];
+        
+        for (let t = 0; t < numSteps; t++) {
+          // Geometric Brownian Motion: dS = μSdt + σSdW
+          const randomShock = (Math.random() - 0.5) * 2; // Standard normal approximation
+          const monthlyChange = monthlyReturn + monthlyVolatility * randomShock;
+          currentValue = currentValue * (1 + monthlyChange);
+          scenarioValues.push(currentValue);
+        }
+        
+        scenarios.push(scenarioValues);
+      }
+      
+      // Calculate percentiles at each time step
+      const numTimeSteps = scenarios[0]?.length || 1;
+      const percentileSeries: { month: number; p10: number; p25: number; p50: number; p75: number; p90: number }[] = [];
+      
+      for (let step = 0; step < numTimeSteps; step++) {
+        const stepValues = scenarios.map(s => s[step] || 0);
+        stepValues.sort((a, b) => a - b);
+        
+        percentileSeries.push({
+          month: step,
+          p10: stepValues[Math.floor(numScenarios * 0.1)] || 0,
+          p25: stepValues[Math.floor(numScenarios * 0.25)] || 0,
+          p50: stepValues[Math.floor(numScenarios * 0.5)] || 0,
+          p75: stepValues[Math.floor(numScenarios * 0.75)] || 0,
+          p90: stepValues[Math.floor(numScenarios * 0.9)] || 0
+        });
+      }
+      
+      // Calculate percentiles at final time horizon
+      const finalValues = scenarios.map(s => s[s.length - 1]);
+      finalValues.sort((a, b) => a - b);
+      
+      const percentiles = {
+        p10: finalValues[Math.floor(numScenarios * 0.1)],
+        p25: finalValues[Math.floor(numScenarios * 0.25)],
+        p50: finalValues[Math.floor(numScenarios * 0.5)],
+        p75: finalValues[Math.floor(numScenarios * 0.75)],
+        p90: finalValues[Math.floor(numScenarios * 0.9)]
+      };
+      
+      // Calculate probability of success (meeting or exceeding initial investment)
+      const probabilityOfSuccess = finalValues.filter(v => v >= account).length / numScenarios * 100;
+      
+      setMonteCarloResults({
+        scenarios,
+        percentileSeries,
+        percentiles,
+        probabilityOfSuccess
+      });
+      setRunningMonteCarlo(false);
+    }, 100);
+  }, [account, timeHorizon, positions, correlationMatrix, historicalVolatility]);
+
+  // Efficient Frontier Calculation - Mathematical optimization
+  const calculateEfficientFrontier = useCallback(() => {
+    const numPortfolios = 100;
+    const frontierPoints: { volatility: number; return: number; sharpe: number }[] = [];
+    
+    // Use current portfolio parameters
+    const returns = positions.map(p => 0.08 + (p.risk / 100) * 0.1); // Simplified expected returns
+    const volatilities = positions.map(p => (historicalVolatility[p.symbol] || p.risk) / 100);
+    
+    // Generate efficient frontier by varying target returns
+    const minReturn = Math.min(...returns);
+    const maxReturn = Math.max(...returns);
+    
+    for (let i = 0; i <= numPortfolios; i++) {
+      const targetReturn = minReturn + (maxReturn - minReturn) * (i / numPortfolios);
+      
+      // Simplified optimization: find minimum variance for target return
+      let minVariance = Infinity;
+      
+      // Try different weight combinations (simplified approach)
+      for (let j = 0; j < 500; j++) {
+        // Generate random weights that sum to 1
+        const randomWeights = positions.map(() => Math.random());
+        const sumWeights = randomWeights.reduce((sum, w) => sum + w, 0);
+        const normalizedWeights = randomWeights.map(w => w / sumWeights);
+        
+        // Calculate portfolio return and variance
+        const portfolioReturn = normalizedWeights.reduce((sum, w, k) => sum + w * returns[k], 0);
+        const portfolioVariance = normalizedWeights.reduce((sum, w_i, i) => {
+          return sum + normalizedWeights.reduce((innerSum, w_j, j) => {
+            const correlation = correlationMatrix[positions[i].symbol]?.[positions[j].symbol] || (i === j ? 1 : 0.3);
+            return innerSum + w_i * w_j * volatilities[i] * volatilities[j] * correlation;
+          }, 0);
+        }, 0);
+        
+        // Check if this meets target return and has lower variance
+        if (Math.abs(portfolioReturn - targetReturn) < 0.02 && portfolioVariance < minVariance) {
+          minVariance = portfolioVariance;
+        }
+      }
+      
+      if (minVariance !== Infinity) {
+        const volatility = Math.sqrt(minVariance);
+        const sharpe = (targetReturn - riskFreeRate / 100) / volatility;
+        frontierPoints.push({
+          volatility: volatility * 100,
+          return: targetReturn * 100,
+          sharpe
+        });
+      }
+    }
+    
+    // Find maximum Sharpe ratio portfolio
+    const maxSharpePoint = frontierPoints.reduce((max, point) => 
+      point.sharpe > max.sharpe ? point : max, frontierPoints[0]
+    );
+    
+    // Find minimum variance portfolio
+    const minVariancePoint = frontierPoints.reduce((min, point) => 
+      point.volatility < min.volatility ? point : min, frontierPoints[0]
+    );
+    
+    setEfficientFrontierData({
+      points: frontierPoints,
+      maxSharpePortfolio: {
+        weights: positions.map(() => 1 / positions.length), // Simplified equal weights
+        volatility: maxSharpePoint.volatility,
+        return: maxSharpePoint.return
+      },
+      minVariancePortfolio: {
+        weights: positions.map(() => 1 / positions.length), // Simplified equal weights
+        volatility: minVariancePoint.volatility,
+        return: minVariancePoint.return
+      }
+    });
+  }, [positions, correlationMatrix, riskFreeRate, historicalVolatility]);
+
+  // Fetch historical volatility data using existing APIs
+  const fetchHistoricalVolatility = useCallback(async (symbols: string[]) => {
+    setLoadingData(true);
+    try {
+      // Use existing stocks API to get current data and historical volatility
+      const response = await fetch(`/api/stocks?symbols=${symbols.join(',')}`);
+      const data = await response.json();
+      
+      const volatilityData: Record<string, number> = {};
+      
+      // Calculate volatility from the data (simplified approach)
+      // In production, you'd use the historical API for more accurate calculations
+      symbols.forEach(symbol => {
+        const stockData = data[symbol];
+        if (stockData && stockData.changePercent) {
+          // Use day's change as a simple volatility proxy
+          // In production, use historical API for proper standard deviation
+          volatilityData[symbol] = Math.abs(stockData.changePercent) / 100;
+        } else {
+          volatilityData[symbol] = 0.2; // Default 20% annual volatility
+        }
+      });
+      
+      setHistoricalVolatility(volatilityData);
+      setUsingLiveData(true);
+      
+      // Build simple correlation matrix based on sectors
+      const sectorCorrelations: Record<string, Record<string, number>> = {};
+      positions.forEach(p1 => {
+        sectorCorrelations[p1.symbol] = {};
+        positions.forEach(p2 => {
+          // Same sector = higher correlation, different sector = lower correlation
+          const correlation = p1.sector === p2.sector ? 0.7 : 0.3;
+          sectorCorrelations[p1.symbol][p2.symbol] = correlation;
+        });
+      });
+      setCorrelationMatrix(sectorCorrelations);
+      
+    } catch (error) {
+      console.error('Failed to fetch historical data:', error);
+      // Fall back to default values
+      setUsingLiveData(false);
+    } finally {
+      setLoadingData(false);
+    }
+  }, [positions]);
+
+  // Load historical data when positions change
+  useEffect(() => {
+    const symbols = positions.map(p => p.symbol);
+    if (symbols.length > 0) {
+      fetchHistoricalVolatility(symbols);
+    }
+  }, [positions, fetchHistoricalVolatility]);
+
+  // Add new position
+  const addPosition = () => {
+    const newId = Math.max(...positions.map(p => p.id), 0) + 1;
+    setPositions([...positions, { 
+      id: newId, 
+      symbol: 'STK' + newId, 
+      name: 'Stock ' + newId, 
+      weight: 0, 
+      risk: 20, 
+      sector: 'Other' 
+    }]);
+  };
+
+  // Add position from symbol grid with auto-filled details
+  const addPositionFromSymbol = (symbol: string, name: string, sector: string) => {
+    const newId = Math.max(...positions.map(p => p.id), 0) + 1;
+    setPositions([...positions, { 
+      id: newId, 
+      symbol: symbol, 
+      name: name, 
+      weight: 0, 
+      risk: 20, 
+      sector: sector 
+    }]);
+  };
+
+  // Remove position
+  const removePosition = (id: number) => {
+    const updatedPositions = positions.filter(p => p.id !== id);
+    if (updatedPositions.length > 0) {
+      // Auto-rebalance remaining positions
+      const totalWeight = updatedPositions.reduce((sum, p) => sum + p.weight, 0);
+      if (totalWeight > 0) {
+        const rebalanced = updatedPositions.map(p => ({
+          ...p,
+          weight: (p.weight / totalWeight) * 100
+        }));
+        setPositions(rebalanced);
+      } else {
+        setPositions(updatedPositions);
+      }
+    }
+  };
+
+  // Update position with auto-rebalancing
+  const updatePosition = (id: number, field: string, value: number | string) => {
+    const updatedPositions = positions.map(p => {
+      if (p.id === id) {
+        return { ...p, [field]: value };
+      }
+      return p;
+    });
+
+    if (useAutoRebalance && field === 'weight') {
+      const totalWeight = updatedPositions.reduce((sum, p) => sum + (typeof p.weight === 'number' ? p.weight : 0), 0);
+      if (totalWeight !== 100 && totalWeight > 0) {
+        const otherPositions = updatedPositions.filter(p => p.id !== id);
+        const otherTotalWeight = otherPositions.reduce((sum, p) => sum + (typeof p.weight === 'number' ? p.weight : 0), 0);
+        const scaleFactor = (100 - (value as number)) / otherTotalWeight;
+        
+        const rebalanced = updatedPositions.map(p => {
+          if (p.id === id) return p;
+          return {
+            ...p,
+            weight: Math.max(0, (typeof p.weight === 'number' ? p.weight : 0) * scaleFactor)
+          };
+        });
+        setPositions(rebalanced);
+      } else {
+        setPositions(updatedPositions);
+      }
+    } else {
+      setPositions(updatedPositions);
+    }
+  };
+
+  // Calculate portfolio metrics
+  const weights = positions.map(p => p.weight / 100);
+  // Use historical volatility when available, otherwise use user-provided risk
+  const risks = positions.map(p => (historicalVolatility[p.symbol] || p.risk) / 100);
+  const totalWeight = weights.reduce((sum, w) => sum + w, 0);
+  
+  // Calculate expected return early for use in callbacks
+  const expectedReturn = weights.reduce((sum, w, i) => sum + w * (0.08 + (positions[i].risk / 100) * 0.1), 0);
+
+  // Portfolio variance with correlation matrix
+  const portfolioVariance = weights.reduce((sum, w_i, i) => {
+    return sum + weights.reduce((innerSum, w_j, j) => {
+      const correlation = correlationMatrix[positions[i].symbol]?.[positions[j].symbol] || 
+                          (i === j ? 1 : 0.3); // Default correlation
+      return innerSum + w_i * w_j * risks[i] * risks[j] * correlation;
+    }, 0);
+  }, 0);
+
+  const portfolioVolatility = Math.sqrt(Math.max(0, portfolioVariance)) * 100;
+  
+  // Risk score calculation (1-10 scale like StockRisker)
+  const calculateRiskScore = (volatility: number, concentration: number): number => {
+    const volatilityScore = Math.min(10, (volatility / 30) * 10); // 30% vol = score 10
+    const concentrationScore = Math.min(10, concentration * 2); // 50% concentration = score 10
+    return Math.round((volatilityScore + concentrationScore) / 2);
+  };
+
+  const maxWeight = Math.max(...weights);
+  const concentration = maxWeight * 100;
+  const riskScore = calculateRiskScore(portfolioVolatility, concentration);
+
+  // Advanced risk metrics
+  const sharpeRatio = portfolioVolatility > 0 ? ((expectedReturn - riskFreeRate / 100) / (portfolioVolatility / 100)) : 0;
+  
+  // VaR calculation (simplified)
+  const var95 = account * (1 - (1 - portfolioVolatility / 100 * 1.65)); // 95% confidence VaR
+  const var99 = account * (1 - (1 - portfolioVolatility / 100 * 2.33)); // 99% confidence VaR
+
+  // Risk contribution by position
+  const riskContributions = positions.map((p, i) => {
+    const marginalRisk = weights.reduce((sum, w_j, j) => {
+      const correlation = correlationMatrix[p.symbol]?.[positions[j].symbol] || (i === j ? 1 : 0.3);
+      return sum + w_j * risks[i] * risks[j] * correlation;
+    }, 0);
+    return {
+      ...p,
+      riskContribution: (weights[i] * marginalRisk) / portfolioVariance * 100
+    };
+  });
+
+  // Sector breakdown
+  const sectorBreakdown = positions.reduce((acc, p) => {
+    acc[p.sector] = (acc[p.sector] || 0) + p.weight;
+    return acc;
+  }, {} as Record<string, number>);
+
+  // Risk level interpretation
+  const getRiskLevelText = (score: number) => {
+    if (score <= 2) return { label: 'Very Conservative', color: 'green', description: 'Minimal volatility, high diversification' };
+    if (score <= 4) return { label: 'Conservative', color: 'blue', description: 'Low to moderate volatility, well diversified' };
+    if (score <= 6) return { label: 'Balanced', color: 'yellow', description: 'Moderate volatility, mix of growth and stability' };
+    if (score <= 8) return { label: 'Growth', color: 'orange', description: 'Higher volatility, growth-oriented' };
+    return { label: 'Aggressive', color: 'red', description: 'High volatility, concentrated positions' };
+  };
+
+  const riskInfo = getRiskLevelText(riskScore);
+
   return <>
-    <div className="grid gap-5 md:grid-cols-2">
-      <NumberField label="Account value" value={account} onChange={setAccount} step="0.01" />
-      <NumberField label="Average pairwise correlation" value={correlation} onChange={setCorrelation} step="0.01" min="-1" max="1" />
-      <NumberField label="Position A risk" value={riskA} onChange={setRiskA} step="0.01" />
-      <NumberField label="Position A exposure" value={exposureA} onChange={setExposureA} step="0.01" />
-      <NumberField label="Position B risk" value={riskB} onChange={setRiskB} step="0.01" />
-      <NumberField label="Position B exposure" value={exposureB} onChange={setExposureB} step="0.01" />
-      <NumberField label="Position C risk" value={riskC} onChange={setRiskC} step="0.01" />
-      <NumberField label="Position C exposure" value={exposureC} onChange={setExposureC} step="0.01" />
+    <div className="space-y-6">
+      {/* Risk Level Selector - StockRisker style */}
+      <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5 dark:border-slate-800 dark:bg-slate-950/70">
+        <h3 className="text-base font-semibold text-slate-700 dark:text-slate-300 mb-4">Risk Level Target</h3>
+        <div className="flex items-center gap-4">
+          <div className="flex-1">
+            <input
+              type="range"
+              min="1"
+              max="10"
+              value={riskLevel}
+              onChange={(e) => setRiskLevel(parseInt(e.target.value))}
+              className="w-full"
+            />
+            <div className="flex justify-between text-xs text-slate-500 dark:text-slate-400 mt-1">
+              <span>Conservative (1)</span>
+              <span>Balanced (5)</span>
+              <span>Aggressive (10)</span>
+            </div>
+          </div>
+          <div className="text-center">
+            <div className={`text-3xl font-bold text-${riskInfo.color}-600 dark:text-${riskInfo.color}-400`}>
+              {riskScore}
+            </div>
+            <div className="text-xs text-slate-500 dark:text-slate-400">Current Risk Score</div>
+          </div>
+        </div>
+        <div className="mt-3 p-3 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700">
+          <div className="text-sm font-medium text-slate-700 dark:text-slate-300">{riskInfo.label}</div>
+          <div className="text-xs text-slate-500 dark:text-slate-400">{riskInfo.description}</div>
+        </div>
+      </div>
+
+      {/* Risk Level Information - Educational Details */}
+      <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5 dark:border-slate-800 dark:bg-slate-950/70">
+        <h3 className="text-base font-semibold text-slate-700 dark:text-slate-300 mb-3">Risk Score Guide</h3>
+        <div className="grid gap-3 sm:grid-cols-2 md:grid-cols-3">
+          <div className="p-3 rounded-lg bg-green-50 dark:bg-green-950/30 border border-green-200 dark:border-green-800">
+            <div className="text-sm font-semibold text-green-700 dark:text-green-300">1-2: Very Conservative</div>
+            <div className="text-xs text-slate-600 dark:text-slate-400 mt-1">Minimal volatility, highly diversified portfolios focused on capital preservation. Lower expected returns but minimal drawdowns.</div>
+          </div>
+          <div className="p-3 rounded-lg bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-800">
+            <div className="text-sm font-semibold text-blue-700 dark:text-blue-300">3-4: Conservative</div>
+            <div className="text-xs text-slate-600 dark:text-slate-400 mt-1">Low to moderate volatility with emphasis on stable, income-generating assets. Suitable for long-term wealth preservation.</div>
+          </div>
+          <div className="p-3 rounded-lg bg-yellow-50 dark:bg-yellow-950/30 border border-yellow-200 dark:border-yellow-800">
+            <div className="text-sm font-semibold text-yellow-700 dark:text-yellow-300">5-6: Balanced</div>
+            <div className="text-xs text-slate-600 dark:text-slate-400 mt-1">Moderate volatility with growth and stability mix. Balanced risk-reward profile for most investors' time horizons.</div>
+          </div>
+          <div className="p-3 rounded-lg bg-orange-50 dark:bg-orange-950/30 border border-orange-200 dark:border-orange-800">
+            <div className="text-sm font-semibold text-orange-700 dark:text-orange-300">7-8: Growth</div>
+            <div className="text-xs text-slate-600 dark:text-slate-400 mt-1">Higher volatility focused on growth-oriented assets. Higher potential returns but with significant drawdowns during market stress.</div>
+          </div>
+          <div className="p-3 rounded-lg bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-800">
+            <div className="text-sm font-semibold text-red-700 dark:text-red-300">9-10: Aggressive</div>
+            <div className="text-xs text-slate-600 dark:text-slate-400 mt-1">High volatility with concentrated positions. Maximum growth potential but significant risk of substantial losses during downturns.</div>
+          </div>
+          <div className="p-3 rounded-lg bg-purple-50 dark:bg-purple-950/30 border border-purple-200 dark:border-purple-800">
+            <div className="text-sm font-semibold text-purple-700 dark:text-purple-300">Key Factors</div>
+            <div className="text-xs text-slate-600 dark:text-slate-400 mt-1">Risk score considers both portfolio volatility and concentration risk. Lower concentration and better diversification reduce risk score even with individual position volatility.</div>
+          </div>
+        </div>
+        <div className="mt-4 p-3 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700">
+          <div className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+            <strong className="text-slate-700 dark:text-slate-300">Important:</strong> This risk score is based on historical volatility assumptions and current portfolio composition. Correlations between positions can change rapidly during market stress, potentially increasing actual risk beyond the calculated score. This is an educational assessment tool and does not guarantee future performance or predict actual losses. Always consult with qualified financial professionals for personalized risk management advice.
+          </div>
+        </div>
+      </div>
+
+      {/* Supported Symbols Grid - Like RateTable */}
+      <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5 dark:border-slate-800 dark:bg-slate-950/70">
+        <h3 className="text-base font-semibold text-slate-700 dark:text-slate-300 mb-4">Supported Stock Symbols</h3>
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-2">
+          {currentSymbols.map((stock) => (
+            <button
+              key={stock.symbol}
+              onClick={() => addPositionFromSymbol(stock.symbol, stock.name, stock.sector)}
+              className="rounded-lg border border-slate-200 bg-white p-3 dark:border-slate-700 dark:bg-slate-900 hover:border-primary-500 hover:bg-primary-50 dark:hover:bg-primary-950/30 transition-colors cursor-pointer text-left"
+              title={`Click to add ${stock.symbol} to portfolio`}
+            >
+              <p className="text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">{stock.symbol}</p>
+              <p className="text-sm font-bold text-slate-900 dark:text-white truncate" title={stock.name}>
+                {stock.name}
+              </p>
+              <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">{stock.exchange}</p>
+              <p className="text-xs text-slate-500 dark:text-slate-400">{stock.sector}</p>
+            </button>
+          ))}
+        </div>
+        
+        {/* Pagination Controls */}
+        {totalPages > 1 && (
+          <div className="flex flex-wrap items-center justify-center gap-2 mt-4">
+            <button
+              onClick={() => setSymbolPage(prev => Math.max(prev - 1, 1))}
+              disabled={symbolPage === 1}
+              className="px-3 py-1 rounded-lg border border-slate-300 bg-white text-slate-700 hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed dark:border-slate-600 dark:bg-slate-900 dark:text-slate-300"
+            >
+              Previous
+            </button>
+            
+            <div className="flex flex-wrap justify-center gap-1">
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
+                <button
+                  key={pageNum}
+                  onClick={() => setSymbolPage(pageNum)}
+                  className={`px-3 py-1 rounded-lg border ${
+                    symbolPage === pageNum
+                      ? "border-primary-500 bg-primary-500 text-white"
+                      : "border-slate-300 bg-white text-slate-700 hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-900 dark:text-slate-300"
+                  }`}
+                >
+                  {pageNum}
+                </button>
+              ))}
+            </div>
+            
+            <button
+              onClick={() => setSymbolPage(prev => Math.min(prev + 1, totalPages))}
+              disabled={symbolPage === totalPages}
+              className="px-3 py-1 rounded-lg border border-slate-300 bg-white text-slate-700 hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed dark:border-slate-600 dark:bg-slate-900 dark:text-slate-300"
+            >
+              Next
+            </button>
+          </div>
+        )}
+        
+        <div className="mt-4 pt-4 border-t border-slate-200 dark:border-slate-700">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+            <p className="text-xs text-slate-500 dark:text-slate-400">
+              Page {symbolPage} of {totalPages} • Showing {startIndex + 1}-{Math.min(endIndex, SUPPORTED_SYMBOLS.length)} of {SUPPORTED_SYMBOLS.length} symbols
+            </p>
+            <p className="text-xs text-slate-500 dark:text-slate-400">
+              Click on any symbol to add it to your portfolio • These are the supported stock symbols for which market data is available via the cache system.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Portfolio Positions - Dynamic unlimited positions */}
+      <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5 dark:border-slate-800 dark:bg-slate-950/70">
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-3">
+            <h3 className="text-base font-semibold text-slate-700 dark:text-slate-300">Portfolio Positions</h3>
+            {usingLiveData && (
+              <span className="px-2 py-1 bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 text-xs rounded-full">
+                Live Data
+              </span>
+            )}
+            {loadingData && (
+              <span className="px-2 py-1 bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 text-xs rounded-full">
+                Loading...
+              </span>
+            )}
+          </div>
+          <div className="flex gap-2">
+            <button
+              onClick={() => fetchHistoricalVolatility(positions.map(p => p.symbol))}
+              disabled={loadingData}
+              className="px-3 py-2 bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-300 rounded-lg text-sm font-medium transition-colors disabled:opacity-50"
+            >
+              Refresh Data
+            </button>
+            <button
+              onClick={addPosition}
+              className="px-4 py-2 bg-primary-500 hover:bg-primary-600 text-white rounded-lg text-sm font-medium transition-colors"
+            >
+              + Add Position
+            </button>
+          </div>
+        </div>
+        
+        <div className="space-y-3">
+          {positions.map((position, index) => (
+            <div key={position.id} className="grid gap-3 grid-cols-2 md:grid-cols-6 lg:grid-cols-6 items-start p-3 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700">
+              <div className="col-span-1">
+                <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">Symbol</label>
+                <input
+                  type="text"
+                  value={position.symbol}
+                  onChange={(e) => updatePosition(position.id, 'symbol', e.target.value)}
+                  className="w-full rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-950 px-3 py-2 text-sm text-slate-900 dark:text-white"
+                  placeholder="Symbol"
+                />
+              </div>
+              <div className="col-span-1">
+                <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">Weight %</label>
+                <input
+                  type="number"
+                  value={position.weight}
+                  onChange={(e) => updatePosition(position.id, 'weight', parseFloat(e.target.value) || 0)}
+                  className="w-full rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-950 px-3 py-2 text-sm text-slate-900 dark:text-white"
+                  placeholder="Weight %"
+                  step="0.1"
+                  min="0"
+                  max="100"
+                />
+              </div>
+              <div className="col-span-1">
+                <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">Risk %</label>
+                <div className="flex gap-2">
+                  <input
+                    type="number"
+                    value={historicalVolatility[position.symbol] ? (historicalVolatility[position.symbol] * 100).toFixed(1) : position.risk}
+                    onChange={(e) => updatePosition(position.id, 'risk', parseFloat(e.target.value) || 0)}
+                    className="flex-1 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-950 px-3 py-2 text-sm text-slate-900 dark:text-white"
+                    placeholder="Risk %"
+                    step="0.1"
+                    min="0"
+                    disabled={!!historicalVolatility[position.symbol]}
+                  />
+                  {historicalVolatility[position.symbol] && (
+                    <span className="text-xs text-green-600 dark:text-green-400 flex items-center">Auto</span>
+                  )}
+                </div>
+              </div>
+              <div className="col-span-1">
+                <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">Sector</label>
+                <select
+                  value={position.sector}
+                  onChange={(e) => updatePosition(position.id, 'sector', e.target.value)}
+                  className="w-full rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-950 px-3 py-2 text-sm text-slate-900 dark:text-white"
+                >
+                  <option value="Technology">Technology</option>
+                  <option value="Financial">Financial</option>
+                  <option value="Healthcare">Healthcare</option>
+                  <option value="Consumer">Consumer</option>
+                  <option value="Energy">Energy</option>
+                  <option value="Industrial">Industrial</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+              <div className="col-span-1 text-xs text-slate-500 dark:text-slate-400 flex items-center">
+                <div>Risk Contribution: <span className="font-medium">{riskContributions[index]?.riskContribution.toFixed(1)}%</span></div>
+              </div>
+              <div className="col-span-1 flex justify-end items-center">
+                {positions.length > 1 && (
+                  <button
+                    onClick={() => removePosition(position.id)}
+                    className="px-3 py-1 bg-red-500 hover:bg-red-600 text-white rounded text-xs font-medium transition-colors"
+                  >
+                    Remove
+                  </button>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="mt-4 flex items-center justify-between">
+          <div className="text-sm text-slate-600 dark:text-slate-400">
+            Total Weight: <span className={totalWeight === 100 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}>{totalWeight.toFixed(1)}%</span>
+          </div>
+          <label className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400">
+            <input
+              type="checkbox"
+              checked={useAutoRebalance}
+              onChange={(e) => setUseAutoRebalance(e.target.checked)}
+              className="rounded"
+            />
+            Auto-rebalance weights
+          </label>
+        </div>
+      </div>
+
+      {/* Portfolio Settings */}
+      <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5 dark:border-slate-800 dark:bg-slate-950/70">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-base font-semibold text-slate-700 dark:text-slate-300">Portfolio Settings</h3>
+          <button
+            onClick={() => {
+              const encoded = encodePortfolioToURL();
+              const currentUrl = window.location.href.split('?')[0];
+              const shareUrl = `${currentUrl}?portfolio=${encoded}`;
+              navigator.clipboard.writeText(shareUrl).then(() => {
+                alert('Portfolio URL copied to clipboard! Share this link to let others see your analysis.');
+              }).catch(() => {
+                alert('Failed to copy URL. Please try again.');
+              });
+            }}
+            className="px-4 py-2 bg-primary-500 hover:bg-primary-600 text-white rounded-lg text-sm font-medium transition-colors"
+          >
+            Share Portfolio
+          </button>
+        </div>
+        <div className="grid gap-4 md:grid-cols-3">
+          <div>
+            <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">Account Value ($)</label>
+            <input
+              type="number"
+              value={account}
+              onChange={(e) => setAccount(parseFloat(e.target.value) || 0)}
+              className="w-full rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-950 px-3 py-2 text-sm text-slate-900 dark:text-white"
+              placeholder="100000"
+              step="0.01"
+            />
+          </div>
+          <div>
+            <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">Risk-Free Rate (%)</label>
+            <input
+              type="number"
+              value={riskFreeRate}
+              onChange={(e) => setRiskFreeRate(parseFloat(e.target.value) || 0)}
+              className="w-full rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-950 px-3 py-2 text-sm text-slate-900 dark:text-white"
+              placeholder="4.5"
+              step="0.1"
+            />
+          </div>
+          <div>
+            <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">Time Horizon (Years)</label>
+            <input
+              type="number"
+              value={timeHorizon}
+              onChange={(e) => setTimeHorizon(parseInt(e.target.value) || 10)}
+              className="w-full rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-950 px-3 py-2 text-sm text-slate-900 dark:text-white"
+              placeholder="10"
+              min="1"
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* Advanced Risk Metrics */}
+      <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5 dark:border-slate-800 dark:bg-slate-950/70">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-base font-semibold text-slate-700 dark:text-slate-300">Advanced Risk Metrics</h3>
+          <button
+            onClick={() => setShowAdvanced(!showAdvanced)}
+            className="text-sm text-primary-600 dark:text-primary-400 hover:underline"
+          >
+            {showAdvanced ? 'Hide' : 'Show'} Advanced
+          </button>
+        </div>
+        
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <Result label="Portfolio Volatility" value={`${portfolioVolatility.toFixed(2)}%`} note="Annualized standard deviation" />
+          <Result label="Expected Return" value={`${(expectedReturn * 100).toFixed(2)}%`} note="Annual expected return" />
+          <Result label="Sharpe Ratio" value={sharpeRatio.toFixed(3)} note="Risk-adjusted return" />
+          <Result label="Risk Score" value={`${riskScore}/10`} note={riskInfo.label} />
+        </div>
+
+        {showAdvanced && (
+          <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4 pt-4 border-t border-slate-200 dark:border-slate-700">
+            <Result label="VaR (95%)" value={`$${formatNumber(var95)}`} note="1-day 95% confidence" />
+            <Result label="VaR (99%)" value={`$${formatNumber(var99)}`} note="1-day 99% confidence" />
+            <Result label="Max Concentration" value={`${concentration.toFixed(1)}%`} note="Largest position weight" />
+            <Result label="Diversification Ratio" value={(positions.length > 1 ? (1 / maxWeight).toFixed(2) : '1.00')} note="Inverse of max weight" />
+          </div>
+        )}
+      </div>
+
+      {/* Sector Breakdown with Pie Chart */}
+      <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5 dark:border-slate-800 dark:bg-slate-950/70">
+        <h3 className="text-base font-semibold text-slate-700 dark:text-slate-300 mb-4">Sector Allocation</h3>
+        <div className="grid gap-4 md:grid-cols-2">
+          <div className="h-64">
+            <ResponsiveContainer width="100%" height="100%">
+              <PieChart>
+                <Pie
+                  data={Object.entries(sectorBreakdown).map(([name, value]) => ({ name, value }))}
+                  cx="50%"
+                  cy="50%"
+                  labelLine={false}
+                  label={({ name, percent }) => `${name} ${((percent || 0) * 100).toFixed(0)}%`}
+                  outerRadius={80}
+                  fill="#8884d8"
+                  dataKey="value"
+                >
+                  {Object.entries(sectorBreakdown).map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8', '#82CA9D'][index % 6]} />
+                  ))}
+                </Pie>
+                <Tooltip />
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
+          <div className="space-y-2">
+            {Object.entries(sectorBreakdown).map(([sector, weight]) => (
+              <div key={sector} className="flex items-center gap-3">
+                <div className="w-4 h-4 rounded-full" style={{ backgroundColor: ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8', '#82CA9D'][Object.keys(sectorBreakdown).indexOf(sector) % 6] }} />
+                <div className="w-32 text-sm text-slate-600 dark:text-slate-400">{sector}</div>
+                <div className="flex-1 bg-slate-200 dark:bg-slate-700 rounded-full h-3 overflow-hidden">
+                  <div 
+                    className="bg-primary-500 h-full transition-all" 
+                    style={{ width: `${weight}%` }}
+                  />
+                </div>
+                <div className="w-16 text-sm text-slate-600 dark:text-slate-400 text-right">{weight.toFixed(1)}%</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Risk Contribution Analysis with Bar Chart */}
+      <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5 dark:border-slate-800 dark:bg-slate-950/70">
+        <h3 className="text-base font-semibold text-slate-700 dark:text-slate-300 mb-4">Risk Contribution by Position</h3>
+        <div className="h-64">
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart data={riskContributions.map(p => ({ symbol: p.symbol, contribution: p.riskContribution }))}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="symbol" />
+              <YAxis />
+              <Tooltip />
+              <Bar dataKey="contribution" fill="#FF8042" name="Risk Contribution %" />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+        <div className="mt-4 space-y-2">
+          {riskContributions.map((p, i) => (
+            <div key={p.id} className="flex items-center gap-3">
+              <div className="w-24 text-sm text-slate-600 dark:text-slate-400">{p.symbol}</div>
+              <div className="flex-1 bg-slate-200 dark:bg-slate-700 rounded-full h-3 overflow-hidden">
+                <div 
+                  className="bg-orange-500 h-full transition-all" 
+                  style={{ width: `${p.riskContribution}%` }}
+                />
+              </div>
+              <div className="w-16 text-sm text-slate-600 dark:text-slate-400 text-right">{p.riskContribution.toFixed(1)}%</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Correlation Matrix Heatmap */}
+      <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5 dark:border-slate-800 dark:bg-slate-950/70">
+        <h3 className="text-base font-semibold text-slate-700 dark:text-slate-300 mb-4">Correlation Matrix</h3>
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead>
+              <tr>
+                <th className="p-2 text-left text-slate-600 dark:text-slate-400">Symbol</th>
+                {positions.map(p => (
+                  <th key={p.symbol} className="p-2 text-center text-slate-600 dark:text-slate-400">{p.symbol}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {positions.map((p1, i) => (
+                <tr key={p1.symbol}>
+                  <td className="p-2 text-slate-700 dark:text-slate-300 font-medium">{p1.symbol}</td>
+                  {positions.map((p2, j) => {
+                    const correlation = correlationMatrix[p1.symbol]?.[p2.symbol] || (i === j ? 1 : 0.3);
+                    const getColor = (corr: number) => {
+                      if (i === j) return 'bg-slate-400 dark:bg-slate-600';
+                      if (corr > 0.7) return 'bg-red-500 dark:bg-red-700';
+                      if (corr > 0.3) return 'bg-orange-400 dark:bg-orange-600';
+                      if (corr > -0.3) return 'bg-yellow-400 dark:bg-yellow-600';
+                      if (corr > -0.7) return 'bg-green-400 dark:bg-green-600';
+                      return 'bg-green-600 dark:bg-green-800';
+                    };
+                    return (
+                      <td key={p2.symbol} className={`p-2 text-center ${getColor(correlation)} text-white`}>
+                        {correlation.toFixed(2)}
+                      </td>
+                    );
+                  })}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <div className="mt-3 flex gap-4 text-xs text-slate-500 dark:text-slate-400">
+          <div className="flex items-center gap-1"><div className="w-3 h-3 bg-red-500 rounded"></div> High Positive (&gt;0.7)</div>
+          <div className="flex items-center gap-1"><div className="w-3 h-3 bg-orange-400 rounded"></div> Moderate (0.3-0.7)</div>
+          <div className="flex items-center gap-1"><div className="w-3 h-3 bg-yellow-400 rounded"></div> Low (-0.3-0.3)</div>
+          <div className="flex items-center gap-1"><div className="w-3 h-3 bg-green-400 rounded"></div> Negative (&lt;-0.3)</div>
+        </div>
+      </div>
+
+      {/* Monte Carlo Simulation */}
+      <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5 dark:border-slate-800 dark:bg-slate-950/70">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-base font-semibold text-slate-700 dark:text-slate-300">Monte Carlo Simulation</h3>
+          <button
+            onClick={() => setShowMonteCarlo(!showMonteCarlo)}
+            className="text-sm text-primary-600 dark:text-primary-400 hover:underline"
+          >
+            {showMonteCarlo ? 'Hide' : 'Show'} Simulation
+          </button>
+        </div>
+        
+        {showMonteCarlo && (
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <div className="text-sm text-slate-600 dark:text-slate-400">
+                Simulate {timeHorizon}-year portfolio performance with 1,000 scenarios
+              </div>
+              <button
+                onClick={runMonteCarloSimulation}
+                disabled={runningMonteCarlo}
+                className="px-4 py-2 bg-primary-500 hover:bg-primary-600 disabled:bg-primary-300 text-white rounded-lg text-sm font-medium transition-colors"
+              >
+                {runningMonteCarlo ? 'Running...' : 'Run Simulation'}
+              </button>
+            </div>
+            
+            {monteCarloResults && (
+              <div className="space-y-4">
+                <div className="grid gap-4 sm:grid-cols-3">
+                  <Result label="10th Percentile" value={`$${formatNumber(monteCarloResults.percentiles.p10)}`} note="Worst case scenario" />
+                  <Result label="Median (50th)" value={`$${formatNumber(monteCarloResults.percentiles.p50)}`} note="Most likely outcome" />
+                  <Result label="90th Percentile" value={`$${formatNumber(monteCarloResults.percentiles.p90)}`} note="Best case scenario" />
+                </div>
+                
+                <div className="rounded-lg bg-white dark:bg-slate-900 p-4 border border-slate-200 dark:border-slate-700">
+                  <div className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                    Probability of Success: <span className="text-green-600 dark:text-green-400">{monteCarloResults.probabilityOfSuccess.toFixed(1)}%</span>
+                  </div>
+                  <div className="text-xs text-slate-500 dark:text-slate-400">
+                    Chance that portfolio will be at or above initial investment after {timeHorizon} years
+                  </div>
+                </div>
+                
+                <div className="h-64">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <LineChart data={monteCarloResults.percentileSeries}>
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="month" label="Time (months)" />
+                      <YAxis label="Portfolio Value ($)" />
+                      <Tooltip />
+                      <Line type="monotone" dataKey="p10" stroke="#FF8042" name="10th Percentile" dot={false} />
+                      <Line type="monotone" dataKey="p50" stroke="#00C49F" name="Median" dot={false} />
+                      <Line type="monotone" dataKey="p90" stroke="#0088FE" name="90th Percentile" dot={false} />
+                    </LineChart>
+                  </ResponsiveContainer>
+                </div>
+                <div className="text-xs text-slate-500 dark:text-slate-400">
+                  Showing percentile bands (10th, 50th, 90th) across 1,000 scenarios
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+
+      {/* Efficient Frontier Analysis */}
+      <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5 dark:border-slate-800 dark:bg-slate-950/70">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-base font-semibold text-slate-700 dark:text-slate-300">Efficient Frontier Analysis</h3>
+          <button
+            onClick={() => {
+              calculateEfficientFrontier();
+              setShowEfficientFrontier(!showEfficientFrontier);
+            }}
+            className="text-sm text-primary-600 dark:text-primary-400 hover:underline"
+          >
+            {showEfficientFrontier ? 'Hide' : 'Show'} Efficient Frontier
+          </button>
+        </div>
+        
+        {showEfficientFrontier && efficientFrontierData && (
+          <div className="space-y-4">
+            <div className="h-64">
+              <ResponsiveContainer width="100%" height="100%">
+                <ScatterChart data={efficientFrontierData.points}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="volatility" label="Volatility (%)" />
+                  <YAxis dataKey="return" label="Expected Return (%)" />
+                  <Tooltip />
+                  <Scatter dataKey="volatility" fill="#8884d8" />
+                  <ReferenceLine x={efficientFrontierData.maxSharpePortfolio.volatility} stroke="#00C49F" label="Max Sharpe" />
+                  <ReferenceLine y={efficientFrontierData.maxSharpePortfolio.return} stroke="#00C49F" label="Max Return" />
+                </ScatterChart>
+              </ResponsiveContainer>
+            </div>
+            
+            <div className="grid gap-4 sm:grid-cols-2">
+              <div className="rounded-lg bg-white dark:bg-slate-900 p-4 border border-slate-200 dark:border-slate-700">
+                <div className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Maximum Sharpe Portfolio</div>
+                <div className="space-y-1 text-xs text-slate-600 dark:text-slate-400">
+                  <div>Volatility: <span className="font-medium">{efficientFrontierData.maxSharpePortfolio.volatility.toFixed(2)}%</span></div>
+                  <div>Expected Return: <span className="font-medium">{efficientFrontierData.maxSharpePortfolio.return.toFixed(2)}%</span></div>
+                  <div>Sharpe Ratio: <span className="font-medium text-green-600 dark:text-green-400">{((efficientFrontierData.maxSharpePortfolio.return - riskFreeRate) / efficientFrontierData.maxSharpePortfolio.volatility).toFixed(3)}</span></div>
+                </div>
+              </div>
+              
+              <div className="rounded-lg bg-white dark:bg-slate-900 p-4 border border-slate-200 dark:border-slate-700">
+                <div className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Minimum Variance Portfolio</div>
+                <div className="space-y-1 text-xs text-slate-600 dark:text-slate-400">
+                  <div>Volatility: <span className="font-medium">{efficientFrontierData.minVariancePortfolio.volatility.toFixed(2)}%</span></div>
+                  <div>Expected Return: <span className="font-medium">{efficientFrontierData.minVariancePortfolio.return.toFixed(2)}%</span></div>
+                  <div>Sharpe Ratio: <span className="font-medium">{((efficientFrontierData.minVariancePortfolio.return - riskFreeRate) / efficientFrontierData.minVariancePortfolio.volatility).toFixed(3)}</span></div>
+                </div>
+              </div>
+            </div>
+            
+            <div className="text-xs text-slate-500 dark:text-slate-400">
+              Efficient frontier shows optimal risk-return combinations. The maximum Sharpe portfolio offers the best risk-adjusted return.
+              This is a simplified calculation using random weight sampling. For precise optimization, quadratic programming would be used.
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Portfolio Optimization */}
+      <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5 dark:border-slate-800 dark:bg-slate-950/70">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-base font-semibold text-slate-700 dark:text-slate-300">Portfolio Optimization</h3>
+          <button
+            onClick={() => setShowOptimization(!showOptimization)}
+            className="text-sm text-primary-600 dark:text-primary-400 hover:underline"
+          >
+            {showOptimization ? 'Hide' : 'Show'} Optimization
+          </button>
+        </div>
+        
+        {showOptimization && (
+          <div className="space-y-4">
+            <div className="grid gap-4 md:grid-cols-3">
+              <div>
+                <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-2">Optimization Method</label>
+                <select
+                  value={optimizationMethod}
+                  onChange={(e) => setOptimizationMethod(e.target.value as 'maxSharpe' | 'minVariance' | 'riskParity')}
+                  className="w-full rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-950 px-3 py-2 text-sm text-slate-900 dark:text-white"
+                >
+                  <option value="maxSharpe">Maximum Sharpe Ratio</option>
+                  <option value="minVariance">Minimum Variance</option>
+                  <option value="riskParity">Risk Parity</option>
+                </select>
+              </div>
+              <div className="md:col-span-2">
+                <button
+                  onClick={() => {
+                    // Simplified optimization algorithm
+                    const numIterations = 1000;
+                    let bestWeights: number[] = [];
+                    let bestSharpe = -Infinity;
+                    let bestVariance = Infinity;
+                    
+                    for (let i = 0; i < numIterations; i++) {
+                      const randomWeights = positions.map(() => Math.random());
+                      const sumWeights = randomWeights.reduce((sum, w) => sum + w, 0);
+                      const normalizedWeights = randomWeights.map(w => w / sumWeights);
+                      
+                      const returns = positions.map(p => 0.08 + (p.risk / 100) * 0.1);
+                      const volatilities = positions.map(p => (historicalVolatility[p.symbol] || p.risk) / 100);
+                      
+                      const portfolioReturn = normalizedWeights.reduce((sum, w, k) => sum + w * returns[k], 0);
+                      const portfolioVariance = normalizedWeights.reduce((sum, w_i, ii) => {
+                        return sum + normalizedWeights.reduce((innerSum, w_j, jj) => {
+                          const correlation = correlationMatrix[positions[ii].symbol]?.[positions[jj].symbol] || (ii === jj ? 1 : 0.3);
+                          return innerSum + w_i * w_j * volatilities[ii] * volatilities[jj] * correlation;
+                        }, 0);
+                      }, 0);
+                      
+                      const volatility = Math.sqrt(portfolioVariance);
+                      const sharpe = (portfolioReturn - riskFreeRate / 100) / volatility;
+                      
+                      if (optimizationMethod === 'maxSharpe' && sharpe > bestSharpe) {
+                        bestSharpe = sharpe;
+                        bestWeights = normalizedWeights;
+                      } else if (optimizationMethod === 'minVariance' && portfolioVariance < bestVariance) {
+                        bestVariance = portfolioVariance;
+                        bestWeights = normalizedWeights;
+                      } else if (optimizationMethod === 'riskParity') {
+                        // Simplified risk parity: equal risk contribution
+                        const riskContributions = normalizedWeights.map((w, idx) => {
+                          const marginalRisk = normalizedWeights.reduce((sum, w_j, j) => {
+                            const correlation = correlationMatrix[positions[idx].symbol]?.[positions[j].symbol] || (idx === j ? 1 : 0.3);
+                            return sum + w_j * volatilities[idx] * volatilities[j] * correlation;
+                          }, 0);
+                          return w * marginalRisk;
+                        });
+                        const totalRisk = riskContributions.reduce((sum, r) => sum + r, 0);
+                        const riskParityScore = riskContributions.reduce((sum, r) => sum + Math.abs(r / totalRisk - 1 / positions.length), 0);
+                        
+                        if (i === 0 || riskParityScore < bestSharpe) {
+                          bestSharpe = riskParityScore;
+                          bestWeights = normalizedWeights;
+                        }
+                      }
+                    }
+                    
+                    if (bestWeights.length > 0) {
+                      setOptimizedWeights(bestWeights);
+                    }
+                  }}
+                  className="w-full px-4 py-2 bg-primary-500 hover:bg-primary-600 text-white rounded-lg text-sm font-medium transition-colors"
+                >
+                  Optimize Portfolio
+                </button>
+              </div>
+            </div>
+            
+            {optimizedWeights && (
+              <div className="rounded-lg bg-white dark:bg-slate-900 p-4 border border-slate-200 dark:border-slate-700">
+                <div className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-3">Optimized Allocation</div>
+                <div className="space-y-2">
+                  {positions.map((p, i) => (
+                    <div key={p.id} className="flex items-center gap-3">
+                      <div className="w-24 text-sm text-slate-600 dark:text-slate-400">{p.symbol}</div>
+                      <div className="flex-1 bg-slate-200 dark:bg-slate-700 rounded-full h-3 overflow-hidden">
+                        <div 
+                          className="bg-green-500 h-full transition-all" 
+                          style={{ width: `${optimizedWeights[i] * 100}%` }}
+                        />
+                      </div>
+                      <div className="w-16 text-sm text-slate-600 dark:text-slate-400 text-right">{(optimizedWeights[i] * 100).toFixed(1)}%</div>
+                    </div>
+                  ))}
+                </div>
+                <button
+                  onClick={() => {
+                    optimizedWeights.forEach((weight, i) => {
+                      updatePosition(positions[i].id, 'weight', weight * 100);
+                    });
+                  }}
+                  className="mt-3 px-4 py-2 bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-300 rounded-lg text-sm font-medium transition-colors"
+                >
+                  Apply Optimized Weights
+                </button>
+              </div>
+            )}
+            
+            <div className="text-xs text-slate-500 dark:text-slate-400">
+              Optimization uses mathematical algorithms to find the best portfolio allocation based on your chosen criteria.
+              Max Sharpe: Maximizes risk-adjusted returns. Min Variance: Minimizes portfolio volatility. Risk Parity: Equalizes risk contributions.
+            </div>
+          </div>
+        )}
+      </div>
+
+      <Notice>
+        This enhanced portfolio risk calculator uses modern portfolio theory principles similar to StockRisker and SmartAsset. 
+        The 1-10 risk score system provides intuitive risk assessment, while advanced metrics like Sharpe ratio and VaR offer 
+        professional-level analysis. Correlation-adjusted risk calculations account for how positions move together. 
+        Auto-rebalancing ensures valid portfolio constraints. Results are for educational purposes and do not constitute financial advice.
+      </Notice>
     </div>
-    <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-      <Result label="Gross portfolio risk" value={formatNumber(grossRisk)} />
-      <Result label="Correlation-adjusted risk" value={formatNumber(adjustedRisk)} />
-      <Result label="Risk as % of account" value={`${formatNumber(account > 0 ? adjustedRisk / account * 100 : NaN, 2)}%`} />
-      <Result label="Total exposure" value={formatNumber(totalExposure)} />
-    </div>
-    <Notice>This uses one average correlation for three positions, so it is a planning estimate rather than a full covariance model. Correlations can change during stress and do not remove gap or liquidity risk.</Notice>
   </>;
 }
 
