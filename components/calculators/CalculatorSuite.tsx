@@ -642,7 +642,7 @@ function CurrencyCorrelationCalculator() {
       </div>
 
       <Notice>
-        This calculator provides correlation analysis based on the data source you select. When using API data, results are calculated from cached market data updated every 10 minutes. When using manual input, results are based on the return data you enter. Correlation is a statistical measure, not a trading signal or forecast. It does not predict future price movements or guarantee trading outcomes. Always verify correlation analysis with real-time data from your broker. This tool is for educational and analytical purposes only - not financial advice or trading recommendations.
+        This calculator provides correlation analysis based on the data source you select. Correlation is a statistical measure, not a trading signal or forecast. It does not predict future price movements or guarantee trading outcomes. Always verify correlation analysis with real-time data from your broker. This tool is for educational and analytical purposes only - not financial advice or trading recommendations.
       </Notice>
     </div>
   </>;

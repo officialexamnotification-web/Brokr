@@ -62,7 +62,7 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
     : isPivotPointsCalculator
     ? "Professional pivot point calculator with Classic, Woodie's, Camarilla, DeMark's, and Fibonacci methods. Live market data for 40+ US stocks, daily/weekly/monthly timeframes, CSV/PDF export, chart visualization, proximity alerts, and 22 global timezones covering USA, Canada, UK, Europe, Asia, Australia, New Zealand, Brazil, South Africa. Free technical analysis tool for accurate support and resistance levels."
     : isPortfolioRiskCalculator
-    ? "Educational portfolio risk calculator with unlimited positions, 1-10 risk scoring system, Monte Carlo simulation (1,000 scenarios), efficient frontier analysis, correlation matrix visualization, Sharpe ratio calculation, VaR (95% & 99%), portfolio optimization algorithms (Max Sharpe, Min Variance, Risk Parity), sector analysis, concentration risk assessment, auto-rebalancing, shareable portfolio URLs, and cache-based market data integration. For educational analysis and planning purposes only - not financial advice or investment recommendations."
+    ? "Educational portfolio risk calculator with unlimited positions, 1-10 risk scoring system, Monte Carlo simulation (1,000 scenarios), efficient frontier analysis, correlation matrix visualization, Sharpe ratio calculation, VaR (95% & 99%), portfolio optimization algorithms (Max Sharpe, Min Variance, Risk Parity), sector analysis, concentration risk assessment, auto-rebalancing, shareable portfolio URLs, and market data integration. For educational analysis and planning purposes only - not financial advice or investment recommendations."
     : `${seo.intro} Educational estimate only; verify provider rules and costs.`;
   const enhancedKeywords = isPipCalculator
     ? "pip calculator, free pip calculator, forex pip value, currency pip calculation, JPY pip calculator, lot size calculator, forex risk management, position size calculator, standard lot mini lot micro lot, forex trading tools"
@@ -248,7 +248,7 @@ export default function CalculatorPage({ params }: { params: { slug: string } })
         "Automatic currency conversion",
         "Standard/Mini/Micro lot calculations",
         "Real-time margin requirements",
-        "10-minute caching system",
+        "Caching system for performance",
         "Detailed formula breakdown"
       ],
       offers: {
@@ -432,7 +432,7 @@ export default function CalculatorPage({ params }: { params: { slug: string } })
         "Risk contribution analysis for educational understanding",
         "Educational implementation of portfolio theory concepts",
         "Multi-asset portfolio support for educational modeling",
-        "Zero additional API cost with cache-first architecture"
+        "Zero additional API cost"
       ],
       offers: {
         "@type": "Offer",
@@ -464,7 +464,7 @@ export default function CalculatorPage({ params }: { params: { slug: string } })
         },
         {
           "@type": "HowToStep",
-          text: "Use cached market data or manual input for volatility assumptions in analysis"
+          text: "Use market data or manual input for volatility assumptions in analysis"
         },
         {
           "@type": "HowToStep",
@@ -583,7 +583,7 @@ export default function CalculatorPage({ params }: { params: { slug: string } })
         "Color-coded zones for visual identification",
         "Quick preset selection",
         "Distance from current price calculation",
-        "5-minute caching system for fast performance"
+        "Data caching for fast performance"
       ],
       offers: {
         "@type": "Offer",
