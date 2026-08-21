@@ -4226,15 +4226,595 @@ function RiskRewardCalculator() {
   const [entry, setEntry] = useState(100);
   const [stop, setStop] = useState(95);
   const [target, setTarget] = useState(115);
+  const [assetType, setAssetType] = useState<'stock' | 'forex'>('stock');
+  const [symbol, setSymbol] = useState('AAPL');
+  const [forexPair, setForexPair] = useState('EUR/USD');
+  const [isLoading, setIsLoading] = useState(false);
+  const [apiError, setApiError] = useState<string | null>(null);
+  const [dataSource, setDataSource] = useState<'manual' | 'api'>('manual');
+  const [cacheAge, setCacheAge] = useState<string | null>(null);
+  const [accountCurrency, setAccountCurrency] = useState('USD');
+  const [conversionRate, setConversionRate] = useState<number | null>(null);
+  const [accountSize, setAccountSize] = useState(10000);
+  const [riskPercentage, setRiskPercentage] = useState(1);
+  const [multiTargetMode, setMultiTargetMode] = useState(false);
+  const [target1, setTarget1] = useState(110);
+  const [target2, setTarget2] = useState(120);
+  const [target3, setTarget3] = useState(130);
+  const [savedScenarios, setSavedScenarios] = useState<any[]>([]);
+
+  // Load saved scenarios from localStorage on mount
+  useEffect(() => {
+    const saved = localStorage.getItem('riskRewardScenarios');
+    if (saved) {
+      try {
+        setSavedScenarios(JSON.parse(saved));
+      } catch (error) {
+        console.error('Failed to load saved scenarios:', error);
+      }
+    }
+  }, []);
+
+  const saveCurrentScenario = () => {
+    const scenario = {
+      id: Date.now(),
+      name: `${assetType === 'stock' ? symbol : forexPair} - ${new Date().toLocaleDateString()}`,
+      assetType,
+      symbol: assetType === 'stock' ? symbol : null,
+      forexPair: assetType === 'forex' ? forexPair : null,
+      entry,
+      stop,
+      target,
+      target1,
+      target2,
+      target3,
+      accountCurrency,
+      accountSize,
+      riskPercentage,
+      multiTargetMode,
+      savedAt: new Date().toISOString()
+    };
+
+    const updatedScenarios = [...savedScenarios, scenario];
+    setSavedScenarios(updatedScenarios);
+    localStorage.setItem('riskRewardScenarios', JSON.stringify(updatedScenarios));
+  };
+
+  const loadScenario = (scenario: any) => {
+    setAssetType(scenario.assetType);
+    if (scenario.assetType === 'stock') {
+      setSymbol(scenario.symbol);
+    } else {
+      setForexPair(scenario.forexPair);
+    }
+    setEntry(scenario.entry);
+    setStop(scenario.stop);
+    setTarget(scenario.target);
+    setTarget1(scenario.target1);
+    setTarget2(scenario.target2);
+    setTarget3(scenario.target3);
+    setAccountCurrency(scenario.accountCurrency);
+    setAccountSize(scenario.accountSize);
+    setRiskPercentage(scenario.riskPercentage);
+    setMultiTargetMode(scenario.multiTargetMode);
+  };
+
+  const deleteScenario = (id: number) => {
+    const updatedScenarios = savedScenarios.filter(s => s.id !== id);
+    setSavedScenarios(updatedScenarios);
+    localStorage.setItem('riskRewardScenarios', JSON.stringify(updatedScenarios));
+  };
+
+  const stockSymbols = [
+    'AAPL', 'MSFT', 'GOOGL', 'AMZN', 'NVDA', 'META', 'TSLA', 'BRK.B',
+    'JPM', 'V', 'MA', 'BAC', 'WFC', 'GS', 'MS',
+    'AVGO', 'CSCO', 'ORCL', 'CRM', 'ADBE', 'INTC', 'AMD', 'QCOM', 'IBM', 'NFLX',
+    'WMT', 'COST', 'HD', 'MCD', 'NKE', 'KO', 'PEP', 'DIS', 'SBUX'
+  ];
+
+  const forexPairs = [
+    'EUR/USD', 'GBP/USD', 'USD/JPY', 'USD/CHF', 'AUD/USD', 'USD/CAD',
+    'EUR/GBP', 'EUR/JPY', 'GBP/JPY', 'AUD/JPY', 'NZD/USD', 'USD/TRY'
+  ];
+
+  const accountCurrencies = [
+    'USD', 'EUR', 'GBP', 'JPY', 'CAD', 'AUD', 'INR', 'CHF'
+  ];
+
+  const fetchConversionRate = async (fromCurrency: string, toCurrency: string) => {
+    if (fromCurrency === toCurrency) {
+      setConversionRate(1);
+      return;
+    }
+    
+    try {
+      const response = await fetch(`/api/forex?base=${fromCurrency}&targets=${toCurrency}`);
+      const data = await response.json();
+      
+      if (data.rates && data.rates[toCurrency]) {
+        setConversionRate(data.rates[toCurrency]);
+      }
+    } catch (error) {
+      console.error('Failed to fetch conversion rate:', error);
+      setConversionRate(null);
+    }
+  };
+
+  // Fetch conversion rate when account currency changes
+  useEffect(() => {
+    if (assetType === 'forex') {
+      const [base] = forexPair.split('/');
+      fetchConversionRate(base, accountCurrency);
+    } else {
+      // For stocks, assume USD base and convert to account currency
+      fetchConversionRate('USD', accountCurrency);
+    }
+  }, [accountCurrency, assetType, forexPair]);
+
+  const fetchStockPrice = async (symbol: string) => {
+    setIsLoading(true);
+    setApiError(null);
+    try {
+      const response = await fetch(`/api/stocks?symbols=${symbol}`);
+      const data = await response.json();
+      
+      if (data[symbol] && data[symbol].price) {
+        setEntry(data[symbol].price);
+        setDataSource('api');
+        
+        // Calculate cache age from response headers
+        const cacheAgeHeader = response.headers.get('X-Cache-Age');
+        if (cacheAgeHeader) {
+          setCacheAge(cacheAgeHeader);
+        }
+      } else {
+        throw new Error('Price data not available');
+      }
+    } catch (error) {
+      setApiError('Failed to fetch stock price. Using manual input.');
+      setDataSource('manual');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const fetchForexRate = async (pair: string) => {
+    setIsLoading(true);
+    setApiError(null);
+    try {
+      const [base, quote] = pair.split('/');
+      const response = await fetch(`/api/forex?base=${base}&targets=${quote}`);
+      const data = await response.json();
+      
+      if (data.rates && data.rates[quote]) {
+        setEntry(data.rates[quote]);
+        setDataSource('api');
+        
+        // Calculate cache age from response headers
+        const cacheAgeHeader = response.headers.get('X-Market-Data-Updated');
+        if (cacheAgeHeader) {
+          setCacheAge(`Updated: ${cacheAgeHeader}`);
+        }
+      } else {
+        throw new Error('Exchange rate data not available');
+      }
+    } catch (error) {
+      setApiError('Failed to fetch forex rate. Using manual input.');
+      setDataSource('manual');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleSymbolChange = (newSymbol: string) => {
+    setSymbol(newSymbol);
+    if (assetType === 'stock') {
+      fetchStockPrice(newSymbol);
+    }
+  };
+
+  const handleForexPairChange = (newPair: string) => {
+    setForexPair(newPair);
+    if (assetType === 'forex') {
+      fetchForexRate(newPair);
+    }
+  };
+
+  const handleAssetTypeChange = (newType: 'stock' | 'forex') => {
+    setAssetType(newType);
+    if (newType === 'stock') {
+      fetchStockPrice(symbol);
+    } else {
+      fetchForexRate(forexPair);
+    }
+  };
+
+  const calculateSmartTarget = (ratio: number) => {
+    const currentRisk = Math.abs(entry - stop);
+    if (currentRisk > 0) {
+      const rewardDist = currentRisk * ratio;
+      if (entry > stop) {
+        // Long position
+        setTarget(entry + rewardDist);
+        setTarget1(entry + rewardDist);
+        setTarget2(entry + rewardDist * 1.5);
+        setTarget3(entry + rewardDist * 2);
+      } else {
+        // Short position
+        setTarget(entry - rewardDist);
+        setTarget1(entry - rewardDist);
+        setTarget2(entry - rewardDist * 1.5);
+        setTarget3(entry - rewardDist * 2);
+      }
+    }
+  };
+
   const riskDistance = Math.abs(entry - stop);
   const rewardDistance = Math.abs(target - entry);
   const ratio = riskDistance > 0 ? rewardDistance / riskDistance : NaN;
   const breakevenWinRate = riskDistance + rewardDistance > 0 ? riskDistance / (riskDistance + rewardDistance) * 100 : NaN;
+
+  // Multi-target calculations
+  const rewardDistance1 = Math.abs(target1 - entry);
+  const rewardDistance2 = Math.abs(target2 - entry);
+  const rewardDistance3 = Math.abs(target3 - entry);
+  const ratio1 = riskDistance > 0 ? rewardDistance1 / riskDistance : NaN;
+  const ratio2 = riskDistance > 0 ? rewardDistance2 / riskDistance : NaN;
+  const ratio3 = riskDistance > 0 ? rewardDistance3 / riskDistance : NaN;
+
+  // Position size calculations
+  const riskAmount = accountSize * (riskPercentage / 100);
+  const riskPerUnit = riskDistance * (conversionRate || 1);
+  const positionSize = riskPerUnit > 0 ? Math.floor(riskAmount / riskPerUnit) : 0;
+  const positionValue = positionSize * entry * (conversionRate || 1);
+  const dollarRisk = positionSize * riskPerUnit;
+  const dollarReward = positionSize * rewardDistance * (conversionRate || 1);
+  const dollarReward1 = positionSize * rewardDistance1 * (conversionRate || 1);
+  const dollarReward2 = positionSize * rewardDistance2 * (conversionRate || 1);
+  const dollarReward3 = positionSize * rewardDistance3 * (conversionRate || 1);
+
   return <>
-    <div className="grid gap-5 md:grid-cols-3"><NumberField label="Entry price" value={entry} onChange={setEntry} step="0.01" /><NumberField label="Stop-loss price" value={stop} onChange={setStop} step="0.01" /><NumberField label="Take-profit price" value={target} onChange={setTarget} step="0.01" /></div>
-    <div className="mt-6 grid gap-4 sm:grid-cols-3"><Result label="Price risk" value={formatNumber(riskDistance)} /><Result label="Price reward" value={formatNumber(rewardDistance)} /><Result label="Risk–reward ratio" value={`1 : ${formatNumber(ratio, 2)}`} /></div>
-    <div className="mt-4"><Result label="Break-even win rate" value={`${formatNumber(breakevenWinRate)}%`} note="Before fees, slippage, and losing-trade differences" /></div>
-    <Notice>Risk and reward are calculated from absolute price distances. Confirm that your stop is below entry and target above entry for a long trade, or the reverse for a short trade. This is not a recommendation to take a trade.</Notice>
+    <div className="space-y-5">
+      {/* Asset Type and Symbol Selection */}
+      <div className="grid gap-4 md:grid-cols-3">
+        <SelectField 
+          label="Asset Type" 
+          value={assetType} 
+          onChange={handleAssetTypeChange as any} 
+          options={[
+            { value: 'stock', label: 'Stock' },
+            { value: 'forex', label: 'Forex' }
+          ]} 
+        />
+        
+        {assetType === 'stock' ? (
+          <SelectField 
+            label="Stock Symbol" 
+            value={symbol} 
+            onChange={handleSymbolChange as any} 
+            options={stockSymbols.map(s => ({ value: s, label: s }))}
+          />
+        ) : (
+          <SelectField 
+            label="Forex Pair" 
+            value={forexPair} 
+            onChange={handleForexPairChange as any} 
+            options={forexPairs.map(p => ({ value: p, label: p }))}
+          />
+        )}
+
+        <SelectField 
+          label="Account Currency" 
+          value={accountCurrency} 
+          onChange={(value) => setAccountCurrency(value as any)} 
+          options={accountCurrencies.map(c => ({ value: c, label: c }))}
+        />
+      </div>
+
+      {/* API Status Indicator */}
+      {dataSource === 'api' && (
+        <div className="flex items-center gap-2 text-sm">
+          <span className="inline-flex items-center px-2 py-1 rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-300">
+            <span className="w-2 h-2 rounded-full bg-emerald-500 mr-2"></span>
+            Live Data
+          </span>
+          {cacheAge && <span className="text-slate-500 dark:text-slate-400">{cacheAge}</span>}
+        </div>
+      )}
+
+      {/* Error Message */}
+      {apiError && (
+        <div className="text-sm text-amber-600 dark:text-amber-400">
+          {apiError}
+        </div>
+      )}
+
+      {/* Price Inputs */}
+      <div className="grid gap-5 md:grid-cols-3">
+        <NumberField 
+          label="Entry price" 
+          value={entry} 
+          onChange={setEntry} 
+          step="0.01" 
+        />
+        <NumberField 
+          label="Stop-loss price" 
+          value={stop} 
+          onChange={setStop} 
+          step="0.01" 
+        />
+        {!multiTargetMode ? (
+          <NumberField 
+            label="Take-profit price" 
+            value={target} 
+            onChange={setTarget} 
+            step="0.01" 
+          />
+        ) : (
+          <div className="col-span-3">
+            <div className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Multi-Target Mode</div>
+            <div className="grid gap-4 sm:grid-cols-3">
+              <NumberField 
+                label="Target 1" 
+                value={target1} 
+                onChange={setTarget1} 
+                step="0.01" 
+              />
+              <NumberField 
+                label="Target 2" 
+                value={target2} 
+                onChange={setTarget2} 
+                step="0.01" 
+              />
+              <NumberField 
+                label="Target 3" 
+                value={target3} 
+                onChange={setTarget3} 
+                step="0.01" 
+              />
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Multi-Target Toggle */}
+      <div className="flex items-center gap-2">
+        <button 
+          onClick={() => setMultiTargetMode(!multiTargetMode)}
+          className={`px-3 py-1.5 text-sm rounded-lg transition-colors ${
+            multiTargetMode 
+              ? 'bg-purple-100 text-purple-700 dark:bg-purple-950/50 dark:text-purple-300' 
+              : 'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300'
+          }`}
+        >
+          {multiTargetMode ? 'Single Target' : 'Multi-Target Mode'}
+        </button>
+        <button 
+          onClick={saveCurrentScenario}
+          className="px-3 py-1.5 text-sm bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 dark:bg-blue-950/50 dark:text-blue-300 dark:hover:bg-blue-900/50 transition-colors"
+        >
+          Save Scenario
+        </button>
+      </div>
+
+      {/* Saved Scenarios */}
+      {savedScenarios.length > 0 && (
+        <div className="mt-4">
+          <div className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Saved Scenarios</div>
+          <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+            {savedScenarios.map((scenario) => (
+              <div key={scenario.id} className="p-3 rounded-lg border border-slate-200 dark:border-slate-800 flex items-center justify-between">
+                <div className="flex-1">
+                  <div className="text-sm font-medium text-slate-900 dark:text-white">{scenario.name}</div>
+                  <div className="text-xs text-slate-500 dark:text-slate-400">
+                    {scenario.assetType === 'stock' ? scenario.symbol : scenario.forexPair} | R:R {multiTargetMode ? 'Multi' : formatNumber(Math.abs(scenario.target - scenario.entry) / Math.abs(scenario.entry - scenario.stop), 2)}
+                  </div>
+                </div>
+                <div className="flex gap-2">
+                  <button 
+                    onClick={() => loadScenario(scenario)}
+                    className="px-2 py-1 text-xs bg-emerald-100 text-emerald-700 rounded hover:bg-emerald-200 dark:bg-emerald-950/50 dark:text-emerald-300 dark:hover:bg-emerald-900/50 transition-colors"
+                  >
+                    Load
+                  </button>
+                  <button 
+                    onClick={() => deleteScenario(scenario.id)}
+                    className="px-2 py-1 text-xs bg-red-100 text-red-700 rounded hover:bg-red-200 dark:bg-red-950/50 dark:text-red-300 dark:hover:bg-red-900/50 transition-colors"
+                  >
+                    Delete
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Position Size Inputs */}
+      <div className="grid gap-5 md:grid-cols-2">
+        <div>
+          <NumberField 
+            label="Account Size" 
+            value={accountSize} 
+            onChange={setAccountSize} 
+            step="100"
+          />
+          <div className="text-sm text-slate-500 dark:text-slate-400 mt-1">Currency: {accountCurrency}</div>
+        </div>
+        <NumberField 
+          label="Risk %" 
+          value={riskPercentage} 
+          onChange={setRiskPercentage} 
+          step="0.1"
+          suffix="%"
+        />
+      </div>
+
+      {/* Quick R:R Presets */}
+      <div className="flex flex-wrap gap-2">
+        <span className="text-sm font-medium text-slate-700 dark:text-slate-300 self-center">Quick R:R:</span>
+        <button 
+          onClick={() => calculateSmartTarget(1)}
+          className="px-3 py-1.5 text-sm bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 dark:bg-blue-950/50 dark:text-blue-300 dark:hover:bg-blue-900/50 transition-colors"
+          disabled={isLoading}
+        >
+          Set 1:1
+        </button>
+        <button 
+          onClick={() => calculateSmartTarget(2)}
+          className="px-3 py-1.5 text-sm bg-emerald-100 text-emerald-700 rounded-lg hover:bg-emerald-200 dark:bg-emerald-950/50 dark:text-emerald-300 dark:hover:bg-emerald-900/50 transition-colors"
+          disabled={isLoading}
+        >
+          Set 1:2
+        </button>
+        <button 
+          onClick={() => calculateSmartTarget(3)}
+          className="px-3 py-1.5 text-sm bg-purple-100 text-purple-700 rounded-lg hover:bg-purple-200 dark:bg-purple-950/50 dark:text-purple-300 dark:hover:bg-purple-900/50 transition-colors"
+          disabled={isLoading}
+        >
+          Set 1:3
+        </button>
+      </div>
+
+      {/* Results */}
+      {multiTargetMode ? (
+        <>
+          <div className="mt-6 grid gap-4 sm:grid-cols-2">
+            <div>
+              <Result 
+                label="Price risk" 
+                value={formatNumber(riskDistance)} 
+              />
+              {conversionRate && conversionRate !== 1 && (
+                <div className="text-sm text-slate-500 dark:text-slate-400 mt-1">
+                  Converted: {formatNumber(riskDistance * conversionRate)} {accountCurrency}
+                </div>
+              )}
+            </div>
+            <Result 
+              label="Position Size" 
+              value={formatNumber(positionSize)} 
+              note={`Units/${assetType === 'forex' ? 'Lots' : 'Shares'}`}
+            />
+          </div>
+
+          {/* Multi-Target Results */}
+          <div className="mt-4 space-y-4">
+            <div className="text-sm font-medium text-slate-700 dark:text-slate-300">Multi-Target Analysis</div>
+            <div className="grid gap-4 sm:grid-cols-3">
+              <div className="p-4 rounded-lg border border-slate-200 dark:border-slate-800">
+                <div className="text-xs text-slate-500 dark:text-slate-400 mb-1">Target 1 ({formatNumber(target1)})</div>
+                <div className="text-lg font-bold text-purple-600 dark:text-purple-400">1 : {formatNumber(ratio1, 2)}</div>
+                <div className="text-sm text-slate-600 dark:text-slate-400">{formatNumber(dollarReward1)} {accountCurrency}</div>
+              </div>
+              <div className="p-4 rounded-lg border border-slate-200 dark:border-slate-800">
+                <div className="text-xs text-slate-500 dark:text-slate-400 mb-1">Target 2 ({formatNumber(target2)})</div>
+                <div className="text-lg font-bold text-purple-600 dark:text-purple-400">1 : {formatNumber(ratio2, 2)}</div>
+                <div className="text-sm text-slate-600 dark:text-slate-400">{formatNumber(dollarReward2)} {accountCurrency}</div>
+              </div>
+              <div className="p-4 rounded-lg border border-slate-200 dark:border-slate-800">
+                <div className="text-xs text-slate-500 dark:text-slate-400 mb-1">Target 3 ({formatNumber(target3)})</div>
+                <div className="text-lg font-bold text-purple-600 dark:text-purple-400">1 : {formatNumber(ratio3, 2)}</div>
+                <div className="text-sm text-slate-600 dark:text-slate-400">{formatNumber(dollarReward3)} {accountCurrency}</div>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-4 grid gap-4 sm:grid-cols-2">
+            <Result 
+              label="Dollar Risk" 
+              value={`${formatNumber(dollarRisk)} ${accountCurrency}`}
+              note={`${riskPercentage}% of account`}
+            />
+            <Result 
+              label="Total Position Value" 
+              value={`${formatNumber(positionValue)} ${accountCurrency}`}
+            />
+          </div>
+        </>
+      ) : (
+        <>
+          <div className="mt-6 grid gap-4 sm:grid-cols-3">
+            <div>
+              <Result 
+                label="Price risk" 
+                value={formatNumber(riskDistance)} 
+              />
+              {conversionRate && conversionRate !== 1 && (
+                <div className="text-sm text-slate-500 dark:text-slate-400 mt-1">
+                  Converted: {formatNumber(riskDistance * conversionRate)} {accountCurrency}
+                </div>
+              )}
+            </div>
+            <div>
+              <Result 
+                label="Price reward" 
+                value={formatNumber(rewardDistance)} 
+              />
+              {conversionRate && conversionRate !== 1 && (
+                <div className="text-sm text-slate-500 dark:text-slate-400 mt-1">
+                  Converted: {formatNumber(rewardDistance * conversionRate)} {accountCurrency}
+                </div>
+              )}
+            </div>
+            <div className={ratio >= 2 ? 'text-emerald-600 dark:text-emerald-400' : ratio >= 1 ? 'text-amber-600 dark:text-amber-400' : 'text-red-600 dark:text-red-400'}>
+              <Result 
+                label="Risk–reward ratio" 
+                value={`1 : ${formatNumber(ratio, 2)}`}
+              />
+            </div>
+          </div>
+
+          {/* Position Size Results */}
+          <div className="mt-6 grid gap-4 sm:grid-cols-2">
+            <Result 
+              label="Position Size" 
+              value={formatNumber(positionSize)} 
+              note={`Units/${assetType === 'forex' ? 'Lots' : 'Shares'}`}
+            />
+            <Result 
+              label="Position Value" 
+              value={`${formatNumber(positionValue)} ${accountCurrency}`}
+            />
+          </div>
+
+          <div className="mt-4 grid gap-4 sm:grid-cols-2">
+            <Result 
+              label="Dollar Risk" 
+              value={`${formatNumber(dollarRisk)} ${accountCurrency}`}
+              note={`${riskPercentage}% of account`}
+            />
+            <Result 
+              label="Dollar Reward" 
+              value={`${formatNumber(dollarReward)} ${accountCurrency}`}
+            />
+          </div>
+        </>
+      )}
+
+      <div className="mt-4">
+        <Result 
+          label="Break-even win rate" 
+          value={`${formatNumber(breakevenWinRate)}%`} 
+          note="Before fees, slippage, and losing-trade differences" 
+        />
+      </div>
+
+      {/* Conversion Info */}
+      {conversionRate && conversionRate !== 1 && (
+        <div className="text-sm text-slate-500 dark:text-slate-400">
+          Currency conversion: 1 {assetType === 'stock' ? 'USD' : forexPair.split('/')[0]} = {formatNumber(conversionRate)} {accountCurrency}
+        </div>
+      )}
+
+      {/* Enhanced Notice */}
+      <Notice>
+        {dataSource === 'api' 
+          ? `Using live market data from ${assetType === 'stock' ? symbol : forexPair}. Risk and reward are calculated from absolute price distances. Confirm that your stop is below entry and target above entry for a long trade, or the reverse for a short trade. This is not a recommendation to take a trade.`
+          : `Risk and reward are calculated from absolute price distances. Confirm that your stop is below entry and target above entry for a long trade, or the reverse for a short trade. This is not a recommendation to take a trade.`
+        }
+      </Notice>
+    </div>
   </>;
 }
 
