@@ -58,8 +58,9 @@ export const Header: React.FC<HeaderProps> = ({
             </div>
           </div>
 
-          {/* Desktop Navigation Segmented Bar */}
-          <nav className="hidden lg:flex items-center gap-1 p-1 rounded-xl bg-[#0b101d] border border-slate-800">
+          {/* Desktop navigation and utility actions share one continuous control box. */}
+          <div className="hidden lg:flex items-stretch overflow-hidden rounded-xl border border-slate-800 bg-[#0b101d] shadow-sm">
+          <nav className="flex items-center gap-1 p-1">
             {navItems.map((item) => {
               const Icon = item.icon;
               const isActive = activeTab === item.id;
@@ -93,35 +94,35 @@ export const Header: React.FC<HeaderProps> = ({
             })}
           </nav>
 
+          <div className="flex items-stretch border-l border-slate-800/90 bg-[#0e1424]">
+            <button
+              onClick={onOpenRenameSimulator}
+              className="px-3.5 py-2 text-xs font-bold text-slate-200 transition-all hover:bg-[#151e36] hover:text-white"
+              title="Test nickname inside the game rename card simulator"
+            >
+              <span className="flex items-center gap-2 whitespace-nowrap">
+                <CreditCard className="h-3.5 w-3.5 text-amber-400" />
+                Rename Card Test
+              </span>
+            </button>
+            <button
+              onClick={onOpenSaved}
+              className="relative flex items-center gap-2 border-l border-slate-700/80 px-3.5 py-2 text-xs font-bold text-slate-200 transition-all hover:bg-[#151e36] hover:text-white"
+              title="View saved favorites"
+            >
+              <Heart className={`h-4 w-4 ${savedCount > 0 ? 'fill-red-500 text-red-500' : 'text-slate-400'}`} />
+              <span>Favorites</span>
+              {savedCount > 0 && (
+                <span className="rounded-full bg-red-500 px-1.5 py-0.5 text-[10px] font-mono font-bold leading-none text-white">
+                  {savedCount}
+                </span>
+              )}
+            </button>
+          </div>
+          </div>
+
           {/* Right Action Tools */}
           <div className="flex items-center gap-2 sm:gap-3">
-            {/* Utility actions: one shared header group keeps the right side compact. */}
-            <div className="hidden sm:flex items-stretch overflow-hidden rounded-xl border border-slate-700/80 bg-[#0e1424] shadow-sm">
-              <button
-                onClick={onOpenRenameSimulator}
-                className="px-3.5 py-2 text-xs font-bold text-slate-200 transition-all hover:bg-[#151e36] hover:text-white"
-                title="Test nickname inside the game rename card simulator"
-              >
-                <span className="flex items-center gap-2 whitespace-nowrap">
-                  <CreditCard className="h-3.5 w-3.5 text-amber-400" />
-                  Rename Card Test
-                </span>
-              </button>
-              <button
-                onClick={onOpenSaved}
-                className="relative flex items-center gap-2 border-l border-slate-700/80 px-3.5 py-2 text-xs font-bold text-slate-200 transition-all hover:bg-[#151e36] hover:text-white"
-                title="View saved favorites"
-              >
-                <Heart className={`h-4 w-4 ${savedCount > 0 ? 'fill-red-500 text-red-500' : 'text-slate-400'}`} />
-                <span>Favorites</span>
-                {savedCount > 0 && (
-                  <span className="rounded-full bg-red-500 px-1.5 py-0.5 text-[10px] font-mono font-bold leading-none text-white">
-                    {savedCount}
-                  </span>
-                )}
-              </button>
-            </div>
-
             {/* Compact mobile utility group */}
             <div className="flex items-center overflow-hidden rounded-xl border border-slate-700/80 bg-[#0e1424] sm:hidden">
               <button onClick={onOpenRenameSimulator} className="p-2 text-slate-300 transition hover:bg-[#151e36] hover:text-white" title="Rename card test">
