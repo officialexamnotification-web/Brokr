@@ -13,3 +13,7 @@ createRoot(document.getElementById('root')!).render(
     {staticPage ? <SitePage page={staticPage} /> : <App />}
   </StrictMode>,
 );
+
+// Keep the build-time SEO fallback out of the user's first paint. It remains
+// in the HTML for crawlers, then React replaces it with the full application.
+window.requestAnimationFrame(() => document.documentElement.classList.add('app-ready'));
