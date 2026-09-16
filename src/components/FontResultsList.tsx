@@ -210,12 +210,12 @@ export const FontResultsList: React.FC<FontResultsListProps> = ({
               </div>
 
               {/* Action Buttons: Copy, Save, Card Preview, Test In-Game */}
-              <div className="flex items-center justify-between gap-2 pt-1 border-t border-slate-800/60">
-                <div className="flex items-center gap-1.5">
+              <div className="flex flex-wrap items-center justify-between gap-2 pt-1 border-t border-slate-800/60">
+                <div className="flex min-w-0 flex-wrap items-center gap-1.5">
                   {pasteReadyName !== transformedName && (
                     <button
                       onClick={() => handleCopy(`safe-${font.id}`, pasteReadyName)}
-                      className={`px-2.5 py-1.5 rounded-lg text-[10px] font-bold flex items-center gap-1 transition-all cursor-pointer border ${copiedId === `safe-${font.id}` ? 'bg-emerald-500 text-black border-emerald-400' : 'bg-emerald-950/30 text-emerald-300 border-emerald-800/60 hover:bg-emerald-500 hover:text-black'}`}
+                      className={`shrink-0 whitespace-nowrap px-2.5 py-1.5 rounded-lg text-[10px] font-bold flex items-center gap-1 transition-all cursor-pointer border ${copiedId === `safe-${font.id}` ? 'bg-emerald-500 text-black border-emerald-400' : 'bg-emerald-950/30 text-emerald-300 border-emerald-800/60 hover:bg-emerald-500 hover:text-black'}`}
                       title="Copy a clean letters-and-numbers version for easier in-game paste"
                     >
                       <ShieldCheck className="w-3 h-3" />
@@ -224,7 +224,7 @@ export const FontResultsList: React.FC<FontResultsListProps> = ({
                   )}
                   <button
                     onClick={() => onPreviewCard(transformedName)}
-                    className="text-xs text-slate-400 hover:text-amber-400 px-2 py-1 rounded-md hover:bg-slate-800/50 flex items-center gap-1 transition-colors cursor-pointer"
+                      className="shrink-0 whitespace-nowrap text-xs text-slate-400 hover:text-amber-400 px-2 py-1 rounded-md hover:bg-slate-800/50 flex items-center gap-1 transition-colors cursor-pointer"
                     title="Preview in Gamer ID Card"
                   >
                     <ExternalLink className="w-3 h-3" />
@@ -234,7 +234,7 @@ export const FontResultsList: React.FC<FontResultsListProps> = ({
                   {onTestInGame && (
                     <button
                       onClick={() => onTestInGame(transformedName)}
-                      className="text-xs text-slate-400 hover:text-cyan-400 px-2 py-1 rounded-md hover:bg-slate-800/50 flex items-center gap-1 transition-colors cursor-pointer"
+                      className="shrink-0 whitespace-nowrap text-xs text-slate-400 hover:text-cyan-400 px-2 py-1 rounded-md hover:bg-slate-800/50 flex items-center gap-1 transition-colors cursor-pointer"
                       title="Test in Game Rename Card Simulator"
                     >
                       <CreditCard className="w-3 h-3 text-cyan-400" />
@@ -243,10 +243,10 @@ export const FontResultsList: React.FC<FontResultsListProps> = ({
                   )}
                 </div>
 
-                <div className="flex items-center gap-1.5">
+                <div className="ml-auto flex shrink-0 items-center gap-1.5">
                   <button
                     onClick={() => onSaveName(transformedName)}
-                    className={`p-1.5 rounded-lg border transition-all cursor-pointer ${
+                    className={`shrink-0 p-1.5 rounded-lg border transition-all cursor-pointer ${
                       saved
                         ? 'bg-red-950/60 border-red-700 text-red-400'
                         : 'bg-[#050811] border-slate-800 text-slate-400 hover:text-red-400 hover:border-slate-700'
@@ -260,7 +260,7 @@ export const FontResultsList: React.FC<FontResultsListProps> = ({
 
                   <button
                     onClick={() => handleCopy(font.id, transformedName)}
-                    className={`px-3.5 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer ${
+                    className={`shrink-0 whitespace-nowrap px-3.5 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer ${
                       isCopied
                         ? 'bg-emerald-500 text-black font-black'
                         : 'bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-black font-black shadow-sm'
