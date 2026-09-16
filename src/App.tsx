@@ -4,6 +4,7 @@ import { POPULAR_GAMES } from './data/games';
 import { getGameBySlug, getGameSeo, HOME_SEO } from './data/game-seo';
 import { applySeo } from './lib/seo';
 import { getGameNameMode } from './lib/game-mode';
+import { copyTextToClipboard } from './lib/clipboard';
 import { Header } from './components/Header';
 import { GameSelector } from './components/GameSelector';
 import { NameInputStyler } from './components/NameInputStyler';
@@ -91,8 +92,9 @@ export default function App() {
   };
 
   const handleCopyText = (text: string) => {
-    navigator.clipboard.writeText(text);
-    showToast(`Copied "${text}"`);
+    void copyTextToClipboard(text).then((copied) => {
+      showToast(copied ? `Copied "${text}"` : 'Copy was blocked. Long-press the name and choose Copy.');
+    });
   };
 
   const handleSaveName = (name: string) => {

@@ -5,6 +5,7 @@ import { countCharacters } from '../lib/character-count';
 import { isCleanGamertagGame } from '../lib/game-mode';
 import { NAME_LANGUAGES } from '../data/languages';
 import { getLanguageUi } from '../data/language-ui';
+import { copyTextToClipboard } from '../lib/clipboard';
 
 interface NameInputStylerProps {
   nameInput: string;
@@ -71,9 +72,10 @@ export const NameInputStyler: React.FC<NameInputStylerProps> = ({
   };
 
   const handleCopyHangulSpace = () => {
-    navigator.clipboard.writeText('ㅤ');
-    setCopiedSpace(true);
-    setTimeout(() => setCopiedSpace(false), 2000);
+    void copyTextToClipboard('ㅤ').then((copied) => {
+      setCopiedSpace(copied);
+      setTimeout(() => setCopiedSpace(false), 2000);
+    });
   };
 
   return (

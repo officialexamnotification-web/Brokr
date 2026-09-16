@@ -4,6 +4,7 @@ import { FontTransformation, GameProfile, SavedNameItem } from '../types';
 import { Copy, Check, Heart, ExternalLink, ShieldCheck, AlertCircle, Sparkles, CreditCard, Search } from 'lucide-react';
 import { countCharacters } from '../lib/character-count';
 import { isCleanGamertagGame } from '../lib/game-mode';
+import { toPasteReadyName } from '../lib/paste-safe';
 
 const CLEAN_NAME_CARD: FontTransformation = {
   id: 'clean-name',
@@ -147,6 +148,7 @@ export const FontResultsList: React.FC<FontResultsListProps> = ({
           const charLength = countCharacters(transformedName);
           const exceedsLimit = selectedGame.maxChars !== null && charLength > selectedGame.maxChars;
           const isGameCompatible = font.gameCompatibility ? font.gameCompatibility[gameKey] : true;
+          const pasteReadyName = toPasteReadyName(transformedName, selectedGame.maxChars);
 
           return (
             <div
@@ -210,6 +212,16 @@ export const FontResultsList: React.FC<FontResultsListProps> = ({
               {/* Action Buttons: Copy, Save, Card Preview, Test In-Game */}
               <div className="flex items-center justify-between gap-2 pt-1 border-t border-slate-800/60">
                 <div className="flex items-center gap-1.5">
+                  {pasteReadyName !== transformedName && (
+                    <button
+                      onClick={() => handleCopy(`safe-${font.id}`, pasteReadyName)}
+                      className={`px-2.5 py-1.5 rounded-lg text-[10px] font-bold flex items-center gap-1 transition-all cursor-pointer border ${copiedId === `safe-${font.id}` ? 'bg-emerald-500 text-black border-emerald-400' : 'bg-emerald-950/30 text-emerald-300 border-emerald-800/60 hover:bg-emerald-500 hover:text-black'}`}
+                      title="Copy a clean letters-and-numbers version for easier in-game paste"
+                    >
+                      <ShieldCheck className="w-3 h-3" />
+                      <span>{copiedId === `safe-${font.id}` ? 'Safe Copied' : 'Safe Copy'}</span>
+                    </button>
+                  )}
                   <button
                     onClick={() => onPreviewCard(transformedName)}
                     className="text-xs text-slate-400 hover:text-amber-400 px-2 py-1 rounded-md hover:bg-slate-800/50 flex items-center gap-1 transition-colors cursor-pointer"

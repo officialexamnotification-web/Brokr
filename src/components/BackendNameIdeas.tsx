@@ -5,6 +5,7 @@ import { BackendName, generateBackendNames } from '../lib/api';
 import { generateLocalNames } from '../lib/local-name-engine';
 import { NAME_LANGUAGES } from '../data/languages';
 import { getLanguageUi } from '../data/language-ui';
+import { toPasteReadyName } from '../lib/paste-safe';
 
 interface BackendNameIdeasProps {
   keyword: string;
@@ -166,6 +167,8 @@ export const BackendNameIdeas: React.FC<BackendNameIdeasProps> = ({
         <div className="grid grid-cols-1 gap-2.5 md:grid-cols-2 xl:grid-cols-3">
           {names.map((item) => {
             const isCopied = copiedId === item.id;
+            const pasteReadyName = toPasteReadyName(item.name, selectedGame.maxChars);
+            const isSafeCopied = copiedId === `safe-${item.id}`;
             const statusColor = item.compatibility === 'likely' ? 'text-emerald-300 border-emerald-800/60 bg-emerald-950/30' : item.compatibility === 'avoid' ? 'text-red-300 border-red-800/60 bg-red-950/30' : 'text-amber-300 border-amber-800/60 bg-amber-950/30';
             return (
               <div key={item.id} className="rounded-xl border border-slate-800/90 bg-[#050811] p-3.5 transition hover:border-cyan-500/40">
@@ -183,6 +186,7 @@ export const BackendNameIdeas: React.FC<BackendNameIdeasProps> = ({
                   <span className="truncate text-[10px] text-slate-500">{item.vibe} · {item.meaning}</span>
                   <div className="flex shrink-0 items-center gap-1">
                     <button onClick={() => onSaveName(item.name)} className="rounded-md border border-slate-800 px-2 py-1 text-[10px] font-bold text-slate-400 transition hover:border-slate-600 hover:text-white">Save</button>
+                    {pasteReadyName !== item.name && <button onClick={() => copyName({ ...item, id: `safe-${item.id}`, name: pasteReadyName })} title="Copy a clean version for easier in-game paste" className={`rounded-md border px-2 py-1 text-[10px] font-bold ${isSafeCopied ? 'border-emerald-400 bg-emerald-500 text-black' : 'border-emerald-800/60 bg-emerald-950/30 text-emerald-300 hover:bg-emerald-500 hover:text-black'}`}>{isSafeCopied ? 'Safe' : 'Safe Copy'}</button>}
                     <button onClick={() => copyName(item)} className={`inline-flex items-center gap-1 rounded-md px-2 py-1 text-[10px] font-bold ${isCopied ? 'bg-emerald-500 text-black' : 'bg-cyan-500 text-black hover:bg-cyan-400'}`}>
                       {isCopied ? <Check className="h-3 w-3" /> : <Copy className="h-3 w-3" />}
                       {isCopied ? 'Copied' : 'Copy'}
