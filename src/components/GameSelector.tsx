@@ -1,7 +1,8 @@
 import React from 'react';
 import { GameProfile } from '../types';
 import { POPULAR_GAMES } from '../data/games';
-import { ShieldCheck, Info } from 'lucide-react';
+import { useState } from 'react';
+import { ShieldCheck, Search } from 'lucide-react';
 
 interface GameSelectorProps {
   selectedGame: GameProfile;
@@ -12,6 +13,12 @@ export const GameSelector: React.FC<GameSelectorProps> = ({
   selectedGame,
   onSelectGame,
 }) => {
+  const [gameQuery, setGameQuery] = useState('');
+  const normalizedQuery = gameQuery.trim().toLowerCase();
+  const visibleGames = POPULAR_GAMES.filter((game) =>
+    !normalizedQuery || [game.name, game.shortName, game.id].some((value) => value.toLowerCase().includes(normalizedQuery))
+  );
+
   return (
     <div className="w-full bg-[#090d1a] p-3 sm:p-4 rounded-2xl border border-slate-800/90 shadow-lg space-y-3">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
@@ -43,9 +50,22 @@ export const GameSelector: React.FC<GameSelectorProps> = ({
         </div>
       </div>
 
-      {/* Horizontal Game Selector Pills */}
-      <div className="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar">
-        {POPULAR_GAMES.map((game) => {
+      <div className="flex flex-col sm:flex-row sm:items-center gap-2">
+        <div className="relative w-full sm:w-56 shrink-0">
+          <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" aria-hidden="true" />
+          <input
+            type="search"
+            value={gameQuery}
+            onChange={(event) => setGameQuery(event.target.value)}
+            placeholder="Search all games"
+            aria-label="Search all supported games"
+            className="w-full bg-[#050811] text-xs text-white pl-9 pr-3 py-2 rounded-xl border border-slate-800 focus:border-amber-400 outline-none placeholder:text-slate-500"
+          />
+        </div>
+
+        {/* Horizontal Game Selector Pills */}
+        <div className="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar min-w-0">
+        {visibleGames.map((game) => {
           const isSelected = selectedGame.id === game.id;
           return (
             <button
@@ -72,6 +92,10 @@ export const GameSelector: React.FC<GameSelectorProps> = ({
             </button>
           );
         })}
+        {visibleGames.length === 0 && (
+          <span className="text-xs text-slate-500 py-2 px-1 whitespace-nowrap">No supported game found</span>
+        )}
+        </div>
       </div>
     </div>
   );

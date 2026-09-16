@@ -46,11 +46,7 @@ export default function App() {
     } catch {
       // ignore
     }
-    return [
-      { id: 'fav-1', name: '亗 𝐒𝐎𝐔𝐋・𝐌𝐎𝐑𝐓𝐀𝐋 亗', game: 'bgmi', addedAt: Date.now() },
-      { id: 'fav-2', name: '꧁༺𝕵𝕺𝕹𝕬𝕿𝕳𝕬𝕹༻꧂', game: 'bgmi', addedAt: Date.now() },
-      { id: 'fav-3', name: '╰‿╯ 𝕬 𝕷 𝕺 𝕶 ╰‿╯', game: 'freefire', addedAt: Date.now() },
-    ];
+    return [];
   });
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [cardPreviewName, setCardPreviewName] = useState<string | null>(null);

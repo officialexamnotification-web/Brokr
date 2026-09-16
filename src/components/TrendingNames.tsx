@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { CuratedName, GameProfile } from '../types';
 import { CURATED_GAMER_NAMES } from '../data/curatedNames';
-import { Flame, Copy, Check, Heart, Search, Filter, Trophy, Sparkles } from 'lucide-react';
+import { POPULAR_GAMES } from '../data/games';
+import { Flame, Copy, Check, Heart, Search } from 'lucide-react';
 
 interface TrendingNamesProps {
   onCopyText: (text: string) => void;
@@ -14,7 +15,6 @@ export const TrendingNames: React.FC<TrendingNamesProps> = ({
   onSaveName,
   selectedGame,
 }) => {
-  const [namesList, setNamesList] = useState<CuratedName[]>(CURATED_GAMER_NAMES);
   const [activeGameFilter, setActiveGameFilter] = useState<string>('all');
   const [activeCategory, setActiveCategory] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState<string>('');
@@ -37,17 +37,31 @@ export const TrendingNames: React.FC<TrendingNamesProps> = ({
     setTimeout(() => setCopiedId(null), 2000);
   };
 
-  const handleLike = (id: string) => {
-    setNamesList((prev) =>
-      prev.map((item) => (item.id === id ? { ...item, likes: item.likes + 1 } : item))
-    );
-    const item = namesList.find((n) => n.id === id);
+  const editorIdeas = useMemo<CuratedName[]>(() => {
+    const existingGames = new Set(CURATED_GAMER_NAMES.map((item) => item.game));
+    const fallbackIdeas = POPULAR_GAMES
+      .filter((game) => !existingGames.has(game.id))
+      .flatMap((game) => {
+        const base = game.shortName.replace(/[^a-z0-9]/gi, '').toUpperCase().slice(0, 8) || 'GAMER';
+        return [
+          { id: `editor-${game.id}-nova`, name: `${base}Nova`, game: game.id, category: 'esports' as const, likes: 0, tags: ['Editor pick', 'Clean'] },
+          { id: `editor-${game.id}-rift`, name: `${base}Rift`, game: game.id, category: 'mythic' as const, likes: 0, tags: ['Editor pick', 'Readable'] },
+          { id: `editor-${game.id}-prime`, name: `${base}_Prime`, game: game.id, category: 'aesthetic' as const, likes: 0, tags: ['Editor pick', 'Simple'] },
+        ];
+      });
+    return [...CURATED_GAMER_NAMES, ...fallbackIdeas];
+  }, []);
+
+  const gameLabels = useMemo(() => new Map(POPULAR_GAMES.map((game) => [game.id, game.shortName])), []);
+
+  const handleSave = (id: string) => {
+    const item = editorIdeas.find((n) => n.id === id);
     if (item) {
       onSaveName(item.name);
     }
   };
 
-  const filteredNames = namesList.filter((item) => {
+  const filteredNames = editorIdeas.filter((item) => {
     const matchesGame = activeGameFilter === 'all' || item.game === activeGameFilter;
     const matchesCategory = activeCategory === 'all' || item.category === activeCategory;
     const matchesSearch =
@@ -69,7 +83,7 @@ export const TrendingNames: React.FC<TrendingNamesProps> = ({
               Top Trend Gamertags & Clan Names
             </h2>
             <p className="text-xs text-slate-400">
-              Curated style examples for inspiration — this is not live popularity or leaderboard data.
+              Editor-picked name ideas for inspiration — this is not live popularity, availability or leaderboard data.
             </p>
           </div>
 
@@ -91,7 +105,7 @@ export const TrendingNames: React.FC<TrendingNamesProps> = ({
           {/* Game filters */}
           <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-1">
             <span className="text-xs text-slate-400 font-bold uppercase mr-1">Game:</span>
-            {['all', 'bgmi', 'pubg', 'freefire', 'valorant', 'cod', 'cs2', 'apex'].map((g) => (
+            {['all', ...POPULAR_GAMES.map((game) => game.id)].map((g) => (
               <button
                 key={g}
                 onClick={() => setActiveGameFilter(g)}
@@ -101,7 +115,7 @@ export const TrendingNames: React.FC<TrendingNamesProps> = ({
                     : 'bg-slate-900 text-slate-400 border border-slate-800 hover:text-white'
                 }`}
               >
-                {g === 'all' ? 'All Games' : g}
+                {g === 'all' ? 'All Games' : gameLabels.get(g) || g}
               </button>
             ))}
           </div>
@@ -138,7 +152,7 @@ export const TrendingNames: React.FC<TrendingNamesProps> = ({
               <div className="flex items-center justify-between gap-2">
                 <div className="flex items-center gap-2">
                   <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-orange-500/10 text-orange-400 border border-orange-500/20">
-                    {item.game.toUpperCase()}
+                    {gameLabels.get(item.game) || item.game.toUpperCase()}
                   </span>
                   <span className="text-xs text-slate-400 font-medium">
                     {item.category}
@@ -172,12 +186,12 @@ export const TrendingNames: React.FC<TrendingNamesProps> = ({
 
                 <div className="flex items-center gap-2">
                   <button
-                    onClick={() => handleLike(item.id)}
+                    onClick={() => handleSave(item.id)}
                     className="px-2 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-slate-300 hover:text-red-400 flex items-center gap-1 transition-colors cursor-pointer"
-                    title="Like and Save"
+                    title="Save to favourites"
                   >
                     <Heart className="w-3.5 h-3.5 text-red-500" />
-                    <span>{item.likes} demo</span>
+                    <span>Save</span>
                   </button>
 
                   <button

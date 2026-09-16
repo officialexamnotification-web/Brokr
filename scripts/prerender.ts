@@ -73,7 +73,11 @@ function landingMarkup(route: { slug: string; title: string; description: string
   const faqList = (route.faqs || []).map((faq) => `<section><h2>${escapeHtml(faq.question)}</h2><p>${escapeHtml(faq.answer)}</p></section>`).join('');
   const links = (route.gameName ? POPULAR_GAMES.filter((game) => game.name !== route.gameName).slice(0, 8) : POPULAR_GAMES.slice(0, 12))
     .map((game) => `<a href="/${game.slug}">${escapeHtml(game.shortName)} name generator</a>`).join('');
-  return `<main id="seo-content"><nav aria-label="Breadcrumb"><a href="/">Home</a>${route.gameName ? ` / <span>${escapeHtml(route.heading)}</span>` : ''}</nav><article><h1>${escapeHtml(route.heading)}</h1><p>${escapeHtml(route.intro)}</p><ul>${featureList}</ul>${faqList}<nav aria-label="Related game generators"><h2>Explore more game name generators</h2>${links}</nav></article></main>`;
+  const howTo = `<section><h2>How to create a name</h2><ol><li>Enter a word, nickname or clan handle.</li><li>Choose a language and style that match your identity.</li><li>Copy the result and test it in the current game or platform client.</li></ol></section>`;
+  const trustNote = route.gameName
+    ? `<section><h2>${escapeHtml(route.gameName)} name tips</h2><p>Start with a clean, readable option when you need the safest compatibility. Decorative Unicode can render differently across clients, so this page does not promise that every symbol will be accepted.</p></section>`
+    : `<section><h2>Built for real gaming profiles</h2><p>GamingNameHub is a local name-idea tool. It does not check live username availability, access game accounts or claim affiliation with game publishers.</p></section>`;
+  return `<main id="seo-content"><nav aria-label="Breadcrumb"><a href="/">Home</a>${route.gameName ? ` / <span>${escapeHtml(route.heading)}</span>` : ''}</nav><article><h1>${escapeHtml(route.heading)}</h1><p>${escapeHtml(route.intro)}</p><ul>${featureList}</ul>${howTo}${trustNote}${faqList}<nav aria-label="Related game generators"><h2>Explore more game name generators</h2>${links}</nav></article></main>`;
 }
 
 function staticPageMarkup(page: typeof SITE_PAGES[number]) {
