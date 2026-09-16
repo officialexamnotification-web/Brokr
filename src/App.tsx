@@ -33,6 +33,7 @@ export default function App() {
   const initialRouteGame = gameFromCurrentPath();
   const [activeTab, setActiveTab] = useState<'generator' | 'symbols' | 'studio' | 'trending'>('generator');
   const [nameInput, setNameInput] = useState<string>('VIPER');
+  const [nameHistory, setNameHistory] = useState<string[]>([]);
   const [language, setLanguage] = useState<string>('global');
   const [selectedGame, setSelectedGame] = useState<GameProfile>(initialRouteGame || POPULAR_GAMES[0]);
   const [routeGameId, setRouteGameId] = useState<string | null>(initialRouteGame?.id || null);
@@ -124,9 +125,37 @@ export default function App() {
     showToast('Cleared all saved nicknames');
   };
 
+  const replaceNameInput = (nextValue: string) => {
+    const input = document.getElementById('nickname-input') as HTMLInputElement | null;
+    const previousValue = input?.value ?? nameInput;
+    if (previousValue === nextValue) return;
+    setNameHistory((history) => [...history.slice(-19), previousValue]);
+    setNameInput(nextValue);
+  };
+
   const handleInsertSymbol = (symbol: string) => {
-    setNameInput((prev) => prev + symbol);
+    const input = document.getElementById('nickname-input') as HTMLInputElement | null;
+    const currentValue = input?.value ?? nameInput;
+    const start = input?.selectionStart ?? currentValue.length;
+    const end = input?.selectionEnd ?? currentValue.length;
+    const nextValue = currentValue.slice(0, start) + symbol + currentValue.slice(end);
+    replaceNameInput(nextValue);
+    window.requestAnimationFrame(() => {
+      const activeInput = document.getElementById('nickname-input') as HTMLInputElement | null;
+      if (!activeInput) return;
+      const cursor = start + symbol.length;
+      activeInput.focus();
+      activeInput.setSelectionRange(cursor, cursor);
+    });
     showToast(`Inserted "${symbol}"`);
+  };
+
+  const handleUndoName = () => {
+    const previousValue = nameHistory[nameHistory.length - 1];
+    if (previousValue === undefined) return;
+    setNameInput(previousValue);
+    setNameHistory((history) => history.slice(0, -1));
+    showToast('Undid the last name edit');
   };
 
   const handleOpenRenameCard = (nameToTest?: string) => {
@@ -189,6 +218,9 @@ export default function App() {
               setNameInput={setNameInput}
               selectedGame={selectedGame}
               onQuickSymbolClick={(sym) => handleInsertSymbol(sym)}
+              onReplaceName={replaceNameInput}
+              onUndo={handleUndoName}
+              canUndo={nameHistory.length > 0}
               onlyWorkingInGame={onlyWorkingInGame}
               setOnlyWorkingInGame={setOnlyWorkingInGame}
               language={language}

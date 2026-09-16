@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { GameProfile } from '../types';
-import { Shuffle, X, Wand2, AlertTriangle, CheckCircle2, ShieldCheck, Sparkles, Copy, Check } from 'lucide-react';
+import { Shuffle, X, Wand2, AlertTriangle, CheckCircle2, ShieldCheck, Copy, Check, Undo2 } from 'lucide-react';
 import { countCharacters } from '../lib/character-count';
 import { isCleanGamertagGame } from '../lib/game-mode';
 import { NAME_LANGUAGES } from '../data/languages';
@@ -11,6 +11,9 @@ interface NameInputStylerProps {
   setNameInput: (val: string) => void;
   selectedGame: GameProfile;
   onQuickSymbolClick: (symbol: string) => void;
+  onReplaceName: (value: string) => void;
+  onUndo: () => void;
+  canUndo: boolean;
   onlyWorkingInGame: boolean;
   setOnlyWorkingInGame: (val: boolean) => void;
   language: string;
@@ -33,6 +36,9 @@ export const NameInputStyler: React.FC<NameInputStylerProps> = ({
   setNameInput,
   selectedGame,
   onQuickSymbolClick,
+  onReplaceName,
+  onUndo,
+  canUndo,
   onlyWorkingInGame,
   setOnlyWorkingInGame,
   language,
@@ -49,37 +55,19 @@ export const NameInputStyler: React.FC<NameInputStylerProps> = ({
 
   const handleRandomize = () => {
     const random = RANDOM_NICKNAMES[Math.floor(Math.random() * RANDOM_NICKNAMES.length)];
-    setNameInput(random);
+    onReplaceName(random);
     inputRef.current?.focus();
   };
 
   const handleClear = () => {
-    setNameInput('');
+    onReplaceName('');
     inputRef.current?.focus();
   };
 
   const handleWrapWithWings = () => {
     const text = nameInput.trim() || 'WARRIOR';
-    setNameInput(`꧁༺${text}༻꧂`);
+    onReplaceName(`꧁༺${text}༻꧂`);
     inputRef.current?.focus();
-  };
-
-  const handleInsertSymbol = (sym: string) => {
-    if (!inputRef.current) {
-      setNameInput(nameInput + sym);
-      return;
-    }
-    const start = inputRef.current.selectionStart || nameInput.length;
-    const end = inputRef.current.selectionEnd || nameInput.length;
-    const nextVal = nameInput.substring(0, start) + sym + nameInput.substring(end);
-    setNameInput(nextVal);
-    setTimeout(() => {
-      if (inputRef.current) {
-        inputRef.current.selectionStart = start + sym.length;
-        inputRef.current.selectionEnd = start + sym.length;
-        inputRef.current.focus();
-      }
-    }, 0);
   };
 
   const handleCopyHangulSpace = () => {
@@ -151,6 +139,7 @@ export const NameInputStyler: React.FC<NameInputStylerProps> = ({
       {/* Main Input Field */}
       <div className="relative flex items-center">
         <input
+          id="nickname-input"
           ref={inputRef}
           type="text"
           value={nameInput}
@@ -194,7 +183,7 @@ export const NameInputStyler: React.FC<NameInputStylerProps> = ({
             <button
               key={idx}
               type="button"
-              onClick={() => handleInsertSymbol(sym)}
+              onClick={() => onQuickSymbolClick(sym)}
               className="px-2.5 py-1.5 rounded-lg bg-[#0e1628] hover:bg-amber-500 hover:text-black text-amber-300 border border-slate-800 hover:border-amber-400 text-xs sm:text-sm font-bold transition-all cursor-pointer shadow-sm"
               title={`Insert ${sym}`}
             >
@@ -229,8 +218,19 @@ export const NameInputStyler: React.FC<NameInputStylerProps> = ({
             <span>Wrap Wings</span>
           </button>}
 
-          <button
-            onClick={handleRandomize}
+            <button
+              type="button"
+              onClick={onUndo}
+              disabled={!canUndo}
+              className="px-3 py-1.5 rounded-lg bg-[#0f172a] hover:bg-slate-800 text-slate-200 border border-slate-700 text-xs font-bold flex items-center gap-1.5 transition-colors cursor-pointer disabled:cursor-not-allowed disabled:opacity-40"
+              title="Undo the last name edit"
+            >
+              <Undo2 className="w-3.5 h-3.5 text-cyan-300" />
+              <span>Undo</span>
+            </button>
+
+            <button
+              onClick={handleRandomize}
             className="px-3.5 py-1.5 rounded-lg bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-black font-black text-xs uppercase tracking-wider flex items-center gap-1.5 transition-all shadow-md shadow-amber-500/20 cursor-pointer"
             title="Random idea"
           >
