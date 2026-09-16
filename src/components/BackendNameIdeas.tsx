@@ -118,7 +118,7 @@ export const BackendNameIdeas: React.FC<BackendNameIdeasProps> = ({
               </div>
               <p className="mt-1 max-w-2xl text-[11px] leading-relaxed text-slate-400">
                 {selectedGame.shortName} rules, language pools and decoration presets are generated through the shared engine.
-                If the remote function is unavailable, the same core generation works locally in your browser.
+                Native-script languages produce language-first words; your nickname is used as a seed. If the remote function is unavailable, the same core generation works locally in your browser.
               </p>
             </div>
           </div>

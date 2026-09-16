@@ -16,6 +16,20 @@ const WORDS: Record<string, string[]> = {
 };
 
 const ROLES = ['Ace', 'Main', 'One', 'X', 'OP', 'YT', 'MVP', 'Prime', 'Pro', 'Zero'];
+const LANGUAGE_ROLES: Record<string, string[]> = {
+  global: ROLES,
+  english: ROLES,
+  hindi: ['वीर', 'राजा', 'एक', 'एक्स', 'प्रो', 'योद्धा', 'एमवीपी', 'प्राइम', 'शेर', 'शून्य'],
+  hinglish: ['Ace', 'Bhai', 'One', 'X', 'OP', 'YT', 'MVP', 'Pro', 'Sher', 'Zero'],
+  spanish: ['Pro', 'Rey', 'Uno', 'X', 'Jefe', 'MVP', 'Elite', 'Prime', 'Leyenda', 'Cero'],
+  portuguese: ['Pro', 'Rei', 'Um', 'X', 'Lenda', 'MVP', 'Elite', 'Prime', 'Mestre', 'Zero'],
+  indonesian: ['Pro', 'Raja', 'Satu', 'X', 'Jago', 'MVP', 'Elite', 'Utama', 'Legenda', 'Nol'],
+  french: ['Pro', 'Roi', 'Un', 'X', 'Chef', 'MVP', 'Elite', 'Prime', 'Légende', 'Zéro'],
+  arabic: ['بطل', 'ملك', 'واحد', 'إكس', 'محترف', 'أسطورة', 'نخبة', 'برايم', 'زعيم', 'صفر'],
+  arabic_latin: ['Ace', 'Malik', 'One', 'X', 'Pro', 'MVP', 'Elite', 'Prime', 'Zaeem', 'Zero'],
+  bengali: ['বীর', 'রাজা', 'এক', 'এক্স', 'প্রো', 'এমভিপি', 'সেরা', 'প্রাইম', 'নায়ক', 'শূন্য'],
+};
+const NATIVE_OUTPUT_LANGUAGES = new Set(['hindi', 'spanish', 'portuguese', 'indonesian', 'french', 'arabic', 'bengali']);
 const DECORATIONS: Record<string, { template: string; risky: boolean }> = {
   none: { template: '{name}', risky: false },
   dot: { template: '•{name}•', risky: false },
@@ -45,8 +59,21 @@ export function generateLocalNames(options: { keyword: string; game: GameProfile
   const limit = options.game.maxChars;
   const names: BackendName[] = Array.from({ length: Math.min(Math.max(options.count || 12, 4), 24) }, (_, index) => {
     const word = words[(index * 3 + keyword.length) % words.length];
-    const role = ROLES[(index + keyword.length) % ROLES.length];
-    const base = index % 3 === 0 ? `${keyword}${index % 2 ? role : ''}` : index % 3 === 1 ? `${word}${keyword}` : `${keyword}_${word}`;
+    const roles = LANGUAGE_ROLES[options.language] || ROLES;
+    const role = roles[(index + keyword.length) % roles.length];
+    const base = NATIVE_OUTPUT_LANGUAGES.has(options.language)
+      ? index % 4 === 0
+        ? `${word}${role}`
+        : index % 4 === 1
+          ? `${role}${word}`
+          : index % 4 === 2
+            ? `${word}${(index % 9) + 1}`
+            : `${word}${roles[(index + 2 + keyword.length) % roles.length]}`
+      : index % 3 === 0
+        ? `${keyword}${index % 2 ? role : ''}`
+        : index % 3 === 1
+          ? `${word}${keyword}`
+          : `${keyword}_${word}`;
     const decorationId = options.conservative ? 'none' : options.decorationId || 'none';
     const name = decorate(base.slice(0, 22), decorationId, limit);
     const risky = DECORATIONS[decorationId]?.risky || false;
