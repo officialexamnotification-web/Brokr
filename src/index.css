@@ -1,0 +1,89 @@
+@import "tailwindcss";
+
+@layer base {
+  body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background-color: #050811;
+    color: #e2e8f0;
+    overflow-x: hidden;
+  }
+}
+
+.font-gaming {
+  font-family: 'Orbitron', system-ui, sans-serif;
+}
+
+.font-subgaming {
+  font-family: 'Rajdhani', system-ui, sans-serif;
+}
+
+/* Cyber Gaming Grid & Mesh Background */
+.bg-cyber-grid {
+  background-size: 36px 36px;
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+}
+
+.bg-radial-hero {
+  background: radial-gradient(circle at 50% 0%, rgba(245, 158, 11, 0.15) 0%, rgba(6, 182, 212, 0.08) 35%, transparent 70%);
+}
+
+/* High-graphics glowing borders */
+.glow-amber {
+  box-shadow: 0 0 25px -5px rgba(245, 158, 11, 0.35);
+}
+
+.glow-cyan {
+  box-shadow: 0 0 25px -5px rgba(6, 182, 212, 0.35);
+}
+
+.glow-red {
+  box-shadow: 0 0 25px -5px rgba(239, 68, 68, 0.35);
+}
+
+/* Metallic gamer card gradients */
+.metallic-conqueror {
+  background: linear-gradient(135deg, #1c1404 0%, #2e2008 25%, #141009 50%, #2b1f09 75%, #0d0a04 100%);
+  border: 1px solid rgba(245, 158, 11, 0.5);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 10px 30px -5px rgba(0, 0, 0, 0.8);
+}
+
+.metallic-radiant {
+  background: linear-gradient(135deg, #04171c 0%, #082933 25%, #06151c 50%, #0c3340 75%, #030d12 100%);
+  border: 1px solid rgba(6, 182, 212, 0.5);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 10px 30px -5px rgba(0, 0, 0, 0.8);
+}
+
+.metallic-heroic {
+  background: linear-gradient(135deg, #1f0606 0%, #380a0a 25%, #170404 50%, #360b0b 75%, #0d0202 100%);
+  border: 1px solid rgba(239, 68, 68, 0.5);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 10px 30px -5px rgba(0, 0, 0, 0.8);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #080c14;
+}
+::-webkit-scrollbar-thumb {
+  background: #1e293b;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #f59e0b;
+}
+
+@keyframes pulseGlow {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+.animate-pulse-glow {
+  animation: pulseGlow 3s ease-in-out infinite;
+}
+
+
