@@ -3,6 +3,7 @@ import { POPULAR_GAMES } from './games';
 
 export const SITE_NAME = 'GamingNameHub';
 export const SITE_DISPLAY_NAME = 'Gaming Name Hub';
+export const SITE_URL = 'https://www.tradivex.com';
 
 export interface SeoFaq {
   question: string;
@@ -67,7 +68,7 @@ const LABELS: Record<string, { noun: string; identity: string; audience: string;
 export function getGameSeo(game: GameProfile): GameSeoContent {
   const label = LABELS[game.id] || { noun: game.shortName, identity: 'gaming username', audience: 'players' };
   const pageTitle = label.pageTitle || `${label.noun} Name Generator`;
-  const title = `${pageTitle} — ${game.shortName} | GamingNameHub`;
+  const title = `${pageTitle} | GamingNameHub`;
   const description = `Generate ${label.identity} ideas for ${game.name}. Choose clean, pro, funny or stylish names, check the local character guidance and copy your favourite instantly.`;
   return {
     slug: game.slug,

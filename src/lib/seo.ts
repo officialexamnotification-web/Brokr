@@ -1,5 +1,5 @@
 import { GameProfile } from '../types';
-import { GameSeoContent, SITE_DISPLAY_NAME, SITE_NAME } from '../data/game-seo';
+import { GameSeoContent, SITE_DISPLAY_NAME, SITE_NAME, SITE_URL } from '../data/game-seo';
 import { SitePageContent } from '../data/site-pages';
 
 function upsertMeta(name: string, content: string, property = false) {
@@ -24,10 +24,15 @@ function upsertLink(rel: string, href: string) {
   element.setAttribute('href', href);
 }
 
+function canonicalOrigin() {
+  if (typeof window !== 'undefined' && /^(localhost|127\.0\.0\.1)$/.test(window.location.hostname)) return window.location.origin;
+  return SITE_URL;
+}
+
 export function applySeo(seo: GameSeoContent, game?: GameProfile) {
   if (typeof document === 'undefined') return;
   const path = game ? `/${game.slug}` : '/';
-  const canonical = `${window.location.origin}${path}`;
+  const canonical = `${canonicalOrigin()}${path}`;
   document.title = seo.title;
   upsertMeta('description', seo.description);
   upsertMeta('og:title', seo.title, true);
@@ -67,7 +72,7 @@ export function applySeo(seo: GameSeoContent, game?: GameProfile) {
 
 export function applyStaticSeo(page: SitePageContent) {
   if (typeof document === 'undefined') return;
-  const canonical = `${window.location.origin}/${page.slug}`;
+  const canonical = `${canonicalOrigin()}/${page.slug}`;
   document.title = page.title;
   upsertMeta('description', page.description);
   upsertMeta('og:title', page.title, true);
@@ -87,7 +92,7 @@ export function applyStaticSeo(page: SitePageContent) {
     name: page.heading,
     description: page.description,
     url: canonical,
-    isPartOf: { '@type': 'WebSite', name: SITE_NAME, alternateName: SITE_DISPLAY_NAME, url: window.location.origin },
+    isPartOf: { '@type': 'WebSite', name: SITE_NAME, alternateName: SITE_DISPLAY_NAME, url: canonicalOrigin() },
   };
   script.textContent = JSON.stringify(page.faqs ? {
     '@context': 'https://schema.org',
