@@ -63,7 +63,10 @@ export function SitePage({ page }: SitePageProps) {
       </main>
 
       <footer className="border-t border-slate-800 bg-[#04060d] px-4 py-8 text-xs text-slate-400 sm:px-6">
-        <div className="mx-auto flex max-w-6xl flex-col gap-5 sm:flex-row sm:items-start sm:justify-between"><div><a href="/" className="font-gaming font-bold text-white">GAMING<span className="text-amber-400">NAME</span>HUB</a><p className="mt-2 max-w-sm leading-5">Game-aware name ideas. Always test the final name in the current game or platform client.</p></div><nav aria-label="Site links" className="flex max-w-xl flex-wrap gap-x-4 gap-y-2">{pageLinks.map((link) => <a key={link.href} href={link.href} className="transition hover:text-amber-300">{link.label}</a>)}</nav></div>
+        <div className="mx-auto max-w-6xl">
+          <div className="flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between"><div><a href="/" className="font-gaming font-bold text-white">GAMING<span className="text-amber-400">NAME</span>HUB</a><p className="mt-2 max-w-sm leading-5">Game-aware name ideas, stylish nicknames and clean gamertags. GamingNameHub is independent and not affiliated with any game publisher or platform.</p></div><nav aria-label="Site links" className="grid max-w-xl grid-cols-2 gap-x-5 gap-y-2 sm:grid-cols-3">{pageLinks.map((link) => <a key={link.href} href={link.href} className="transition hover:text-amber-300">{link.label}</a>)}</nav></div>
+          <div className="mt-6 flex flex-col gap-2 border-t border-slate-800 pt-4 text-[11px] text-slate-500 sm:flex-row sm:items-center sm:justify-between"><p>© 2026 GamingNameHub. All rights reserved.</p><p>Always test the final name in the current game or platform client.</p></div>
+        </div>
       </footer>
     </div>
   );

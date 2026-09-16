@@ -336,29 +336,35 @@ export default function App() {
 
       {/* Site Footer */}
       <footer className="w-full border-t border-slate-800/80 bg-[#04060d] py-8 mt-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col gap-5 text-xs text-slate-500">
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-            <div className="flex items-center gap-3">
-            <span className="font-gaming font-bold text-white text-sm">
-              GAMING<span className="text-amber-400">NAME</span>HUB
-            </span>
-              <span>• Game-aware name ideas & character guidance</span>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid gap-7 md:grid-cols-[1.2fr_2fr]">
+            <div>
+              <a href="/" className="inline-flex items-center gap-2 font-gaming font-bold text-sm text-white" aria-label="GamingNameHub home">
+                <span>GAMING<span className="text-amber-400">NAME</span>HUB</span>
+              </a>
+              <p className="mt-3 max-w-md text-xs leading-5 text-slate-400">
+                Game-aware name ideas, stylish nicknames and clean gamertags for popular games and platforms.
+              </p>
+              <p className="mt-2 max-w-md text-[11px] leading-5 text-slate-500">
+                GamingNameHub is an independent name-generation tool and is not affiliated with any game publisher or platform. Always test the final name in the current client.
+              </p>
             </div>
-            <p className="text-left md:text-right">
-              Always test the final name in the current game or platform client.
-            </p>
+            <nav aria-label="Footer navigation" className="grid grid-cols-2 gap-x-6 gap-y-2 text-xs text-slate-400 sm:grid-cols-3">
+              <a className="hover:text-amber-300 transition-colors" href="/about">About</a>
+              <a className="hover:text-amber-300 transition-colors" href="/supported-games">Supported Games</a>
+              <a className="hover:text-amber-300 transition-colors" href="/faq">FAQ</a>
+              <a className="hover:text-amber-300 transition-colors" href="/contact">Contact</a>
+              <a className="hover:text-amber-300 transition-colors" href="/privacy-policy">Privacy Policy</a>
+              <a className="hover:text-amber-300 transition-colors" href="/terms-of-use">Terms of Use</a>
+              <a className="hover:text-amber-300 transition-colors" href="/disclaimer">Disclaimer</a>
+              <a className="hover:text-amber-300 transition-colors" href="/cookie-policy">Cookie Policy</a>
+              <a className="hover:text-amber-300 transition-colors" href="/dmca">Copyright / DMCA</a>
+            </nav>
           </div>
-          <nav aria-label="Footer navigation" className="flex flex-wrap gap-x-4 gap-y-2 text-slate-400">
-            <a className="hover:text-amber-300 transition-colors" href="/about">About</a>
-            <a className="hover:text-amber-300 transition-colors" href="/supported-games">Supported Games</a>
-            <a className="hover:text-amber-300 transition-colors" href="/faq">FAQ</a>
-            <a className="hover:text-amber-300 transition-colors" href="/contact">Contact</a>
-            <a className="hover:text-amber-300 transition-colors" href="/privacy-policy">Privacy</a>
-            <a className="hover:text-amber-300 transition-colors" href="/terms-of-use">Terms</a>
-            <a className="hover:text-amber-300 transition-colors" href="/disclaimer">Disclaimer</a>
-            <a className="hover:text-amber-300 transition-colors" href="/cookie-policy">Cookies</a>
-            <a className="hover:text-amber-300 transition-colors" href="/dmca">DMCA</a>
-          </nav>
+          <div className="mt-7 flex flex-col gap-2 border-t border-slate-800/80 pt-4 text-[11px] text-slate-500 sm:flex-row sm:items-center sm:justify-between">
+            <p>© 2026 GamingNameHub. All rights reserved.</p>
+            <p>Names are suggestions; availability and character support depend on the game or platform.</p>
+          </div>
         </div>
       </footer>
 
