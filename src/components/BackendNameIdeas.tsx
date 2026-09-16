@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { AlertTriangle, Check, Copy, Loader2, RefreshCw, ShieldCheck, Sparkles } from 'lucide-react';
 import { GameProfile } from '../types';
 import { BackendName, generateBackendNames } from '../lib/api';
+import { generateLocalNames } from '../lib/local-name-engine';
 
 interface BackendNameIdeasProps {
   keyword: string;
@@ -83,7 +84,10 @@ export const BackendNameIdeas: React.FC<BackendNameIdeasProps> = ({
       setNames(response.names);
       setMeta(response.meta);
     } catch {
-      setError('Name engine is temporarily unavailable. Please try again in a moment.');
+      const fallback = generateLocalNames({ keyword, game: selectedGame, language, style, decorationId, conservative, count: 12 });
+      setNames(fallback.names);
+      setMeta(fallback.meta);
+      setError(null);
     } finally {
       setIsLoading(false);
     }
@@ -113,12 +117,12 @@ export const BackendNameIdeas: React.FC<BackendNameIdeasProps> = ({
               <div className="flex flex-wrap items-center gap-2">
                 <h3 className="font-gaming text-sm font-bold text-white sm:text-base">Game-aware name ideas</h3>
                 <span className="rounded border border-cyan-500/25 bg-cyan-950/40 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-cyan-300">
-                  Server engine
+                  Hybrid engine
                 </span>
               </div>
               <p className="mt-1 max-w-2xl text-[11px] leading-relaxed text-slate-400">
-                {selectedGame.shortName} rules, language pools and decoration presets are generated through the shared backend.
-                Labels stay conservative when a live client test is still required.
+                {selectedGame.shortName} rules, language pools and decoration presets are generated through the shared engine.
+                If the remote function is unavailable, the same core generation works locally in your browser.
               </p>
             </div>
           </div>
