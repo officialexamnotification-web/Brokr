@@ -4,6 +4,7 @@ import { Shuffle, X, Wand2, AlertTriangle, CheckCircle2, ShieldCheck, Sparkles, 
 import { countCharacters } from '../lib/character-count';
 import { isCleanGamertagGame } from '../lib/game-mode';
 import { NAME_LANGUAGES } from '../data/languages';
+import { getLanguageUi } from '../data/language-ui';
 
 interface NameInputStylerProps {
   nameInput: string;
@@ -44,6 +45,7 @@ export const NameInputStyler: React.FC<NameInputStylerProps> = ({
   const isOverLimit = selectedGame.maxChars !== null && charCount > selectedGame.maxChars;
   const isCloseToLimit = selectedGame.maxChars !== null && charCount >= selectedGame.maxChars - 2 && !isOverLimit;
   const cleanMode = isCleanGamertagGame(selectedGame.id) && onlyWorkingInGame;
+  const languageUi = getLanguageUi(language);
 
   const handleRandomize = () => {
     const random = RANDOM_NICKNAMES[Math.floor(Math.random() * RANDOM_NICKNAMES.length)];
@@ -92,13 +94,13 @@ export const NameInputStyler: React.FC<NameInputStylerProps> = ({
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
         <label className="text-sm sm:text-base font-gaming font-bold text-white flex items-center gap-2">
           <span className="w-2 h-2 rounded-full bg-amber-400"></span>
-          Enter Your Nickname or Clan Handle:
+          {languageUi.nicknameLabel}
         </label>
 
         {/* Language, character counter and game filter controls */}
         <div className="flex items-center gap-2 flex-wrap sm:justify-end">
           <label className="flex items-center gap-2 rounded-lg border border-cyan-500/30 bg-cyan-950/20 px-2.5 py-1.5 text-[10px] font-bold uppercase tracking-wider text-cyan-200">
-            <span>Language</span>
+            <span>{languageUi.languageLabel}</span>
             <select
               value={language}
               onChange={(event) => setLanguage(event.target.value)}
@@ -153,7 +155,7 @@ export const NameInputStyler: React.FC<NameInputStylerProps> = ({
           type="text"
           value={nameInput}
           onChange={(e) => setNameInput(e.target.value)}
-          placeholder="e.g. VIPER, MORTAL, JONATHAN, SOUL..."
+          placeholder={languageUi.placeholder}
           className="w-full h-14 sm:h-16 bg-[#050914] text-white text-lg sm:text-2xl font-subgaming font-bold tracking-wider px-5 rounded-xl border border-slate-700/80 focus:border-amber-400 focus:ring-2 focus:ring-amber-500/20 outline-none transition-all placeholder:text-slate-600 shadow-inner leading-normal"
         />
 

@@ -4,6 +4,7 @@ import { GameProfile } from '../types';
 import { BackendName, generateBackendNames } from '../lib/api';
 import { generateLocalNames } from '../lib/local-name-engine';
 import { NAME_LANGUAGES } from '../data/languages';
+import { getLanguageUi } from '../data/language-ui';
 
 interface BackendNameIdeasProps {
   keyword: string;
@@ -60,6 +61,7 @@ export const BackendNameIdeas: React.FC<BackendNameIdeasProps> = ({
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [copiedId, setCopiedId] = useState<string | null>(null);
+  const languageUi = getLanguageUi(language);
 
   const loadNames = async () => {
     setIsLoading(true);
@@ -132,7 +134,7 @@ export const BackendNameIdeas: React.FC<BackendNameIdeasProps> = ({
 
         <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
           <label className="text-[10px] font-bold uppercase tracking-wider text-slate-500">
-            Language
+            {languageUi.languageLabel}
             <select value={language} onChange={(event) => setLanguage(event.target.value)} className="mt-1.5 w-full rounded-lg border border-slate-800 bg-[#050811] px-2.5 py-2 text-xs font-semibold normal-case tracking-normal text-slate-200 outline-none focus:border-cyan-400">
               {NAME_LANGUAGES.map((item) => <option key={item.id} value={item.id}>{item.label} · {item.nativeLabel}</option>)}
             </select>
