@@ -30,7 +30,7 @@ export const HOME_SEO: GameSeoContent = {
   faqs: [
     { question: 'What games can I generate names for?', answer: 'GamingNameHub supports popular mobile, PC, console and platform identities including BGMI, PUBG Mobile, Free Fire, Fortnite, Roblox, Minecraft, Valorant, Call of Duty, Steam, Xbox and more.' },
     { question: 'Are all decorative symbols guaranteed to work?', answer: 'No. Symbol support changes by game, platform and client update. Names are labelled conservatively and should be tested in the current rename or profile screen.' },
-    { question: 'Is an API or account required?', answer: 'No account or paid AI API is required. The local name engine creates suggestions from curated language and style pools.' },
+    { question: 'How do I choose a game-ready name?', answer: 'Select the exact game first, start with a clean readable result, check the character guidance, and test the final name in the current rename or profile screen.' },
   ],
 };
 
