@@ -4,12 +4,15 @@ import { BackendName, GenerateNamesResponse } from './api';
 const WORDS: Record<string, string[]> = {
   global: ['Shadow', 'Viper', 'Nova', 'Ghost', 'Rogue', 'Storm', 'Titan', 'Blaze', 'Echo', 'Orbit'],
   english: ['Ranger', 'Havoc', 'Sniper', 'Reaper', 'Frost', 'Venom', 'Phantom', 'Clutch', 'Hunter', 'Warden'],
+  hindi: ['शेर', 'बाज़', 'जज़्बा', 'तूफ़ान', 'योद्धा', 'दबंग', 'रफ़्तार', 'सुल्तान', 'जिगर', 'आग'],
   hinglish: ['Sher', 'Baaz', 'Jazba', 'Toofan', 'Yodha', 'Dabangg', 'Raftar', 'Sultan', 'Jigar', 'Aag'],
   spanish: ['Lobo', 'Fuego', 'Sombra', 'Rey', 'Rayo', 'Cazador', 'Furia', 'Noche', 'Alma', 'Fantasma'],
   portuguese: ['Lobo', 'Furia', 'Sombra', 'Rei', 'Brasa', 'Mestre', 'Trovão', 'Aço', 'Fantasma', 'Caçador'],
   indonesian: ['Bayang', 'Raja', 'Petir', 'Bara', 'Hantu', 'Jago', 'Badai', 'Naga', 'Elang', 'Prajurit'],
   french: ['Ombre', 'Roi', 'Foudre', 'Flamme', 'Loup', 'Glace', 'Esprit', 'Furie', 'Chasseur', 'Furtif'],
-  arabic: ['Saqr', 'Asad', 'Malik', 'Layl', 'Nar', 'Ruh', 'Qamar', 'Fares', 'Jabbar', 'Zaeem'],
+  arabic: ['صقر', 'أسد', 'ملك', 'ليل', 'نار', 'روح', 'قمر', 'فارس', 'جبار', 'زعيم'],
+  arabic_latin: ['Saqr', 'Asad', 'Malik', 'Layl', 'Nar', 'Ruh', 'Qamar', 'Fares', 'Jabbar', 'Zaeem'],
+  bengali: ['বাঘ', 'রাজা', 'ঝড়', 'আগুন', 'ছায়া', 'বীর', 'নাগ', 'বজ্র', 'শিকারি', 'সম্রাট'],
 };
 
 const ROLES = ['Ace', 'Main', 'One', 'X', 'OP', 'YT', 'MVP', 'Prime', 'Pro', 'Zero'];

@@ -1,12 +1,15 @@
 export type LanguageId =
   | "global"
   | "english"
+  | "hindi"
   | "hinglish"
   | "spanish"
   | "portuguese"
   | "indonesian"
   | "french"
-  | "arabic";
+  | "arabic"
+  | "arabic_latin"
+  | "bengali";
 
 export type NameStyle = "aggressive" | "pro" | "aesthetic" | "mythic" | "stealth" | "funny";
 
@@ -280,12 +283,15 @@ export const GAME_RULES = Object.values(RULES);
 export const LANGUAGES: LanguageOption[] = [
   { id: "global", label: "Global", description: "Neutral words that work across regions" },
   { id: "english", label: "English", description: "Competitive English gamer vocabulary" },
+  { id: "hindi", label: "Hindi", description: "Native Hindi words in Devanagari script" },
   { id: "hinglish", label: "Hinglish", description: "Indian gaming slang in Latin script" },
   { id: "spanish", label: "Español", description: "Spanish esports words and energy" },
   { id: "portuguese", label: "Português", description: "Brazilian-style gamer vocabulary" },
   { id: "indonesian", label: "Bahasa", description: "Indonesian gaming words in Latin script" },
   { id: "french", label: "Français", description: "French competitive and stylish words" },
-  { id: "arabic", label: "Arabic Latin", description: "Readable Arabic transliteration for game IDs" },
+  { id: "arabic", label: "Arabic", description: "Native Arabic words in Arabic script" },
+  { id: "arabic_latin", label: "Arabic Latin", description: "Readable Arabic transliteration for game IDs" },
+  { id: "bengali", label: "Bengali", description: "Native Bengali words in Bengali script" },
 ];
 
 export const DECORATIONS: DecorationPreset[] = [
@@ -306,12 +312,15 @@ export const DECORATIONS: DecorationPreset[] = [
 const WORDS: Record<LanguageId, string[]> = {
   global: ["Shadow", "Viper", "Nova", "Ghost", "Rogue", "Storm", "Titan", "Blaze", "Echo", "Orbit"],
   english: ["Ranger", "Havoc", "Sniper", "Reaper", "Frost", "Venom", "Phantom", "Clutch", "Hunter", "Warden"],
+  hindi: ["शेर", "बाज़", "जज़्बा", "तूफ़ान", "योद्धा", "दबंग", "रफ़्तार", "सुल्तान", "जिगर", "आग"],
   hinglish: ["Sher", "Baaz", "Jazba", "Toofan", "Yodha", "Dabangg", "Raftar", "Sultan", "Jigar", "Aag"],
   spanish: ["Lobo", "Fuego", "Sombra", "Rey", "Rayo", "Cazador", "Furia", "Noche", "Alma", "Fantasma"],
   portuguese: ["Lobo", "Furia", "Sombra", "Rei", "Brasa", "Caçador", "Mestre", "Trovão", "Aço", "Fantasma"],
   indonesian: ["Bayang", "Raja", "Petir", "Bara", "Hantu", "Jago", "Badai", "Naga", "Prajurit", "Elang"],
   french: ["Ombre", "Roi", "Foudre", "Flamme", "Chasseur", "Furtif", "Loup", "Glace", "Esprit", "Furie"],
-  arabic: ["Saqr", "Asad", "Malik", "Layl", "Nar", "Ruh", "Qamar", "Fares", "Jabbar", "Zaeem"],
+  arabic: ["صقر", "أسد", "ملك", "ليل", "نار", "روح", "قمر", "فارس", "جبار", "زعيم"],
+  arabic_latin: ["Saqr", "Asad", "Malik", "Layl", "Nar", "Ruh", "Qamar", "Fares", "Jabbar", "Zaeem"],
+  bengali: ["বাঘ", "রাজা", "ঝড়", "আগুন", "ছায়া", "বীর", "নাগ", "বজ্র", "শিকারি", "সম্রাট"],
 };
 
 const ROLES = ["Ace", "Main", "One", "X", "OP", "YT", "MVP", "Prime", "Pro", "Zero"];

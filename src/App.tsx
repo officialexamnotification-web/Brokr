@@ -33,6 +33,7 @@ export default function App() {
   const initialRouteGame = gameFromCurrentPath();
   const [activeTab, setActiveTab] = useState<'generator' | 'symbols' | 'studio' | 'trending'>('generator');
   const [nameInput, setNameInput] = useState<string>('VIPER');
+  const [language, setLanguage] = useState<string>('global');
   const [selectedGame, setSelectedGame] = useState<GameProfile>(initialRouteGame || POPULAR_GAMES[0]);
   const [routeGameId, setRouteGameId] = useState<string | null>(initialRouteGame?.id || null);
   const [onlyWorkingInGame, setOnlyWorkingInGame] = useState<boolean>(initialRouteGame ? getGameNameMode(initialRouteGame.id) === 'clean' : false);
@@ -190,6 +191,8 @@ export default function App() {
               onQuickSymbolClick={(sym) => handleInsertSymbol(sym)}
               onlyWorkingInGame={onlyWorkingInGame}
               setOnlyWorkingInGame={setOnlyWorkingInGame}
+              language={language}
+              setLanguage={setLanguage}
             />
 
             {/* 2. Transformed Fonts List with Game Engine Compatibility */}
@@ -208,6 +211,8 @@ export default function App() {
             <BackendNameIdeas
               keyword={nameInput}
               selectedGame={selectedGame}
+              language={language}
+              setLanguage={setLanguage}
               conservative={onlyWorkingInGame}
               onCopyText={handleCopyText}
               onSaveName={handleSaveName}

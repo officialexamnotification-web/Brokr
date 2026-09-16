@@ -3,25 +3,17 @@ import { AlertTriangle, Check, Copy, Loader2, RefreshCw, ShieldCheck, Sparkles }
 import { GameProfile } from '../types';
 import { BackendName, generateBackendNames } from '../lib/api';
 import { generateLocalNames } from '../lib/local-name-engine';
+import { NAME_LANGUAGES } from '../data/languages';
 
 interface BackendNameIdeasProps {
   keyword: string;
   selectedGame: GameProfile;
+  language: string;
+  setLanguage: (val: string) => void;
   conservative: boolean;
   onCopyText: (text: string) => void;
   onSaveName: (name: string) => void;
 }
-
-const LANGUAGES = [
-  { id: 'global', label: 'Global' },
-  { id: 'english', label: 'English' },
-  { id: 'hinglish', label: 'Hinglish' },
-  { id: 'spanish', label: 'Español' },
-  { id: 'portuguese', label: 'Português' },
-  { id: 'indonesian', label: 'Bahasa' },
-  { id: 'french', label: 'Français' },
-  { id: 'arabic', label: 'Arabic Latin' },
-];
 
 const DECORATIONS = [
   { id: 'none', label: 'Clean' },
@@ -55,11 +47,12 @@ const compatibilityLabel: Record<BackendName['compatibility'], string> = {
 export const BackendNameIdeas: React.FC<BackendNameIdeasProps> = ({
   keyword,
   selectedGame,
+  language,
+  setLanguage,
   conservative,
   onCopyText,
   onSaveName,
 }) => {
-  const [language, setLanguage] = useState('global');
   const [style, setStyle] = useState('pro');
   const [decorationId, setDecorationId] = useState('none');
   const [names, setNames] = useState<BackendName[]>([]);
@@ -95,9 +88,10 @@ export const BackendNameIdeas: React.FC<BackendNameIdeasProps> = ({
 
   useEffect(() => {
     void loadNames();
-    // Regenerate when the selected game changes; controls have their own button.
+    // Regenerate when the selected game or language changes; style and decoration
+    // remain manual controls so a user can combine them before regenerating.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedGame.id, conservative]);
+  }, [selectedGame.id, conservative, language]);
 
   const copyName = (item: BackendName) => {
     onCopyText(item.name);
@@ -140,7 +134,7 @@ export const BackendNameIdeas: React.FC<BackendNameIdeasProps> = ({
           <label className="text-[10px] font-bold uppercase tracking-wider text-slate-500">
             Language
             <select value={language} onChange={(event) => setLanguage(event.target.value)} className="mt-1.5 w-full rounded-lg border border-slate-800 bg-[#050811] px-2.5 py-2 text-xs font-semibold normal-case tracking-normal text-slate-200 outline-none focus:border-cyan-400">
-              {LANGUAGES.map((item) => <option key={item.id} value={item.id}>{item.label}</option>)}
+              {NAME_LANGUAGES.map((item) => <option key={item.id} value={item.id}>{item.label} · {item.nativeLabel}</option>)}
             </select>
           </label>
           <label className="text-[10px] font-bold uppercase tracking-wider text-slate-500">

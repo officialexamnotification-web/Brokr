@@ -3,6 +3,7 @@ import { GameProfile } from '../types';
 import { Shuffle, X, Wand2, AlertTriangle, CheckCircle2, ShieldCheck, Sparkles, Copy, Check } from 'lucide-react';
 import { countCharacters } from '../lib/character-count';
 import { isCleanGamertagGame } from '../lib/game-mode';
+import { NAME_LANGUAGES } from '../data/languages';
 
 interface NameInputStylerProps {
   nameInput: string;
@@ -11,6 +12,8 @@ interface NameInputStylerProps {
   onQuickSymbolClick: (symbol: string) => void;
   onlyWorkingInGame: boolean;
   setOnlyWorkingInGame: (val: boolean) => void;
+  language: string;
+  setLanguage: (val: string) => void;
 }
 
 const RANDOM_NICKNAMES = [
@@ -31,6 +34,8 @@ export const NameInputStyler: React.FC<NameInputStylerProps> = ({
   onQuickSymbolClick,
   onlyWorkingInGame,
   setOnlyWorkingInGame,
+  language,
+  setLanguage,
 }) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [copiedSpace, setCopiedSpace] = React.useState(false);
@@ -90,8 +95,23 @@ export const NameInputStyler: React.FC<NameInputStylerProps> = ({
           Enter Your Nickname or Clan Handle:
         </label>
 
-        {/* Character Counter & Game Filter Toggle */}
-        <div className="flex items-center gap-2 flex-wrap">
+        {/* Language, character counter and game filter controls */}
+        <div className="flex items-center gap-2 flex-wrap sm:justify-end">
+          <label className="flex items-center gap-2 rounded-lg border border-cyan-500/30 bg-cyan-950/20 px-2.5 py-1.5 text-[10px] font-bold uppercase tracking-wider text-cyan-200">
+            <span>Language</span>
+            <select
+              value={language}
+              onChange={(event) => setLanguage(event.target.value)}
+              title="Choose the language and script used for generated name ideas"
+              className="max-w-[145px] bg-transparent text-xs font-semibold normal-case tracking-normal text-white outline-none"
+            >
+              {NAME_LANGUAGES.map((item) => (
+                <option key={item.id} value={item.id} className="bg-[#080d1a] text-white">
+                  {item.label} · {item.nativeLabel}
+                </option>
+              ))}
+            </select>
+          </label>
           <div
             className={`flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-mono font-bold border ${
               isOverLimit
