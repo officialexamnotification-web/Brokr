@@ -1,8 +1,16 @@
 import { generateNames, getRuleForGame, type LanguageId, type NameStyle } from '../server/name-engine';
-import { allowJson, asCount, asString, type VercelRequest, type VercelResponse } from './_types';
 
-export default function handler(req: VercelRequest, res: VercelResponse) {
-  allowJson(res);
+function asString(value: unknown, fallback = ''): string {
+  return typeof value === 'string' ? value : fallback;
+}
+
+function asCount(value: unknown, fallback = 12): number {
+  const count = Number(value);
+  return Number.isFinite(count) ? Math.min(Math.max(Math.round(count), 4), 24) : fallback;
+}
+
+export default function handler(req: any, res: any) {
+  res.setHeader('Cache-Control', 'no-store');
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
   const body = req.body || {};

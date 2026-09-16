@@ -1,8 +1,11 @@
 import { countCharacters, getRuleForGame } from '../server/name-engine';
-import { allowJson, asString, type VercelRequest, type VercelResponse } from './_types';
 
-export default function handler(req: VercelRequest, res: VercelResponse) {
-  allowJson(res);
+function asString(value: unknown, fallback = ''): string {
+  return typeof value === 'string' ? value : fallback;
+}
+
+export default function handler(req: any, res: any) {
+  res.setHeader('Cache-Control', 'no-store');
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
   const body = req.body || {};
   const rule = getRuleForGame(asString(body.gameId, 'bgmi'));
