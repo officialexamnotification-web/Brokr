@@ -83,7 +83,7 @@ export const BackendNameIdeas: React.FC<BackendNameIdeasProps> = ({
       setNames(response.names);
       setMeta(response.meta);
     } catch {
-      setError('Name engine is unavailable. Start the local server and try again.');
+      setError('Name engine is temporarily unavailable. Please try again in a moment.');
     } finally {
       setIsLoading(false);
     }
