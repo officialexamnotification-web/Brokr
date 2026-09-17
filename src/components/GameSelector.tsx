@@ -3,16 +3,20 @@ import { GameProfile } from '../types';
 import { POPULAR_GAMES } from '../data/games';
 import { useState } from 'react';
 import { ShieldCheck, Search } from 'lucide-react';
+import { getGlobalUi } from '../data/language-ui';
 
 interface GameSelectorProps {
   selectedGame: GameProfile;
   onSelectGame: (game: GameProfile) => void;
+  language: string;
 }
 
 export const GameSelector: React.FC<GameSelectorProps> = ({
   selectedGame,
   onSelectGame,
+  language,
 }) => {
+  const ui = getGlobalUi(language);
   const [gameQuery, setGameQuery] = useState('');
   const normalizedQuery = gameQuery.trim().toLowerCase();
   const visibleGames = POPULAR_GAMES.filter((game) =>
@@ -25,7 +29,7 @@ export const GameSelector: React.FC<GameSelectorProps> = ({
         <div className="flex items-center gap-2">
           <span className="text-xs font-gaming font-bold uppercase tracking-wider text-slate-300 flex items-center gap-1.5">
             <ShieldCheck className="w-4 h-4 text-amber-400" />
-            Select Game Compatibility:
+            {ui.selectCompatibility}:
           </span>
           <span className="text-[11px] font-mono font-bold px-2 py-0.5 rounded bg-slate-800 text-amber-300 border border-slate-700">
             {selectedGame.maxChars === null ? 'Limit varies / unverified' : `Working limit: ${selectedGame.maxChars} chars`}
@@ -35,7 +39,7 @@ export const GameSelector: React.FC<GameSelectorProps> = ({
         {/* Popular Symbols for selected game */}
         <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar">
           <span className="text-[11px] text-slate-500 font-semibold whitespace-nowrap">
-            Popular in {selectedGame.shortName}:
+            {ui.popularIn} {selectedGame.shortName}:
           </span>
           <div className="flex items-center gap-1">
             {selectedGame.popularSymbols.slice(0, 6).map((sym, idx) => (
@@ -57,8 +61,8 @@ export const GameSelector: React.FC<GameSelectorProps> = ({
             type="search"
             value={gameQuery}
             onChange={(event) => setGameQuery(event.target.value)}
-            placeholder="Search all games"
-            aria-label="Search all supported games"
+            placeholder={ui.searchGames}
+            aria-label={ui.searchGames}
             className="w-full bg-[#050811] text-xs text-white pl-9 pr-3 py-2 rounded-xl border border-slate-800 focus:border-amber-400 outline-none placeholder:text-slate-500"
           />
         </div>

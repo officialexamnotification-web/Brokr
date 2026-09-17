@@ -35,7 +35,13 @@ export default function App() {
   const [activeTab, setActiveTab] = useState<'generator' | 'symbols' | 'studio' | 'trending'>('generator');
   const [nameInput, setNameInput] = useState<string>('VIPER');
   const [nameHistory, setNameHistory] = useState<string[]>([]);
-  const [language, setLanguage] = useState<string>('global');
+  const [language, setLanguage] = useState<string>(() => {
+    try {
+      return localStorage.getItem('gamingnamehub_language') || 'global';
+    } catch {
+      return 'global';
+    }
+  });
   const [selectedGame, setSelectedGame] = useState<GameProfile>(initialRouteGame || POPULAR_GAMES[0]);
   const [routeGameId, setRouteGameId] = useState<string | null>(initialRouteGame?.id || null);
   const [onlyWorkingInGame, setOnlyWorkingInGame] = useState<boolean>(initialRouteGame ? getGameNameMode(initialRouteGame.id) === 'clean' : false);
@@ -70,6 +76,24 @@ export default function App() {
   useEffect(() => {
     applySeo(routeGameId ? getGameSeo(selectedGame) : HOME_SEO, routeGameId ? selectedGame : undefined);
   }, [routeGameId, selectedGame]);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('gamingnamehub_language', language);
+    } catch {
+      // ignore unavailable browser storage
+    }
+  }, [language]);
+
+  useEffect(() => {
+    const languageCodes: Record<string, string> = {
+      global: 'en', english: 'en', hindi: 'hi', hinglish: 'en-IN', spanish: 'es',
+      portuguese: 'pt-BR', indonesian: 'id', french: 'fr', arabic: 'ar',
+      arabic_latin: 'en', bengali: 'bn',
+    };
+    document.documentElement.lang = languageCodes[language] || 'en';
+    document.documentElement.dir = language === 'arabic' ? 'rtl' : 'ltr';
+  }, [language]);
 
   // Sync saved names to localStorage
   useEffect(() => {
@@ -189,6 +213,8 @@ export default function App() {
         onOpenSaved={() => setIsSavedDrawerOpen(true)}
         onOpenRenameSimulator={() => handleOpenRenameCard(nameInput)}
         onHome={handleHome}
+        language={language}
+        setLanguage={setLanguage}
       />
 
       {/* Main Container */}
@@ -198,6 +224,7 @@ export default function App() {
           <GameSelector
             selectedGame={selectedGame}
             onSelectGame={handleSelectGame}
+            language={language}
           />
         </section>
 

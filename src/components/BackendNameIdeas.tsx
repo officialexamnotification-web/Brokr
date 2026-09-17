@@ -4,7 +4,7 @@ import { GameProfile } from '../types';
 import { BackendName, generateBackendNames } from '../lib/api';
 import { generateLocalNames } from '../lib/local-name-engine';
 import { NAME_LANGUAGES } from '../data/languages';
-import { getLanguageUi } from '../data/language-ui';
+import { getLanguageUi, getGlobalUi } from '../data/language-ui';
 import { toPasteReadyName } from '../lib/paste-safe';
 
 interface BackendNameIdeasProps {
@@ -63,6 +63,7 @@ export const BackendNameIdeas: React.FC<BackendNameIdeasProps> = ({
   const [error, setError] = useState<string | null>(null);
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const languageUi = getLanguageUi(language);
+  const ui = getGlobalUi(language);
 
   const loadNames = async () => {
     setIsLoading(true);
@@ -112,9 +113,9 @@ export const BackendNameIdeas: React.FC<BackendNameIdeasProps> = ({
             </div>
             <div>
               <div className="flex flex-wrap items-center gap-2">
-                <h3 className="font-gaming text-sm font-bold text-white sm:text-base">Game-aware name ideas</h3>
+                <h3 className="font-gaming text-sm font-bold text-white sm:text-base">{ui.nameGenerator} · Game-aware ideas</h3>
                 <span className="rounded border border-cyan-500/25 bg-cyan-950/40 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-cyan-300">
-                  Hybrid engine
+                  {ui.hybridEngine}
                 </span>
               </div>
               <p className="mt-1 max-w-2xl text-[11px] leading-relaxed text-slate-400">
@@ -129,7 +130,7 @@ export const BackendNameIdeas: React.FC<BackendNameIdeasProps> = ({
             className="inline-flex items-center justify-center gap-2 rounded-lg border border-slate-700 bg-[#050811] px-3 py-2 text-xs font-bold text-slate-300 transition hover:border-cyan-500/50 hover:text-white disabled:cursor-not-allowed disabled:opacity-50"
           >
             {isLoading ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <RefreshCw className="h-3.5 w-3.5" />}
-            Regenerate
+            {ui.regenerate}
           </button>
         </div>
 
@@ -141,13 +142,13 @@ export const BackendNameIdeas: React.FC<BackendNameIdeasProps> = ({
             </select>
           </label>
           <label className="text-[10px] font-bold uppercase tracking-wider text-slate-500">
-            Style
+            {ui.style}
             <select value={style} onChange={(event) => setStyle(event.target.value)} className="mt-1.5 w-full rounded-lg border border-slate-800 bg-[#050811] px-2.5 py-2 text-xs font-semibold normal-case tracking-normal text-slate-200 outline-none focus:border-cyan-400">
               {STYLES.map((item) => <option key={item.id} value={item.id}>{item.label}</option>)}
             </select>
           </label>
           <label className="text-[10px] font-bold uppercase tracking-wider text-slate-500">
-            Decoration
+            {ui.decoration}
             <select value={decorationId} onChange={(event) => setDecorationId(event.target.value)} disabled={conservative} className="mt-1.5 w-full rounded-lg border border-slate-800 bg-[#050811] px-2.5 py-2 text-xs font-semibold normal-case tracking-normal text-slate-200 outline-none focus:border-cyan-400 disabled:cursor-not-allowed disabled:opacity-50">
               {DECORATIONS.map((item) => <option key={item.id} value={item.id}>{item.label}</option>)}
             </select>

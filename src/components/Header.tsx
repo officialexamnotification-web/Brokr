@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { Gamepad2, Sparkles, Heart, Flame, ShieldCheck, CreditCard, Menu, X, Layers, Award } from 'lucide-react';
+import { NAME_LANGUAGES } from '../data/languages';
+import { getGlobalUi } from '../data/language-ui';
 
 interface HeaderProps {
   activeTab: 'generator' | 'symbols' | 'studio' | 'trending';
@@ -8,6 +10,8 @@ interface HeaderProps {
   onOpenSaved: () => void;
   onOpenRenameSimulator: () => void;
   onHome: () => void;
+  language: string;
+  setLanguage: (language: string) => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -17,14 +21,17 @@ export const Header: React.FC<HeaderProps> = ({
   onOpenSaved,
   onOpenRenameSimulator,
   onHome,
+  language,
+  setLanguage,
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const ui = getGlobalUi(language);
 
   const navItems = [
-    { id: 'generator' as const, label: 'Name Generator', icon: Gamepad2, badge: 'Popular' },
-    { id: 'studio' as const, label: 'ID Card Studio', icon: ShieldCheck, badge: 'PRO' },
-    { id: 'symbols' as const, label: 'Symbols & Space', icon: Layers },
-    { id: 'trending' as const, label: 'Trending Names', icon: Flame },
+    { id: 'generator' as const, label: ui.nameGenerator, icon: Gamepad2, badge: 'Popular' },
+    { id: 'studio' as const, label: ui.idCardStudio, icon: ShieldCheck, badge: 'PRO' },
+    { id: 'symbols' as const, label: ui.symbolsSpace, icon: Layers },
+    { id: 'trending' as const, label: ui.trendingNames, icon: Flame },
   ];
 
   const handleTabClick = (tabId: 'generator' | 'symbols' | 'studio' | 'trending') => {
@@ -95,6 +102,12 @@ export const Header: React.FC<HeaderProps> = ({
           </nav>
 
           <div className="flex items-stretch border-l border-slate-800/90 bg-[#0e1424]">
+            <label className="hidden items-center border-r border-slate-700/80 px-3 xl:flex">
+              <span className="sr-only">{ui.languageLabel}</span>
+              <select value={language} onChange={(event) => setLanguage(event.target.value)} aria-label={ui.languageLabel} className="max-w-[132px] cursor-pointer bg-transparent py-2 text-[11px] font-bold text-slate-200 outline-none">
+                {NAME_LANGUAGES.map((item) => <option key={item.id} value={item.id} className="bg-[#0e1424]">{item.label} · {item.nativeLabel}</option>)}
+              </select>
+            </label>
             <button
               onClick={onOpenRenameSimulator}
               className="px-3.5 py-2 text-xs font-bold text-slate-200 transition-all hover:bg-[#151e36] hover:text-white"
@@ -102,7 +115,7 @@ export const Header: React.FC<HeaderProps> = ({
             >
               <span className="flex items-center gap-2 whitespace-nowrap">
                 <CreditCard className="h-3.5 w-3.5 text-amber-400" />
-                Rename Card Test
+                {ui.renameCardTest}
               </span>
             </button>
             <button
@@ -111,7 +124,7 @@ export const Header: React.FC<HeaderProps> = ({
               title="View saved favorites"
             >
               <Heart className={`h-4 w-4 ${savedCount > 0 ? 'fill-red-500 text-red-500' : 'text-slate-400'}`} />
-              <span>Favorites</span>
+              <span>{ui.favorites}</span>
               {savedCount > 0 && (
                 <span className="rounded-full bg-red-500 px-1.5 py-0.5 text-[10px] font-mono font-bold leading-none text-white">
                   {savedCount}
@@ -149,6 +162,12 @@ export const Header: React.FC<HeaderProps> = ({
       {/* Mobile Drawer Menu */}
       {mobileMenuOpen && (
         <div className="lg:hidden border-t border-slate-800/80 bg-[#070a13] px-4 py-3 space-y-1">
+          <label className="mb-2 flex items-center justify-between gap-3 rounded-xl border border-slate-800 bg-[#0e1424] px-3 py-2 text-xs font-bold text-slate-300">
+            <span>{ui.languageLabel}</span>
+            <select value={language} onChange={(event) => setLanguage(event.target.value)} aria-label={ui.languageLabel} className="bg-transparent text-right text-xs text-white outline-none">
+              {NAME_LANGUAGES.map((item) => <option key={item.id} value={item.id} className="bg-[#0e1424]">{item.label} · {item.nativeLabel}</option>)}
+            </select>
+          </label>
           {navItems.map((item) => {
             const Icon = item.icon;
             const isActive = activeTab === item.id;
