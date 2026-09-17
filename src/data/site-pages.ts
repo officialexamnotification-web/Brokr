@@ -64,11 +64,11 @@ export const SITE_PAGES: SitePageContent[] = [
   {
     slug: 'contact',
     title: 'Contact GamingNameHub | Support & Feedback',
-    description: 'Contact GamingNameHub for correction requests, feedback, copyright notices and website support. Add your verified support email before launch.',
+    description: 'Contact GamingNameHub for correction requests, feedback, copyright notices and website support.',
     heading: 'Contact & Feedback',
     intro: 'Use this page for feedback, content corrections, technical issues and copyright notices.',
     sections: [
-      { heading: 'Support contact required before launch', paragraphs: ['This website currently has no published support mailbox. Before making the site public or applying for ads, replace the contact placeholder below with an email address you actively monitor.'] },
+      { heading: 'Support email', paragraphs: ['Email officialtradivexnamegenerator@gmail.com for site feedback, content corrections, technical issues or copyright notices. Please use an inbox you actively monitor and allow reasonable time for a reply.'] },
       { heading: 'What to include', paragraphs: ['For a faster review, include the page URL, the game or feature involved, a short description of the issue and screenshots where useful. For copyright requests, include the information listed on the DMCA page.'] },
       { heading: 'Response scope', paragraphs: ['GamingNameHub can review site content and tool behaviour. It cannot restore game accounts, change a publisher’s username rules, reserve names or resolve in-game purchases.'] },
     ],
@@ -84,7 +84,7 @@ export const SITE_PAGES: SitePageContent[] = [
       { heading: 'Browser storage and copy actions', paragraphs: ['Saved name favourites are stored in your browser local storage under this site. The clipboard is used only when you choose a copy action. Removing site data in your browser can remove saved favourites.'] },
       { heading: 'Cookies, advertising and analytics', paragraphs: ['The current application does not state that Google AdSense or analytics are active. If advertising or analytics are enabled in the future, Google and other third-party vendors may use cookies or similar technologies to show and measure ads. This policy must be updated before launch, and consent controls must be used where required by law.'] },
       { heading: 'Your choices', paragraphs: ['You can clear browser storage, use browser privacy controls, and manage advertising preferences through Google Ads Settings or industry opt-out tools where available.'] },
-      { heading: 'Changes and contact', paragraphs: ['Update this policy whenever data practices, advertising partners or contact details change. Replace the contact placeholder on the Contact page with a real support email before launch.'] },
+      { heading: 'Changes and contact', paragraphs: ['Update this policy whenever data practices, advertising partners or contact details change. Contact GamingNameHub through the email listed on the Contact page.'] },
     ],
   },
   {
@@ -132,7 +132,7 @@ export const SITE_PAGES: SitePageContent[] = [
     intro: 'GamingNameHub respects intellectual property rights and will review valid copyright concerns about content hosted on this website.',
     sections: [
       { heading: 'Copyright notice requirements', paragraphs: ['A notice should identify the copyrighted work, identify the material claimed to infringe with its exact site URL, provide your contact information, state your good-faith belief, state that the information is accurate under penalty of perjury, and include a physical or electronic signature.'] },
-      { heading: 'Where to send a notice', paragraphs: ['Before launch, replace the contact placeholder on the Contact page with a real copyright contact email. Do not claim a registered DMCA agent unless one has actually been registered for the website owner.'] },
+      { heading: 'Where to send a notice', paragraphs: ['Send a copyright notice to officialtradivexnamegenerator@gmail.com. Do not claim a registered DMCA agent unless one has actually been registered for the website owner.'] },
       { heading: 'Counter-notices', paragraphs: ['If material is removed after a copyright notice, the affected party may send a counter-notice where legally appropriate. Obtain qualified legal advice for a situation involving a dispute or a formal notice.'] },
     ],
   },

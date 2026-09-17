@@ -41,7 +41,7 @@ export function SitePage({ page }: SitePageProps) {
           <div className="space-y-9 px-6 py-8 sm:px-10 sm:py-10">
             {page.slug === 'contact' && (
               <div className="rounded-2xl border border-amber-500/35 bg-amber-500/10 p-5">
-                <div className="flex gap-3"><Mail className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-200">Launch action needed</h2><p className="mt-1 text-sm leading-6 text-amber-100/85">Replace this text with your real support email before launch: <span className="font-mono font-bold">YOUR_REAL_SUPPORT_EMAIL</span>. Do not publish a contact address you do not monitor.</p></div></div>
+                <div className="flex gap-3"><Mail className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-200">Contact GamingNameHub</h2><p className="mt-1 text-sm leading-6 text-amber-100/85">For feedback, corrections, technical issues or copyright notices, email <a className="font-mono font-bold underline decoration-amber-300/60 underline-offset-2 hover:text-white" href="mailto:officialtradivexnamegenerator@gmail.com">officialtradivexnamegenerator@gmail.com</a>.</p></div></div>
               </div>
             )}
 
