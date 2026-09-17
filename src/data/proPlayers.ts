@@ -4,9 +4,14 @@ export interface ProPlayerInspiration {
   region: string;
 }
 
-// Public esports handles included as naming inspiration, not as a live ranking
-// or endorsement. Refresh this editorial list when a reliable source changes.
+// Public player and creator handles included as naming inspiration, not as a live
+// ranking, availability signal, or endorsement. Refresh this editorial list when
+// a reliable official source changes.
 export const GLOBAL_PRO_PLAYER_INSPIRATION: ProPlayerInspiration[] = [
+  { handle: 'Scout', game: 'bgmi', region: 'India' },
+  { handle: 'Mortal', game: 'bgmi', region: 'India' },
+  { handle: 'Regaltos', game: 'bgmi', region: 'India' },
+  { handle: 'Snax', game: 'bgmi', region: 'India' },
   { handle: 'Faker', game: 'league', region: 'South Korea' },
   { handle: 'Chovy', game: 'league', region: 'South Korea' },
   { handle: 'Caps', game: 'league', region: 'Europe' },
@@ -35,4 +40,13 @@ export const GLOBAL_PRO_PLAYER_INSPIRATION: ProPlayerInspiration[] = [
   { handle: 'Hydra', game: 'cod', region: 'France' },
   { handle: 'Dream', game: 'minecraft', region: 'United States' },
   { handle: 'KreekCraft', game: 'roblox', region: 'United States' },
+  { handle: 'JJONAK', game: 'overwatch', region: 'South Korea' },
+  { handle: 'Rakattack', game: 'overwatch', region: 'United States' },
+  { handle: 'PGE', game: 'overwatch', region: 'United States' },
+  { handle: 'Beaulo', game: 'rainbow_six', region: 'United States' },
+  { handle: 'Pengu', game: 'rainbow_six', region: 'Denmark' },
+  { handle: 'Jynxzi', game: 'rainbow_six', region: 'United States' },
+  { handle: 'Moya', game: 'brawl_stars', region: 'Japan' },
+  { handle: 'Tensai', game: 'brawl_stars', region: 'Japan' },
+  { handle: 'Milkreo', game: 'brawl_stars', region: 'Japan' },
 ];

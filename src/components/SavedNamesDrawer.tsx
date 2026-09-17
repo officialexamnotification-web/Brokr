@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { SavedNameItem } from '../types';
-import { X, Copy, Check, Trash2, Heart, Download } from 'lucide-react';
+import { GameProfile, SavedNameItem } from '../types';
+import { X, Copy, Check, Trash2, Heart } from 'lucide-react';
 
 interface SavedNamesDrawerProps {
   isOpen: boolean;
@@ -9,6 +9,7 @@ interface SavedNamesDrawerProps {
   onRemoveName: (id: string) => void;
   onClearAll: () => void;
   onCopyText: (text: string) => void;
+  selectedGame: GameProfile;
 }
 
 export const SavedNamesDrawer: React.FC<SavedNamesDrawerProps> = ({
@@ -18,11 +19,16 @@ export const SavedNamesDrawer: React.FC<SavedNamesDrawerProps> = ({
   onRemoveName,
   onClearAll,
   onCopyText,
+  selectedGame,
 }) => {
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [copiedAll, setCopiedAll] = useState<boolean>(false);
 
   if (!isOpen) return null;
+
+  const gameSavedNames = savedNames.filter(
+    (item) => item.game === selectedGame.id || item.game === selectedGame.shortName.toLowerCase(),
+  );
 
   const handleCopyOne = (id: string, name: string) => {
     onCopyText(name);
@@ -31,7 +37,7 @@ export const SavedNamesDrawer: React.FC<SavedNamesDrawerProps> = ({
   };
 
   const handleCopyAll = () => {
-    const all = savedNames.map((s) => s.name).join('\n');
+    const all = gameSavedNames.map((s) => s.name).join('\n');
     onCopyText(all);
     setCopiedAll(true);
     setTimeout(() => setCopiedAll(false), 2000);
@@ -45,7 +51,7 @@ export const SavedNamesDrawer: React.FC<SavedNamesDrawerProps> = ({
           <div className="flex items-center gap-2">
             <Heart className="w-5 h-5 text-red-500 fill-red-500" />
             <h3 className="font-gaming font-bold text-lg text-white">
-              Saved Nicknames ({savedNames.length})
+              {selectedGame.shortName} Favorites ({gameSavedNames.length})
             </h3>
           </div>
           <button
@@ -57,19 +63,19 @@ export const SavedNamesDrawer: React.FC<SavedNamesDrawerProps> = ({
         </div>
 
         {/* Drawer Content */}
-        {savedNames.length === 0 ? (
+        {gameSavedNames.length === 0 ? (
           <div className="flex-1 flex flex-col items-center justify-center text-center p-6 space-y-3">
             <div className="w-14 h-14 rounded-full bg-slate-900 flex items-center justify-center text-slate-500 border border-slate-800">
               <Heart className="w-7 h-7" />
             </div>
-            <p className="text-sm font-semibold text-slate-300">No saved names yet</p>
+            <p className="text-sm font-semibold text-slate-300">No saved {selectedGame.shortName} names yet</p>
             <p className="text-xs text-slate-500 max-w-xs">
-              Click the heart icon on any font, symbol, or trending gamer tag to save it here for later!
+              Click the heart icon on a {selectedGame.shortName} name to save it here. Favorites are separated by game.
             </p>
           </div>
         ) : (
           <div className="flex-1 py-4 space-y-3 overflow-y-auto">
-            {savedNames.map((item) => {
+            {gameSavedNames.map((item) => {
               const isCopied = copiedId === item.id;
               return (
                 <div
@@ -81,7 +87,7 @@ export const SavedNamesDrawer: React.FC<SavedNamesDrawerProps> = ({
                       {item.name}
                     </p>
                     <span className="text-[10px] text-slate-500 font-mono">
-                      {item.game.toUpperCase()} • {Array.from(item.name).length} chars
+                      {selectedGame.shortName.toUpperCase()} • {Array.from(item.name).length} chars
                     </span>
                   </div>
 
@@ -113,7 +119,7 @@ export const SavedNamesDrawer: React.FC<SavedNamesDrawerProps> = ({
         )}
 
         {/* Drawer Footer Actions */}
-        {savedNames.length > 0 && (
+        {gameSavedNames.length > 0 && (
           <div className="pt-4 border-t border-slate-800 flex items-center gap-2">
             <button
               onClick={handleCopyAll}
@@ -122,7 +128,7 @@ export const SavedNamesDrawer: React.FC<SavedNamesDrawerProps> = ({
               {copiedAll ? (
                 <>
                   <Check className="w-4 h-4 stroke-[3]" />
-                  <span>Copied All {savedNames.length} Names!</span>
+                  <span>Copied All {gameSavedNames.length} Names!</span>
                 </>
               ) : (
                 <>

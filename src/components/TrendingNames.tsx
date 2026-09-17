@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { CuratedName, GameProfile } from '../types';
 import { CURATED_GAMER_NAMES } from '../data/curatedNames';
 import { POPULAR_GAMES } from '../data/games';
@@ -16,10 +16,19 @@ export const TrendingNames: React.FC<TrendingNamesProps> = ({
   onSaveName,
   selectedGame,
 }) => {
-  const [activeGameFilter, setActiveGameFilter] = useState<string>('all');
+  const [activeGameFilter, setActiveGameFilter] = useState<string>(selectedGame.id);
   const [activeCategory, setActiveCategory] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [copiedId, setCopiedId] = useState<string | null>(null);
+
+  const selectedPlayerIdeas = useMemo(
+    () => GLOBAL_PRO_PLAYER_INSPIRATION.filter((player) => player.game === selectedGame.id),
+    [selectedGame.id],
+  );
+
+  useEffect(() => {
+    setActiveGameFilter(selectedGame.id);
+  }, [selectedGame.id]);
 
   const categories = [
     { id: 'all', label: 'All Trends' },
@@ -80,31 +89,37 @@ export const TrendingNames: React.FC<TrendingNamesProps> = ({
           <div>
             <h2 className="flex items-center gap-2 text-lg font-bold text-white sm:text-xl">
               <Users className="h-5 w-5 text-cyan-400" />
-              Global Pro Player Inspiration
+              {selectedGame.shortName} Pro Player Inspiration
             </h2>
             <p className="mt-1 text-xs text-slate-400">
-              Recognized player handles from major regions — inspiration only, not a live ranking or popularity count.
+              Recognized {selectedGame.shortName} player handles from major regions — inspiration only, not a live ranking or popularity count.
             </p>
           </div>
-          <span className="text-[10px] uppercase tracking-wider text-slate-500">{GLOBAL_PRO_PLAYER_INSPIRATION.length} public handles</span>
+          <span className="text-[10px] uppercase tracking-wider text-slate-500">{selectedPlayerIdeas.length} public handles</span>
         </div>
-        <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-4 lg:grid-cols-7">
-          {GLOBAL_PRO_PLAYER_INSPIRATION.map((player) => (
-            <div key={`${player.game}-${player.handle}`} className="rounded-xl border border-slate-800 bg-[#050811] p-2.5">
-              <div className="truncate text-sm font-bold text-white" title={player.handle}>{player.handle}</div>
-              <div className="mt-1 truncate text-[10px] uppercase tracking-wide text-cyan-300">{player.game.replace('_', ' ')}</div>
-              <div className="mt-0.5 truncate text-[10px] text-slate-500" title={player.region}>{player.region}</div>
-              <div className="mt-2 flex items-center gap-1">
-                <button onClick={() => onCopyText(player.handle)} className="flex-1 rounded-md bg-cyan-500 px-2 py-1 text-[10px] font-bold text-black transition hover:bg-cyan-400" title={`Copy ${player.handle}`}>
-                  Copy
-                </button>
-                <button onClick={() => onSaveName(player.handle)} className="rounded-md border border-slate-700 p-1 text-slate-400 transition hover:border-red-500 hover:text-red-400" title={`Save ${player.handle} to favorites`}>
-                  <Heart className="h-3 w-3" />
-                </button>
+        {selectedPlayerIdeas.length > 0 ? (
+          <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-4 lg:grid-cols-7">
+            {selectedPlayerIdeas.map((player) => (
+              <div key={`${player.game}-${player.handle}`} className="rounded-xl border border-slate-800 bg-[#050811] p-2.5">
+                <div className="truncate text-sm font-bold text-white" title={player.handle}>{player.handle}</div>
+                <div className="mt-1 truncate text-[10px] uppercase tracking-wide text-cyan-300">{selectedGame.shortName}</div>
+                <div className="mt-0.5 truncate text-[10px] text-slate-500" title={player.region}>{player.region}</div>
+                <div className="mt-2 flex items-center gap-1">
+                  <button onClick={() => onCopyText(player.handle)} className="flex-1 rounded-md bg-cyan-500 px-2 py-1 text-[10px] font-bold text-black transition hover:bg-cyan-400" title={`Copy ${player.handle}`}>
+                    Copy
+                  </button>
+                  <button onClick={() => onSaveName(player.handle)} className="rounded-md border border-slate-700 p-1 text-slate-400 transition hover:border-red-500 hover:text-red-400" title={`Save ${player.handle} to favorites`}>
+                    <Heart className="h-3 w-3" />
+                  </button>
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        ) : (
+          <div className="mt-4 rounded-xl border border-dashed border-slate-800 bg-[#050811] px-4 py-5 text-sm text-slate-400">
+            No editorial player list is available for {selectedGame.shortName} yet. Browse the game-specific name ideas below for clean, usable inspiration.
+          </div>
+        )}
       </section>
 
       {/* Top Filter Bar */}

@@ -119,7 +119,11 @@ export default function App() {
 
   const handleSaveName = (name: string) => {
     setSavedNames((prev) => {
-      const exists = prev.find((item) => item.name === name);
+      const exists = prev.find(
+        (item) =>
+          item.name === name &&
+          (item.game === selectedGame.id || item.game === selectedGame.shortName.toLowerCase()),
+      );
       if (exists) {
         showToast(`Removed from favorites`);
         return prev.filter((item) => item.name !== name);
@@ -129,7 +133,7 @@ export default function App() {
           {
             id: `fav-${Date.now()}-${Math.random()}`,
             name,
-            game: selectedGame.shortName.toLowerCase(),
+            game: selectedGame.id,
             addedAt: Date.now(),
           },
           ...prev,
@@ -138,13 +142,22 @@ export default function App() {
     });
   };
 
+  const savedNamesForSelectedGame = savedNames.filter(
+    (item) => item.game === selectedGame.id || item.game === selectedGame.shortName.toLowerCase(),
+  );
+
   const handleRemoveSavedName = (id: string) => {
     setSavedNames((prev) => prev.filter((item) => item.id !== id));
   };
 
   const handleClearSavedNames = () => {
-    setSavedNames([]);
-    showToast('Cleared all saved nicknames');
+    setSavedNames((prev) =>
+      prev.filter(
+        (item) =>
+          item.game !== selectedGame.id && item.game !== selectedGame.shortName.toLowerCase(),
+      ),
+    );
+    showToast(`Cleared ${selectedGame.shortName} favorites`);
   };
 
   const replaceNameInput = (nextValue: string) => {
@@ -209,7 +222,7 @@ export default function App() {
       <Header
         activeTab={activeTab}
         setActiveTab={setActiveTab}
-        savedCount={savedNames.length}
+        savedCount={savedNamesForSelectedGame.length}
         onOpenSaved={() => setIsSavedDrawerOpen(true)}
         onOpenRenameSimulator={() => handleOpenRenameCard(nameInput)}
         onHome={handleHome}
@@ -430,6 +443,7 @@ export default function App() {
         onRemoveName={handleRemoveSavedName}
         onClearAll={handleClearSavedNames}
         onCopyText={handleCopyText}
+        selectedGame={selectedGame}
       />
 
       {/* Card Preview Modal */}
