@@ -45,7 +45,7 @@ export const Header: React.FC<HeaderProps> = ({
         <div className="flex items-center justify-between h-16 sm:h-18">
           {/* Logo & Brand Identity */}
           <div 
-            className="flex items-center gap-3 cursor-pointer group select-none" 
+            className="flex min-w-0 items-center gap-2 sm:gap-3 cursor-pointer group select-none" 
             onClick={onHome}
           >
             <div className="relative">
@@ -53,9 +53,9 @@ export const Header: React.FC<HeaderProps> = ({
                 <Gamepad2 className="w-5 h-5 sm:w-6 sm:h-6 text-black stroke-[2.5]" />
               </div>
             </div>
-            <div>
+            <div className="min-w-0">
               <div className="flex items-center gap-2">
-                <span className="font-gaming font-black text-lg sm:text-xl tracking-wider text-white">
+                <span className="whitespace-nowrap font-gaming font-black text-base sm:text-xl tracking-wide text-white">
                   GAMING<span className="text-amber-400">NAME</span><span className="text-white">HUB</span>
                 </span>
               </div>
@@ -66,7 +66,7 @@ export const Header: React.FC<HeaderProps> = ({
           </div>
 
           {/* Desktop navigation and utility actions share one continuous control box. */}
-          <div className="hidden lg:flex items-stretch overflow-hidden rounded-xl border border-slate-800 bg-[#0b101d] shadow-sm">
+          <div className="hidden xl:flex items-stretch overflow-hidden rounded-xl border border-slate-800 bg-[#0b101d] shadow-sm">
           <nav className="flex items-center gap-1 p-1">
             {navItems.map((item) => {
               const Icon = item.icon;
@@ -75,14 +75,14 @@ export const Header: React.FC<HeaderProps> = ({
                 <button
                   key={item.id}
                   onClick={() => handleTabClick(item.id)}
-                  className={`relative px-3.5 py-2 rounded-lg text-xs font-bold transition-all flex items-center gap-2 cursor-pointer ${
+                  className={`relative flex min-h-10 w-[108px] flex-wrap items-center justify-center gap-1 px-2 py-2 text-center text-[11px] font-bold leading-tight transition-all rounded-lg cursor-pointer ${
                     isActive
                       ? 'bg-amber-500 text-black shadow-md shadow-amber-500/20 font-black'
                       : 'text-slate-300 hover:text-white hover:bg-slate-800/60'
                   }`}
                 >
                   <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-black' : 'text-slate-400'}`} />
-                  <span>{item.label}</span>
+                  <span className="max-w-[72px]">{item.label}</span>
                   {item.badge && (
                     <span
                       className={`text-[9px] font-extrabold px-1.5 py-0.2 rounded uppercase ${
@@ -110,17 +110,17 @@ export const Header: React.FC<HeaderProps> = ({
             </label>
             <button
               onClick={onOpenRenameSimulator}
-              className="px-3.5 py-2 text-xs font-bold text-slate-200 transition-all hover:bg-[#151e36] hover:text-white"
+              className="max-w-[142px] px-3 py-2 text-center text-[11px] font-bold leading-tight text-slate-200 transition-all hover:bg-[#151e36] hover:text-white"
               title="Test nickname inside the game rename card simulator"
             >
-              <span className="flex items-center gap-2 whitespace-nowrap">
+              <span className="flex items-center justify-center gap-1.5">
                 <CreditCard className="h-3.5 w-3.5 text-amber-400" />
                 {ui.renameCardTest}
               </span>
             </button>
             <button
               onClick={onOpenSaved}
-              className="relative flex items-center gap-2 border-l border-slate-700/80 px-3.5 py-2 text-xs font-bold text-slate-200 transition-all hover:bg-[#151e36] hover:text-white"
+              className="relative flex max-w-[112px] items-center justify-center gap-1.5 border-l border-slate-700/80 px-3 py-2 text-center text-[11px] font-bold leading-tight text-slate-200 transition-all hover:bg-[#151e36] hover:text-white"
               title="View saved favorites"
             >
               <Heart className={`h-4 w-4 ${savedCount > 0 ? 'fill-red-500 text-red-500' : 'text-slate-400'}`} />
@@ -137,7 +137,7 @@ export const Header: React.FC<HeaderProps> = ({
           {/* Right Action Tools */}
           <div className="flex items-center gap-2 sm:gap-3">
             {/* Compact mobile utility group */}
-            <div className="flex items-center overflow-hidden rounded-xl border border-slate-700/80 bg-[#0e1424] sm:hidden">
+            <div className="flex items-center overflow-hidden rounded-xl border border-slate-700/80 bg-[#0e1424] xl:hidden">
               <button onClick={onOpenRenameSimulator} className="p-2 text-slate-300 transition hover:bg-[#151e36] hover:text-white" title="Rename card test">
                 <CreditCard className="h-4 w-4 text-amber-400" />
               </button>
@@ -150,7 +150,7 @@ export const Header: React.FC<HeaderProps> = ({
             {/* Mobile Menu Hamburger */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden p-2 rounded-xl bg-[#0e1424] border border-slate-800 text-slate-300 hover:text-white cursor-pointer"
+              className="xl:hidden p-2 rounded-xl bg-[#0e1424] border border-slate-800 text-slate-300 hover:text-white cursor-pointer"
               aria-label="Toggle navigation menu"
             >
               {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -161,7 +161,7 @@ export const Header: React.FC<HeaderProps> = ({
 
       {/* Mobile Drawer Menu */}
       {mobileMenuOpen && (
-        <div className="lg:hidden border-t border-slate-800/80 bg-[#070a13] px-4 py-3 space-y-1">
+        <div className="xl:hidden border-t border-slate-800/80 bg-[#070a13] px-4 py-3 space-y-1">
           <label className="mb-2 flex items-center justify-between gap-3 rounded-xl border border-slate-800 bg-[#0e1424] px-3 py-2 text-xs font-bold text-slate-300">
             <span>{ui.languageLabel}</span>
             <select value={language} onChange={(event) => setLanguage(event.target.value)} aria-label={ui.languageLabel} className="bg-transparent text-right text-xs text-white outline-none">
@@ -183,7 +183,7 @@ export const Header: React.FC<HeaderProps> = ({
               >
                 <div className="flex items-center gap-2.5">
                   <Icon className={`w-4 h-4 ${isActive ? 'text-black' : 'text-slate-400'}`} />
-                  <span>{item.label}</span>
+                  <span className="text-start">{item.label}</span>
                 </div>
                 {item.badge && (
                   <span
