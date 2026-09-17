@@ -21,12 +21,15 @@ function urlFor(slug: string): string {
 }
 
 function breadcrumbJson(url: string, label: string) {
+  const itemListElement = [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: `${ORIGIN}/` },
+  ];
+  if (url !== `${ORIGIN}/`) {
+    itemListElement.push({ '@type': 'ListItem', position: 2, name: label, item: url });
+  }
   return {
     '@type': 'BreadcrumbList',
-    itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Home', item: `${ORIGIN}/` },
-      { '@type': 'ListItem', position: 2, name: label, item: url },
-    ],
+    itemListElement,
   };
 }
 
