@@ -22,7 +22,7 @@ export interface GameSeoContent {
 
 export const HOME_SEO: GameSeoContent = {
   slug: '',
-  title: 'Gamer Name Generator for Every Game | GamingNameHub',
+  title: 'GamingNameHub | Gamer Name Generator for Every Game',
   description: 'Create clean, stylish and game-aware usernames for Fortnite, Roblox, Minecraft, BGMI, Free Fire, PUBG, Valorant, COD and more. Copy names instantly.',
   h1: 'Gamer Name Generator for Every Online Game',
   intro: 'Create a memorable gaming identity with clean gamertags, stylish names, clan tags and game-aware character checks. Choose a game before copying a name so the format matches the platform you actually use.',
