@@ -92,7 +92,7 @@ export const TrendingNames: React.FC<TrendingNamesProps> = ({
               {selectedGame.shortName} Pro Player Inspiration
             </h2>
             <p className="mt-1 text-xs text-slate-400">
-              Recognized {selectedGame.shortName} player handles from major regions — inspiration only, not a live ranking or popularity count.
+              Public {selectedGame.shortName} player and creator handles from major regions — inspiration only, not a live ranking or popularity count.
             </p>
           </div>
           <span className="text-[10px] uppercase tracking-wider text-slate-500">{selectedPlayerIdeas.length} public handles</span>
