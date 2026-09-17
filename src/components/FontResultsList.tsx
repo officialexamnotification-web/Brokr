@@ -40,7 +40,8 @@ export const FontResultsList: React.FC<FontResultsListProps> = ({
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [copiedId, setCopiedId] = useState<string | null>(null);
 
-  const displayText = inputText.trim() || 'WARRIOR';
+  const displayText = inputText.trim();
+  const hasInput = displayText.length > 0;
 
   const categories = [
     { id: 'all', label: 'All Styles' },
@@ -62,7 +63,7 @@ export const FontResultsList: React.FC<FontResultsListProps> = ({
 
   const gameKey = getGameKey(selectedGame.id);
   const cleanMode = isCleanGamertagGame(selectedGame.id) && onlyWorkingInGame;
-  const cleanDisplayText = displayText.normalize('NFKC').replace(/[^\p{L}\p{N} _-]/gu, '').trim() || 'PLAYER';
+  const cleanDisplayText = displayText.normalize('NFKC').replace(/[^\p{L}\p{N} _-]/gu, '').trim();
 
   const filteredFonts = useMemo(() => {
     if (cleanMode) return [CLEAN_NAME_CARD];
@@ -141,7 +142,12 @@ export const FontResultsList: React.FC<FontResultsListProps> = ({
 
       {/* Grid of Generated Font Names */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3.5">
-        {filteredFonts.map((font) => {
+        {!hasInput ? (
+          <div className="md:col-span-2 lg:col-span-3 xl:col-span-4 rounded-2xl border border-dashed border-slate-700 bg-[#090d1a] px-5 py-10 text-center">
+            <p className="font-gaming text-sm font-bold text-slate-200">Enter your nickname to generate styles</p>
+            <p className="mt-1 text-xs text-slate-500">Your own name will be used in every preview, copy and save action.</p>
+          </div>
+        ) : filteredFonts.map((font) => {
           const transformedName = cleanMode ? cleanDisplayText : font.transform(displayText);
           const isCopied = copiedId === font.id;
           const saved = isSaved(transformedName);

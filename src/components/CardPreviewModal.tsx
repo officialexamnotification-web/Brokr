@@ -114,7 +114,7 @@ export const CardPreviewModal: React.FC<CardPreviewModalProps> = ({
                 headshotRate: '29.4%',
                 popularity: '1.48M',
                 likes: '58.2K',
-                synergyName: 'SOUL・VIPER',
+                synergyName: '',
                 signature: 'Solo vs Squad Assaulter • 4 Finger Claw + Full Gyro',
               }}
               onCopyText={onCopyText}

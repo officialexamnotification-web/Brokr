@@ -66,6 +66,12 @@ export const BackendNameIdeas: React.FC<BackendNameIdeasProps> = ({
   const ui = getGlobalUi(language);
 
   const loadNames = async () => {
+    if (!keyword.trim()) {
+      setNames([]);
+      setMeta(null);
+      setError(null);
+      return;
+    }
     setIsLoading(true);
     setError(null);
     try {
@@ -97,6 +103,14 @@ export const BackendNameIdeas: React.FC<BackendNameIdeasProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedGame.id, conservative, language]);
 
+  useEffect(() => {
+    if (!keyword.trim()) {
+      setNames([]);
+      setMeta(null);
+      setError(null);
+    }
+  }, [keyword]);
+
   const copyName = (item: BackendName) => {
     onCopyText(item.name);
     setCopiedId(item.id);
@@ -126,7 +140,7 @@ export const BackendNameIdeas: React.FC<BackendNameIdeasProps> = ({
           </div>
           <button
             onClick={() => void loadNames()}
-            disabled={isLoading}
+            disabled={isLoading || !keyword.trim()}
             className="inline-flex items-center justify-center gap-2 rounded-lg border border-slate-700 bg-[#050811] px-3 py-2 text-xs font-bold text-slate-300 transition hover:border-cyan-500/50 hover:text-white disabled:cursor-not-allowed disabled:opacity-50"
           >
             {isLoading ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <RefreshCw className="h-3.5 w-3.5" />}
@@ -164,6 +178,13 @@ export const BackendNameIdeas: React.FC<BackendNameIdeasProps> = ({
         )}
 
         {error && <div className="rounded-xl border border-red-800/60 bg-red-950/30 px-3 py-2 text-xs text-red-300">{error}</div>}
+
+        {!keyword.trim() && (
+          <div className="rounded-xl border border-dashed border-slate-700 bg-[#050811] px-4 py-7 text-center">
+            <p className="font-gaming text-sm font-bold text-slate-200">Enter your nickname to generate game-aware ideas</p>
+            <p className="mt-1 text-xs text-slate-500">Choose a language, style and decoration after entering your own name.</p>
+          </div>
+        )}
 
         <div className="grid grid-cols-1 gap-2.5 md:grid-cols-2 xl:grid-cols-3">
           {names.map((item) => {

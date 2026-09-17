@@ -18,7 +18,8 @@ export const KillFeedSimulator: React.FC<KillFeedSimulatorProps> = ({
   const [isHeadshot, setIsHeadshot] = useState<boolean>(true);
   const [copied, setCopied] = useState<boolean>(false);
 
-  const displayName = playerName.trim() || '亗 SOUL・MORTAL 亗';
+  const displayName = playerName.trim();
+  const hasPlayerName = displayName.length > 0;
 
   const WEAPONS = [
     { name: 'M416 Glacier', game: 'bgmi', icon: '❄️' },
@@ -30,6 +31,7 @@ export const KillFeedSimulator: React.FC<KillFeedSimulatorProps> = ({
   ];
 
   const handleCopyTag = () => {
+    if (!hasPlayerName) return;
     onCopyText(displayName);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
@@ -58,10 +60,13 @@ export const KillFeedSimulator: React.FC<KillFeedSimulatorProps> = ({
 
         <button
           onClick={handleCopyTag}
+          disabled={!hasPlayerName}
           className={`px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer self-start sm:self-auto ${
             copied
               ? 'bg-emerald-500 text-black'
-              : 'bg-amber-500 hover:bg-amber-400 text-black shadow-md shadow-amber-500/20'
+              : hasPlayerName
+              ? 'bg-amber-500 hover:bg-amber-400 text-black shadow-md shadow-amber-500/20'
+              : 'bg-slate-800 text-slate-500 border border-slate-700 cursor-not-allowed'
           }`}
         >
           {copied ? (
@@ -72,7 +77,7 @@ export const KillFeedSimulator: React.FC<KillFeedSimulatorProps> = ({
           ) : (
             <>
               <Copy className="w-3.5 h-3.5" />
-              <span>Copy for In-Game</span>
+              <span>{hasPlayerName ? 'Copy for In-Game' : 'Enter Nickname First'}</span>
             </>
           )}
         </button>
@@ -92,7 +97,7 @@ export const KillFeedSimulator: React.FC<KillFeedSimulatorProps> = ({
               </span>
             </div>
             <p className="font-subgaming font-black text-lg sm:text-xl text-amber-300 tracking-wider truncate drop-shadow-md select-all">
-              {displayName}
+              {displayName || <span className="text-slate-600">Enter nickname above</span>}
             </p>
           </div>
         </div>

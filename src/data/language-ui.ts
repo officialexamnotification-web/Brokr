@@ -25,8 +25,8 @@ export interface GlobalUiCopy {
 // UI copy changes with the selected language. The nickname itself remains
 // exactly as the user typed it; only the guidance text and generated pools change.
 export const LANGUAGE_UI: Record<string, LanguageUiCopy> = {
-  global: { nicknameLabel: 'Enter Your Nickname or Clan Handle:', languageLabel: 'Language', placeholder: 'e.g. VIPER, MORTAL, JONATHAN, SOUL...' },
-  english: { nicknameLabel: 'Enter Your Nickname or Clan Handle:', languageLabel: 'Language', placeholder: 'e.g. VIPER, MORTAL, JONATHAN, SOUL...' },
+  global: { nicknameLabel: 'Enter Your Nickname or Clan Handle:', languageLabel: 'Language', placeholder: 'Type your own name or clan tag...' },
+  english: { nicknameLabel: 'Enter Your Nickname or Clan Handle:', languageLabel: 'Language', placeholder: 'Type your own name or clan tag...' },
   hindi: { nicknameLabel: 'अपना निकनेम या क्लान हैंडल दर्ज करें:', languageLabel: 'भाषा', placeholder: 'जैसे शेर, योद्धा, सुल्तान...' },
   hinglish: { nicknameLabel: 'Apna Nickname ya Clan Handle likhein:', languageLabel: 'Bhasha', placeholder: 'jaise SHER, YODHA, SULTAN...' },
   spanish: { nicknameLabel: 'Escribe tu apodo o nombre de clan:', languageLabel: 'Idioma', placeholder: 'ej. LOBO, REY, SOMBRA...' },

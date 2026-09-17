@@ -33,7 +33,7 @@ function gameFromCurrentPath() {
 export default function App() {
   const initialRouteGame = gameFromCurrentPath();
   const [activeTab, setActiveTab] = useState<'generator' | 'symbols' | 'studio' | 'trending'>('generator');
-  const [nameInput, setNameInput] = useState<string>('VIPER');
+  const [nameInput, setNameInput] = useState<string>('');
   const [nameHistory, setNameHistory] = useState<string[]>([]);
   const [language, setLanguage] = useState<string>(() => {
     try {
@@ -58,7 +58,7 @@ export default function App() {
   const [cardPreviewName, setCardPreviewName] = useState<string | null>(null);
   const [isSavedDrawerOpen, setIsSavedDrawerOpen] = useState<boolean>(false);
   const [isRenameSimulatorOpen, setIsRenameSimulatorOpen] = useState<boolean>(false);
-  const [renameTestName, setRenameTestName] = useState<string>('VIPER');
+  const [renameTestName, setRenameTestName] = useState<string>('');
 
   useEffect(() => {
     const handlePopState = () => {
@@ -194,7 +194,7 @@ export default function App() {
   };
 
   const handleOpenRenameCard = (nameToTest?: string) => {
-    setRenameTestName(nameToTest || nameInput || 'VIPER');
+    setRenameTestName(nameToTest || nameInput);
     setIsRenameSimulatorOpen(true);
   };
 

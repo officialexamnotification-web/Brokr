@@ -310,7 +310,7 @@ export const DECORATIONS: DecorationPreset[] = [
 ];
 
 const WORDS: Record<LanguageId, string[]> = {
-  global: ["Shadow", "Viper", "Nova", "Ghost", "Rogue", "Storm", "Titan", "Blaze", "Echo", "Orbit"],
+  global: ["Shadow", "Nova", "Ghost", "Rogue", "Storm", "Titan", "Blaze", "Echo", "Orbit"],
   english: ["Ranger", "Havoc", "Sniper", "Reaper", "Frost", "Venom", "Phantom", "Clutch", "Hunter", "Warden"],
   hindi: ["शेर", "बाज़", "जज़्बा", "तूफ़ान", "योद्धा", "दबंग", "रफ़्तार", "सुल्तान", "जिगर", "आग"],
   hinglish: ["Sher", "Baaz", "Jazba", "Toofan", "Yodha", "Dabangg", "Raftar", "Sultan", "Jigar", "Aag"],

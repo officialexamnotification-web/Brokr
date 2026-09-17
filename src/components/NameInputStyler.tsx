@@ -22,7 +22,7 @@ interface NameInputStylerProps {
 }
 
 const RANDOM_NICKNAMES = [
-  'Viper', 'Shadow', 'Mortal', 'Slayer', 'Ghost', 'Reaper', 'Psycho', 
+  'Shadow', 'Mortal', 'Slayer', 'Ghost', 'Reaper', 'Psycho',
   'Demon', 'Hydra', 'Falcon', 'Sniper', 'Apex', 'Glitch', 'Venom', 
   'Zero', 'Ninja', 'Titan', 'Knight', 'Spectre', 'Rogue', 'Phoenix',
   'Raistar', 'Jonathan', 'Scout', 'Dynamo', 'Alpha', 'Karma', 'Toxic'
@@ -66,7 +66,8 @@ export const NameInputStyler: React.FC<NameInputStylerProps> = ({
   };
 
   const handleWrapWithWings = () => {
-    const text = nameInput.trim() || 'WARRIOR';
+    const text = nameInput.trim();
+    if (!text) return;
     onReplaceName(`꧁༺${text}༻꧂`);
     inputRef.current?.focus();
   };

@@ -27,11 +27,13 @@ export const NameBuilderStudio: React.FC<NameBuilderStudioProps> = ({
   // Name construction pieces
   const [leftPrefix, setLeftPrefix] = useState<string>('亗 ');
   const [clanTag, setClanTag] = useState<string>('SOUL・');
-  const [coreName, setCoreName] = useState<string>(initialName.trim() || 'VIPER');
+  const [coreName, setCoreName] = useState<string>(initialName.trim());
   const [rightSuffix, setRightSuffix] = useState<string>(' 亗');
 
   // Combined full constructed name
-  const fullConstructedName = `${leftPrefix}${clanTag}${coreName}${rightSuffix}`.trim();
+  const fullConstructedName = coreName.trim()
+    ? `${leftPrefix}${clanTag}${coreName}${rightSuffix}`.trim()
+    : '';
 
   // BGMI Card State
   const [bgmiData, setBgmiData] = useState<BgmiCardData>({
@@ -48,7 +50,7 @@ export const NameBuilderStudio: React.FC<NameBuilderStudioProps> = ({
     headshotRate: '29.4%',
     popularity: '1.48M',
     likes: '58.2K',
-    synergyName: 'SOUL・VIPER',
+    synergyName: '',
     signature: 'Solo vs Squad Assaulter • 4 Finger Claw + Full Gyro • For Scrims DM on IG',
   });
 
@@ -393,17 +395,7 @@ export const NameBuilderStudio: React.FC<NameBuilderStudioProps> = ({
               onChange={(e) => setCoreName(e.target.value)}
               className="w-full bg-[#050812] text-sm text-white px-3 py-2 rounded-xl border border-slate-700 focus:border-amber-400 outline-none font-gaming font-bold"
             />
-            <div className="flex flex-wrap gap-1">
-              {['VIPER', 'MORTAL', 'SHADOW', 'SNIPER', 'DRACO'].map((w, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => setCoreName(w)}
-                  className="px-2 py-0.5 text-xs bg-slate-900 hover:bg-slate-800 text-slate-300 rounded border border-slate-800"
-                >
-                  {w}
-                </button>
-              ))}
-            </div>
+            <p className="text-[11px] text-slate-500">Enter the nickname you want to use in your own game profile.</p>
           </div>
 
           {/* Right Wing / Suffix */}
