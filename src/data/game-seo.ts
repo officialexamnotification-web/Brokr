@@ -22,10 +22,10 @@ export interface GameSeoContent {
 
 export const HOME_SEO: GameSeoContent = {
   slug: '',
-  title: 'GamingNameHub | Gamer Name Generator for Every Game',
-  description: 'Create clean, stylish and game-aware usernames for Fortnite, Roblox, Minecraft, BGMI, Free Fire, PUBG, Valorant, COD and more. Copy names instantly.',
-  h1: 'Gamer Name Generator for Every Online Game',
-  intro: 'Create a memorable gaming identity with clean gamertags, stylish names, clan tags and game-aware character checks. Choose a game before copying a name so the format matches the platform you actually use.',
+  title: 'Game Name Generator for Every Game | GamingNameHub',
+  description: 'Free game name generator for stylish gamer names, nicknames, gamertags and clan tags for BGMI, PUBG, Free Fire, Valorant, COD, Fortnite, Roblox and Minecraft.',
+  h1: 'Game Name Generator for Every Online Game',
+  intro: 'Create stylish gamer names, cool nicknames, clean gamertags and clan tags for the game you actually play. Choose a game first so the name style and character guidance match your platform.',
   features: ['Game-specific name ideas', 'Clean and stylish output modes', 'Unicode character counting', 'One-click copy and save'],
   faqs: [
     { question: 'What games can I generate names for?', answer: 'GamingNameHub supports popular mobile, PC, console and platform identities including BGMI, PUBG Mobile, Free Fire, Fortnite, Roblox, Minecraft, Valorant, Call of Duty, Steam, Xbox and more.' },
@@ -35,47 +35,47 @@ export const HOME_SEO: GameSeoContent = {
 };
 
 const LABELS: Record<string, { noun: string; identity: string; audience: string; pageTitle?: string }> = {
-  bgmi: { noun: 'Stylish BGMI', identity: 'in-game nickname', audience: 'Indian mobile gamers' },
-  pubg: { noun: 'Stylish PUBG Mobile', identity: 'battle royale nickname', audience: 'PUBG Mobile players' },
-  freefire: { noun: 'Stylish Free Fire', identity: 'in-game nickname', audience: 'Free Fire players' },
-  valorant: { noun: 'Clean Valorant', identity: 'Riot ID game name', audience: 'VALORANT players' },
-  cod: { noun: 'Call of Duty', identity: 'Activision or platform gamertag', audience: 'COD and Warzone players' },
-  cs2: { noun: 'CS2 Steam', identity: 'Steam profile name', audience: 'Counter-Strike players' },
-  fortnite: { noun: 'Fortnite', identity: 'Epic display name', audience: 'Fortnite players' },
-  apex: { noun: 'Apex Legends', identity: 'EA or platform display name', audience: 'Apex players' },
-  minecraft: { noun: 'Minecraft', identity: 'Minecraft username or server name', audience: 'Minecraft players' },
+  bgmi: { noun: 'BGMI', pageTitle: 'BGMI Name Generator', identity: 'stylish BGMI nickname', audience: 'BGMI mobile gamers' },
+  pubg: { noun: 'PUBG Mobile', pageTitle: 'PUBG Mobile Name Generator', identity: 'stylish PUBG Mobile name', audience: 'PUBG Mobile players' },
+  freefire: { noun: 'Free Fire', pageTitle: 'Free Fire Name Generator', identity: 'stylish Free Fire nickname', audience: 'Free Fire players' },
+  valorant: { noun: 'Valorant', pageTitle: 'Valorant Name Generator', identity: 'Valorant Riot ID', audience: 'VALORANT players' },
+  cod: { noun: 'Call of Duty', pageTitle: 'Call of Duty Name Generator', identity: 'Call of Duty gamertag', audience: 'COD and Warzone players' },
+  cs2: { noun: 'CS2', pageTitle: 'CS2 Name Generator', identity: 'CS2 Steam name', audience: 'Counter-Strike players' },
+  fortnite: { noun: 'Fortnite', pageTitle: 'Fortnite Name Generator', identity: 'Fortnite display name', audience: 'Fortnite players' },
+  apex: { noun: 'Apex Legends', pageTitle: 'Apex Legends Name Generator', identity: 'Apex Legends gamertag', audience: 'Apex players' },
+  minecraft: { noun: 'Minecraft', pageTitle: 'Minecraft Username Generator', identity: 'Minecraft username', audience: 'Minecraft players and server communities' },
   roblox: { noun: 'Roblox', pageTitle: 'Roblox Username Generator', identity: 'username or display name', audience: 'Roblox players and creators' },
-  league: { noun: 'League of Legends', identity: 'Riot ID game name', audience: 'League players' },
-  rocket_league: { noun: 'Rocket League', identity: 'gamertag or club identity', audience: 'Rocket League players' },
-  overwatch: { noun: 'Overwatch 2', identity: 'BattleTag idea', audience: 'Overwatch players' },
-  rainbow_six: { noun: 'Rainbow Six Siege', identity: 'tactical gamertag', audience: 'Siege players' },
-  destiny2: { noun: 'Destiny 2', identity: 'Guardian name', audience: 'Guardians' },
-  ea_fc: { noun: 'EA Sports FC', identity: 'football player or club name', audience: 'EA FC players' },
-  mobile_legends: { noun: 'Mobile Legends', identity: 'MLBB nickname', audience: 'MLBB players' },
-  honor_of_kings: { noun: 'Honor of Kings', identity: 'hero-inspired nickname', audience: 'Honor of Kings players' },
-  brawl_stars: { noun: 'Brawl Stars', identity: 'player or club name', audience: 'Brawl Stars players' },
-  clash_of_clans: { noun: 'Clash of Clans', identity: 'player or clan name', audience: 'clan leaders and players' },
-  clash_royale: { noun: 'Clash Royale', identity: 'player or clan name', audience: 'Clash Royale players' },
-  genshin: { noun: 'Genshin Impact', identity: 'traveler nickname', audience: 'Genshin players' },
-  stumble_guys: { noun: 'Stumble Guys', identity: 'funny player nickname', audience: 'Stumble Guys players' },
-  among_us: { noun: 'Among Us', identity: 'crew or impostor name', audience: 'Among Us players' },
+  league: { noun: 'League of Legends', pageTitle: 'League of Legends Name Generator', identity: 'League of Legends Riot ID', audience: 'League players' },
+  rocket_league: { noun: 'Rocket League', pageTitle: 'Rocket League Name Generator', identity: 'Rocket League gamertag', audience: 'Rocket League players' },
+  overwatch: { noun: 'Overwatch 2', pageTitle: 'Overwatch 2 Name Generator', identity: 'Overwatch 2 BattleTag idea', audience: 'Overwatch players' },
+  rainbow_six: { noun: 'Rainbow Six Siege', pageTitle: 'Rainbow Six Siege Name Generator', identity: 'Rainbow Six Siege gamertag', audience: 'Siege players' },
+  destiny2: { noun: 'Destiny 2', pageTitle: 'Destiny 2 Name Generator', identity: 'Destiny 2 Guardian name', audience: 'Guardians' },
+  ea_fc: { noun: 'EA Sports FC', pageTitle: 'EA FC Name Generator', identity: 'EA FC player or club name', audience: 'EA FC players' },
+  mobile_legends: { noun: 'Mobile Legends', pageTitle: 'Mobile Legends Name Generator', identity: 'Mobile Legends nickname', audience: 'MLBB players' },
+  honor_of_kings: { noun: 'Honor of Kings', pageTitle: 'Honor of Kings Name Generator', identity: 'Honor of Kings nickname', audience: 'Honor of Kings players' },
+  brawl_stars: { noun: 'Brawl Stars', pageTitle: 'Brawl Stars Name Generator', identity: 'Brawl Stars player name', audience: 'Brawl Stars players' },
+  clash_of_clans: { noun: 'Clash of Clans', pageTitle: 'Clash of Clans Name Generator', identity: 'Clash of Clans player or clan name', audience: 'clan leaders and players' },
+  clash_royale: { noun: 'Clash Royale', pageTitle: 'Clash Royale Name Generator', identity: 'Clash Royale player name', audience: 'Clash Royale players' },
+  genshin: { noun: 'Genshin Impact', pageTitle: 'Genshin Impact Name Generator', identity: 'Genshin Impact nickname', audience: 'Genshin players' },
+  stumble_guys: { noun: 'Stumble Guys', pageTitle: 'Stumble Guys Name Generator', identity: 'Stumble Guys nickname', audience: 'Stumble Guys players' },
+  among_us: { noun: 'Among Us', pageTitle: 'Among Us Name Generator', identity: 'Among Us player name', audience: 'Among Us players' },
   xbox: { noun: 'Xbox', pageTitle: 'Xbox Gamertag Generator', identity: 'Xbox Gamertag', audience: 'Xbox players' },
   psn: { noun: 'PlayStation', pageTitle: 'PSN Name Generator', identity: 'PSN Online ID', audience: 'PlayStation players' },
   steam: { noun: 'Steam', pageTitle: 'Steam Name Generator', identity: 'Steam profile name', audience: 'Steam players' },
-  gta_online: { noun: 'GTA Online', identity: 'Rockstar or crew name', audience: 'GTA Online players' },
+  gta_online: { noun: 'GTA Online', pageTitle: 'GTA Online Name Generator', identity: 'GTA Online crew or player name', audience: 'GTA Online players' },
 };
 
 export function getGameSeo(game: GameProfile): GameSeoContent {
   const label = LABELS[game.id] || { noun: game.shortName, identity: 'gaming username', audience: 'players' };
   const pageTitle = label.pageTitle || `${label.noun} Name Generator`;
   const title = `${pageTitle} | GamingNameHub`;
-  const description = `Generate ${label.identity} ideas for ${game.name}. Choose clean, pro, funny or stylish names, check the local character guidance and copy your favourite instantly.`;
+  const description = `Generate ${label.identity} ideas with clean, cool, stylish and clan-tag styles. Copy a name instantly with game-aware character guidance for ${game.name}.`;
   return {
     slug: game.slug,
     title,
     description,
     h1: pageTitle,
-    intro: `Create a unique ${label.identity} for ${label.audience}. Start with a keyword, select a style and copy a name made for ${game.name}. The generator shows conservative guidance when symbols, limits or platform rules still need live-client testing.`,
+    intro: `Create a unique ${label.identity} for ${label.audience}. Enter your own keyword, choose a clean, cool, funny or stylish style, and copy a name made for ${game.name}.`,
     features: [
       `${game.shortName}-focused name styles`,
       'Clean output for safer copying',

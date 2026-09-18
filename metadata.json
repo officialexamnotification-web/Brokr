@@ -1,6 +1,6 @@
 {
   "name": "GamingNameHub – Gamer Name Generator",
-  "description": "Create clean and stylish gamer names for popular mobile, PC, console and platform identities with a free local multilingual engine.",
+  "description": "Free game name generator for stylish gamer names, nicknames, gamertags and clan tags across popular mobile, PC, console and platform games.",
   "requestFramePermissions": [],
   "majorCapabilities": ["LOCAL_SERVER_GENERATOR"]
 }
