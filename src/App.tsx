@@ -20,6 +20,7 @@ import { KillFeedSimulator } from './components/KillFeedSimulator';
 import { InvisibleSpaceGenerator } from './components/InvisibleSpaceGenerator';
 import { Toast } from './components/Toast';
 import { GameSeoSection } from './components/GameSeoSection';
+import { BgmiNameStudio } from './components/BgmiNameStudio';
 import { 
   Gamepad2, Sparkles, Shield, Trophy, Flame, 
   HelpCircle, CheckCircle, Info, Star, Crosshair, Cpu 
@@ -264,6 +265,16 @@ export default function App() {
               language={language}
               setLanguage={setLanguage}
             />
+
+            {routeGameId === 'bgmi' && selectedGame.id === 'bgmi' && (
+              <BgmiNameStudio
+                nameInput={nameInput}
+                onInsertSymbol={handleInsertSymbol}
+                onCopyText={handleCopyText}
+                onSaveName={handleSaveName}
+                onOpenRenameCard={handleOpenRenameCard}
+              />
+            )}
 
             {/* 2. Transformed Fonts List with Game Engine Compatibility */}
             <FontResultsList
