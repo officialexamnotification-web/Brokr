@@ -1,6 +1,10 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import dotenv from 'dotenv';
 import { syncTournamentNews } from '../server/tournament-sync';
+
+dotenv.config({ path: path.resolve(process.cwd(), '.env.local') });
+dotenv.config();
 
 const target = path.resolve(process.cwd(), 'src/data/generated-tournament-news.ts');
 const result = await syncTournamentNews();

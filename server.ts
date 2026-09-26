@@ -17,6 +17,7 @@ import { SITE_PAGES, getSitePageBySlug } from "./src/data/site-pages";
 import { filterTournamentEvents, filterTournamentNews } from "./src/lib/tournament-feed";
 import { syncTournamentNews } from "./server/tournament-sync";
 
+dotenv.config({ path: path.resolve(process.cwd(), '.env.local') });
 dotenv.config();
 
 const app = express();
