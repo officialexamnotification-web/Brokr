@@ -5,6 +5,7 @@ import { POPULAR_GAMES } from '../src/data/games';
 import { SITE_PAGES } from '../src/data/site-pages';
 import { TOURNAMENT_EVENTS, TOURNAMENT_NEWS } from '../src/data/tournament-data';
 import { TOURNAMENT_NEWS_SEO, TOURNAMENTS_SEO, getTournamentArticleSeo } from '../src/data/tournament-seo';
+import { getTournamentNews } from '../src/lib/tournament-feed';
 
 const DIST_DIR = path.resolve(process.cwd(), 'dist');
 const ORIGIN = (process.env.PUBLIC_SITE_URL || 'https://www.tradivex.com').replace(/\/$/, '');
@@ -162,7 +163,7 @@ function tournamentMarkup(route: { slug: string; title: string; description: str
     return `<main id="seo-content"><nav aria-label="Breadcrumb"><a href="/">Home</a> / <a href="/tournaments">Tournaments</a> / <span>${escapeHtml(route.heading)}</span></nav><article><h1>${escapeHtml(route.heading)}</h1><p>${escapeHtml(route.intro)}</p><dl><dt>Status</dt><dd>${escapeHtml(route.event.status)}</dd><dt>Date</dt><dd>${escapeHtml(route.event.dateLabel)}</dd><dt>Organizer</dt><dd>${escapeHtml(route.event.organizer)}</dd><dt>Region</dt><dd>${escapeHtml(route.event.region)}</dd><dt>Location</dt><dd>${escapeHtml(route.event.location)}</dd></dl><p><strong>Official source:</strong> <a href="${escapeHtml(route.event.sourceUrl)}">${escapeHtml(route.event.sourceName)}</a></p></article></main>`;
   }
   const isNews = route.slug === 'esports-news';
-  const items = isNews ? TOURNAMENT_NEWS.map((item) => `<li><a href="/esports-news/${escapeHtml(item.slug)}">${escapeHtml(item.title)}</a><p>${escapeHtml(item.excerpt)}</p></li>`).join('') : TOURNAMENT_EVENTS.map((item) => `<li><a href="/tournaments/${escapeHtml(item.slug)}">${escapeHtml(item.name)}</a><p>${escapeHtml(item.summary)}</p></li>`).join('');
+  const items = isNews ? getTournamentNews().map((item) => `<li><a href="/esports-news/${escapeHtml(item.slug)}">${escapeHtml(item.title)}</a><p>${escapeHtml(item.excerpt)}</p></li>`).join('') : TOURNAMENT_EVENTS.map((item) => `<li><a href="/tournaments/${escapeHtml(item.slug)}">${escapeHtml(item.name)}</a><p>${escapeHtml(item.summary)}</p></li>`).join('');
   return `<main id="seo-content"><nav aria-label="Breadcrumb"><a href="/">Home</a> / <span>${escapeHtml(route.heading)}</span></nav><article><h1>${escapeHtml(route.heading)}</h1><p>${escapeHtml(route.intro)}</p><h2>${isNews ? 'Latest tournament updates' : 'Verified game tournament events'}</h2><ul>${items}</ul></article></main>`;
 }
 
@@ -207,9 +208,10 @@ for (const page of SITE_PAGES) {
   writeRoute(page.slug, renderHtml(route, staticPageMarkup(page)));
 }
 
+const allTournamentNews = getTournamentNews();
 writeRoute('esports-news', renderTournamentHtml({ slug: 'esports-news', ...TOURNAMENT_NEWS_SEO }));
 writeRoute('tournaments', renderTournamentHtml({ slug: 'tournaments', ...TOURNAMENTS_SEO }));
-for (const article of TOURNAMENT_NEWS) {
+for (const article of allTournamentNews) {
   const seo = getTournamentArticleSeo(article);
   writeRoute(`esports-news/${article.slug}`, renderTournamentHtml({ slug: `esports-news/${article.slug}`, ...seo, news: article }));
 }
@@ -218,7 +220,7 @@ for (const event of TOURNAMENT_EVENTS) {
   writeRoute(`tournaments/${event.slug}`, renderTournamentHtml({ slug: `tournaments/${event.slug}`, ...seo, event }));
 }
 
-const allSlugs = ['', ...POPULAR_GAMES.map((game) => game.slug), ...SITE_PAGES.map((page) => page.slug), 'esports-news', 'tournaments', ...TOURNAMENT_NEWS.map((article) => `esports-news/${article.slug}`), ...TOURNAMENT_EVENTS.map((event) => `tournaments/${event.slug}`)];
+const allSlugs = ['', ...POPULAR_GAMES.map((game) => game.slug), ...SITE_PAGES.map((page) => page.slug), 'esports-news', 'tournaments', ...allTournamentNews.map((article) => `esports-news/${article.slug}`), ...TOURNAMENT_EVENTS.map((event) => `tournaments/${event.slug}`)];
 const lastmod = new Date().toISOString().slice(0, 10);
 const sitemapUrls = allSlugs.map((slug) => `  <url><loc>${escapeHtml(urlFor(slug))}</loc><lastmod>${lastmod}</lastmod></url>`).join('\n');
 fs.writeFileSync(path.join(DIST_DIR, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${sitemapUrls}\n</urlset>\n`, 'utf8');

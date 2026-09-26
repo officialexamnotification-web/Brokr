@@ -71,7 +71,7 @@ async function askGemini(apiKey: string, model: string, source: { gameName: stri
 
 export async function syncTournamentNews(options: { apiKey?: string; model?: string } = {}) {
   const apiKey = options.apiKey || process.env.GEMINI_API_KEY || '';
-  const model = options.model || process.env.GEMINI_MODEL || 'gemini-2.5-flash';
+  const model = options.model || process.env.GEMINI_MODEL || 'gemini-3.8-flash';
   if (!apiKey) return { enabled: false, reason: 'GEMINI_API_KEY is not configured.', drafts: [] as TournamentNews[] };
 
   const drafts: TournamentNews[] = [];
