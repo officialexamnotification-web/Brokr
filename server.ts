@@ -14,11 +14,13 @@ import {
 import { HOME_SEO, SITE_DISPLAY_NAME, SITE_NAME, getGameBySlug, getGameSeo } from "./src/data/game-seo";
 import { POPULAR_GAMES } from "./src/data/games";
 import { SITE_PAGES, getSitePageBySlug } from "./src/data/site-pages";
+import { filterTournamentEvents, filterTournamentNews } from "./src/lib/tournament-feed";
+import { syncTournamentNews } from "./server/tournament-sync";
 
 dotenv.config();
 
 const app = express();
-const PORT = 3000;
+const PORT = Number(process.env.PORT || 3000);
 
 app.use(express.json({ limit: "20kb" }));
 
@@ -158,6 +160,31 @@ app.get('/sitemap.xml', (req, res) => {
 // Health check
 app.get("/api/health", (req, res) => {
   res.json({ status: "ok", timestamp: new Date().toISOString() });
+});
+
+app.get("/api/tournaments", (req, res) => {
+  res.setHeader('Cache-Control', 'public, max-age=300, stale-while-revalidate=900');
+  const gameId = asString(req.query.game);
+  const status = asString(req.query.status) as any;
+  const query = asString(req.query.q);
+  res.json({ items: filterTournamentEvents({ gameId: gameId || undefined, status: status || undefined, query: query || undefined }), updatedAt: new Date().toISOString() });
+});
+
+app.get("/api/news", (req, res) => {
+  res.setHeader('Cache-Control', 'public, max-age=300, stale-while-revalidate=900');
+  const gameId = asString(req.query.game);
+  const status = asString(req.query.status) as any;
+  const query = asString(req.query.q);
+  res.json({ items: filterTournamentNews({ gameId: gameId || undefined, status: status || undefined, query: query || undefined }), updatedAt: new Date().toISOString() });
+});
+
+app.post("/api/sync-tournament-news", async (req, res) => {
+  res.setHeader('Cache-Control', 'no-store');
+  const expected = process.env.TOURNAMENT_SYNC_SECRET || '';
+  const supplied = asString(req.headers.authorization).replace(/^Bearer\s+/i, '');
+  if (!expected || supplied !== expected) return res.status(401).json({ error: 'Unauthorized' });
+  const result = await syncTournamentNews();
+  return res.status(result.enabled ? 200 : 503).json(result);
 });
 
 // Public generator metadata. Keeping these rules server-owned prevents the UI from

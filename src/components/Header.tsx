@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { CreditCard, Flame, Gamepad2, Heart, Layers, Menu, ShieldCheck, X } from 'lucide-react';
+import { CreditCard, Flame, Gamepad2, Heart, Layers, Menu, Newspaper, ShieldCheck, X } from 'lucide-react';
 import { NAME_LANGUAGES } from '../data/languages';
 import { getGlobalUi } from '../data/language-ui';
 import { SITE_NAME, SITE_SUFFIX } from '../data/game-seo';
@@ -76,6 +76,7 @@ export const Header: React.FC<HeaderProps> = ({
           </nav>
 
           <div className="hidden shrink-0 items-center gap-1.5 xl:flex">
+            <a href="/esports-news" className="flex h-12 w-[142px] items-center justify-center gap-1.5 rounded-xl border border-slate-800 bg-[#0b101d] px-2 text-center text-[10px] font-extrabold leading-tight text-slate-200 transition hover:border-cyan-400/60 hover:bg-slate-800 hover:text-white"><Newspaper className="h-4 w-4 shrink-0 text-cyan-300" /><span>Esports<br />News</span></a>
             <label className="flex h-12 w-[142px] items-center justify-center rounded-xl border border-slate-800 bg-[#0b101d] px-2.5">
               <span className="sr-only">{ui.languageLabel}</span>
               <select value={language} onChange={(event) => setLanguage(event.target.value)} aria-label={ui.languageLabel} className="w-full cursor-pointer bg-transparent text-center text-[10px] font-bold text-slate-200 outline-none">
@@ -110,6 +111,7 @@ export const Header: React.FC<HeaderProps> = ({
                 return <button key={item.id} type="button" onClick={() => handleTabClick(item.id)} className={`flex h-12 items-center justify-center gap-2 rounded-xl border px-2 text-center text-xs font-extrabold ${isActive ? 'border-amber-400 bg-amber-500 text-slate-950' : 'border-slate-800 bg-[#0b101d] text-slate-300 hover:border-slate-600 hover:text-white'}`}><Icon className="h-4 w-4 shrink-0" /><span className="truncate">{labels[item.id]}</span></button>;
               })}
             </div>
+            <a href="/esports-news" className="flex h-12 items-center justify-center gap-2 rounded-xl border border-cyan-400/30 bg-cyan-500/10 text-xs font-extrabold text-cyan-200 transition hover:border-cyan-300 hover:bg-cyan-500/20"><Newspaper className="h-4 w-4" /> Esports News &amp; Tournaments</a>
           </div>
         </div>
       )}
