@@ -1,4 +1,4 @@
-# GamingNameHub — Local Gamer Name Generator
+# Tradivex GamingNameHub — Local Gamer Name Generator
 
 This app uses a local Express generator engine. No Gemini, OpenAI or other paid API key is required.
 

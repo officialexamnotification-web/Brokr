@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { ArrowLeft, ChevronRight, Gamepad2, Mail, ShieldCheck } from 'lucide-react';
 import { POPULAR_GAMES } from '../data/games';
 import { SITE_PAGES, type SitePageContent } from '../data/site-pages';
+import { SITE_NAME, SITE_SUFFIX, SITE_DISPLAY_NAME } from '../data/game-seo';
 import { applyStaticSeo } from '../lib/seo';
 
 interface SitePageProps {
@@ -19,11 +20,11 @@ export function SitePage({ page }: SitePageProps) {
     <div className="min-h-screen bg-[#050811] text-slate-100 bg-cyber-grid">
       <header className="border-b border-slate-800/80 bg-[#060a14]/95 backdrop-blur">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-4 sm:px-6">
-          <a href="/" className="flex items-center gap-3" aria-label="GamingNameHub home">
+          <a href="/" className="flex items-center gap-3" aria-label={`${SITE_NAME} home`}>
             <span className="grid h-10 w-10 place-items-center rounded-xl bg-amber-500 text-slate-950 shadow-lg shadow-amber-500/20"><Gamepad2 className="h-5 w-5" /></span>
             <span>
-              <span className="font-gaming text-sm font-black tracking-tight text-white">GAMING<span className="text-amber-400">NAME</span>HUB</span>
-              <span className="mt-0.5 block text-[10px] text-slate-400">Game Name Generator</span>
+              <span className="font-gaming text-sm font-black tracking-tight text-white">{SITE_NAME.toUpperCase()}</span>
+              <span className="mt-0.5 block text-[10px] text-amber-300">{SITE_SUFFIX}</span>
             </span>
           </a>
           <a href="/" className="inline-flex items-center gap-2 rounded-lg border border-slate-700 px-3 py-2 text-xs font-semibold text-slate-200 transition hover:border-amber-400 hover:text-amber-300"><ArrowLeft className="h-3.5 w-3.5" /> Generator</a>
@@ -33,7 +34,7 @@ export function SitePage({ page }: SitePageProps) {
       <main className="mx-auto w-full max-w-4xl px-4 py-10 sm:px-6 sm:py-14">
         <article className="overflow-hidden rounded-3xl border border-slate-800 bg-[#080d1a]/95 shadow-2xl shadow-black/30">
           <div className="border-b border-slate-800 bg-radial-hero px-6 py-9 sm:px-10 sm:py-12">
-            <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-amber-500/25 bg-amber-500/10 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.16em] text-amber-300"><ShieldCheck className="h-3.5 w-3.5" /> GamingNameHub information</div>
+            <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-amber-500/25 bg-amber-500/10 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.16em] text-amber-300"><ShieldCheck className="h-3.5 w-3.5" /> {SITE_DISPLAY_NAME} information</div>
             <h1 className="font-gaming text-2xl font-black leading-tight text-white sm:text-4xl">{page.heading}</h1>
             <p className="mt-4 max-w-3xl text-sm leading-7 text-slate-300 sm:text-base">{page.intro}</p>
           </div>
@@ -41,7 +42,7 @@ export function SitePage({ page }: SitePageProps) {
           <div className="space-y-9 px-6 py-8 sm:px-10 sm:py-10">
             {page.slug === 'contact' && (
               <div className="rounded-2xl border border-amber-500/35 bg-amber-500/10 p-5">
-                <div className="flex gap-3"><Mail className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-200">Contact GamingNameHub</h2><p className="mt-1 text-sm leading-6 text-amber-100/85">For feedback, corrections, technical issues or copyright notices, email <a className="font-mono font-bold underline decoration-amber-300/60 underline-offset-2 hover:text-white" href="mailto:officialtradivexnamegenerator@gmail.com">officialtradivexnamegenerator@gmail.com</a>.</p></div></div>
+                <div className="flex gap-3"><Mail className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-200">Contact {SITE_DISPLAY_NAME}</h2><p className="mt-1 text-sm leading-6 text-amber-100/85">For feedback, corrections, technical issues or copyright notices, email <a className="font-mono font-bold underline decoration-amber-300/60 underline-offset-2 hover:text-white" href="mailto:officialtradivexnamegenerator@gmail.com">officialtradivexnamegenerator@gmail.com</a>.</p></div></div>
               </div>
             )}
 
@@ -64,8 +65,8 @@ export function SitePage({ page }: SitePageProps) {
 
       <footer className="border-t border-slate-800 bg-[#04060d] px-4 py-8 text-xs text-slate-400 sm:px-6">
         <div className="mx-auto max-w-6xl">
-          <div className="grid gap-8 lg:grid-cols-[1.25fr_2fr]"><div className="max-w-sm"><a href="/" className="inline-flex items-center gap-3"><span className="grid h-10 w-10 place-items-center rounded-xl bg-amber-500 text-slate-950"><Gamepad2 className="h-5 w-5" /></span><span className="font-gaming text-sm font-black text-white">GAMING<span className="text-amber-400">NAME</span>HUB</span></a><p className="mt-4 text-xs leading-5">Game-aware name ideas, stylish nicknames and clean gamertags. GamingNameHub is independent and not affiliated with any game publisher or platform.</p></div><div className="grid grid-cols-2 gap-7 sm:grid-cols-3"><div><h3 className="mb-3 text-[10px] font-bold uppercase tracking-[0.16em] text-amber-400">Explore</h3><nav className="grid gap-2.5"><a href="/supported-games" className="transition hover:text-white">Supported Games</a><a href="/faq" className="transition hover:text-white">FAQ</a><a href="/contact" className="transition hover:text-white">Contact</a></nav></div><div><h3 className="mb-3 text-[10px] font-bold uppercase tracking-[0.16em] text-amber-400">About</h3><nav className="grid gap-2.5"><a href="/about" className="transition hover:text-white">About Us</a><a href="/disclaimer" className="transition hover:text-white">Disclaimer</a><a href="/dmca" className="transition hover:text-white">Copyright / DMCA</a></nav></div><div><h3 className="mb-3 text-[10px] font-bold uppercase tracking-[0.16em] text-amber-400">Legal</h3><nav className="grid gap-2.5"><a href="/privacy-policy" className="transition hover:text-white">Privacy Policy</a><a href="/terms-of-use" className="transition hover:text-white">Terms of Use</a><a href="/cookie-policy" className="transition hover:text-white">Cookie Policy</a></nav></div></div></div>
-          <div className="mt-8 flex flex-col gap-2 border-t border-slate-800 pt-4 text-[11px] text-slate-500 sm:flex-row sm:items-center sm:justify-between"><p>© 2026 GamingNameHub. All rights reserved.</p><p>Always test the final name in the current game or platform client.</p></div>
+          <div className="grid gap-8 lg:grid-cols-[1.25fr_2fr]"><div className="max-w-sm"><a href="/" className="inline-flex items-center gap-3"><span className="grid h-10 w-10 place-items-center rounded-xl bg-amber-500 text-slate-950"><Gamepad2 className="h-5 w-5" /></span><span><span className="block font-gaming text-sm font-black text-white">{SITE_NAME.toUpperCase()}</span><span className="block text-[10px] text-amber-300">{SITE_SUFFIX}</span></span></a><p className="mt-4 text-xs leading-5">Game-aware name ideas, stylish nicknames and clean gamertags. {SITE_DISPLAY_NAME} is independent and not affiliated with any game publisher or platform.</p></div><div className="grid grid-cols-2 gap-7 sm:grid-cols-3"><div><h3 className="mb-3 text-[10px] font-bold uppercase tracking-[0.16em] text-amber-400">Explore</h3><nav className="grid gap-2.5"><a href="/supported-games" className="transition hover:text-white">Supported Games</a><a href="/faq" className="transition hover:text-white">FAQ</a><a href="/contact" className="transition hover:text-white">Contact</a></nav></div><div><h3 className="mb-3 text-[10px] font-bold uppercase tracking-[0.16em] text-amber-400">About</h3><nav className="grid gap-2.5"><a href="/about" className="transition hover:text-white">About Us</a><a href="/disclaimer" className="transition hover:text-white">Disclaimer</a><a href="/dmca" className="transition hover:text-white">Copyright / DMCA</a></nav></div><div><h3 className="mb-3 text-[10px] font-bold uppercase tracking-[0.16em] text-amber-400">Legal</h3><nav className="grid gap-2.5"><a href="/privacy-policy" className="transition hover:text-white">Privacy Policy</a><a href="/terms-of-use" className="transition hover:text-white">Terms of Use</a><a href="/cookie-policy" className="transition hover:text-white">Cookie Policy</a></nav></div></div></div>
+          <div className="mt-8 flex flex-col gap-2 border-t border-slate-800 pt-4 text-[11px] text-slate-500 sm:flex-row sm:items-center sm:justify-between"><p>© 2026 {SITE_DISPLAY_NAME}. All rights reserved.</p><p>Always test the final name in the current game or platform client.</p></div>
         </div>
       </footer>
     </div>

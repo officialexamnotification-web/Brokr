@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { GameProfile, SavedNameItem } from './types';
 import { POPULAR_GAMES } from './data/games';
-import { getGameBySlug, getGameSeo, HOME_SEO } from './data/game-seo';
+import { getGameBySlug, getGameSeo, HOME_SEO, SITE_DISPLAY_NAME, SITE_NAME, SITE_SUFFIX } from './data/game-seo';
 import { applySeo } from './lib/seo';
 import { getGameNameMode } from './lib/game-mode';
 import { copyTextToClipboard } from './lib/clipboard';
@@ -427,23 +427,23 @@ export default function App() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid gap-8 lg:grid-cols-[1.25fr_2fr]">
             <div className="max-w-sm">
-              <a href="/" className="inline-flex items-center gap-3" aria-label="GamingNameHub home">
+              <a href="/" className="inline-flex items-center gap-3" aria-label={`${SITE_NAME} home`}>
                 <span className="grid h-10 w-10 place-items-center rounded-xl bg-amber-500 text-slate-950 shadow-lg shadow-amber-500/10"><Gamepad2 className="h-5 w-5" /></span>
-                <span className="font-gaming text-sm font-black text-white">GAMING<span className="text-amber-400">NAME</span>HUB</span>
+                <span><span className="block font-gaming text-sm font-black text-white">{SITE_NAME.toUpperCase()}</span><span className="block text-[10px] text-amber-300">{SITE_SUFFIX}</span></span>
               </a>
               <p className="mt-4 text-xs leading-5 text-slate-400">Game-aware name ideas, stylish nicknames and clean gamertags for popular games and platforms.</p>
               <p className="mt-2 text-[11px] leading-5 text-slate-500">
-                GamingNameHub is an independent name-generation tool and is not affiliated with any game publisher or platform. Always test the final name in the current client.
+                {SITE_DISPLAY_NAME} is an independent name-generation tool and is not affiliated with any game publisher or platform. Always test the final name in the current client.
               </p>
             </div>
             <div className="grid grid-cols-2 gap-7 sm:grid-cols-3">
               <div><h3 className="mb-3 text-[10px] font-bold uppercase tracking-[0.16em] text-amber-400">Explore</h3><nav className="grid gap-2.5 text-xs text-slate-400"><a className="hover:text-white transition-colors" href="/supported-games">Supported Games</a><a className="hover:text-white transition-colors" href="/faq">FAQ</a><a className="hover:text-white transition-colors" href="/contact">Contact</a></nav></div>
-              <div><h3 className="mb-3 text-[10px] font-bold uppercase tracking-[0.16em] text-amber-400">GamingNameHub</h3><nav className="grid gap-2.5 text-xs text-slate-400"><a className="hover:text-white transition-colors" href="/about">About Us</a><a className="hover:text-white transition-colors" href="/disclaimer">Disclaimer</a><a className="hover:text-white transition-colors" href="/dmca">Copyright / DMCA</a></nav></div>
+              <div><h3 className="mb-3 text-[10px] font-bold uppercase tracking-[0.16em] text-amber-400">{SITE_SUFFIX}</h3><nav className="grid gap-2.5 text-xs text-slate-400"><a className="hover:text-white transition-colors" href="/about">About Us</a><a className="hover:text-white transition-colors" href="/disclaimer">Disclaimer</a><a className="hover:text-white transition-colors" href="/dmca">Copyright / DMCA</a></nav></div>
               <div><h3 className="mb-3 text-[10px] font-bold uppercase tracking-[0.16em] text-amber-400">Legal</h3><nav className="grid gap-2.5 text-xs text-slate-400"><a className="hover:text-white transition-colors" href="/privacy-policy">Privacy Policy</a><a className="hover:text-white transition-colors" href="/terms-of-use">Terms of Use</a><a className="hover:text-white transition-colors" href="/cookie-policy">Cookie Policy</a></nav></div>
             </div>
           </div>
           <div className="mt-8 flex flex-col gap-2 border-t border-slate-800/80 pt-4 text-[11px] text-slate-500 sm:flex-row sm:items-center sm:justify-between">
-            <p>© 2026 GamingNameHub. All rights reserved.</p><p>Names are suggestions; support depends on the current game or platform.</p>
+            <p>© 2026 {SITE_DISPLAY_NAME}. All rights reserved.</p><p>Names are suggestions; support depends on the current game or platform.</p>
           </div>
         </div>
       </footer>

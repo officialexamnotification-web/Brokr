@@ -1,8 +1,9 @@
 import { GameProfile } from '../types';
 import { POPULAR_GAMES } from './games';
 
-export const SITE_NAME = 'GamingNameHub';
-export const SITE_DISPLAY_NAME = 'Gaming Name Hub';
+export const SITE_NAME = 'Tradivex';
+export const SITE_SUFFIX = 'GamingNameHub';
+export const SITE_DISPLAY_NAME = 'Tradivex GamingNameHub';
 export const SITE_URL = 'https://www.tradivex.com';
 
 export interface SeoFaq {
@@ -55,13 +56,13 @@ const GAME_INTENTS: Record<string, string> = {
 
 export const HOME_SEO: GameSeoContent = {
   slug: '',
-  title: 'Game Name Generator for Every Game | GamingNameHub',
+  title: 'Game Name Generator for Every Game | Tradivex GamingNameHub',
   description: 'Free game name generator for stylish gamer names, nicknames, gamertags and clan tags for BGMI, PUBG, Free Fire, Valorant, COD, Fortnite, Roblox and Minecraft.',
   h1: 'Game Name Generator for Every Online Game',
   intro: 'Create stylish gamer names, cool nicknames, clean gamertags and clan tags for the game you actually play. Choose a game first so the name style and character guidance match your platform.',
   features: ['Game-specific name ideas', 'Clean and stylish output modes', 'Unicode character counting', 'One-click copy and save'],
   faqs: [
-    { question: 'What games can I generate names for?', answer: 'GamingNameHub supports popular mobile, PC, console and platform identities including BGMI, PUBG Mobile, Free Fire, Fortnite, Roblox, Minecraft, Valorant, Call of Duty, Steam, Xbox and more.' },
+    { question: 'What games can I generate names for?', answer: 'Tradivex GamingNameHub supports popular mobile, PC, console and platform identities including BGMI, PUBG Mobile, Free Fire, Fortnite, Roblox, Minecraft, Valorant, Call of Duty, Steam, Xbox and more.' },
     { question: 'Are all decorative symbols guaranteed to work?', answer: 'No. Symbol support changes by game, platform and client update. Names are labelled conservatively and should be tested in the current rename or profile screen.' },
     { question: 'How do I choose a game-ready name?', answer: 'Select the exact game first, start with a clean readable result, check the character guidance, and test the final name in the current rename or profile screen.' },
   ],
@@ -101,7 +102,7 @@ const LABELS: Record<string, { noun: string; identity: string; audience: string;
 export function getGameSeo(game: GameProfile): GameSeoContent {
   const label = LABELS[game.id] || { noun: game.shortName, identity: 'gaming username', audience: 'players' };
   const pageTitle = label.pageTitle || `${label.noun} Name Generator`;
-  const title = `${pageTitle} | GamingNameHub`;
+  const title = `${pageTitle} | Tradivex GamingNameHub`;
   const intent = GAME_INTENTS[game.id] || `${label.identity} ideas and clean gamer tags`;
   const description = `Generate ${intent}. Copy clean or stylish results with ${game.shortName} character guidance and no account required.`;
   return {
@@ -120,7 +121,7 @@ export function getGameSeo(game: GameProfile): GameSeoContent {
       { question: `What can I generate for ${game.shortName}?`, answer: `This page creates ${intent}. Enter your own word or nickname so every result is based on your identity rather than a hardcoded player name.` },
       { question: `How do I make a ${game.shortName} name?`, answer: `Enter a keyword, choose a style and copy a result from the ${game.shortName} generator. Try a clean option first, then test decorative output in the current ${game.shortName} profile or rename screen.` },
       { question: `Can I use symbols in a ${game.shortName} name?`, answer: game.compatibilityNote },
-      { question: `Does this check whether the name is available?`, answer: `No. GamingNameHub generates name candidates and local character guidance; it does not claim real-time username availability.` },
+      { question: `Does this check whether the name is available?`, answer: `No. Tradivex GamingNameHub generates name candidates and local character guidance; it does not claim real-time username availability.` },
     ],
   };
 }

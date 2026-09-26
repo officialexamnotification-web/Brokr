@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { CreditCard, Flame, Gamepad2, Heart, Layers, Menu, ShieldCheck, X } from 'lucide-react';
 import { NAME_LANGUAGES } from '../data/languages';
 import { getGlobalUi } from '../data/language-ui';
+import { SITE_NAME, SITE_SUFFIX } from '../data/game-seo';
 
 interface HeaderProps {
   activeTab: 'generator' | 'symbols' | 'studio' | 'trending';
@@ -50,13 +51,13 @@ export const Header: React.FC<HeaderProps> = ({
     <header className="sticky top-0 z-40 w-full border-b border-slate-800/90 bg-[#060914]/95 shadow-2xl shadow-black/20 backdrop-blur-xl">
       <div className="mx-auto max-w-7xl px-3 sm:px-5 lg:px-7">
         <div className="flex min-h-[72px] items-center gap-3 lg:gap-4">
-          <button type="button" onClick={onHome} className="group flex min-w-0 shrink-0 items-center gap-2.5 text-left" aria-label="GamingNameHub home">
+          <button type="button" onClick={onHome} className="group flex min-w-0 shrink-0 items-center gap-2.5 text-left" aria-label={`${SITE_NAME} home`}>
             <span className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-gradient-to-br from-amber-400 to-orange-600 text-slate-950 shadow-lg shadow-orange-500/20 transition-transform group-hover:scale-105">
               <Gamepad2 className="h-5 w-5 stroke-[2.6]" />
             </span>
             <span className="min-w-0">
-              <span className="block whitespace-nowrap font-gaming text-[15px] font-black tracking-wide text-white sm:text-[18px]">GAMING<span className="text-amber-400">NAME</span>HUB</span>
-              <span className="mt-0.5 hidden truncate text-[10px] font-medium text-slate-400 lg:block">Gamer Name Generator &amp; ID Card Studio</span>
+              <span className="block whitespace-nowrap font-gaming text-[15px] font-black tracking-wide text-white sm:text-[18px]">{SITE_NAME.toUpperCase()}</span>
+              <span className="mt-0.5 hidden truncate text-[10px] font-medium text-amber-300 lg:block">{SITE_SUFFIX}</span>
             </span>
           </button>
 
