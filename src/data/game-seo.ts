@@ -20,6 +20,39 @@ export interface GameSeoContent {
   faqs: SeoFaq[];
 }
 
+// Each landing page has a distinct search intent. Keeping this copy game-specific
+// prevents all generator routes from becoming near-identical doorway pages.
+const GAME_INTENTS: Record<string, string> = {
+  bgmi: 'stylish BGMI names, BGMI symbols, clan tags and clean player names',
+  pubg: 'PUBG Mobile nicknames, squad tags and copy-ready stylish names',
+  freefire: 'Free Fire nicknames, FF name styles and short clan tags',
+  valorant: 'Valorant Riot ID ideas, agent-inspired tags and clean handles',
+  cod: 'CODM and Warzone gamertags, tactical tags and readable handles',
+  cs2: 'CS2 Steam names, team tags and clean competitive aliases',
+  fortnite: 'Fortnite display names, duo tags and creator handles',
+  apex: 'Apex Legends gamertags, squad tags and legend-inspired handles',
+  minecraft: 'Minecraft usernames, server-friendly names and clean aliases',
+  roblox: 'Roblox usernames and display names for players and creators',
+  league: 'League of Legends Riot IDs, champion-inspired names and ranked handles',
+  rocket_league: 'Rocket League gamertags, club tags and team names',
+  overwatch: 'Overwatch 2 BattleTag ideas, hero-inspired handles and team names',
+  rainbow_six: 'Rainbow Six Siege tactical tags, operator-inspired names and squad handles',
+  destiny2: 'Destiny 2 Guardian names, clan tags and science-fiction handles',
+  ea_fc: 'EA Sports FC player tags, club names and Ultimate Team identities',
+  mobile_legends: 'MLBB nicknames, hero-inspired tags and squad names',
+  honor_of_kings: 'Honor of Kings hero names, lane tags and team identities',
+  brawl_stars: 'Brawl Stars player names, brawler-inspired tags and club names',
+  clash_of_clans: 'Clash of Clans player names, clan names and war-team tags',
+  clash_royale: 'Clash Royale player names, deck-inspired tags and clan identities',
+  genshin: 'Genshin Impact nicknames, elemental names and traveler-inspired handles',
+  stumble_guys: 'Stumble Guys funny nicknames, short tags and tournament handles',
+  among_us: 'Among Us funny names, crew tags and impostor-inspired handles',
+  xbox: 'Xbox gamertag ideas for multiplayer profiles and social gaming',
+  psn: 'PSN Online ID ideas for PlayStation multiplayer profiles',
+  steam: 'Steam profile names, aliases and clean gaming identities',
+  gta_online: 'GTA Online crew names, Rockstar handles and player identities',
+};
+
 export const HOME_SEO: GameSeoContent = {
   slug: '',
   title: 'Game Name Generator for Every Game | GamingNameHub',
@@ -69,21 +102,23 @@ export function getGameSeo(game: GameProfile): GameSeoContent {
   const label = LABELS[game.id] || { noun: game.shortName, identity: 'gaming username', audience: 'players' };
   const pageTitle = label.pageTitle || `${label.noun} Name Generator`;
   const title = `${pageTitle} | GamingNameHub`;
-  const description = `Generate ${label.identity} ideas with clean, cool, stylish and clan-tag styles. Copy a name instantly with game-aware character guidance for ${game.name}.`;
+  const intent = GAME_INTENTS[game.id] || `${label.identity} ideas and clean gamer tags`;
+  const description = `Generate ${intent}. Copy clean or stylish results with ${game.shortName} character guidance and no account required.`;
   return {
     slug: game.slug,
     title,
     description,
     h1: pageTitle,
-    intro: `Create a unique ${label.identity} for ${label.audience}. Enter your own keyword, choose a clean, cool, funny or stylish style, and copy a name made for ${game.name}.`,
+    intro: `Create ${intent} for ${label.audience}. Enter your own keyword, choose a style that fits your identity, and copy a result made for ${game.name}. The tool gives practical character guidance, but the final name should always be tested in the current client.`,
     features: [
-      `${game.shortName}-focused name styles`,
-      'Clean output for safer copying',
+      intent.charAt(0).toUpperCase() + intent.slice(1),
+      `Copy-ready ${label.identity} results`,
       game.maxChars ? `Working ${game.maxChars}-character guidance` : 'Platform-aware rule notes',
-      'Copy, save and preview names instantly',
+      'Copy, save and preview without an account',
     ],
     faqs: [
-      { question: `How do I make a ${game.shortName} name?`, answer: `Enter a keyword, choose a style and copy a result from the ${game.shortName} generator. Try the clean mode first, then test decorative output in the current ${game.shortName} profile or rename screen.` },
+      { question: `What can I generate for ${game.shortName}?`, answer: `This page creates ${intent}. Enter your own word or nickname so every result is based on your identity rather than a hardcoded player name.` },
+      { question: `How do I make a ${game.shortName} name?`, answer: `Enter a keyword, choose a style and copy a result from the ${game.shortName} generator. Try a clean option first, then test decorative output in the current ${game.shortName} profile or rename screen.` },
       { question: `Can I use symbols in a ${game.shortName} name?`, answer: game.compatibilityNote },
       { question: `Does this check whether the name is available?`, answer: `No. GamingNameHub generates name candidates and local character guidance; it does not claim real-time username availability.` },
     ],

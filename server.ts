@@ -49,6 +49,7 @@ function injectSeo(html: string, req: express.Request, gameId?: string, sitePage
   const game = gameId ? POPULAR_GAMES.find((item) => item.id === gameId) : undefined;
   const sitePage = sitePageSlug ? getSitePageBySlug(sitePageSlug) : undefined;
   const seo = game ? getGameSeo(game) : sitePage || HOME_SEO;
+  const gameHeading = game ? getGameSeo(game).h1 : '';
   const canonical = `${requestOrigin(req)}${game ? `/${game.slug}` : sitePage ? `/${sitePage.slug}` : '/'}`;
   const application = {
     '@type': 'WebApplication',
@@ -88,7 +89,34 @@ function injectSeo(html: string, req: express.Request, gameId?: string, sitePage
     isPartOf: { '@type': 'WebSite', name: SITE_NAME, alternateName: SITE_DISPLAY_NAME, url: requestOrigin(req) },
   }) : game ? {
     '@context': 'https://schema.org',
-    ...application,
+    '@graph': [
+      {
+        '@type': 'WebPage',
+        name: gameHeading,
+        headline: gameHeading,
+        description: seo.description,
+        url: canonical,
+        inLanguage: 'en',
+        isPartOf: { '@type': 'WebSite', name: SITE_NAME, alternateName: SITE_DISPLAY_NAME, url: requestOrigin(req) },
+        about: { '@type': 'Thing', name: game.name },
+      },
+      { ...application, about: { '@type': 'Thing', name: game.name } },
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Home', item: `${requestOrigin(req)}/` },
+          { '@type': 'ListItem', position: 2, name: gameHeading, item: canonical },
+        ],
+      },
+      {
+        '@type': 'FAQPage',
+        mainEntity: seo.faqs.map((faq) => ({
+          '@type': 'Question',
+          name: faq.question,
+          acceptedAnswer: { '@type': 'Answer', text: faq.answer },
+        })),
+      },
+    ],
   } : {
     '@context': 'https://schema.org',
     '@graph': [

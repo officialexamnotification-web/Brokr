@@ -276,7 +276,7 @@ export default function App() {
               />
             )}
 
-            {/* 2. Transformed Fonts List with Game Engine Compatibility */}
+            {/* One visual result list; PUBG does not show the secondary backend card. */}
             <FontResultsList
               inputText={nameInput}
               selectedGame={selectedGame}
@@ -289,15 +289,17 @@ export default function App() {
             />
 
             {/* Shared backend generator: language pools, decorations and game rules */}
-            <BackendNameIdeas
-              keyword={nameInput}
-              selectedGame={selectedGame}
-              language={language}
-              setLanguage={setLanguage}
-              conservative={onlyWorkingInGame}
-              onCopyText={handleCopyText}
-              onSaveName={handleSaveName}
-            />
+            {selectedGame.id !== 'pubg' && (
+              <BackendNameIdeas
+                keyword={nameInput}
+                selectedGame={selectedGame}
+                language={language}
+                setLanguage={setLanguage}
+                conservative={onlyWorkingInGame}
+                onCopyText={handleCopyText}
+                onSaveName={handleSaveName}
+              />
+            )}
 
             {/* 3. Game-inspired kill feed simulator */}
             <KillFeedSimulator

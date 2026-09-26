@@ -55,18 +55,37 @@ export function applySeo(seo: GameSeoContent, game?: GameProfile) {
     description: seo.description,
     url: canonical,
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
-    ...(game ? { about: game.name } : {}),
+    ...(game ? { about: { '@type': 'Thing', name: game.name } } : {}),
   };
-  script.textContent = JSON.stringify(game ? {
-    '@context': 'https://schema.org',
-    ...application,
-  } : {
-    '@context': 'https://schema.org',
-    '@graph': [
-      { '@type': 'WebSite', name: SITE_NAME, alternateName: SITE_DISPLAY_NAME, url: canonical },
-      application,
+  const webpage = {
+    '@type': 'WebPage',
+    name: seo.h1,
+    headline: seo.h1,
+    description: seo.description,
+    url: canonical,
+    inLanguage: document.documentElement.lang || 'en',
+    isPartOf: { '@type': 'WebSite', name: SITE_NAME, alternateName: SITE_DISPLAY_NAME, url: canonicalOrigin() },
+    ...(game ? { about: { '@type': 'Thing', name: game.name } } : {}),
+  };
+  const breadcrumb = {
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: `${canonicalOrigin()}/` },
+      ...(game ? [{ '@type': 'ListItem', position: 2, name: seo.h1, item: canonical }] : []),
     ],
-  });
+  };
+  const graph: Record<string, unknown>[] = [webpage, application, breadcrumb];
+  if (seo.faqs.length) {
+    graph.push({
+      '@type': 'FAQPage',
+      mainEntity: seo.faqs.map((faq) => ({
+        '@type': 'Question',
+        name: faq.question,
+        acceptedAnswer: { '@type': 'Answer', text: faq.answer },
+      })),
+    });
+  }
+  script.textContent = JSON.stringify({ '@context': 'https://schema.org', '@graph': graph });
   document.head.appendChild(script);
 }
 
