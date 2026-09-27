@@ -9,6 +9,11 @@
   }
 }
 
+/* Keep small supporting text readable on the dark gaming canvas. */
+@layer utilities {
+  .text-slate-500 { color: #94a3b8; }
+}
+
 .font-gaming {
   font-family: 'Orbitron', system-ui, sans-serif;
 }

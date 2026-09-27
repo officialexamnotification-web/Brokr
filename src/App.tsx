@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { lazy, Suspense, useState, useEffect } from 'react';
 import { GameProfile, SavedNameItem } from './types';
 import { POPULAR_GAMES } from './data/games';
 import { getGameBySlug, getGameSeo, HOME_SEO, SITE_DISPLAY_NAME, SITE_NAME, SITE_SUFFIX } from './data/game-seo';
@@ -10,21 +10,22 @@ import { GameSelector } from './components/GameSelector';
 import { NameInputStyler } from './components/NameInputStyler';
 import { FontResultsList } from './components/FontResultsList';
 import { BackendNameIdeas } from './components/BackendNameIdeas';
-import { SymbolPicker } from './components/SymbolPicker';
-import { NameBuilderStudio } from './components/NameBuilderStudio';
-import { TrendingNames } from './components/TrendingNames';
-import { SavedNamesDrawer } from './components/SavedNamesDrawer';
-import { CardPreviewModal } from './components/CardPreviewModal';
-import { RenameSimulatorModal } from './components/RenameSimulatorModal';
 import { KillFeedSimulator } from './components/KillFeedSimulator';
-import { InvisibleSpaceGenerator } from './components/InvisibleSpaceGenerator';
 import { Toast } from './components/Toast';
 import { GameSeoSection } from './components/GameSeoSection';
-import { BgmiNameStudio } from './components/BgmiNameStudio';
 import { 
   Gamepad2, Sparkles, Shield, Trophy, Flame, 
   HelpCircle, CheckCircle, Info, Star, Crosshair, Cpu 
 } from 'lucide-react';
+
+const BgmiNameStudio = lazy(() => import('./components/BgmiNameStudio').then((module) => ({ default: module.BgmiNameStudio })));
+const InvisibleSpaceGenerator = lazy(() => import('./components/InvisibleSpaceGenerator').then((module) => ({ default: module.InvisibleSpaceGenerator })));
+const SymbolPicker = lazy(() => import('./components/SymbolPicker').then((module) => ({ default: module.SymbolPicker })));
+const NameBuilderStudio = lazy(() => import('./components/NameBuilderStudio').then((module) => ({ default: module.NameBuilderStudio })));
+const TrendingNames = lazy(() => import('./components/TrendingNames').then((module) => ({ default: module.TrendingNames })));
+const SavedNamesDrawer = lazy(() => import('./components/SavedNamesDrawer').then((module) => ({ default: module.SavedNamesDrawer })));
+const CardPreviewModal = lazy(() => import('./components/CardPreviewModal').then((module) => ({ default: module.CardPreviewModal })));
+const RenameSimulatorModal = lazy(() => import('./components/RenameSimulatorModal').then((module) => ({ default: module.RenameSimulatorModal })));
 
 function gameFromCurrentPath() {
   const slug = window.location.pathname.replace(/^\/+|\/+$/g, '');
@@ -315,10 +316,10 @@ export default function App() {
                 className="p-4 sm:p-5 rounded-2xl bg-[#090d1a] border border-slate-800 hover:border-amber-500/50 transition-all cursor-pointer group flex items-center justify-between shadow-lg"
               >
                 <div>
-                  <h4 className="font-gaming font-bold text-white text-sm sm:text-base group-hover:text-amber-400 transition-colors flex items-center gap-2">
+                  <h2 className="font-gaming font-bold text-white text-sm sm:text-base group-hover:text-amber-400 transition-colors flex items-center gap-2">
                     <Trophy className="w-4 h-4 text-amber-400" />
                     Gamer Profile ID Card Studio
-                  </h4>
+                  </h2>
                   <p className="text-xs text-slate-400 mt-1">
                     Assemble clan prefixes, duo hearts, and test on BGMI, Free Fire & Valorant banners
                   </p>
@@ -333,38 +334,44 @@ export default function App() {
 
         {/* Tab 2: Symbols Library */}
         {activeTab === 'symbols' && (
-          <div className="space-y-6">
-            <InvisibleSpaceGenerator onCopyText={handleCopyText} />
-            <SymbolPicker
-              onCopySymbol={handleCopyText}
-              onInsertSymbol={handleInsertSymbol}
-            />
-          </div>
+          <Suspense fallback={<div className="min-h-48 rounded-2xl border border-slate-800 bg-[#080d1a]" aria-label="Loading symbols library" />}>
+            <div className="space-y-6">
+              <InvisibleSpaceGenerator onCopyText={handleCopyText} />
+              <SymbolPicker
+                onCopySymbol={handleCopyText}
+                onInsertSymbol={handleInsertSymbol}
+              />
+            </div>
+          </Suspense>
         )}
 
         {/* Tab 3: Card Decorator Studio */}
         {activeTab === 'studio' && (
-          <div className="space-y-6">
-            <NameBuilderStudio
-              initialName={nameInput}
-              selectedGame={selectedGame}
-              onCopyText={handleCopyText}
-            />
-            <KillFeedSimulator
-              playerName={nameInput}
-              selectedGame={selectedGame}
-              onCopyText={handleCopyText}
-            />
-          </div>
+          <Suspense fallback={<div className="min-h-48 rounded-2xl border border-slate-800 bg-[#080d1a]" aria-label="Loading profile studio" />}>
+            <div className="space-y-6">
+              <NameBuilderStudio
+                initialName={nameInput}
+                selectedGame={selectedGame}
+                onCopyText={handleCopyText}
+              />
+              <KillFeedSimulator
+                playerName={nameInput}
+                selectedGame={selectedGame}
+                onCopyText={handleCopyText}
+              />
+            </div>
+          </Suspense>
         )}
 
         {/* Tab 4: Trending Names */}
         {activeTab === 'trending' && (
-          <TrendingNames
-            onCopyText={handleCopyText}
-            onSaveName={handleSaveName}
-            selectedGame={selectedGame}
-          />
+          <Suspense fallback={<div className="min-h-48 rounded-2xl border border-slate-800 bg-[#080d1a]" aria-label="Loading trending names" />}>
+            <TrendingNames
+              onCopyText={handleCopyText}
+              onSaveName={handleSaveName}
+              selectedGame={selectedGame}
+            />
+          </Suspense>
         )}
 
         {/* Game Engine Compatibility & Quick Verification Guide */}
@@ -390,30 +397,30 @@ export default function App() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs text-slate-400 leading-relaxed">
             <div className="p-3.5 rounded-xl bg-[#050811] border border-slate-800/80 space-y-1.5">
-              <h5 className="font-gaming font-bold text-amber-300 text-xs flex items-center gap-2">
+              <h4 className="font-gaming font-bold text-amber-300 text-xs flex items-center gap-2">
                 <span className="w-2 h-2 rounded-full bg-amber-400"></span>
                 BGMI & PUBG Mobile
-              </h5>
+              </h4>
               <p className="text-[11px]">
                 Uses a <strong>14-character working limit</strong> in this tool. Common clan glyphs are marked as <strong>test recommended</strong> because support can vary by update and client.
               </p>
             </div>
 
             <div className="p-3.5 rounded-xl bg-[#050811] border border-slate-800/80 space-y-1.5">
-              <h5 className="font-gaming font-bold text-red-400 text-xs flex items-center gap-2">
+              <h4 className="font-gaming font-bold text-red-400 text-xs flex items-center gap-2">
                 <span className="w-2 h-2 rounded-full bg-red-400"></span>
                 Free Fire & FF MAX
-              </h5>
+              </h4>
               <p className="text-[11px]">
                 Uses a <strong>12-character working limit</strong>. Whitespace and decorative Unicode may be rejected, so the clean-name mode is the conservative option.
               </p>
             </div>
 
             <div className="p-3.5 rounded-xl bg-[#050811] border border-slate-800/80 space-y-1.5">
-              <h5 className="font-gaming font-bold text-cyan-400 text-xs flex items-center gap-2">
+              <h4 className="font-gaming font-bold text-cyan-400 text-xs flex items-center gap-2">
                 <span className="w-2 h-2 rounded-full bg-cyan-400"></span>
                 Valorant & Riot ID
-              </h5>
+              </h4>
               <p className="text-[11px]">
                 Uses a <strong>16-character display-name working limit</strong>. Clean Latin output is the conservative option; decorative glyphs still need a current Riot client test.
               </p>
@@ -449,32 +456,32 @@ export default function App() {
       </footer>
 
       {/* Slide-out Favorites Drawer */}
-      <SavedNamesDrawer
-        isOpen={isSavedDrawerOpen}
+      {isSavedDrawerOpen && <Suspense fallback={null}><SavedNamesDrawer
+        isOpen
         onClose={() => setIsSavedDrawerOpen(false)}
         savedNames={savedNames}
         onRemoveName={handleRemoveSavedName}
         onClearAll={handleClearSavedNames}
         onCopyText={handleCopyText}
         selectedGame={selectedGame}
-      />
+      /></Suspense>}
 
       {/* Card Preview Modal */}
-      <CardPreviewModal
+      {cardPreviewName && <Suspense fallback={null}><CardPreviewModal
         name={cardPreviewName}
         onClose={() => setCardPreviewName(null)}
         defaultGame={selectedGame}
         onCopyText={handleCopyText}
-      />
+      /></Suspense>}
 
       {/* In-Game Rename Card Simulator Modal */}
-      <RenameSimulatorModal
-        isOpen={isRenameSimulatorOpen}
+      {isRenameSimulatorOpen && <Suspense fallback={null}><RenameSimulatorModal
+        isOpen
         onClose={() => setIsRenameSimulatorOpen(false)}
         initialName={renameTestName}
         selectedGame={selectedGame}
         onCopyText={handleCopyText}
-      />
+      /></Suspense>}
 
       {/* Tactile Copy Toast */}
       <Toast message={toastMessage} />
