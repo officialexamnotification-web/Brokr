@@ -118,6 +118,7 @@ function tournamentJsonLd(route: { slug: string; title: string; description: str
     url,
     inLanguage: 'en',
     isPartOf: { '@type': 'WebSite', name: SITE_NAME, alternateName: SITE_DISPLAY_NAME, url: `${ORIGIN}/` },
+    ...(route.event ? { about: { '@type': 'Thing', name: route.event.name } } : {}),
   }, {
     '@type': 'BreadcrumbList',
     itemListElement: [
@@ -138,20 +139,10 @@ function tournamentJsonLd(route: { slug: string; title: string; description: str
       isBasedOn: route.news.sourceUrl,
     });
   }
-  if (route.event && route.event.startDate) {
-    graph.push({
-      '@type': 'Event',
-      name: route.event.name,
-      description: route.event.summary,
-      startDate: `${route.event.startDate}T00:00:00Z`,
-      ...(route.event.endDate ? { endDate: `${route.event.endDate}T23:59:59Z` } : {}),
-      eventStatus: route.event.status === 'cancelled' ? 'https://schema.org/EventCancelled' : route.event.status === 'completed' ? 'https://schema.org/EventCompleted' : 'https://schema.org/EventScheduled',
-      location: { '@type': 'Place', name: route.event.location },
-      organizer: { '@type': 'Organization', name: route.event.organizer },
-      url,
-      mainEntityOfPage: url,
-    });
-  }
+  // These pages are independently written schedule summaries, not ticketing
+  // pages. Do not emit incomplete Event markup: Google requires real venue,
+  // image, offer and participant data, and inventing those fields would be
+  // misleading. The visible page still contains the verified official source.
   return { '@context': 'https://schema.org', '@graph': graph };
 }
 
