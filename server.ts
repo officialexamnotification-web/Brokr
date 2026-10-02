@@ -56,6 +56,27 @@ function canonicalOrigin(req: express.Request): string {
   return /^(localhost|127\.0\.0\.1)$/.test(hostname) ? origin : SITE_URL;
 }
 
+// These paths belonged to the retired Tradivex trading directory. Return a
+// permanent removal response instead of letting them look like valid SPA URLs
+// while Google refreshes its old index entries.
+const REMOVED_LEGACY_PATHS = new Set(['/privacy', '/terms']);
+const REMOVED_LEGACY_PREFIXES = ['/tool/', '/category/', '/region/'];
+
+function isRemovedLegacyPath(requestPath: string): boolean {
+  const normalized = `/${requestPath.replace(/^\/+|\/+$/g, '')}`.toLowerCase();
+  return REMOVED_LEGACY_PATHS.has(normalized) || REMOVED_LEGACY_PREFIXES.some((prefix) => normalized.startsWith(prefix));
+}
+
+app.use((req, res, next) => {
+  if (!isRemovedLegacyPath(req.path)) {
+    next();
+    return;
+  }
+  res.setHeader('X-Robots-Tag', 'noindex, noarchive');
+  res.setHeader('Cache-Control', 'public, max-age=3600');
+  res.status(410).type('text/plain').send('This legacy page has been permanently removed.');
+});
+
 function injectSeo(html: string, req: express.Request, gameId?: string, sitePageSlug?: string): string {
   const game = gameId ? POPULAR_GAMES.find((item) => item.id === gameId) : undefined;
   const sitePage = sitePageSlug ? getSitePageBySlug(sitePageSlug) : undefined;
