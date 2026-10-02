@@ -102,9 +102,13 @@ const LABELS: Record<string, { noun: string; identity: string; audience: string;
 export function getGameSeo(game: GameProfile): GameSeoContent {
   const label = LABELS[game.id] || { noun: game.shortName, identity: 'gaming username', audience: 'players' };
   const pageTitle = label.pageTitle || `${label.noun} Name Generator`;
-  const title = `${pageTitle} | Tradivex GamingNameHub`;
+  const title = game.id === 'pubg'
+    ? 'PUBG Name Generator | PUBG Mobile Names & Symbols'
+    : `${pageTitle} | Tradivex GamingNameHub`;
   const intent = GAME_INTENTS[game.id] || `${label.identity} ideas and clean gamer tags`;
-  const description = `Generate ${intent}. Copy clean or stylish results with ${game.shortName} character guidance and no account required.`;
+  const description = game.id === 'pubg'
+    ? 'Create a PUBG name fast: make stylish PUBG Mobile nicknames with symbols, clan tags or clean names. Copy your pick and test it in-game.'
+    : `Generate ${intent}. Copy clean or stylish results with ${game.shortName} character guidance and no account required.`;
   return {
     slug: game.slug,
     title,
