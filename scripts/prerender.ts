@@ -6,6 +6,7 @@ import { SITE_PAGES } from '../src/data/site-pages';
 import { TOURNAMENT_EVENTS, TOURNAMENT_NEWS } from '../src/data/tournament-data';
 import { TOURNAMENT_NEWS_SEO, TOURNAMENTS_SEO, getTournamentArticleSeo } from '../src/data/tournament-seo';
 import { getTournamentNews } from '../src/lib/tournament-feed';
+import { GAME_NEWS_BY_ID, GAME_NEWS_INDEX, type GameNewsPage } from '../src/data/game-news';
 
 const DIST_DIR = path.resolve(process.cwd(), 'dist');
 const ORIGIN = (process.env.PUBLIC_SITE_URL || 'https://www.tradivex.com').replace(/\/$/, '');
@@ -158,6 +159,55 @@ function tournamentMarkup(route: { slug: string; title: string; description: str
   return `<main id="seo-content"><nav aria-label="Breadcrumb"><a href="/">Home</a> / <span>${escapeHtml(route.heading)}</span></nav><article><h1>${escapeHtml(route.heading)}</h1><p>${escapeHtml(route.intro)}</p><h2>${isNews ? 'Latest tournament updates' : 'Verified game tournament events'}</h2><ul>${items}</ul></article></main>`;
 }
 
+function gameNewsMarkup(page: GameNewsPage, game: typeof POPULAR_GAMES[number]) {
+  const sources = page.sources.map((source) => `<li><a href="${escapeHtml(source.url)}">${escapeHtml(source.name)}</a></li>`).join('');
+  const paragraphs = page.update.map((text) => `<p>${escapeHtml(text)}</p>`).join('');
+  const playerItems = page.playerFocus.map((text) => `<li>${escapeHtml(text)}</li>`).join('');
+  const competitionItems = page.competition.map((text) => `<li>${escapeHtml(text)}</li>`).join('');
+  const faqs = page.faqs.map((faq) => `<section><h2>${escapeHtml(faq.question)}</h2><p>${escapeHtml(faq.answer)}</p></section>`).join('');
+  return `<main id="seo-content"><nav aria-label="Breadcrumb"><a href="/">Home</a> / <a href="/game-news">Game News</a> / <span>${escapeHtml(game.shortName)}</span></nav><article><h1>${escapeHtml(page.heading)}</h1><p>${escapeHtml(page.intro)}</p><p><time datetime="2026-10-02">Updated ${escapeHtml(page.updateDate)}</time></p><section><h2>${escapeHtml(page.updateHeading)}</h2>${paragraphs}</section><section><h2>${escapeHtml(page.playerFocusHeading)}</h2><ul>${playerItems}</ul></section><section><h2>${escapeHtml(page.competitionHeading)}</h2><ul>${competitionItems}</ul></section><section><h2>Official sources checked</h2><ul>${sources}</ul></section>${faqs}<nav aria-label="Related pages"><a href="/${escapeHtml(game.slug)}">${escapeHtml(game.shortName)} name generator</a> · <a href="/tournaments">Tournament calendar</a> · <a href="/game-news">All game news</a></nav></article></main>`;
+}
+
+function renderGameNewsHtml(page: GameNewsPage, game: typeof POPULAR_GAMES[number]) {
+  const slug = `game-news/${game.id}`;
+  const canonical = urlFor(slug);
+  const graph = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      { '@type': 'NewsArticle', headline: page.heading, description: page.description, datePublished: '2026-10-02', dateModified: '2026-10-02', author: { '@type': 'Organization', name: SITE_NAME, url: `${ORIGIN}/about` }, about: { '@type': 'Thing', name: game.name }, mainEntityOfPage: canonical, isBasedOn: page.sources.map((source) => source.url) },
+      { '@type': 'BreadcrumbList', itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: `${ORIGIN}/` },
+        { '@type': 'ListItem', position: 2, name: 'Game News', item: `${ORIGIN}/game-news` },
+        { '@type': 'ListItem', position: 3, name: game.shortName, item: canonical },
+      ] },
+      { '@type': 'FAQPage', mainEntity: page.faqs.map((faq) => ({ '@type': 'Question', name: faq.question, acceptedAnswer: { '@type': 'Answer', text: faq.answer } })) },
+    ],
+  };
+  const head = `<link rel="canonical" href="${escapeHtml(canonical)}" /><meta property="og:type" content="article" /><meta property="og:site_name" content="${escapeHtml(SITE_NAME)}" /><meta property="og:url" content="${escapeHtml(canonical)}" />`;
+  return baseHtml
+    .replace(/<title>[\s\S]*?<\/title>/i, `<title>${escapeHtml(page.title)}</title>`)
+    .replace(/<meta name="description"[^>]*>/i, `<meta name="description" content="${escapeHtml(page.description)}" />`)
+    .replace(/<meta property="og:title"[^>]*>/i, `<meta property="og:title" content="${escapeHtml(page.title)}" />`)
+    .replace(/<meta property="og:description"[^>]*>/i, `<meta property="og:description" content="${escapeHtml(page.description)}" />`)
+    .replace(/<meta name="twitter:title"[^>]*>/i, `<meta name="twitter:title" content="${escapeHtml(page.title)}" />`)
+    .replace(/<meta name="twitter:description"[^>]*>/i, `<meta name="twitter:description" content="${escapeHtml(page.description)}" />`)
+    .replace(/<meta name="robots"[^>]*>/i, '<meta name="robots" content="index,follow,max-image-preview:large" />')
+    .replace(/<meta property="og:type"[^>]*>/i, '<meta property="og:type" content="article" />')
+    .replace(/<meta property="og:site_name"[^>]*>/i, `<meta property="og:site_name" content="${escapeHtml(SITE_NAME)}" />`)
+    .replace(/<meta property="og:url"[^>]*>/i, `<meta property="og:url" content="${escapeHtml(canonical)}" />`)
+    .replace(/<script type="application\/ld\+json">[\s\S]*?<\/script>/i, `<script type="application/ld+json">${escapeJson(graph)}</script>`)
+    .replace('<div id="root"></div>', `<div id="root">${gameNewsMarkup(page, game)}</div>`)
+    .replace('</head>', `${head}</head>`);
+}
+
+function gameNewsIndexMarkup() {
+  const cards = GAME_NEWS_INDEX.map((game) => {
+    const page = GAME_NEWS_BY_ID.get(game.id)!;
+    return `<li><a href="/game-news/${escapeHtml(game.id)}"><strong>${escapeHtml(page.updateHeading)}</strong></a><p>${escapeHtml(page.intro)}</p></li>`;
+  }).join('');
+  return `<main id="seo-content"><nav aria-label="Breadcrumb"><a href="/">Home</a> / <span>Game News</span></nav><article><h1>Game news, seasons and tournament updates</h1><p>Read separate, official-source update pages for each supported game. Find current patches, passes, live-service events and tournament schedules, with pending details clearly identified.</p><h2>Updates by game</h2><ul>${cards}</ul></article></main>`;
+}
+
 function renderTournamentHtml(route: { slug: string; title: string; description: string; heading: string; intro: string; news?: typeof TOURNAMENT_NEWS[number]; event?: typeof TOURNAMENT_EVENTS[number] }) {
   const canonical = urlFor(route.slug);
   const jsonLd = `<script type="application/ld+json">${escapeJson(tournamentJsonLd(route))}</script>`;
@@ -202,6 +252,12 @@ for (const page of SITE_PAGES) {
 const allTournamentNews = getTournamentNews();
 writeRoute('esports-news', renderTournamentHtml({ slug: 'esports-news', ...TOURNAMENT_NEWS_SEO }));
 writeRoute('tournaments', renderTournamentHtml({ slug: 'tournaments', ...TOURNAMENTS_SEO }));
+const gameNewsIndexRoute = { slug: 'game-news', title: `Game News, Updates and Esports by Title | ${SITE_DISPLAY_NAME}`, description: 'Game-by-game official news for 25 supported titles: patches, passes, seasonal events and tournament schedules, with separate details and publisher links.', heading: 'Game news, seasons and tournament updates', intro: 'Read separate, official-source update pages for each supported game. Find current patches, passes, live-service events and tournament schedules, with pending details clearly identified.' };
+writeRoute('game-news', renderTournamentHtml(gameNewsIndexRoute).replace(/<div id="root">[\s\S]*?<\/div>/i, `<div id="root">${gameNewsIndexMarkup()}</div>`));
+for (const game of GAME_NEWS_INDEX) {
+  const page = GAME_NEWS_BY_ID.get(game.id);
+  if (page) writeRoute(`game-news/${game.id}`, renderGameNewsHtml(page, game));
+}
 for (const article of allTournamentNews) {
   const seo = getTournamentArticleSeo(article);
   writeRoute(`esports-news/${article.slug}`, renderTournamentHtml({ slug: `esports-news/${article.slug}`, ...seo, news: article }));
@@ -211,7 +267,7 @@ for (const event of TOURNAMENT_EVENTS) {
   writeRoute(`tournaments/${event.slug}`, renderTournamentHtml({ slug: `tournaments/${event.slug}`, ...seo, event }));
 }
 
-const allSlugs = ['', ...POPULAR_GAMES.map((game) => game.slug), ...SITE_PAGES.map((page) => page.slug), 'esports-news', 'tournaments', ...allTournamentNews.map((article) => `esports-news/${article.slug}`), ...TOURNAMENT_EVENTS.map((event) => `tournaments/${event.slug}`)];
+const allSlugs = ['', ...POPULAR_GAMES.map((game) => game.slug), ...SITE_PAGES.map((page) => page.slug), 'esports-news', 'tournaments', 'game-news', ...GAME_NEWS_INDEX.map((game) => `game-news/${game.id}`), ...allTournamentNews.map((article) => `esports-news/${article.slug}`), ...TOURNAMENT_EVENTS.map((event) => `tournaments/${event.slug}`)];
 const lastmod = new Date().toISOString().slice(0, 10);
 const sitemapUrls = allSlugs.map((slug) => `  <url><loc>${escapeHtml(urlFor(slug))}</loc><lastmod>${lastmod}</lastmod></url>`).join('\n');
 fs.writeFileSync(path.join(DIST_DIR, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${sitemapUrls}\n</urlset>\n`, 'utf8');

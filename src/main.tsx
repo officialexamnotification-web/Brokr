@@ -11,11 +11,14 @@ const slug = window.location.pathname.replace(/^\/+|\/+$/g, '');
 const staticPage = getSitePageBySlug(slug);
 const esportsNewsMatch = window.location.pathname.match(/^\/esports-news(?:\/(.*))?\/?$/);
 const tournamentsMatch = window.location.pathname.match(/^\/tournaments(?:\/(.*))?\/?$/);
+const gameNewsMatch = window.location.pathname.match(/^\/game-news(?:\/(.*))?\/?$/);
 const esportsPage = esportsNewsMatch ? <EsportsHub mode="news" slug={esportsNewsMatch[1]} /> : tournamentsMatch ? <EsportsHub mode="tournaments" slug={tournamentsMatch[1]} /> : null;
+const GameNewsPage = lazy(() => import('./components/GameNewsPage.tsx').then((module) => ({ default: module.GameNewsPage })));
+const gameNewsPage = gameNewsMatch ? <GameNewsPage gameId={gameNewsMatch[1]} /> : null;
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <Suspense fallback={<div className="min-h-screen bg-[#050811]" />}>{esportsPage || (staticPage ? <SitePage page={staticPage} /> : <App />)}</Suspense>
+    <Suspense fallback={<div className="min-h-screen bg-[#050811]" />}>{gameNewsPage || esportsPage || (staticPage ? <SitePage page={staticPage} /> : <App />)}</Suspense>
   </StrictMode>,
 );
 

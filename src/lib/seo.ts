@@ -1,6 +1,7 @@
 import { GameProfile } from '../types';
 import { GameSeoContent, SITE_DISPLAY_NAME, SITE_NAME, SITE_URL } from '../data/game-seo';
 import { SitePageContent } from '../data/site-pages';
+import type { GameNewsPage } from '../data/game-news';
 
 function upsertMeta(name: string, content: string, property = false) {
   const selector = property ? `meta[property="${name}"]` : `meta[name="${name}"]`;
@@ -120,5 +121,36 @@ export function applyStaticSeo(page: SitePageContent) {
       mainEntity: page.faqs.map((faq) => ({ '@type': 'Question', name: faq.question, acceptedAnswer: { '@type': 'Answer', text: faq.answer } })),
     }],
   } : { '@context': 'https://schema.org', ...webpage });
+  document.head.appendChild(script);
+}
+
+export function applyGameNewsSeo(page: GameNewsPage, game: GameProfile) {
+  if (typeof document === 'undefined') return;
+  const canonical = `${canonicalOrigin()}/game-news/${game.id}`;
+  document.title = page.title;
+  upsertMeta('description', page.description);
+  upsertMeta('og:title', page.title, true);
+  upsertMeta('og:description', page.description, true);
+  upsertMeta('og:type', 'article', true);
+  upsertMeta('og:url', canonical, true);
+  upsertMeta('twitter:title', page.title);
+  upsertMeta('twitter:description', page.description);
+  upsertLink('canonical', canonical);
+  document.getElementById('gamingnamehub-seo-jsonld')?.remove();
+  const script = document.createElement('script');
+  script.id = 'gamingnamehub-seo-jsonld';
+  script.type = 'application/ld+json';
+  script.textContent = JSON.stringify({
+    '@context': 'https://schema.org',
+    '@graph': [
+      { '@type': 'NewsArticle', headline: page.heading, description: page.description, datePublished: '2026-10-02', dateModified: '2026-10-02', author: { '@type': 'Organization', name: SITE_NAME, url: `${canonicalOrigin()}/about` }, about: { '@type': 'Thing', name: game.name }, mainEntityOfPage: canonical, isBasedOn: page.sources.map((source) => source.url) },
+      { '@type': 'BreadcrumbList', itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: `${canonicalOrigin()}/` },
+        { '@type': 'ListItem', position: 2, name: 'Game News', item: `${canonicalOrigin()}/game-news` },
+        { '@type': 'ListItem', position: 3, name: game.shortName, item: canonical },
+      ] },
+      ...(page.faqs.length ? [{ '@type': 'FAQPage', mainEntity: page.faqs.map((faq) => ({ '@type': 'Question', name: faq.question, acceptedAnswer: { '@type': 'Answer', text: faq.answer } })) }] : []),
+    ],
+  });
   document.head.appendChild(script);
 }
