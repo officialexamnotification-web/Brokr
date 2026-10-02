@@ -1,5 +1,5 @@
-import { GENERATED_TOURNAMENT_NEWS } from '../data/generated-tournament-news';
-import { TOURNAMENT_EVENTS, TOURNAMENT_NEWS, type TournamentEvent, type TournamentNews, type TournamentStatus, statusForEvent } from '../data/tournament-data';
+import { GENERATED_TOURNAMENT_NEWS } from '../data/generated-tournament-news.js';
+import { TOURNAMENT_EVENTS, TOURNAMENT_NEWS, type TournamentEvent, type TournamentNews, type TournamentStatus, statusForEvent } from '../data/tournament-data.js';
 
 export function getTournamentEvents(): TournamentEvent[] {
   return TOURNAMENT_EVENTS.map((event) => ({ ...event, status: statusForEvent(event) }));
