@@ -102,7 +102,8 @@ export async function syncTournamentNews(options: { apiKey?: string; model?: str
         updatedAt,
         sourceUrl: source.url,
         sourceName: source.sourceName,
-        sourceVerified: true,
+        // Generated copy is a draft until a person checks each claim against the source.
+        sourceVerified: false,
         tags: asStringArray(generated.tags),
       });
     } catch (error) {

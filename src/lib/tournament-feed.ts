@@ -1,4 +1,3 @@
-import { GENERATED_TOURNAMENT_NEWS } from '../data/generated-tournament-news.js';
 import { TOURNAMENT_EVENTS, TOURNAMENT_NEWS, type TournamentEvent, type TournamentNews, type TournamentStatus, statusForEvent } from '../data/tournament-data.js';
 
 export function getTournamentEvents(): TournamentEvent[] {
@@ -6,9 +5,7 @@ export function getTournamentEvents(): TournamentEvent[] {
 }
 
 export function getTournamentNews(): TournamentNews[] {
-  const merged = new Map<string, TournamentNews>();
-  [...TOURNAMENT_NEWS, ...GENERATED_TOURNAMENT_NEWS].forEach((article) => merged.set(article.id, article));
-  return [...merged.values()].sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime());
+  return [...TOURNAMENT_NEWS].sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime());
 }
 
 export function filterTournamentEvents(filters: { gameId?: string; status?: TournamentStatus; query?: string } = {}) {
