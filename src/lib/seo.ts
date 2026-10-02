@@ -64,7 +64,7 @@ export function applySeo(seo: GameSeoContent, game?: GameProfile) {
     headline: seo.h1,
     description: seo.description,
     url: canonical,
-    inLanguage: document.documentElement.lang || 'en',
+    inLanguage: document.documentElement.lang || 'en-US',
     isPartOf: { '@type': 'WebSite', name: SITE_NAME, alternateName: SITE_DISPLAY_NAME, url: canonicalOrigin() },
     ...(game ? { about: { '@type': 'Thing', name: game.name } } : {}),
   };
@@ -112,6 +112,7 @@ export function applyStaticSeo(page: SitePageContent) {
     name: page.heading,
     description: page.description,
     url: canonical,
+    inLanguage: document.documentElement.lang || 'en-US',
     isPartOf: { '@type': 'WebSite', name: SITE_NAME, alternateName: SITE_DISPLAY_NAME, url: canonicalOrigin() },
   };
   script.textContent = JSON.stringify(page.faqs ? {

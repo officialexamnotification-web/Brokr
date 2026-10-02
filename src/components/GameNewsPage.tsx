@@ -5,7 +5,7 @@ import { GAME_NEWS_BY_ID, GAME_NEWS_INDEX, type GameNewsPage as GameNewsRecord }
 import { SITE_DISPLAY_NAME } from '../data/game-seo';
 import { applyGameNewsSeo } from '../lib/seo';
 
-function NewsCard({ gameId }: { gameId: string }) {
+function NewsCard({ gameId }: { gameId: string; key?: string }) {
   const game = POPULAR_GAMES.find((item) => item.id === gameId)!;
   const page = GAME_NEWS_BY_ID.get(gameId)!;
   return <a href={`/game-news/${gameId}`} className="group rounded-2xl border border-slate-800 bg-[#080d1a] p-5 transition hover:border-cyan-400/50 hover:bg-slate-900/70">
@@ -45,4 +45,3 @@ export function GameNewsPage({ gameId }: { gameId?: string }) {
   }
   return <main className="min-h-screen bg-[#050811] px-4 py-10 text-slate-100 sm:px-6"><div className="mx-auto max-w-7xl"><header className="rounded-3xl border border-slate-800 bg-[#080d1a] px-6 py-9 sm:px-10"><p className="text-[10px] font-black uppercase tracking-[0.16em] text-cyan-300">Official-source game desk</p><h1 className="mt-3 font-gaming text-3xl font-black text-white sm:text-5xl">Game news, seasons and tournament updates</h1><p className="mt-4 max-w-3xl text-sm leading-7 text-slate-300">Separate update pages for each supported game. Find current patches, passes, live-service events and tournament schedules, with official links and missing details clearly called out.</p></header><section className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">{GAME_NEWS_INDEX.map((game) => <NewsCard key={game.id} gameId={game.id} />)}</section><p className="mt-8 text-xs leading-6 text-slate-500">News pages are available for game titles. Xbox, PlayStation Network and Steam are profile platforms in the name generator, so they do not have duplicate game tournament pages.</p></div></main>;
 }
-import { useEffect } from 'react';

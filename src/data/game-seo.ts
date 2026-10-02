@@ -56,7 +56,7 @@ const GAME_INTENTS: Record<string, string> = {
 
 export const HOME_SEO: GameSeoContent = {
   slug: '',
-  title: 'Game Name Generator for Every Game | Tradivex GamingNameHub',
+  title: 'Game & Gaming Name Generator for 25+ Games | Tradivex',
   description: 'Free game name generator for stylish gamer names, nicknames, gamertags and clan tags for BGMI, PUBG, Free Fire, Valorant, COD, Fortnite, Roblox and Minecraft.',
   h1: 'Game Name Generator for Every Online Game',
   intro: 'Create stylish gamer names, cool nicknames, clean gamertags and clan tags for the game you actually play. Choose a game first so the name style and character guidance match your platform.',
@@ -102,13 +102,47 @@ const LABELS: Record<string, { noun: string; identity: string; audience: string;
 export function getGameSeo(game: GameProfile): GameSeoContent {
   const label = LABELS[game.id] || { noun: game.shortName, identity: 'gaming username', audience: 'players' };
   const pageTitle = label.pageTitle || `${label.noun} Name Generator`;
-  const title = game.id === 'pubg'
-    ? 'PUBG Name Generator | PUBG Mobile Names & Symbols'
-    : `${pageTitle} | Tradivex GamingNameHub`;
+  const titleByGame: Record<string, string> = {
+    bgmi: 'BGMI Name Generator | Stylish BGMI Names & Symbols | Tradivex',
+    pubg: 'PUBG Mobile Name Generator: Names & Symbols | Tradivex',
+    freefire: 'Free Fire Name Generator: Stylish Names & Symbols | Tradivex',
+    valorant: 'Valorant Name Generator & Riot ID Ideas | Tradivex',
+    cod: 'COD Name Generator for Warzone & CODM | Tradivex',
+    cs2: 'CS2 Name Generator & Nickname Ideas | Tradivex',
+    apex: 'Apex Legends Name Generator & Gamertags | Tradivex',
+  };
+  const title = titleByGame[game.id] || `${pageTitle} | Tradivex GamingNameHub`;
   const intent = GAME_INTENTS[game.id] || `${label.identity} ideas and clean gamer tags`;
-  const description = game.id === 'pubg'
-    ? 'Create a PUBG name fast: make stylish PUBG Mobile nicknames with symbols, clan tags or clean names. Copy your pick and test it in-game.'
-    : `Generate ${intent}. Copy clean or stylish results with ${game.shortName} character guidance and no account required.`;
+  const descriptionByGame: Record<string, string> = {
+    bgmi: 'Create a BGMI name with stylish symbols, clan tags or a clean nickname. Copy your favorite and test it in the current BGMI rename screen.',
+    pubg: 'Generate PUBG Mobile names, nicknames and clan tags with stylish symbols or clean text. Copy a name and test it in the current game client.',
+    freefire: 'Make a Free Fire name with stylish FF symbols, short nicknames or clan tags. Copy your choice and check it in the current Free Fire client.',
+    valorant: 'Create a Valorant name, Riot ID or tagline idea. Copy a clean or stylish handle and check current Riot ID rules before changing it.',
+    cod: 'Generate COD names for Call of Duty, Warzone and COD Mobile. Explore tactical gamertags, then check the rules for your current title and platform.',
+    cs2: 'Create CS2 nicknames, Counter-Strike names and Steam aliases for competitive play. Copy a clean or stylish idea and check how it displays in Steam.',
+    apex: 'Generate Apex Legends names, gamertags and squad identities. Copy a clean or stylish idea and check how it displays on your EA or console profile.',
+  };
+  const description = descriptionByGame[game.id] || `Generate ${intent}. Copy clean or stylish results with ${game.shortName} character guidance and no account required.`;
+  const searchIntentFaqs: Record<string, SeoFaq[]> = {
+    pubg: [
+      { question: 'Can I make a PUBG Mobile name with symbols?', answer: 'Yes. Try a clean name first, then test decorative symbols in the current PUBG Mobile rename screen because accepted characters can change by client and region.' },
+    ],
+    freefire: [
+      { question: 'How do I make a stylish Free Fire name?', answer: 'Enter a word or nickname, choose a style, and copy a result. Test FF symbols in the current Free Fire or FF MAX rename screen before using them.' },
+    ],
+    valorant: [
+      { question: 'Does this create a Valorant Riot ID and tagline?', answer: 'It suggests Riot ID name and tagline ideas. It does not check live Riot ID availability; verify the current name and tagline rules in your Riot account.' },
+    ],
+    cod: [
+      { question: 'Can I use these names in Warzone and COD Mobile?', answer: 'The generator suggests Call of Duty name ideas for CODM and Warzone, but each title, account and platform can apply different display-name rules.' },
+    ],
+    cs2: [
+      { question: 'Are these CS2 nicknames also Steam names?', answer: 'The ideas can be used as Steam profile-name inspiration. Steam profile names and in-game display behavior may differ, so check your current Steam profile.' },
+    ],
+    apex: [
+      { question: 'Can I create an Apex Legends name style for my platform?', answer: 'Yes. Use these ideas as EA, Steam or console profile-name inspiration, then confirm the active account and platform accept the characters.' },
+    ],
+  };
   return {
     slug: game.slug,
     title,
@@ -126,6 +160,7 @@ export function getGameSeo(game: GameProfile): GameSeoContent {
       { question: `How do I make a ${game.shortName} name?`, answer: `Enter a keyword, choose a style and copy a result from the ${game.shortName} generator. Try a clean option first, then test decorative output in the current ${game.shortName} profile or rename screen.` },
       { question: `Can I use symbols in a ${game.shortName} name?`, answer: game.compatibilityNote },
       { question: `Does this check whether the name is available?`, answer: `No. Tradivex GamingNameHub generates name candidates and local character guidance; it does not claim real-time username availability.` },
+      ...(searchIntentFaqs[game.id] || []),
     ],
   };
 }

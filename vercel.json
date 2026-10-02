@@ -1,4 +1,12 @@
 {
   "outputDirectory": "dist",
-  "cleanUrls": true
+  "cleanUrls": true,
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "tradivex.com" }],
+      "destination": "https://www.tradivex.com/:path*",
+      "permanent": true
+    }
+  ]
 }

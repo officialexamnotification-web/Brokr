@@ -56,7 +56,7 @@ function jsonLdFor(route: { slug: string; title: string; description: string; he
     headline: route.heading,
     description: route.description,
     url,
-    inLanguage: 'en',
+    inLanguage: 'en-US',
     isPartOf: { '@type': 'WebSite', name: SITE_NAME, alternateName: SITE_DISPLAY_NAME, url: `${ORIGIN}/` },
     ...(route.gameName ? { about: { '@type': 'Thing', name: route.gameName } } : {}),
   };
@@ -117,7 +117,7 @@ function tournamentJsonLd(route: { slug: string; title: string; description: str
     headline: route.heading,
     description: route.description,
     url,
-    inLanguage: 'en',
+    inLanguage: 'en-US',
     isPartOf: { '@type': 'WebSite', name: SITE_NAME, alternateName: SITE_DISPLAY_NAME, url: `${ORIGIN}/` },
     ...(route.event ? { about: { '@type': 'Thing', name: route.event.name } } : {}),
   }, {
@@ -270,7 +270,9 @@ for (const event of TOURNAMENT_EVENTS) {
 const allSlugs = ['', ...POPULAR_GAMES.map((game) => game.slug), ...SITE_PAGES.map((page) => page.slug), 'esports-news', 'tournaments', 'game-news', ...GAME_NEWS_INDEX.map((game) => `game-news/${game.id}`), ...allTournamentNews.map((article) => `esports-news/${article.slug}`), ...TOURNAMENT_EVENTS.map((event) => `tournaments/${event.slug}`)];
 const lastmod = new Date().toISOString().slice(0, 10);
 const sitemapUrls = allSlugs.map((slug) => `  <url><loc>${escapeHtml(urlFor(slug))}</loc><lastmod>${lastmod}</lastmod></url>`).join('\n');
-fs.writeFileSync(path.join(DIST_DIR, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${sitemapUrls}\n</urlset>\n`, 'utf8');
+const sitemapXml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${sitemapUrls}\n</urlset>\n`;
+fs.writeFileSync(path.join(DIST_DIR, 'sitemap.xml'), sitemapXml, 'utf8');
+fs.writeFileSync(path.resolve(process.cwd(), 'public', 'sitemap.xml'), sitemapXml, 'utf8');
 fs.writeFileSync(path.join(DIST_DIR, 'robots.txt'), `User-agent: *\nAllow: /\nDisallow: /api/\nSitemap: ${ORIGIN}/sitemap.xml\n`, 'utf8');
 
 console.log(`Prerendered ${allSlugs.length} SEO routes to ${DIST_DIR}`);

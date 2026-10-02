@@ -11,10 +11,12 @@ import {
   type LanguageId,
   type NameStyle,
 } from "./server/name-engine";
-import { HOME_SEO, SITE_DISPLAY_NAME, SITE_NAME, getGameBySlug, getGameSeo } from "./src/data/game-seo";
+import { HOME_SEO, SITE_DISPLAY_NAME, SITE_NAME, SITE_URL, getGameBySlug, getGameSeo } from "./src/data/game-seo";
 import { POPULAR_GAMES } from "./src/data/games";
 import { SITE_PAGES, getSitePageBySlug } from "./src/data/site-pages";
-import { filterTournamentEvents, filterTournamentNews } from "./src/lib/tournament-feed";
+import { GAME_NEWS_INDEX } from "./src/data/game-news";
+import { TOURNAMENT_EVENTS } from "./src/data/tournament-data";
+import { filterTournamentEvents, filterTournamentNews, getTournamentNews } from "./src/lib/tournament-feed";
 import { syncTournamentNews } from "./server/tournament-sync";
 
 dotenv.config({ path: path.resolve(process.cwd(), '.env.local') });
@@ -48,12 +50,19 @@ function requestOrigin(req: express.Request): string {
   return `${protocol}://${req.get('host') || 'localhost:3000'}`;
 }
 
+function canonicalOrigin(req: express.Request): string {
+  const origin = requestOrigin(req);
+  const hostname = new URL(origin).hostname;
+  return /^(localhost|127\.0\.0\.1)$/.test(hostname) ? origin : SITE_URL;
+}
+
 function injectSeo(html: string, req: express.Request, gameId?: string, sitePageSlug?: string): string {
   const game = gameId ? POPULAR_GAMES.find((item) => item.id === gameId) : undefined;
   const sitePage = sitePageSlug ? getSitePageBySlug(sitePageSlug) : undefined;
   const seo = game ? getGameSeo(game) : sitePage || HOME_SEO;
   const gameHeading = game ? getGameSeo(game).h1 : '';
-  const canonical = `${requestOrigin(req)}${game ? `/${game.slug}` : sitePage ? `/${sitePage.slug}` : '/'}`;
+  const origin = canonicalOrigin(req);
+  const canonical = `${origin}${game ? `/${game.slug}` : sitePage ? `/${sitePage.slug}` : '/'}`;
   const application = {
     '@type': 'WebApplication',
     name: SITE_NAME,
@@ -72,7 +81,8 @@ function injectSeo(html: string, req: express.Request, gameId?: string, sitePage
         name: sitePage.heading,
         description: sitePage.description,
         url: canonical,
-        isPartOf: { '@type': 'WebSite', name: SITE_NAME, alternateName: SITE_DISPLAY_NAME, url: requestOrigin(req) },
+        inLanguage: 'en-US',
+        isPartOf: { '@type': 'WebSite', name: SITE_NAME, alternateName: SITE_DISPLAY_NAME, url: origin },
       },
       {
         '@type': 'FAQPage',
@@ -89,7 +99,7 @@ function injectSeo(html: string, req: express.Request, gameId?: string, sitePage
     name: sitePage.heading,
     description: sitePage.description,
     url: canonical,
-    isPartOf: { '@type': 'WebSite', name: SITE_NAME, alternateName: SITE_DISPLAY_NAME, url: requestOrigin(req) },
+    isPartOf: { '@type': 'WebSite', name: SITE_NAME, alternateName: SITE_DISPLAY_NAME, url: origin },
   }) : game ? {
     '@context': 'https://schema.org',
     '@graph': [
@@ -99,15 +109,15 @@ function injectSeo(html: string, req: express.Request, gameId?: string, sitePage
         headline: gameHeading,
         description: seo.description,
         url: canonical,
-        inLanguage: 'en',
-        isPartOf: { '@type': 'WebSite', name: SITE_NAME, alternateName: SITE_DISPLAY_NAME, url: requestOrigin(req) },
+        inLanguage: 'en-US',
+        isPartOf: { '@type': 'WebSite', name: SITE_NAME, alternateName: SITE_DISPLAY_NAME, url: origin },
         about: { '@type': 'Thing', name: game.name },
       },
       { ...application, about: { '@type': 'Thing', name: game.name } },
       {
         '@type': 'BreadcrumbList',
         itemListElement: [
-          { '@type': 'ListItem', position: 1, name: 'Home', item: `${requestOrigin(req)}/` },
+          { '@type': 'ListItem', position: 1, name: 'Home', item: `${origin}/` },
           { '@type': 'ListItem', position: 2, name: gameHeading, item: canonical },
         ],
       },
@@ -143,17 +153,25 @@ function injectSeo(html: string, req: express.Request, gameId?: string, sitePage
 }
 
 app.get('/robots.txt', (req, res) => {
-  res.type('text/plain').send(`User-agent: *\nAllow: /\nDisallow: /api/\nSitemap: ${requestOrigin(req)}/sitemap.xml\n`);
+  res.type('text/plain').send(`User-agent: *\nAllow: /\nDisallow: /api/\nSitemap: ${SITE_URL}/sitemap.xml\n`);
 });
 
-app.get('/sitemap.xml', (req, res) => {
-  const origin = requestOrigin(req);
-  const gameSlugs = POPULAR_GAMES.map((game) => game.slug);
-  const staticSlugs = SITE_PAGES.map((page) => page.slug);
-  const urls = ['', ...gameSlugs, ...staticSlugs].map((slug) => {
-    const location = `${origin}/${slug}`.replace(/\/$/, slug ? '' : '/');
-    const priority = !slug ? '1.0' : gameSlugs.includes(slug) ? '0.8' : '0.5';
-    return `  <url><loc>${escapeXml(location)}</loc><changefreq>monthly</changefreq><priority>${priority}</priority></url>`;
+app.get('/sitemap.xml', (_req, res) => {
+  const allTournamentNews = getTournamentNews();
+  const slugs = [
+    '',
+    ...POPULAR_GAMES.map((game) => game.slug),
+    ...SITE_PAGES.map((page) => page.slug),
+    'esports-news',
+    'tournaments',
+    'game-news',
+    ...GAME_NEWS_INDEX.map((game) => `game-news/${game.id}`),
+    ...allTournamentNews.map((article) => `esports-news/${article.slug}`),
+    ...TOURNAMENT_EVENTS.map((event) => `tournaments/${event.slug}`),
+  ];
+  const urls = slugs.map((slug) => {
+    const location = `${SITE_URL}/${slug}`.replace(/\/$/, slug ? '' : '/');
+    return `  <url><loc>${escapeXml(location)}</loc></url>`;
   }).join('\n');
   res.type('application/xml').send(`<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>`);
 });
