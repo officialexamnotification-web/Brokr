@@ -1,4 +1,4 @@
-import { OFFICIAL_TOURNAMENT_SOURCES, type TournamentNews, type TournamentStatus } from '../src/data/tournament-data';
+import { OFFICIAL_TOURNAMENT_SOURCES, type TournamentNews, type TournamentStatus } from '../src/data/tournament-data.js';
 
 const GEMINI_ENDPOINT = 'https://generativelanguage.googleapis.com/v1beta/models';
 
