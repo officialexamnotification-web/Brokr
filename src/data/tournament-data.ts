@@ -1,4 +1,4 @@
-import { POPULAR_GAMES } from './games';
+import { POPULAR_GAMES } from './games.js';
 
 export type TournamentStatus = 'upcoming' | 'live' | 'completed' | 'cancelled' | 'draft';
 
