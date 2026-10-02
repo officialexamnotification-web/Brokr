@@ -1,4 +1,4 @@
-import { generateNames, getRuleForGame, type LanguageId, type NameStyle } from '../server/name-engine';
+import { generateNames, getRuleForGame, type LanguageId, type NameStyle } from '../server/name-engine.js';
 
 function asString(value: unknown, fallback = ''): string {
   return typeof value === 'string' ? value : fallback;
