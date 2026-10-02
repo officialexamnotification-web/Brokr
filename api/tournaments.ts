@@ -1,4 +1,4 @@
-import { filterTournamentEvents } from '../src/lib/tournament-feed';
+import { filterTournamentEvents } from '../src/lib/tournament-feed.js';
 
 export default function handler(req: any, res: any) {
   res.setHeader('Cache-Control', 's-maxage=300, stale-while-revalidate=900');
