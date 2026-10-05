@@ -16,6 +16,24 @@ function NewsCard({ gameId }: { gameId: string; key?: string }) {
   </a>;
 }
 
+function VerifiedDetailTables({ sections }: { sections: NonNullable<GameNewsRecord['detailSections']> }) {
+  return <section aria-label="Verified game and tournament details" className="space-y-5">
+    {sections.map((section) => <div key={section.title} className="overflow-hidden rounded-2xl border border-cyan-400/20 bg-cyan-500/5">
+      <div className="border-b border-cyan-400/15 px-5 py-4">
+        <h2 className="text-lg font-bold text-cyan-100">{section.title}</h2>
+        {section.description && <p className="mt-1 text-xs leading-5 text-slate-400">{section.description}</p>}
+      </div>
+      <div className="overflow-x-auto">
+        <table className="w-full min-w-[34rem] text-left text-sm">
+          <thead className="bg-slate-950/50 text-[10px] font-black uppercase tracking-wider text-cyan-300"><tr>{section.columns.map((column) => <th key={column} scope="col" className="px-4 py-3">{column}</th>)}</tr></thead>
+          <tbody className="divide-y divide-slate-800/80">{section.rows.map((row) => <tr key={row.join('|')} className="align-top"><th scope="row" className="whitespace-nowrap px-4 py-3 font-semibold text-slate-200">{row[0]}</th>{row.slice(1).map((cell, index) => <td key={index} className="px-4 py-3 leading-6 text-slate-300">{cell}</td>)}</tr>)}</tbody>
+        </table>
+      </div>
+      {section.sourceUrl && <p className="border-t border-slate-800 px-5 py-3 text-[11px] text-slate-500">Data source: <a href={section.sourceUrl} target="_blank" rel="noreferrer" className="font-semibold text-cyan-300 hover:text-white">official publisher or organizer page <ExternalLink className="inline h-3 w-3" /></a></p>}
+    </div>)}
+  </section>;
+}
+
 function GameArticle({ page }: { page: GameNewsRecord }) {
   const game = POPULAR_GAMES.find((item) => item.id === page.gameId)!;
   return <article className="overflow-hidden rounded-3xl border border-slate-800 bg-[#080d1a]/95 shadow-2xl shadow-black/30">
@@ -27,6 +45,7 @@ function GameArticle({ page }: { page: GameNewsRecord }) {
     </header>
     <div className="space-y-8 px-6 py-8 sm:px-10 sm:py-10">
       <section><div className="flex items-start gap-3"><Newspaper className="mt-1 h-5 w-5 shrink-0 text-cyan-300" /><div><h2 className="text-xl font-bold text-white">{page.updateHeading}</h2><div className="mt-3 space-y-4">{page.update.map((paragraph) => <p key={paragraph} className="max-w-4xl text-sm leading-8 text-slate-300">{paragraph}</p>)}</div></div></div></section>
+      {page.detailSections && <VerifiedDetailTables sections={page.detailSections} />}
       <section className="rounded-2xl border border-slate-800 bg-slate-950/50 p-5"><div className="flex items-start gap-3"><Gamepad2 className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div className="w-full"><h2 className="text-lg font-bold text-white">{page.playerFocusHeading}</h2><ul className="mt-3 space-y-3">{page.playerFocus.map((item) => <li key={item} className="flex gap-2 text-sm leading-7 text-slate-300"><span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-amber-300" />{item}</li>)}</ul></div></div></section>
       <section><div className="flex items-start gap-3"><Trophy className="mt-1 h-5 w-5 shrink-0 text-violet-300" /><div><h2 className="text-xl font-bold text-white">{page.competitionHeading}</h2><ul className="mt-3 space-y-3">{page.competition.map((item) => <li key={item} className="max-w-4xl text-sm leading-7 text-slate-300">{item}</li>)}</ul></div></div></section>
       <section className="rounded-2xl border border-emerald-400/20 bg-emerald-500/5 p-5"><div className="flex items-start gap-3"><ShieldCheck className="mt-0.5 h-5 w-5 shrink-0 text-emerald-300" /><div><h2 className="font-bold text-emerald-200">Official sources checked</h2><p className="mt-1 text-xs leading-5 text-slate-400">Publisher and tournament-organizer links for the details on this page. Game schedules, passes and offers can change; open the original source or in-game news for the current regional availability.</p><ul className="mt-3 grid gap-2 sm:grid-cols-2">{page.sources.map((source) => <li key={source.url}><a href={source.url} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 text-xs font-semibold leading-5 text-emerald-300 hover:text-white">{source.name}<ExternalLink className="h-3 w-3 shrink-0" /></a></li>)}</ul></div></div></section>
