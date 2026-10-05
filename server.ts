@@ -14,8 +14,7 @@ import {
 import { HOME_SEO, SITE_DISPLAY_NAME, SITE_NAME, SITE_URL, getGameBySlug, getGameSeo } from "./src/data/game-seo";
 import { POPULAR_GAMES } from "./src/data/games";
 import { SITE_PAGES, getSitePageBySlug } from "./src/data/site-pages";
-import { GAME_NEWS_INDEX } from "./src/data/game-news";
-import { TOURNAMENT_EVENTS } from "./src/data/tournament-data";
+import { GAME_NEWS_INDEX, TOURNAMENT_EVENTS } from "./src/data/tournament-data";
 import { filterTournamentEvents, filterTournamentNews, getTournamentNews } from "./src/lib/tournament-feed";
 import { syncTournamentNews } from "./server/tournament-sync";
 

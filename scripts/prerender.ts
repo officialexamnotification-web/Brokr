@@ -6,7 +6,7 @@ import { SITE_PAGES } from '../src/data/site-pages';
 import { TOURNAMENT_EVENTS, TOURNAMENT_NEWS } from '../src/data/tournament-data';
 import { TOURNAMENT_NEWS_SEO, TOURNAMENTS_SEO, getTournamentArticleSeo } from '../src/data/tournament-seo';
 import { getTournamentNews } from '../src/lib/tournament-feed';
-import { GAME_NEWS_BY_ID, GAME_NEWS_INDEX, type GameNewsPage } from '../src/data/game-news';
+import { GAME_NEWS_BY_ID, GAME_NEWS_INDEX, type GameNewsPage } from '../src/data/tournament-data';
 
 const DIST_DIR = path.resolve(process.cwd(), 'dist');
 const ORIGIN = (process.env.PUBLIC_SITE_URL || 'https://www.tradivex.com').replace(/\/$/, '');
