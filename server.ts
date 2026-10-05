@@ -58,8 +58,15 @@ function canonicalOrigin(req: express.Request): string {
 // These paths belonged to the retired Tradivex trading directory. Return a
 // permanent removal response instead of letting them look like valid SPA URLs
 // while Google refreshes its old index entries.
-const REMOVED_LEGACY_PATHS = new Set(['/privacy', '/terms']);
-const REMOVED_LEGACY_PREFIXES = ['/tool/', '/category/', '/region/'];
+const REMOVED_LEGACY_PATHS = new Set([
+  '/privacy', '/terms', '/calculator', '/calculators', '/blog', '/compare', '/comparison',
+  '/directory', '/latest-additions', '/tools', '/markets', '/forex', '/brokers',
+  '/crypto-exchanges', '/stock-brokers', '/cfd-brokers', '/prop-firms', '/trading-tools',
+  '/about-us', '/contact-us', '/affiliate-disclosure', '/methodology',
+  '/category', '/tool', '/region', '/trading', '/investing', '/investment', '/stocks',
+  '/crypto', '/options', '/futures', '/economic-calendar', '/compare-tools',
+]);
+const REMOVED_LEGACY_PREFIXES = ['/tool/', '/category/', '/region/', '/calculator/', '/calculators/', '/blog/', '/compare/', '/comparison/', '/directory/', '/latest-additions/', '/tools/', '/markets/', '/forex/', '/brokers/', '/crypto-exchanges/', '/stock-brokers/', '/cfd-brokers/', '/prop-firms/', '/trading-tools/', '/trading/', '/investing/', '/investment/', '/stocks/', '/crypto/', '/options/', '/futures/', '/economic-calendar/', '/compare-tools/'];
 
 function isRemovedLegacyPath(requestPath: string): boolean {
   const normalized = `/${requestPath.replace(/^\/+|\/+$/g, '')}`.toLowerCase();
@@ -85,7 +92,7 @@ function injectSeo(html: string, req: express.Request, gameId?: string, sitePage
   const canonical = `${origin}${game ? `/${game.slug}` : sitePage ? `/${sitePage.slug}` : '/'}`;
   const application = {
     '@type': 'WebApplication',
-    name: SITE_NAME,
+    name: SITE_DISPLAY_NAME,
     applicationCategory: 'UtilitiesApplication',
     operatingSystem: 'All',
     description: seo.description,
@@ -102,7 +109,7 @@ function injectSeo(html: string, req: express.Request, gameId?: string, sitePage
         description: sitePage.description,
         url: canonical,
         inLanguage: 'en-US',
-        isPartOf: { '@type': 'WebSite', name: SITE_NAME, alternateName: SITE_DISPLAY_NAME, url: origin },
+        isPartOf: { '@type': 'WebSite', name: SITE_DISPLAY_NAME, alternateName: SITE_NAME, url: origin },
       },
       {
         '@type': 'FAQPage',
@@ -119,7 +126,7 @@ function injectSeo(html: string, req: express.Request, gameId?: string, sitePage
     name: sitePage.heading,
     description: sitePage.description,
     url: canonical,
-    isPartOf: { '@type': 'WebSite', name: SITE_NAME, alternateName: SITE_DISPLAY_NAME, url: origin },
+    isPartOf: { '@type': 'WebSite', name: SITE_DISPLAY_NAME, alternateName: SITE_NAME, url: origin },
   }) : game ? {
     '@context': 'https://schema.org',
     '@graph': [
@@ -130,7 +137,7 @@ function injectSeo(html: string, req: express.Request, gameId?: string, sitePage
         description: seo.description,
         url: canonical,
         inLanguage: 'en-US',
-        isPartOf: { '@type': 'WebSite', name: SITE_NAME, alternateName: SITE_DISPLAY_NAME, url: origin },
+        isPartOf: { '@type': 'WebSite', name: SITE_DISPLAY_NAME, alternateName: SITE_NAME, url: origin },
         about: { '@type': 'Thing', name: game.name },
       },
       { ...application, about: { '@type': 'Thing', name: game.name } },
@@ -153,7 +160,7 @@ function injectSeo(html: string, req: express.Request, gameId?: string, sitePage
   } : {
     '@context': 'https://schema.org',
     '@graph': [
-      { '@type': 'WebSite', name: SITE_NAME, alternateName: SITE_DISPLAY_NAME, url: canonical },
+      { '@type': 'WebSite', name: SITE_DISPLAY_NAME, alternateName: SITE_NAME, url: canonical },
       application,
     ],
   };

@@ -8,5 +8,15 @@
       "destination": "https://www.tradivex.com/:path*",
       "permanent": true
     }
+  ],
+  "routes": [
+    {
+      "src": "/(category|tool|region|calculators?|blog|compare|comparison|directory|latest-additions|tools|markets|forex|brokers|crypto-exchanges|stock-brokers|cfd-brokers|prop-firms|trading-tools|about-us|contact-us|affiliate-disclosure|methodology|privacy|terms)(/.*)?/?$",
+      "status": 410,
+      "headers": {
+        "X-Robots-Tag": "noindex, noarchive",
+        "Cache-Control": "public, max-age=3600"
+      }
+    }
   ]
 }

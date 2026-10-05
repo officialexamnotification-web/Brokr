@@ -62,12 +62,12 @@ function jsonLdFor(route: { slug: string; title: string; description: string; he
     description: route.description,
     url,
     inLanguage: 'en-US',
-    isPartOf: { '@type': 'WebSite', name: SITE_NAME, alternateName: SITE_DISPLAY_NAME, url: `${ORIGIN}/` },
+    isPartOf: { '@type': 'WebSite', name: SITE_DISPLAY_NAME, alternateName: SITE_NAME, url: `${ORIGIN}/` },
     ...(route.gameName ? { about: { '@type': 'Thing', name: route.gameName } } : {}),
   };
   const application = {
     '@type': 'WebApplication',
-    name: SITE_NAME,
+    name: SITE_DISPLAY_NAME,
     applicationCategory: 'UtilitiesApplication',
     operatingSystem: 'All',
     description: route.description,
@@ -101,7 +101,7 @@ function staticPageMarkup(page: typeof SITE_PAGES[number]) {
 function renderHtml(route: { slug: string; title: string; description: string; heading: string; intro: string; features: string[]; faqs?: Array<{ question: string; answer: string }>; gameName?: string }, body: string) {
   const canonical = urlFor(route.slug);
   const jsonLd = `<script type="application/ld+json">${escapeJson(jsonLdFor(route))}</script>`;
-  const head = `<link rel="canonical" href="${escapeHtml(canonical)}" /><meta name="robots" content="index,follow,max-image-preview:large" /><meta property="og:type" content="website" /><meta property="og:site_name" content="${escapeHtml(SITE_NAME)}" /><meta property="og:url" content="${escapeHtml(canonical)}" />`;
+  const head = `<link rel="canonical" href="${escapeHtml(canonical)}" /><meta name="robots" content="index,follow,max-image-preview:large" /><meta property="og:type" content="website" /><meta property="og:site_name" content="${escapeHtml(SITE_DISPLAY_NAME)}" /><meta property="og:url" content="${escapeHtml(canonical)}" />`;
   return baseHtml
     .replace(/<title>[\s\S]*?<\/title>/i, `<title>${escapeHtml(route.title)}</title>`)
     .replace(/<meta name="description"[^>]*>/i, `<meta name="description" content="${escapeHtml(route.description)}" />`)
@@ -123,7 +123,7 @@ function tournamentJsonLd(route: { slug: string; title: string; description: str
     description: route.description,
     url,
     inLanguage: 'en-US',
-    isPartOf: { '@type': 'WebSite', name: SITE_NAME, alternateName: SITE_DISPLAY_NAME, url: `${ORIGIN}/` },
+    isPartOf: { '@type': 'WebSite', name: SITE_DISPLAY_NAME, alternateName: SITE_NAME, url: `${ORIGIN}/` },
     ...(route.event ? { about: { '@type': 'Thing', name: route.event.name } } : {}),
   }, {
     '@type': 'BreadcrumbList',
@@ -185,7 +185,7 @@ function renderGameNewsHtml(page: GameNewsPage, game: typeof POPULAR_GAMES[numbe
   const graph = {
     '@context': 'https://schema.org',
     '@graph': [
-      { '@type': 'NewsArticle', headline: page.heading, description: page.description, datePublished: isoDate(page.updateDate), dateModified: isoDate(page.updateDate), articleSection: 'Game News', keywords: [game.shortName, `${game.name} news`, `${game.name} update`, page.updateHeading, page.competitionHeading], author: { '@type': 'Organization', name: SITE_NAME, url: `${ORIGIN}/about` }, publisher: { '@type': 'Organization', name: SITE_NAME, url: ORIGIN }, about: { '@type': 'Thing', name: game.name }, mainEntityOfPage: canonical, isBasedOn: page.sources.map((source) => source.url) },
+      { '@type': 'NewsArticle', headline: page.heading, description: page.description, datePublished: isoDate(page.updateDate), dateModified: isoDate(page.updateDate), articleSection: 'Game News', keywords: [game.shortName, `${game.name} news`, `${game.name} update`, page.updateHeading, page.competitionHeading], author: { '@type': 'Organization', name: SITE_DISPLAY_NAME, url: `${ORIGIN}/about` }, publisher: { '@type': 'Organization', name: SITE_DISPLAY_NAME, url: ORIGIN }, about: { '@type': 'Thing', name: game.name }, mainEntityOfPage: canonical, isBasedOn: page.sources.map((source) => source.url) },
       { '@type': 'BreadcrumbList', itemListElement: [
         { '@type': 'ListItem', position: 1, name: 'Home', item: `${ORIGIN}/` },
         { '@type': 'ListItem', position: 2, name: 'Game News', item: `${ORIGIN}/game-news` },
@@ -194,7 +194,7 @@ function renderGameNewsHtml(page: GameNewsPage, game: typeof POPULAR_GAMES[numbe
       { '@type': 'FAQPage', mainEntity: page.faqs.map((faq) => ({ '@type': 'Question', name: faq.question, acceptedAnswer: { '@type': 'Answer', text: faq.answer } })) },
     ],
   };
-  const head = `<link rel="canonical" href="${escapeHtml(canonical)}" /><meta property="og:type" content="article" /><meta property="og:site_name" content="${escapeHtml(SITE_NAME)}" /><meta property="og:url" content="${escapeHtml(canonical)}" />`;
+  const head = `<link rel="canonical" href="${escapeHtml(canonical)}" /><meta property="og:type" content="article" /><meta property="og:site_name" content="${escapeHtml(SITE_DISPLAY_NAME)}" /><meta property="og:url" content="${escapeHtml(canonical)}" />`;
   return baseHtml
     .replace(/<title>[\s\S]*?<\/title>/i, `<title>${escapeHtml(page.title)}</title>`)
     .replace(/<meta name="description"[^>]*>/i, `<meta name="description" content="${escapeHtml(page.description)}" />`)
@@ -204,7 +204,7 @@ function renderGameNewsHtml(page: GameNewsPage, game: typeof POPULAR_GAMES[numbe
     .replace(/<meta name="twitter:description"[^>]*>/i, `<meta name="twitter:description" content="${escapeHtml(page.description)}" />`)
     .replace(/<meta name="robots"[^>]*>/i, '<meta name="robots" content="index,follow,max-image-preview:large" />')
     .replace(/<meta property="og:type"[^>]*>/i, '<meta property="og:type" content="article" />')
-    .replace(/<meta property="og:site_name"[^>]*>/i, `<meta property="og:site_name" content="${escapeHtml(SITE_NAME)}" />`)
+    .replace(/<meta property="og:site_name"[^>]*>/i, `<meta property="og:site_name" content="${escapeHtml(SITE_DISPLAY_NAME)}" />`)
     .replace(/<meta property="og:url"[^>]*>/i, `<meta property="og:url" content="${escapeHtml(canonical)}" />`)
     .replace(/<script type="application\/ld\+json">[\s\S]*?<\/script>/i, `<script type="application/ld+json">${escapeJson(graph)}</script>`)
     .replace('<div id="root"></div>', `<div id="root">${gameNewsMarkup(page, game)}</div>`)
@@ -233,7 +233,7 @@ function renderTournamentHtml(route: { slug: string; title: string; description:
     .replace(/<meta name="twitter:description"[^>]*>/i, `<meta name="twitter:description" content="${escapeHtml(route.description)}" />`)
     .replace(/<meta name="robots"[^>]*>/i, '<meta name="robots" content="index,follow,max-image-preview:large" />')
     .replace(/<meta property="og:type"[^>]*>/i, `<meta property="og:type" content="${ogType}" />`)
-    .replace(/<meta property="og:site_name"[^>]*>/i, `<meta property="og:site_name" content="${escapeHtml(SITE_NAME)}" />`)
+    .replace(/<meta property="og:site_name"[^>]*>/i, `<meta property="og:site_name" content="${escapeHtml(SITE_DISPLAY_NAME)}" />`)
     .replace(/<meta property="og:url"[^>]*>/i, `<meta property="og:url" content="${escapeHtml(canonical)}" />`)
     .replace(/<script type="application\/ld\+json">[\s\S]*?<\/script>/i, jsonLd)
     .replace('<div id="root"></div>', `<div id="root">${tournamentMarkup(route)}</div>`)

@@ -50,7 +50,7 @@ export function applySeo(seo: GameSeoContent, game?: GameProfile) {
   script.type = 'application/ld+json';
   const application = {
     '@type': 'WebApplication',
-    name: SITE_NAME,
+    name: SITE_DISPLAY_NAME,
     applicationCategory: 'UtilitiesApplication',
     operatingSystem: 'All',
     description: seo.description,
@@ -65,7 +65,7 @@ export function applySeo(seo: GameSeoContent, game?: GameProfile) {
     description: seo.description,
     url: canonical,
     inLanguage: document.documentElement.lang || 'en-US',
-    isPartOf: { '@type': 'WebSite', name: SITE_NAME, alternateName: SITE_DISPLAY_NAME, url: canonicalOrigin() },
+    isPartOf: { '@type': 'WebSite', name: SITE_DISPLAY_NAME, alternateName: SITE_NAME, url: canonicalOrigin() },
     ...(game ? { about: { '@type': 'Thing', name: game.name } } : {}),
   };
   const breadcrumb = {
@@ -113,7 +113,7 @@ export function applyStaticSeo(page: SitePageContent) {
     description: page.description,
     url: canonical,
     inLanguage: document.documentElement.lang || 'en-US',
-    isPartOf: { '@type': 'WebSite', name: SITE_NAME, alternateName: SITE_DISPLAY_NAME, url: canonicalOrigin() },
+    isPartOf: { '@type': 'WebSite', name: SITE_DISPLAY_NAME, alternateName: SITE_NAME, url: canonicalOrigin() },
   };
   script.textContent = JSON.stringify(page.faqs ? {
     '@context': 'https://schema.org',
@@ -145,7 +145,7 @@ export function applyGameNewsSeo(page: GameNewsPage, game: GameProfile) {
   script.textContent = JSON.stringify({
     '@context': 'https://schema.org',
     '@graph': [
-      { '@type': 'NewsArticle', headline: page.heading, description: page.description, datePublished: articleDate, dateModified: articleDate, articleSection: 'Game News', keywords: [game.shortName, `${game.name} news`, `${game.name} update`, page.updateHeading, page.competitionHeading], author: { '@type': 'Organization', name: SITE_NAME, url: `${canonicalOrigin()}/about` }, publisher: { '@type': 'Organization', name: SITE_NAME, url: canonicalOrigin() }, about: { '@type': 'Thing', name: game.name }, mainEntityOfPage: canonical, isBasedOn: page.sources.map((source) => source.url) },
+      { '@type': 'NewsArticle', headline: page.heading, description: page.description, datePublished: articleDate, dateModified: articleDate, articleSection: 'Game News', keywords: [game.shortName, `${game.name} news`, `${game.name} update`, page.updateHeading, page.competitionHeading], author: { '@type': 'Organization', name: SITE_DISPLAY_NAME, url: `${canonicalOrigin()}/about` }, publisher: { '@type': 'Organization', name: SITE_DISPLAY_NAME, url: canonicalOrigin() }, about: { '@type': 'Thing', name: game.name }, mainEntityOfPage: canonical, isBasedOn: page.sources.map((source) => source.url) },
       { '@type': 'BreadcrumbList', itemListElement: [
         { '@type': 'ListItem', position: 1, name: 'Home', item: `${canonicalOrigin()}/` },
         { '@type': 'ListItem', position: 2, name: 'Game News', item: `${canonicalOrigin()}/game-news` },

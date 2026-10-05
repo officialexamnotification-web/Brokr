@@ -58,7 +58,7 @@ const GAME_INTENTS: Record<string, string> = {
 
 export const HOME_SEO: GameSeoContent = {
   slug: '',
-  title: 'Game & Gaming Name Generator for 25+ Games | Tradivex',
+  title: 'Free Game Name Generator for 25+ Games | Tradivex GamingNameHub',
   description: 'Free game name generator for stylish gamer names, nicknames, gamertags and clan tags for BGMI, PUBG, Free Fire, Valorant, COD, Fortnite, Roblox and Minecraft.',
   h1: 'Game Name Generator for Every Online Game',
   intro: 'Create stylish gamer names, cool nicknames, clean gamertags and clan tags for the game you actually play. Choose a game first so the name style and character guidance match your platform.',
@@ -107,15 +107,15 @@ export function getGameSeo(game: GameProfile): GameSeoContent {
   const label = LABELS[game.id] || { noun: game.shortName, identity: 'gaming username', audience: 'players' };
   const pageTitle = label.pageTitle || `${label.noun} Name Generator`;
   const titleByGame: Record<string, string> = {
-    bgmi: 'BGMI Name Generator | Stylish BGMI Names & Symbols | Tradivex',
-    pubg: 'PUBG Mobile Name Generator: Names & Symbols | Tradivex',
-    pubg_battlegrounds: 'PUBG: BATTLEGROUNDS Name Generator | PC & Console | Tradivex',
-    dota2: 'Dota 2 Name Generator & Steam Player Names | Tradivex',
-    freefire: 'Free Fire Name Generator: Stylish Names & Symbols | Tradivex',
-    valorant: 'Valorant Name Generator & Riot ID Ideas | Tradivex',
-    cod: 'COD Name Generator for Warzone & CODM | Tradivex',
-    cs2: 'CS2 Name Generator & Nickname Ideas | Tradivex',
-    apex: 'Apex Legends Name Generator & Gamertags | Tradivex',
+    bgmi: 'BGMI Name Generator | Stylish BGMI Names & Symbols | Tradivex GamingNameHub',
+    pubg: 'PUBG Mobile Name Generator: Names & Symbols | Tradivex GamingNameHub',
+    pubg_battlegrounds: 'PUBG: BATTLEGROUNDS Name Generator | PC & Console | Tradivex GamingNameHub',
+    dota2: 'Dota 2 Name Generator & Steam Player Names | Tradivex GamingNameHub',
+    freefire: 'Free Fire Name Generator: Stylish Names & Symbols | Tradivex GamingNameHub',
+    valorant: 'Valorant Name Generator & Riot ID Ideas | Tradivex GamingNameHub',
+    cod: 'COD Name Generator for Warzone & CODM | Tradivex GamingNameHub',
+    cs2: 'CS2 Name Generator & Nickname Ideas | Tradivex GamingNameHub',
+    apex: 'Apex Legends Name Generator & Gamertags | Tradivex GamingNameHub',
   };
   const title = titleByGame[game.id] || `${pageTitle} | Tradivex GamingNameHub`;
   const intent = GAME_INTENTS[game.id] || `${label.identity} ideas and clean gamer tags`;
