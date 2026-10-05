@@ -1268,4 +1268,3 @@ export const GAME_NEWS_PAGES: GameNewsPage[] = [
 
 export const GAME_NEWS_BY_ID = new Map(GAME_NEWS_PAGES.map((page) => [page.gameId, page]));
 export const GAME_NEWS_INDEX = POPULAR_GAMES.filter((game) => GAME_NEWS_BY_ID.has(game.id));
-

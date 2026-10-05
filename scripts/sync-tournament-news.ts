@@ -13,6 +13,10 @@ if (!result.enabled) {
   console.error(`[tournament-sync] ${result.reason}`);
   process.exitCode = 1;
 } else {
+  if (result.drafts.length === 0) {
+    console.warn('[tournament-sync] no valid updates were generated; keeping the existing news data');
+    process.exitCode = 1;
+  } else {
   const source = fs.readFileSync(target, 'utf8');
   const start = '// BEGIN GENERATED TOURNAMENT NEWS';
   const end = '// END GENERATED TOURNAMENT NEWS';
@@ -23,4 +27,5 @@ if (!result.enabled) {
   const output = `${source.slice(0, startIndex)}${generated}${source.slice(endIndex + end.length)}`;
   fs.writeFileSync(target, output, 'utf8');
   console.log(`[tournament-sync] wrote ${result.drafts.length} source-grounded updates using ${result.model}`);
+  }
 }
