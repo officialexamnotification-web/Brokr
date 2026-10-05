@@ -164,8 +164,14 @@ function gameNewsMarkup(page: GameNewsPage, game: typeof POPULAR_GAMES[number]) 
   const paragraphs = page.update.map((text) => `<p>${escapeHtml(text)}</p>`).join('');
   const playerItems = page.playerFocus.map((text) => `<li>${escapeHtml(text)}</li>`).join('');
   const competitionItems = page.competition.map((text) => `<li>${escapeHtml(text)}</li>`).join('');
+  const detailTables = (page.detailSections || []).map((section) => {
+    const header = section.columns.map((column) => `<th scope="col">${escapeHtml(column)}</th>`).join('');
+    const rows = section.rows.map((row) => `<tr>${row.map((cell, index) => index === 0 ? `<th scope="row">${escapeHtml(cell)}</th>` : `<td>${escapeHtml(cell)}</td>`).join('')}</tr>`).join('');
+    const source = section.sourceUrl ? `<p>Data source: <a href="${escapeHtml(section.sourceUrl)}">official publisher or organizer page</a></p>` : '';
+    return `<section><h2>${escapeHtml(section.title)}</h2>${section.description ? `<p>${escapeHtml(section.description)}</p>` : ''}<div><table><thead><tr>${header}</tr></thead><tbody>${rows}</tbody></table></div>${source}</section>`;
+  }).join('');
   const faqs = page.faqs.map((faq) => `<section><h2>${escapeHtml(faq.question)}</h2><p>${escapeHtml(faq.answer)}</p></section>`).join('');
-  return `<main id="seo-content"><nav aria-label="Breadcrumb"><a href="/">Home</a> / <a href="/game-news">Game News</a> / <span>${escapeHtml(game.shortName)}</span></nav><article><h1>${escapeHtml(page.heading)}</h1><p>${escapeHtml(page.intro)}</p><p><time datetime="2026-10-02">Updated ${escapeHtml(page.updateDate)}</time></p><section><h2>${escapeHtml(page.updateHeading)}</h2>${paragraphs}</section><section><h2>${escapeHtml(page.playerFocusHeading)}</h2><ul>${playerItems}</ul></section><section><h2>${escapeHtml(page.competitionHeading)}</h2><ul>${competitionItems}</ul></section><section><h2>Official sources checked</h2><ul>${sources}</ul></section>${faqs}<nav aria-label="Related pages"><a href="/${escapeHtml(game.slug)}">${escapeHtml(game.shortName)} name generator</a> · <a href="/tournaments">Tournament calendar</a> · <a href="/game-news">All game news</a></nav></article></main>`;
+  return `<main id="seo-content"><nav aria-label="Breadcrumb"><a href="/">Home</a> / <a href="/game-news">Game News</a> / <span>${escapeHtml(game.shortName)}</span></nav><article><h1>${escapeHtml(page.heading)}</h1><p>${escapeHtml(page.intro)}</p><p><time datetime="2026-10-05">Updated ${escapeHtml(page.updateDate)}</time></p><section><h2>${escapeHtml(page.updateHeading)}</h2>${paragraphs}</section>${detailTables}<section><h2>${escapeHtml(page.playerFocusHeading)}</h2><ul>${playerItems}</ul></section><section><h2>${escapeHtml(page.competitionHeading)}</h2><ul>${competitionItems}</ul></section><section><h2>Official sources checked</h2><ul>${sources}</ul></section>${faqs}<nav aria-label="Related pages"><a href="/${escapeHtml(game.slug)}">${escapeHtml(game.shortName)} name generator</a> · <a href="/tournaments">Tournament calendar</a> · <a href="/game-news">All game news</a></nav></article></main>`;
 }
 
 function renderGameNewsHtml(page: GameNewsPage, game: typeof POPULAR_GAMES[number]) {
@@ -174,7 +180,7 @@ function renderGameNewsHtml(page: GameNewsPage, game: typeof POPULAR_GAMES[numbe
   const graph = {
     '@context': 'https://schema.org',
     '@graph': [
-      { '@type': 'NewsArticle', headline: page.heading, description: page.description, datePublished: '2026-10-02', dateModified: '2026-10-02', author: { '@type': 'Organization', name: SITE_NAME, url: `${ORIGIN}/about` }, about: { '@type': 'Thing', name: game.name }, mainEntityOfPage: canonical, isBasedOn: page.sources.map((source) => source.url) },
+      { '@type': 'NewsArticle', headline: page.heading, description: page.description, datePublished: '2026-10-05', dateModified: '2026-10-05', author: { '@type': 'Organization', name: SITE_NAME, url: `${ORIGIN}/about` }, about: { '@type': 'Thing', name: game.name }, mainEntityOfPage: canonical, isBasedOn: page.sources.map((source) => source.url) },
       { '@type': 'BreadcrumbList', itemListElement: [
         { '@type': 'ListItem', position: 1, name: 'Home', item: `${ORIGIN}/` },
         { '@type': 'ListItem', position: 2, name: 'Game News', item: `${ORIGIN}/game-news` },
