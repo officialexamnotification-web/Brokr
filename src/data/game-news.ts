@@ -25,10 +25,11 @@ export const GAME_NEWS_PAGES: GameNewsPage[] = [
     description: 'BGMI updates for Indian players: BMSD 2026 dates, BMIC Mumbai announcement, official esports links and what to check in the current Royale Pass.',
     heading: 'BGMI News and Player Update: BMSD, BMIC and Royale Pass',
     intro: 'BGMI has two major esports dates on the calendar: the domestic BMSD finals in Hyderabad and the international BMIC in Mumbai. KRAFTON’s public 2026 competition announcement is the source for both; pass rewards and account-specific offers should be checked in the live game client.',
-    updateHeading: 'BMSD is live; BMIC follows in Mumbai', updateDate: '2 October 2026',
+    updateHeading: 'BMSD is live; BMIC follows in Mumbai', updateDate: '5 October 2026',
     update: [
       'KRAFTON India’s 2026 announcement describes BMSD as a 48-team invitational for teams drawn from the KRAFTON India Esports leaderboard, BGIS and BMPS. The event runs 22 September–18 October, with its Hyderabad LAN finals scheduled for 16–18 October.',
       'The same announcement schedules the 16-team BGMI International Cup (BMIC) for 30 October–1 November in Mumbai, with teams from India, South Korea and Japan. It does not provide the final roster, match-by-match timetable or complete format, so those details remain unconfirmed here.',
+      "As checked on 5 October: BMSD is still in progress, with Hyderabad LAN finals set for 16–18 October; BMIC follows in Mumbai on 30 October–1 November. KRAFTON has not published a complete current Royale Pass reward schedule in the cited public announcement, so confirm the live RP timer and rewards in-game."
     ],
     playerFocusHeading: 'Royale Pass, ranked play and account checks',
     playerFocus: [
@@ -52,10 +53,11 @@ export const GAME_NEWS_PAGES: GameNewsPage[] = [
     description: 'PUBG Mobile September–October 2026 update: Royale Pass A21, PMPS Korea Season 2 schedule, Daejeon finals and qualification routes from official sources.',
     heading: 'PUBG Mobile News: Royale Pass A21 and PMPS Korea',
     intro: 'This page separates PUBG Mobile’s global live-game update from Korea’s regional esports calendar. Royale Pass A21 is listed in the official September event catalogue, while PMPS Korea Season 2 has its own dates, venue and international qualification slots.',
-    updateHeading: 'Royale Pass A21 appears in the September event catalogue', updateDate: '2 October 2026',
+    updateHeading: 'Royale Pass A21 appears in the September event catalogue', updateDate: '5 October 2026',
     update: [
       'PUBG MOBILE’s official New Events catalogue lists “New Royale Pass A21” under September 2026, alongside the Midnight Hunters event. The listing confirms the pass cycle exists, but does not expose its complete regional reward track or account-specific purchase options in the catalogue view.',
       'The Korean PUBG MOBILE Esports site separately schedules PMPS Korea 2026 Season 2 from 3–18 October at Daejeon Dream Arena. It lists 16 teams, a ₩40 million prize pool, five circuit days and two Finals days; the event is regional, not the global PUBG Mobile calendar.',
+      "As checked on 5 October: PMPS Korea Season 2 resumes its Circuit Stage on 9–11 October, then holds Finals at Daejeon Esports Arena on 17–18 October at 3 p.m. KST. The organizer lists ₩40 million total prize money; the winner earns a PMGC place and the top three BMIC places subject to duplicate-slot rules."
     ],
     playerFocusHeading: 'What to check in Royale Pass A21',
     playerFocus: [
@@ -79,10 +81,11 @@ export const GAME_NEWS_PAGES: GameNewsPage[] = [
     description: 'Free Fire OB55 guide for October 2026: Naruto Shippuden return, Nine Tails gameplay, weapon and device changes, current pass checks and FFWS Global Finals.',
     heading: 'Free Fire News: OB55 Patch, Booyah Pass and FFWS',
     intro: 'Garena’s OB55 update is the major player-facing change for October: it brings back Naruto Shippuden content and changes Battle Royale events, weapons and devices. FFWS Global Finals is a separate esports event scheduled for Bangkok in November.',
-    updateHeading: 'OB55 brings back Naruto Shippuden and changes match flow', updateDate: '2 October 2026',
+    updateHeading: 'OB55 brings back Naruto Shippuden and changes match flow', updateDate: '5 October 2026',
     update: [
       'Garena’s OB55 patch notes set the update release for 1 October. The returning Nine Tails event can alter a Battle Royale match before takeoff, open Bermuda Arsenals or leave a loot crater; players can also use returning ninjutsu and the Hidden Leaf Village map feature.',
       'OB55 adds active and passive device categories, allowing one of each, adjusts airdrop timing and clarity, and introduces the M7, Skorp, RPK and Hawk weapon lineup in October. Garena also lists a full Kenta rework and Clash Squad weapon/economy changes. These changes make the patch notes more useful than old tier lists for loadout decisions.',
+      "As checked on 5 October: Garena’s OB55 is the current October game update, while the 2026 FFWS Global Finals are scheduled for 6 November in Bangkok. Use the in-game event page for each region’s live Booyah Pass rewards and expiry because the public roadmap does not define every account’s offer."
     ],
     playerFocusHeading: 'Booyah Pass and OB55 player checklist',
     playerFocus: [
@@ -106,10 +109,11 @@ export const GAME_NEWS_PAGES: GameNewsPage[] = [
     description: 'VALORANT Patch 13.06 and Champions Shanghai 2026: update notes, 16-team format, group and playoff dates, watch drops and official Riot links.',
     heading: 'VALORANT News: Patch 13.06 and Champions Shanghai',
     intro: 'Riot’s current VALORANT story has two tracks: Patch 13.06 is the live game update, while Champions Shanghai is the 2026 international season finale. The competition includes watch rewards and Pick’Ems alongside the matches.',
-    updateHeading: 'Patch 13.06 lands during Champions Shanghai', updateDate: '2 October 2026',
+    updateHeading: 'Patch 13.06 lands during Champions Shanghai', updateDate: '5 October 2026',
     update: [
       'Riot’s official news feed lists VALORANT Patch 13.06 on 22 September 2026. The game news page also highlights the new Gauntlet: Glitched mode reveal and confirms VALORANT console launch in Australia and New Zealand. Check the patch notes for the precise agent and weapon changes on your platform.',
       'Champions Shanghai runs 24 September–18 October with 16 teams from Americas, China, EMEA and Pacific. The four-group stage continues through 4 October; eight teams advance to double-elimination playoffs from 7–18 October. Riot lists the Grand Final for 18 October.',
+      "As checked on 5 October: Champions Shanghai’s group stage ended on 4 October. Playoffs run 7–18 October, with the Grand Final on 18 October; Riot’s guide lists a 16-team field and double-elimination playoffs. Verify local broadcast times and eligible Drops through the official event page."
     ],
     playerFocusHeading: 'Ranked, event drops and Pick’Ems',
     playerFocus: [
@@ -133,10 +137,11 @@ export const GAME_NEWS_PAGES: GameNewsPage[] = [
     description: 'Call of Duty news for Black Ops 7, Warzone and COD Mobile: Season 6 Haunting, new Battle Pass weapons, Season 8 CODM and separate esports calendars.',
     heading: 'Call of Duty News: Black Ops, Warzone and COD Mobile',
     intro: 'The site’s Call of Duty profile covers multiple titles, so their seasons and tournament schedules are kept distinct here. Black Ops 7/Warzone Season 6 is live, COD Mobile has its own Season 8, and neither should be confused with the CDL season calendar.',
-    updateHeading: 'Season 6: The Haunting is live in Black Ops 7 and Warzone', updateDate: '2 October 2026',
+    updateHeading: 'Season 6: The Haunting is live in Black Ops 7 and Warzone', updateDate: '5 October 2026',
     update: [
       'Activision’s Season 6 announcement introduces Haunted Hollow, Giant Infected, the T.E.D.D. Trials and Hordepoint modes, Zombies content and the DOOM Event Pass. The Season 6 Battle Pass is led by Blackjack and contains 100+ rewards; the VMP SMG and TR51 Para Assault Rifle are free weapon unlocks on its reward pages.',
       'Warzone’s 30 September patch note also adjusts loot cleanup and gas damage. Call of Duty Mobile has a separate current cycle: the official Season 8 “Against All Fate” announcement lists a Honkai Impact 3rd collaboration, roguelike top-down Multiplayer mode, Isolated POI and new Battle Pass content.',
+      "As checked on 5 October: Activision’s Black Ops 7 news feed has published Season 06 patch notes, the newest patch entry in the official feed. Season 6 is The Haunting; Warzone patch notes are listed separately, and COD Mobile follows its own Season 8 cycle."
     ],
     playerFocusHeading: 'Battle Pass, event pass and COD Mobile',
     playerFocus: [
@@ -161,10 +166,11 @@ export const GAME_NEWS_PAGES: GameNewsPage[] = [
     description: 'Counter-Strike 2 September update adds Rush, a fast 3v3 queued mode. See official update details, Premier/Prime notes and October CS2 tournaments.',
     heading: 'Counter-Strike 2 News: Rush Mode and CS2 Events',
     intro: 'Valve’s September 22 CS2 update adds Rush, a new 3v3 queued mode. It is a gameplay update rather than a replacement for Premier; October’s professional events remain listed on the organizer calendar.',
-    updateHeading: 'Rush adds a new 3v3 queue to Counter-Strike 2', updateDate: '2 October 2026',
+    updateHeading: 'Rush adds a new 3v3 queue to Counter-Strike 2', updateDate: '5 October 2026',
     update: [
       'The official Steam announcement describes Rush as a fast-paced 3v3 mode. Teams push through a gauntlet of checkpoints and need to keep momentum as the mode switches objectives; see the live announcement for the current rules and map availability.',
       'The CS2 page also reiterates that Prime Status affects Prime matchmaking and eligibility for Prime-exclusive souvenir items, drops and weapon cases. Prime is not required to play the free game, but it changes matchmaking and rewards eligibility.',
+      "Valve’s 2 October CS2 update fixes the visibility of agent gloves in the buy menu and photo booth, a grenade crosshair thickness issue, report-dialog title formatting and Warehouse lighting; it also updates the Workshop whitelist and stability. This is a small maintenance update, separate from the September Rush 3v3 mode release."
     ],
     playerFocusHeading: 'Premier rating, Prime and update checks',
     playerFocus: [
@@ -177,6 +183,7 @@ export const GAME_NEWS_PAGES: GameNewsPage[] = [
       { name: 'Valve — Counter-Strike 2 official Steam updates', url: 'https://store.steampowered.com/app/730/CounterStrike2/' },
       { name: 'BLAST.tv Counter-Strike tournament calendar', url: 'https://blast.tv/cs/tournaments' },
       { name: 'Steam — Counter-Strike 2', url: 'https://store.steampowered.com/app/730/CounterStrike2/' },
+      { name: "Valve — 2 October Counter-Strike 2 update", url: "https://store.steampowered.com/oldnews/?appgroupname=Counter-Strike%3A+Global+Offensive&appids=730&feed=steam_community_announcements" }
     ],
     faqs: [
       { question: 'What is Rush mode in CS2?', answer: 'Rush is Valve’s new fast 3v3 queued mode, announced in the September 22, 2026 update. Check the in-game mode description for current rules and map availability.' },
@@ -188,10 +195,11 @@ export const GAME_NEWS_PAGES: GameNewsPage[] = [
     description: 'Fortnite October 2026 guide: Fortnitemares spreads to Battle Royale, Horde Rush and Reload; official FNCS Solo tournament details and dates.',
     heading: 'Fortnite News: Fortnitemares 2026 and Competitive Play',
     intro: 'Fortnitemares is Fortnite’s main October update, with horror-themed content rolling through several modes. Epic has also confirmed a standalone FNCS Solo event for October, but its match schedule and format were still pending in the latest competitive announcement checked.',
-    updateHeading: 'Fortnitemares 2026 begins across three Fortnite modes', updateDate: '2 October 2026',
+    updateHeading: 'Fortnitemares 2026 begins across three Fortnite modes', updateDate: '5 October 2026',
     update: [
       'Epic’s 1 October Fortnitemares announcement says the Halloween event spreads through Battle Royale, Horde Rush and Reload during October. It features Nightmare Neighborhood, Freddy Krueger and the Bone Rattler SMG, with additional horror characters and cosmetics arriving over the month.',
       'Epic previously scheduled a standalone FNCS Solo tournament after the Global Championship in October. The official competitive post said the schedule and format would be announced later; no match times or prize details are added here without that follow-up.',
+      "Epic’s 1 October event guide confirms Fortnitemares is active across Battle Royale, Horde Rush and Reload. The event adds Freaky Fields and Nightmare Neighborhood, Freddy Krueger’s Nightmare claws and the Bonerattler SMG; Reload’s updated Nitemare Island is scheduled for 8 October. Epic has not yet published the pending FNCS Solo format in the cited schedule."
     ],
     playerFocusHeading: 'Season quests, cosmetics and ranked readiness',
     playerFocus: [
@@ -215,10 +223,11 @@ export const GAME_NEWS_PAGES: GameNewsPage[] = [
     description: 'Apex Legends Marked midseason guide: September balance changes, ranked ladder dates, EA Javelin anti-cheat rollout and ALGS Split 2 Playoffs.',
     heading: 'Apex Legends News: Marked Midseason and ALGS',
     intro: 'Apex Legends’ September midseason patch affects loot, long-range weapons, maps and ranked ladders. EA also announced a PC anti-cheat transition, while ALGS Split 2 Playoffs bring 40 teams to Las Vegas later in October.',
-    updateHeading: 'Marked Split 2 resets the ranked race and refreshes loot', updateDate: '2 October 2026',
+    updateHeading: 'Marked Split 2 resets the ranked race and refreshes loot', updateDate: '5 October 2026',
     update: [
       'Respawn’s 14 September Marked midseason notes say Split 2 began on 15 September. The patch adjusts Legend balance and loot availability, buffs three long-range weapons, and includes more than 150 map quality-of-life fixes, with substantial work on World’s Edge.',
       'The same notes list Ranked Ladder 2 for 29 September–4 October and Ladder 3 for 6–11 October, followed by further weekly ladders through 1 November. EA separately announced that PC moves to Javelin Anti-Cheat effective 29 September; the notice says enforcement applies across platforms for detected prohibited behavior.',
+      "The next major official competition is ALGS Year 6 Split 2 Playoffs, 29 October–1 November at Orleans Arena in Las Vegas: 40 teams, four days, Match Point Finals and a $2 million prize pool. The 30-team regional Pro League split concluded on 4 October; teams qualified through regional standings and finals."
     ],
     playerFocusHeading: 'Ranked ladders, maps and anti-cheat',
     playerFocus: [
@@ -242,10 +251,11 @@ export const GAME_NEWS_PAGES: GameNewsPage[] = [
     description: 'Minecraft player update for October 2026: Wilderness Bound game drop is out, Minecraft Live September announcements and official Java/Bedrock links.',
     heading: 'Minecraft News: Wilderness Bound and Minecraft Live',
     intro: 'Minecraft’s current official headline is the Wilderness Bound game drop, listed as out now. Minecraft Live is a developer presentation, not an esports tournament; community server events and creator competitions should be labelled separately.',
-    updateHeading: 'Wilderness Bound is the latest Minecraft game drop', updateDate: '2 October 2026',
+    updateHeading: 'Wilderness Bound is the latest Minecraft game drop', updateDate: '5 October 2026',
     update: [
       'Minecraft’s official Live page lists the Wilderness Bound drop as available now. Check the linked drop page for the exact Java and Bedrock feature list, version number and platform rollout before updating a server or modded client.',
       'Minecraft Live was scheduled for 26 September 2026 at 1 p.m. ET and has now passed. That livestream shares Minecraft news and creator updates; it is not itself an esports event. Back up a world and confirm a server’s supported version before switching a long-running save.',
+      "Minecraft Dungeons II launched on 29 September for Steam, Xbox Series X|S, PlayStation 5, Nintendo Switch and Switch 2, with solo or up-to-four-player co-op and the new Sift dimension. Minecraft’s Aurora Cape livestream promotion runs through 14 October; redeem eligible codes by 31 October. This is a separate action-RPG release alongside the Wilderness Bound drop for Minecraft."
     ],
     playerFocusHeading: 'World backups, versions and server compatibility',
     playerFocus: [
@@ -257,6 +267,7 @@ export const GAME_NEWS_PAGES: GameNewsPage[] = [
     sources: [
       { name: 'Minecraft Live and current game drop', url: 'https://www.minecraft.net/en-us/live' },
       { name: 'Minecraft Education — 2026 esports playbook', url: 'https://education.minecraft.net/content/dam/education-edition/learning-experiences/Minecraft_EDU_Esports_Playbook_2026.pdf' },
+      { name: "Minecraft — Dungeons II is live", url: "https://www.minecraft.net/en-us/article/minecraft-dungeons-ii-is-live" }
     ],
     faqs: [
       { question: 'Is Wilderness Bound available in Minecraft?', answer: 'Minecraft’s official Live page lists the Wilderness Bound game drop as out now. Check its drop page for edition/version support before updating a server.' },
@@ -268,10 +279,11 @@ export const GAME_NEWS_PAGES: GameNewsPage[] = [
     description: 'Roblox October 2026 player guide: The Hunt Roblox 20 ended September 28, Showdown Cup is experience-level, and new Roblox games are arriving.',
     heading: 'Roblox News: The Hunt Roblox 20 and Showdown Cup',
     intro: 'Roblox is a platform of creator-made experiences, so an event inside one game is not automatically a platform-wide tournament. This update separates Roblox’s anniversary event, Showdown’s in-experience cup and the fall game release slate.',
-    updateHeading: 'The Hunt Roblox 20 ends; creator games continue to arrive', updateDate: '2 October 2026',
+    updateHeading: 'The Hunt Roblox 20 ends; creator games continue to arrive', updateDate: '5 October 2026',
     update: [
       'Roblox’s official newsroom scheduled The Hunt: Roblox 20 for 17–28 September. The platform-wide anniversary event sent players through games representing Roblox history, with quests, UGC rewards and a leaderboard. It has ended as of this update date.',
       'Roblox also spotlighted Showdown’s first in-game Showdown Cup, hosted inside SuperGaming’s experience and its Esports Arena. Roblox’s fall preview listed Prime Heroes, Octane, Starforged and other experiences for October; availability can vary by release and region, so open each experience listing for its live status.',
+      "Roblox’s 2 October newsroom post is a platform-security update, describing protections for creator code, virtual items and player communications; it is not a game patch or tournament announcement. The Hunt: Roblox 20 event ended on 28 September, and Roblox experiences run their own separate competition calendars."
     ],
     playerFocusHeading: 'Robux, UGC rewards and experience-specific rules',
     playerFocus: [
@@ -284,10 +296,11 @@ export const GAME_NEWS_PAGES: GameNewsPage[] = [
       { name: 'Roblox — The Hunt: Roblox 20', url: 'https://about.roblox.com/newsroom/2026/09/join-the-hunt-roblox-20' },
       { name: 'Roblox — Fall Games Preview', url: 'https://about.roblox.com/newsroom/2026/09/roblox-fall-games-preview' },
       { name: 'Roblox — 2026 Innovation Awards', url: 'https://about.roblox.com/newsroom/2026/09/2026-roblox-innovation-awards' },
+      { name: "Roblox — Securing an Ecosystem Unlike Any Other", url: "https://about.roblox.com/newsroom/2026/10/securing-an-ecosystem-unlike-any-other" }
     ],
     faqs: [
       { question: 'Is the Showdown Cup an official Roblox-wide tournament?', answer: 'No. Roblox’s newsroom describes it as a tournament inside SuperGaming’s Showdown experience, not a platform-wide Roblox pro league.' },
-      { question: 'Can players still join The Hunt: Roblox 20?', answer: 'The official event window was 17–28 September 2026, so it had ended by 2 October. Check Roblox for any follow-up event or reward claim window.' },
+      { question: 'Can players still join The Hunt: Roblox 20?', answer: 'The official event window was 17–28 September 2026, so it had ended by 5 October. Check Roblox for any follow-up event or reward claim window.' },
     ],
   },
   {
@@ -295,10 +308,11 @@ export const GAME_NEWS_PAGES: GameNewsPage[] = [
     description: 'League of Legends October 2026 update: Worlds 2026 stage locations, revised broadcast start times, LoL esports news and official Riot sources.',
     heading: 'League of Legends News: Worlds 2026 Player and Fan Guide',
     intro: 'Worlds 2026 begins in October, and Riot has published venue policies plus updated broadcast start times. This page covers where each stage is played and what fans should verify before travelling or planning a watch party.',
-    updateHeading: 'Riot updates Worlds venues and stage start times', updateDate: '2 October 2026',
+    updateHeading: 'Riot updates Worlds venues and stage start times', updateDate: '5 October 2026',
     update: [
       'Riot’s 22 September venue notice places Play-Ins in Los Angeles, the Swiss Stage and knockout rounds at the Credit Union of Texas Event Center in Allen, Texas, and the Final at Barclays Center in Brooklyn on 14 November.',
       'Riot also adjusted some broadcast start times. Its notice lists Texas Swiss matches on 23–26 October at noon CDT, 28–30 October at 3 p.m. CDT and 31 October at noon CDT; check the full official schedule for later stages, ticket policies and any further timing changes.',
+      "Riot’s Worlds venue notice is the latest practical event update checked: Play-Ins are in Los Angeles, the Swiss Stage and knockouts are in Allen, Texas, and the Final is at Brooklyn’s Barclays Center on 14 November. Worlds is scheduled to begin on 15 October; use the official LoL Esports schedule for matchups and start-time changes."
     ],
     playerFocusHeading: 'Patch, ranked season and Worlds watch planning',
     playerFocus: [
@@ -322,10 +336,11 @@ export const GAME_NEWS_PAGES: GameNewsPage[] = [
     description: 'Rocket League Season 24 is live: Rocket Pass cars, Honor Duels, Black Market trade-ins, Bullet Ball dates, ranked rewards and RLCS updates.',
     heading: 'Rocket League News: Season 24 and Rocket Pass',
     intro: 'Season 24 launched on 23 September with player-facing changes to duels, item trade-ins, controls and ranked rewards. The official season post also gives exact dates for the current limited-time modes and Rocket Pass content.',
-    updateHeading: 'Season 24 adds Honor Duels and Black Market trade-ins', updateDate: '2 October 2026',
+    updateHeading: 'Season 24 adds Honor Duels and Black Market trade-ins', updateDate: '5 October 2026',
     update: [
       'Rocket League Season 24 adds Honor Duels: players can challenge a match opponent to a 1v1 after the current match, while others may spectate. Three duplicate Black Market items can now be traded in for a new item or a painted item the player has not collected.',
       'The season adds a custom scoreboard, free-look camera options, updated mouse-and-keyboard controls and new Top 100 ranked titles. Bullet Ball runs 23 September–6 October; the Persona 5 event runs 25 September–12 October. Season 24 Rocket Pass includes the Volkswagen Golf GTI Edition 50, Dominus GT 76 and Pareto 5S bodies.',
+      "As checked on 5 October: Season 24 is live. The Bullet Ball limited-time mode is scheduled through 6 October, while the Persona 5 event runs through 12 October; check the in-game playlist and event tabs for local end times and reward claims."
     ],
     playerFocusHeading: 'Rocket Pass, ranked rewards and limited-time events',
     playerFocus: [
@@ -349,10 +364,11 @@ export const GAME_NEWS_PAGES: GameNewsPage[] = [
     description: 'Overwatch September 2026 player update: D.Mon hotfix, Junkrat’s Loot Hunt dates, delayed Unvaulted Passes and OWCS Stage 3 schedule.',
     heading: 'Overwatch News: September Balance, Battle Pass and OWCS',
     intro: 'The September patch cycle includes D.Mon tuning, bug fixes and a three-week Junkrat’s Loot Hunt. Blizzard also delayed the return of Unvaulted Passes to Season 5, which matters to players waiting for legacy cosmetics.',
-    updateHeading: 'D.Mon hotfix and Junkrat’s Loot Hunt shape September', updateDate: '2 October 2026',
+    updateHeading: 'D.Mon hotfix and Junkrat’s Loot Hunt shape September', updateDate: '5 October 2026',
     update: [
       'Blizzard’s 17 September hotfix reduced D.Mon’s armor and adjusted her Fusion Repeater and Propulsors. The 8 September patch introduced Junkrat’s Loot Hunt, scheduled for 12–29 September, plus additional hero balance changes.',
       'In its Season 4 midcycle post, Blizzard said Unvaulted Passes would move from the Season 4 midseason update to the start of Season 5 so QA could test the feature. No full mechanics or final release details were included in that notice.',
+      "OWCS Stage 3 is the next confirmed competition window: NA and EMEA regular-season matches are scheduled for 10–11, 17–18 and 24–25 October, with playoffs 30 October–1 November. China’s Stage 3 has a separate 3 October–8 November schedule; the 2026 World Finals are listed for 2–6 December."
     ],
     playerFocusHeading: 'Battle Pass and returning cosmetics',
     playerFocus: [
@@ -376,10 +392,11 @@ export const GAME_NEWS_PAGES: GameNewsPage[] = [
     description: 'Rainbow Six Siege Operation Split Fire update: Y11S3.1 patch, September Wasteland Circuit event, Ranked 3.0 and Osaka Major dates.',
     heading: 'Rainbow Six Siege News: Operation Split Fire and Osaka Major',
     intro: 'Rainbow Six Siege is in Year 11 Season 3, Operation Split Fire. Ubisoft’s 22 September Y11S3.1 patch and Wasteland Circuit event are the latest player-facing notes, while the next global Major is scheduled for Osaka in November.',
-    updateHeading: 'Y11S3.1 patch and Wasteland Circuit event', updateDate: '2 October 2026',
+    updateHeading: 'Y11S3.1 patch and Wasteland Circuit event', updateDate: '5 October 2026',
     update: [
       'Ubisoft’s official update feed lists Y11S3.1 patch notes on 22 September and a new Wasteland Circuit Twitch Drop on 23 September. The patch-note page is the authoritative place to check operator, map, bug-fix and platform-specific changes; the headline alone does not enumerate all details.',
       'Year 11 also brings Ranked 3.0, which Ubisoft said would launch with Operation System Override on 2 June. For season progression, check current ranked placement, seasonal challenges and any battle-pass timer in the client because rewards and availability are time-limited.',
+      "The latest official player-facing notes located are Ubisoft’s Y11S3.1 patch and Wasteland Circuit notice from 22–23 September. Check Ubisoft’s live patch feed and in-game event panel for any newer hotfix, event expiry or Ranked 3.0 changes before relying on an older loadout guide."
     ],
     playerFocusHeading: 'Ranked 3.0, seasonal rewards and drops',
     playerFocus: [
@@ -403,10 +420,11 @@ export const GAME_NEWS_PAGES: GameNewsPage[] = [
     description: 'Destiny 2 current player notes: Bungie’s 9.7.0.3 hotfix, Monument of Triumph major update and official status of publisher-run esports events.',
     heading: 'Destiny 2 News: Update 9.7 and Guardian Checklist',
     intro: 'Bungie’s 9.7.0 release was identified as the final major patch for Destiny 2, with smaller maintenance updates still possible. The latest specific 9.7.0.3 notes include Crucible and Trials fixes; no Bungie-run 2026 esports circuit was listed on the official pages checked.',
-    updateHeading: 'Update 9.7 is the final major patch; hotfixes can follow', updateDate: '2 October 2026',
+    updateHeading: 'Update 9.7 is the final major patch; hotfixes can follow', updateDate: '5 October 2026',
     update: [
       'Bungie’s 9 June Update 9.7.0 notes describe the release as the final major Destiny 2 patch, while explicitly allowing for smaller maintenance patches and hotfixes afterward. It includes changes across activities, rewards, raids, dungeons and the Monument of Triumph update.',
       'The later 9.7.0.3 update on 7 July increased Vanguard and Crucible Ops reputation and fixed several Crucible and Trials issues. Bungie’s current public news feed checked for this page showed later 2026 posts focused on Marathon rather than a new Destiny 2 seasonal roadmap.',
+      "Bungie’s public Destiny 2 news feed checked on 5 October has no newer major Destiny 2 release than Update 9.7.0.3 (7 July). Bungie had described 9.7.0 as the final major patch; smaller maintenance or hotfix notes can still appear, so this page does not label the old patch as a new October release."
     ],
     playerFocusHeading: 'Activities, power progression and community events',
     playerFocus: [
@@ -430,10 +448,11 @@ export const GAME_NEWS_PAGES: GameNewsPage[] = [
     description: 'EA SPORTS FC 27 launch guide: Ones to Watch Season 1 pass runs through October 22, player item upgrades, Ultimate Team and FC Pro details.',
     heading: 'EA SPORTS FC 27 News: Season 1 and FC Pro',
     intro: 'EA SPORTS FC 27 launched in September, and Football Ultimate Team Season 1 is active through 22 October. This page separates Ultimate Team’s player-facing campaign from the FC Pro esports ladder and the new Grounds/Clubs modes.',
-    updateHeading: 'Season 1: Ones to Watch runs through 22 October', updateDate: '2 October 2026',
+    updateHeading: 'Season 1: Ones to Watch runs through 22 October', updateDate: '5 October 2026',
     update: [
       'EA’s launch update sets Season 1: Ones to Watch for 17 September–22 October. The campaign links Ones to Watch, Destined for Glory and Future Stars; eligible Ones to Watch items can receive upgrades for Team of the Week, Star Performer or Player of the Month recognition, plus a club-results boost described in EA’s rules.',
       'EA’s 30 September Gameplay Developer Launch Update and 29 September Career Mode update are the newest title-specific news posts. The Grounds, including Clubs, is available only on PlayStation 5, Xbox Series X|S, PC and Nintendo Switch 2 according to EA’s platform note; older consoles do not get that mode.',
+      "As checked on 5 October: the FC Pro 27 Open Ladder ended on 3 October. Its next listed step is the Open Global Qualifier on 5–7 November. FUT Season 1: Ones to Watch remains scheduled through 22 October; check Ultimate Team for shorter objective/SBC timers."
     ],
     playerFocusHeading: 'Ultimate Team Season Pass and supported modes',
     playerFocus: [
@@ -457,10 +476,11 @@ export const GAME_NEWS_PAGES: GameNewsPage[] = [
     description: 'Mobile Legends: Bang Bang October 2026 news: 10th anniversary campaign, Asian Games result, MPL Philippines playoffs and the road to M8.',
     heading: 'Mobile Legends: Bang Bang News: Anniversary and MPL',
     intro: 'MLBB’s 10th anniversary campaign is active, while the Asian Games esports debut has concluded and regional leagues continue. This page identifies which tournament is finished and which upcoming dates still matter to players and fans.',
-    updateHeading: 'MLBB marks 10 years; Myanmar wins the Asian Games event', updateDate: '2 October 2026',
+    updateHeading: 'MLBB marks 10 years; Myanmar wins the Asian Games event', updateDate: '5 October 2026',
     update: [
       'MOONTON launched the ALL IN MLBB 10th-anniversary campaign on 4 September. Its official 1 October report says Myanmar won the inaugural Asian Games MLBB gold by defeating Indonesia 4–0 at Aichi Sky Expo; this competition is complete, not live as of this page date.',
       'MPL Philippines Season 18 playoffs are scheduled for 21–25 October at PhilSports Arena in Pasig. MOONTON describes the playoffs as part of the Philippines’ route toward M8; Thailand’s MSL Season 2 also runs through 18 October. Each regional league has its own standings and qualification route.',
+      "The Asian Games MLBB competition is complete: MOONTON reports Myanmar beat Indonesia 4–0 for gold. MPL Philippines S18 playoffs are next, scheduled for 21–25 October at PhilSports Arena; the 10th-anniversary campaign has region-specific rewards, so confirm availability in your server’s Events tab."
     ],
     playerFocusHeading: 'Anniversary missions and regional season play',
     playerFocus: [
@@ -484,10 +504,11 @@ export const GAME_NEWS_PAGES: GameNewsPage[] = [
     description: 'Honor of Kings October 2026 guide: Season 16 Flow As One patch, iOS minimum-version notice, anti-cheat update and official esports events.',
     heading: 'Honor of Kings News: Season 16 and Global Esports',
     intro: 'Honor of Kings entered Season 16: Flow As One with a September patch and published an iOS minimum-version notice. Its esports calendar has regional and global events; the current official page should be used for event stages and regional qualifiers.',
-    updateHeading: 'Season 16 Flow As One patch and device compatibility notice', updateDate: '2 October 2026',
+    updateHeading: 'Season 16 Flow As One patch and device compatibility notice', updateDate: '5 October 2026',
     update: [
       'The official Honor of Kings site lists Season 16: Flow As One patch notes dated 22 September, an anti-cheat measures update and a minimum iOS system version adjustment dated 17 September. Players on older devices should confirm compatibility before updating, especially if they rely on an older operating system.',
       'The official esports hub separates global events, regional pro leagues and grassroots competitions. Event windows and team counts vary by region, so a single headline date should not be treated as a universal HoK schedule.',
+      "As checked on 5 October: the Asian Games esports competition window closed on 2 October; it should not be described as an upcoming tournament. Season 16: Flow As One is a separate live-game season. Honor of Kings’ official esports calendar is the source to watch for the next event announcement and regional schedule."
     ],
     playerFocusHeading: 'Season pass, device requirements and fair play',
     playerFocus: [
@@ -511,10 +532,11 @@ export const GAME_NEWS_PAGES: GameNewsPage[] = [
     description: 'Brawl Stars October 2026 update: Brawl-O-Ween and Royal Academy pass skins, September balance changes and November World Finals format.',
     heading: 'Brawl Stars News: Brawl Pass, Balance and World Finals',
     intro: 'Supercell’s September release notes list two themed pass seasons, balance changes and a 16 September maintenance patch. The World Finals are scheduled for November, with a published 12-team format and prize pool.',
-    updateHeading: 'Royal Academy and Brawl-O-Ween seasons arrive with balance tuning', updateDate: '2 October 2026',
+    updateHeading: 'Royal Academy and Brawl-O-Ween seasons arrive with balance tuning', updateDate: '5 October 2026',
     update: [
       'Supercell’s 1 September notes list the Royal Academy season and Brawl-O-Ween cosmetics in the Brawl Pass, with Hank and Nani-themed rewards for Royal Academy and Fortune Teller P / Shade items for Brawl-O-Ween. A 16 September maintenance update nerfed Shade, Gus, El Primo and Amber in specified ways.',
       'The 19 September Brawl Stars x Duolingo event ran through 30 September. Its community tasks and reward window are over by this update date; check the in-game news panel for the currently active season event rather than expecting expired collaboration rewards.',
+      "The latest confirmed game-balance entry is Supercell’s 16 September maintenance: it changed Shade, Gus, El Primo, Amber and other Brawlers, with additional bug fixes. The Brawl Stars World Finals are scheduled for 20–22 November in Tokyo; use the client for the current Brawl Pass timer and live event rewards."
     ],
     playerFocusHeading: 'Brawl Pass, balance and ranked preparation',
     playerFocus: [
@@ -538,10 +560,11 @@ export const GAME_NEWS_PAGES: GameNewsPage[] = [
     description: 'Clash of Clans October 2026 guide: Cosmic Curse, Totem Thrower, Shroud Queen Gold Pass, October Clan War League and World Championship LCQ.',
     heading: 'Clash of Clans News: September Update and Gold Pass',
     intro: 'The September update adds a temporary Yeti Undertaker troop, more Diggy levels and new Town Hall 18 Supercharges. It also moves Gold Pass and Season Challenges access down to Town Hall 3, changing early account progression.',
-    updateHeading: 'October Clash-O-Ween adds Totem Thrower and a new Gold Pass', updateDate: '2 October 2026',
+    updateHeading: 'October Clash-O-Ween adds Totem Thrower and a new Gold Pass', updateDate: '5 October 2026',
     update: [
       'Supercell’s 1 October Clash-O-Ween announcement starts Cosmic Curse: Portal Panic for the month. The new temporary Totem Thrower attacks ground targets from range; every fourth attack throws a totem that stuns nearby defenses and creates a decoy. The event also schedules October Clan War League for 1–11 October and Clan Games for 22–28 October.',
       'The October Gold Pass includes Shroud Queen as its exclusive Hero Skin, with Ghost Champion as the alternate option named by Supercell. The September WWE event and its Yeti Undertaker temporary troop ended on 1 October, so those rewards should no longer be described as current.',
+      "Cosmic Curse: Portal Panic runs through October. The 1 October announcement lists the Totem Thrower temporary troop and Shroud Queen Gold Pass; Clan War League runs 1–11 October. The Portal Medal Event is scheduled for 8–25 October, with Portal Pendant equipment available through the Trader Shop until 27 October; these dates make the October calendar useful before spending medals."
     ],
     playerFocusHeading: 'Gold Pass value, Town Hall and upgrade timing',
     playerFocus: [
@@ -566,10 +589,11 @@ export const GAME_NEWS_PAGES: GameNewsPage[] = [
     description: 'Clash Royale October 2026 update: September balance changes, Minion Academy season, Merge Tactics Season 11 and current Pass Royale checks.',
     heading: 'Clash Royale News: September Balance and October Season',
     intro: 'Supercell’s current Clash Royale hub highlights September balance changes and Merge Tactics Season 11’s October changes. These updates affect different modes, so card-battle ladder notes and Merge Tactics rules should not be mixed.',
-    updateHeading: 'September balance changes and Merge Tactics Season 11', updateDate: '2 October 2026',
+    updateHeading: 'September balance changes and Merge Tactics Season 11', updateDate: '5 October 2026',
     update: [
       'Supercell’s 23 September balance post lists the 16 September changes: Hero Ice Wizard freeze duration fell from 7 to 5 seconds, Goblinstein ability duration from 4 to 3.5 seconds, and Minion Giant damage from 189 to 168. Fire Spirit damage rose from 207 to 215. The 8 September wave also adjusted Hero Balloon, Battle Ram Evolution, Elite Barbarians Evolution, Freeze, Fireball, Ice Golem and Zappies, among others.',
       'Supercell’s 30 September Merge Tactics Season 11 post says October changes took effect on 1 October: Monthly Supers move to the shared pool, players start with a random 2-Elixir troop, and Elixir per round drops from 5 to 4. These are Merge Tactics rules, separate from standard Clash Royale card-battle balance.',
+      "The October Merge Tactics changes took effect on 1 October within Season 11 (1 September–1 December): the mode has October Supers, modifiers and troop pool, and October balance updates buffed several 2- and 3-Elixir troops. These apply to Merge Tactics; standard Clash Royale card-battle balance is covered separately in Supercell’s September notes."
     ],
     playerFocusHeading: 'Pass Royale, balance and mode-specific rewards',
     playerFocus: [
@@ -577,7 +601,7 @@ export const GAME_NEWS_PAGES: GameNewsPage[] = [
       'Clash Royale and Merge Tactics have distinct season content. Check which mode a balance or leaderboard post applies to before using it for deck or placement decisions.',
     ],
     competitionHeading: 'Clash Royale League status',
-    competition: ['Supercell’s CRL 2026 Last Chance Qualifier ran 5–6 September; the official event site lists Woo as winner.', 'As of 2 October, Supercell’s event page says more events are coming but does not announce the next live CRL date. In-game Global Tournaments are separate limited-time competitions.'],
+    competition: ['Supercell’s CRL 2026 Last Chance Qualifier ran 5–6 September; the official event site lists Woo as winner.', 'As of 5 October, Supercell’s event page says more events are coming but does not announce the next live CRL date. In-game Global Tournaments are separate limited-time competitions.'],
     sources: [
       { name: 'Supercell — Clash Royale September balance changes', url: 'https://supercell.com/en/games/clashroyale/blog/release-notes/september-balance-changes-2027/' },
       { name: 'Supercell — Merge Tactics Season 11 October changes', url: 'https://supercell.com/en/games/clashroyale/blog/release-notes/merge-tactics-season-11-october-changes/' },
@@ -594,10 +618,11 @@ export const GAME_NEWS_PAGES: GameNewsPage[] = [
     description: 'Genshin Impact Version 7.1 player update: Moonchase event-exclusive Silver Light sword, Primogems, new character notices and creator contest.',
     heading: 'Genshin Impact News: Version 7.1 and Moonchase',
     intro: 'Genshin Impact’s Version 7.1 “A Requiem for the Underworld” preview and the Moonchase event are the key September–October player updates. This is an action RPG with timed in-game events rather than an official esports tournament circuit.',
-    updateHeading: 'Moonchase event offers the Silver Light sword', updateDate: '2 October 2026',
+    updateHeading: 'Moonchase event offers the Silver Light sword', updateDate: '5 October 2026',
     update: [
       'HoYoverse’s 22 September event overview says “Silverwing in Pursuit of the Moon” begins 24 September at 10:00 server time. Completing event quests can award the event-exclusive Silver Light sword, Primogems, Crown of Insight and other materials.',
       'HoYoverse’s news page also lists the Version 7.1 “A Requiem for the Underworld” Phase I events preview, character trailers for Vesna and Vodyanitsa, and a Miliastra Wonderland creator contest published on 23 September. Check the in-game Events menu for each server’s remaining claim window and banner schedule.',
+      "As checked on 5 October: Version 7.1, “A Requiem for the Underworld,” is live, with its event schedule and banner windows shown in HoYoverse’s official in-game/news calendar. Event start and end times use server time; check the client before spending Primogems because banners and event rewards rotate."
     ],
     playerFocusHeading: 'Primogems, event weapon and banner timing',
     playerFocus: [
@@ -621,10 +646,11 @@ export const GAME_NEWS_PAGES: GameNewsPage[] = [
     description: 'Stumble Guys October 2026 player guide: v0.103 Cursed Fair season, Ranked Season 26 end, Clubs Season 15, new Bumper Field ability and events.',
     heading: 'Stumble Guys News: Cursed Fair and Ranked Seasons',
     intro: 'The official Stumble Guys news feed now lists version 0.103.0, the Cursed Fair season, after the September 0.102.0 Live, Laugh, Lava Land update. Ranked Season 26 ended on 1 October, while Clubs Season 15 continues through 15 October.',
-    updateHeading: 'v0.103.0 Cursed Fair follows the September anniversary season', updateDate: '2 October 2026',
+    updateHeading: 'v0.103.0 Cursed Fair follows the September anniversary season', updateDate: '5 October 2026',
     update: [
       'Scopely’s current News & Tips page lists 0.103.0 Patch Notes — Cursed Fair Season as the newest update. The preceding 0.102.0 season added Bumper Field, improved ability/emote equipping, Ranked Season 26 and a September anniversary campaign.',
       'The 0.102.0 notes set Ranked Season 26 for 3 September–1 October and Clubs Season 15 for 17 September–15 October. That means the ranked reward window has closed, but the Clubs season is still active as of this page date. Check the client for the 0.103.0 season’s exact ranked dates and reward track.',
+      "As checked on 5 October: the official Stumble Guys feed lists version 0.103.0 and the Cursed Fair season after the 0.102.0 September update. Ranked and Clubs have their own season timers, so verify the current event and reward expiry in the client rather than assuming all modes reset together."
     ],
     playerFocusHeading: 'Ranked reward, Clubs season and Stumble Pass',
     playerFocus: [
@@ -648,10 +674,11 @@ export const GAME_NEWS_PAGES: GameNewsPage[] = [
     description: 'Among Us October 2026 update: v19.0.0 adds the Influencer ghost Crewmate role, with Impostor Month beginning and official patch details.',
     heading: 'Among Us News: Influencer Role and Impostor Month',
     intro: 'Innersloth shipped Among Us v19.0.0 on 29 September, adding the Influencer ghost role. The developer’s next-day post announces Impostor Month, so players should check new monthly tasks and event rewards in the official update feed.',
-    updateHeading: 'v19.0.0 adds the Influencer ghost role', updateDate: '2 October 2026',
+    updateHeading: 'v19.0.0 adds the Influencer ghost role', updateDate: '5 October 2026',
     update: [
       'Innersloth’s 29 September patch notes say v19.0.0 is available on all platforms and introduces the Influencer as a new Ghost Crewmate role. The role gives eliminated Crewmates a way to communicate information about the Impostor; the full ability rules and any lobby settings are in the linked dev log.',
       'On 1 October, Innersloth announced “Impostor Month Begins!” Check the official post and in-game event panel for the monthly challenges, claim windows and cosmetics. The public announcement headline did not include a full reward schedule in the page summary checked.',
+      "Among Us v19.0.0 launched on 29 September with the Influencer ghost Crewmate role; Innersloth’s 30 September post then introduced Impostor Month. Check the live game/news panel for the event’s available tasks and rewards because role availability and limited-time event timing can vary by platform rollout."
     ],
     playerFocusHeading: 'Role settings, lobby compatibility and event rewards',
     playerFocus: [
@@ -674,10 +701,11 @@ export const GAME_NEWS_PAGES: GameNewsPage[] = [
     description: 'GTA Online October 2026 update: Rockstar confirms Halloween thrills throughout October; check weekly bonuses, GTA+ and limited-time rewards.',
     heading: 'GTA Online News: October Halloween Events and Weekly Updates',
     intro: 'Rockstar’s 1 October Newswire post announces Halloween thrills throughout October in GTA Online. GTA Online changes weekly, so this page distinguishes the month-long theme from each week’s exact bonuses and GTA+ benefits.',
-    updateHeading: 'Halloween thrills arrive throughout October', updateDate: '2 October 2026',
+    updateHeading: 'Halloween thrills arrive throughout October', updateDate: '5 October 2026',
     update: [
       'Rockstar’s 1 October Newswire listing confirms Halloween content throughout October. Its public headline does not provide every weekly activity, payout multiplier or reward deadline; open the linked article and in-game Newswire for the current week’s full list.',
       'The latest September items included GTA+ early access to the Pegassi Horus and the Business Rivalries event. Those are dated promotions; do not assume a past vehicle or bonus remains claimable after its week ends.',
+      "Rockstar’s current title update notes confirm Halloween content from 1 October through 4 November, including updated Ghosts Exposed locations and rewards. The October Newswire headline does not itself list every weekly bonus, so check the linked Thursday Newswire post and GTA+ page for exact activity multipliers, claim windows and platform terms."
     ],
     playerFocusHeading: 'Weekly bonuses, GTA+ and limited-time rewards',
     playerFocus: [
@@ -689,6 +717,7 @@ export const GAME_NEWS_PAGES: GameNewsPage[] = [
     sources: [
       { name: 'Rockstar Games Newswire — GTA Online', url: 'https://www.rockstargames.com/newswire' },
       { name: 'Rockstar Games — GTA Online news archive', url: 'https://www.rockstargames.com/gta-online/newswire' },
+      { name: "Rockstar Support — GTAV Title Update 1.73 notes", url: "https://support.rockstargames.com/articles/4vRqEDvjUs9h7nqRUgc8YO/gtav-title-update-1-73-notes-ps5-ps4-xbox-series-x-or-s-xbox-one-pc-enhanced-legacy" }
     ],
     faqs: [
       { question: 'What is happening in GTA Online in October 2026?', answer: 'Rockstar’s 1 October Newswire post announces Halloween thrills throughout October. Check the full post for this week’s modes, rewards and exact dates.' },
