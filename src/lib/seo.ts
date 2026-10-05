@@ -1,7 +1,7 @@
 import { GameProfile } from '../types';
 import { GameSeoContent, SITE_DISPLAY_NAME, SITE_NAME, SITE_URL } from '../data/game-seo';
 import { SitePageContent } from '../data/site-pages';
-import type { GameNewsPage } from '../data/game-news';
+import type { GameNewsPage } from '../data/tournament-data';
 
 function upsertMeta(name: string, content: string, property = false) {
   const selector = property ? `meta[property="${name}"]` : `meta[name="${name}"]`;

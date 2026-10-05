@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { ArrowLeft, ExternalLink, Gamepad2, Newspaper, ShieldCheck, Trophy } from 'lucide-react';
 import { POPULAR_GAMES } from '../data/games';
-import { GAME_NEWS_BY_ID, GAME_NEWS_INDEX, type GameNewsPage as GameNewsRecord } from '../data/game-news';
+import { GAME_NEWS_BY_ID, GAME_NEWS_INDEX, type GameNewsPage as GameNewsRecord } from '../data/tournament-data';
 import { SITE_DISPLAY_NAME } from '../data/game-seo';
 import { applyGameNewsSeo } from '../lib/seo';
 
