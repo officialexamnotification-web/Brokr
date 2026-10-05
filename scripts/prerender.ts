@@ -24,6 +24,11 @@ function urlFor(slug: string): string {
   return `${ORIGIN}/${slug}`.replace(/\/$/, slug ? '' : '/');
 }
 
+function isoDate(dateLabel: string): string {
+  const parsed = new Date(`${dateLabel} UTC`);
+  return Number.isNaN(parsed.valueOf()) ? new Date().toISOString().slice(0, 10) : parsed.toISOString().slice(0, 10);
+}
+
 function breadcrumbJson(url: string, label: string) {
   const itemListElement = [
     { '@type': 'ListItem', position: 1, name: 'Home', item: `${ORIGIN}/` },
@@ -171,7 +176,7 @@ function gameNewsMarkup(page: GameNewsPage, game: typeof POPULAR_GAMES[number]) 
     return `<section class="mt-8 rounded-2xl border border-slate-800 bg-slate-900/40 p-5"><h2 class="text-xl font-semibold text-white">${escapeHtml(section.title)}</h2>${section.description ? `<p class="mt-2 text-sm leading-6 text-slate-300">${escapeHtml(section.description)}</p>` : ''}<div class="mt-4 overflow-x-auto"><table class="w-full min-w-[34rem] text-left text-sm"><thead class="bg-slate-950/60"><tr>${header}</tr></thead><tbody>${rows}</tbody></table></div>${source}</section>`;
   }).join('');
   const faqs = page.faqs.map((faq) => `<section><h2>${escapeHtml(faq.question)}</h2><p>${escapeHtml(faq.answer)}</p></section>`).join('');
-  return `<main id="seo-content"><a href="/game-news" class="mb-5 inline-flex items-center gap-2 rounded-lg border border-cyan-400/30 bg-cyan-500/10 px-3.5 py-2 text-xs font-bold text-cyan-200">← Back to Game News</a><nav aria-label="Breadcrumb"><a href="/">Home</a> / <a href="/game-news">Game News</a> / <span>${escapeHtml(game.shortName)}</span></nav><article><h1>${escapeHtml(page.heading)}</h1><p>${escapeHtml(page.intro)}</p><p><time datetime="2026-10-05">Updated ${escapeHtml(page.updateDate)}</time></p><section><h2>${escapeHtml(page.updateHeading)}</h2>${paragraphs}</section>${detailTables}<section><h2>${escapeHtml(page.playerFocusHeading)}</h2><ul>${playerItems}</ul></section><section><h2>${escapeHtml(page.competitionHeading)}</h2><ul>${competitionItems}</ul></section><section><h2>Official sources checked</h2><ul>${sources}</ul></section>${faqs}<nav aria-label="Related pages"><a href="/${escapeHtml(game.slug)}">${escapeHtml(game.shortName)} name generator</a> · <a href="/tournaments">Tournament calendar</a> · <a href="/game-news">All game news</a></nav></article></main>`;
+  return `<main id="seo-content"><a href="/game-news" class="mb-5 inline-flex items-center gap-2 rounded-lg border border-cyan-400/30 bg-cyan-500/10 px-3.5 py-2 text-xs font-bold text-cyan-200">← Back to Game News</a><nav aria-label="Breadcrumb"><a href="/">Home</a> / <a href="/game-news">Game News</a> / <span>${escapeHtml(game.shortName)}</span></nav><article><h1>${escapeHtml(page.heading)}</h1><p>${escapeHtml(page.intro)}</p><p><time datetime="${isoDate(page.updateDate)}">Updated ${escapeHtml(page.updateDate)}</time></p><section><h2>${escapeHtml(page.updateHeading)}</h2>${paragraphs}</section>${detailTables}<section><h2>${escapeHtml(page.playerFocusHeading)}</h2><ul>${playerItems}</ul></section><section><h2>${escapeHtml(page.competitionHeading)}</h2><ul>${competitionItems}</ul></section><section><h2>Official sources checked</h2><ul>${sources}</ul></section>${faqs}<nav aria-label="Related pages"><a href="/${escapeHtml(game.slug)}">${escapeHtml(game.shortName)} name generator</a> · <a href="/tournaments">Tournament calendar</a> · <a href="/game-news">All game news</a></nav></article></main>`;
 }
 
 function renderGameNewsHtml(page: GameNewsPage, game: typeof POPULAR_GAMES[number]) {
@@ -180,7 +185,7 @@ function renderGameNewsHtml(page: GameNewsPage, game: typeof POPULAR_GAMES[numbe
   const graph = {
     '@context': 'https://schema.org',
     '@graph': [
-      { '@type': 'NewsArticle', headline: page.heading, description: page.description, datePublished: '2026-10-05', dateModified: '2026-10-05', author: { '@type': 'Organization', name: SITE_NAME, url: `${ORIGIN}/about` }, about: { '@type': 'Thing', name: game.name }, mainEntityOfPage: canonical, isBasedOn: page.sources.map((source) => source.url) },
+      { '@type': 'NewsArticle', headline: page.heading, description: page.description, datePublished: isoDate(page.updateDate), dateModified: isoDate(page.updateDate), articleSection: 'Game News', keywords: [game.shortName, `${game.name} news`, `${game.name} update`, page.updateHeading, page.competitionHeading], author: { '@type': 'Organization', name: SITE_NAME, url: `${ORIGIN}/about` }, publisher: { '@type': 'Organization', name: SITE_NAME, url: ORIGIN }, about: { '@type': 'Thing', name: game.name }, mainEntityOfPage: canonical, isBasedOn: page.sources.map((source) => source.url) },
       { '@type': 'BreadcrumbList', itemListElement: [
         { '@type': 'ListItem', position: 1, name: 'Home', item: `${ORIGIN}/` },
         { '@type': 'ListItem', position: 2, name: 'Game News', item: `${ORIGIN}/game-news` },
@@ -258,7 +263,7 @@ for (const page of SITE_PAGES) {
 const allTournamentNews = getTournamentNews();
 writeRoute('esports-news', renderTournamentHtml({ slug: 'esports-news', ...TOURNAMENT_NEWS_SEO }));
 writeRoute('tournaments', renderTournamentHtml({ slug: 'tournaments', ...TOURNAMENTS_SEO }));
-const gameNewsIndexRoute = { slug: 'game-news', title: `Game News, Updates and Esports by Title | ${SITE_DISPLAY_NAME}`, description: 'Game-by-game official news for 25 supported titles: patches, passes, seasonal events and tournament schedules, with separate details and publisher links.', heading: 'Game news, seasons and tournament updates', intro: 'Read separate, official-source update pages for each supported game. Find current patches, passes, live-service events and tournament schedules, with pending details clearly identified.' };
+const gameNewsIndexRoute = { slug: 'game-news', title: `Game News, Updates and Esports by Title | ${SITE_DISPLAY_NAME}`, description: `Official-source gaming news for ${GAME_NEWS_INDEX.length} titles: patches, seasonal events and esports schedules, with separate game details and publisher links.`, heading: 'Game news, seasons and tournament updates', intro: `Read separate, official-source update pages for ${GAME_NEWS_INDEX.length} supported games. Find current patches, passes, live-service events and upcoming tournament schedules, with unconfirmed details clearly identified.` };
 writeRoute('game-news', renderTournamentHtml(gameNewsIndexRoute).replace(/<div id="root">[\s\S]*?<\/div>/i, `<div id="root">${gameNewsIndexMarkup()}</div>`));
 for (const game of GAME_NEWS_INDEX) {
   const page = GAME_NEWS_BY_ID.get(game.id);

@@ -26,6 +26,8 @@ export interface GameSeoContent {
 const GAME_INTENTS: Record<string, string> = {
   bgmi: 'stylish BGMI names, BGMI symbols, clan tags and clean player names',
   pubg: 'PUBG Mobile nicknames, squad tags and copy-ready stylish names',
+  pubg_battlegrounds: 'PUBG: BATTLEGROUNDS PC and console nicknames, squad names and clean player IDs',
+  dota2: 'Dota 2 player names, Steam nicknames, hero-inspired handles and team tags',
   freefire: 'Free Fire nicknames, FF name styles and short clan tags',
   valorant: 'Valorant Riot ID ideas, agent-inspired tags and clean handles',
   cod: 'CODM and Warzone gamertags, tactical tags and readable handles',
@@ -71,6 +73,8 @@ export const HOME_SEO: GameSeoContent = {
 const LABELS: Record<string, { noun: string; identity: string; audience: string; pageTitle?: string }> = {
   bgmi: { noun: 'BGMI', pageTitle: 'BGMI Name Generator', identity: 'stylish BGMI nickname', audience: 'BGMI mobile gamers' },
   pubg: { noun: 'PUBG Mobile', pageTitle: 'PUBG Mobile Name Generator', identity: 'stylish PUBG Mobile name', audience: 'PUBG Mobile players' },
+  pubg_battlegrounds: { noun: 'PUBG: BATTLEGROUNDS', pageTitle: 'PUBG: BATTLEGROUNDS Name Generator', identity: 'PUBG PC or console player name', audience: 'PUBG: BATTLEGROUNDS players' },
+  dota2: { noun: 'Dota 2', pageTitle: 'Dota 2 Name Generator', identity: 'Dota 2 player name', audience: 'Dota 2 players' },
   freefire: { noun: 'Free Fire', pageTitle: 'Free Fire Name Generator', identity: 'stylish Free Fire nickname', audience: 'Free Fire players' },
   valorant: { noun: 'Valorant', pageTitle: 'Valorant Name Generator', identity: 'Valorant Riot ID', audience: 'VALORANT players' },
   cod: { noun: 'Call of Duty', pageTitle: 'Call of Duty Name Generator', identity: 'Call of Duty gamertag', audience: 'COD and Warzone players' },
@@ -105,6 +109,8 @@ export function getGameSeo(game: GameProfile): GameSeoContent {
   const titleByGame: Record<string, string> = {
     bgmi: 'BGMI Name Generator | Stylish BGMI Names & Symbols | Tradivex',
     pubg: 'PUBG Mobile Name Generator: Names & Symbols | Tradivex',
+    pubg_battlegrounds: 'PUBG: BATTLEGROUNDS Name Generator | PC & Console | Tradivex',
+    dota2: 'Dota 2 Name Generator & Steam Player Names | Tradivex',
     freefire: 'Free Fire Name Generator: Stylish Names & Symbols | Tradivex',
     valorant: 'Valorant Name Generator & Riot ID Ideas | Tradivex',
     cod: 'COD Name Generator for Warzone & CODM | Tradivex',
@@ -116,6 +122,8 @@ export function getGameSeo(game: GameProfile): GameSeoContent {
   const descriptionByGame: Record<string, string> = {
     bgmi: 'Create a BGMI name with stylish symbols, clan tags or a clean nickname. Copy your favorite and test it in the current BGMI rename screen.',
     pubg: 'Generate PUBG Mobile names, nicknames and clan tags with stylish symbols or clean text. Copy a name and test it in the current game client.',
+    pubg_battlegrounds: 'Create a PUBG: BATTLEGROUNDS player name for PC or console. This page is for the full game, separate from PUBG Mobile; check your Steam, Epic or console profile display rules.',
+    dota2: 'Generate Dota 2 player names, Steam nicknames and team tags. Choose a readable handle for ranked play or esports and check your current Steam profile display settings.',
     freefire: 'Make a Free Fire name with stylish FF symbols, short nicknames or clan tags. Copy your choice and check it in the current Free Fire client.',
     valorant: 'Create a Valorant name, Riot ID or tagline idea. Copy a clean or stylish handle and check current Riot ID rules before changing it.',
     cod: 'Generate COD names for Call of Duty, Warzone and COD Mobile. Explore tactical gamertags, then check the rules for your current title and platform.',

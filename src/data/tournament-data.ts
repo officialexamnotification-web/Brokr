@@ -654,6 +654,79 @@ export const GAME_NEWS_PAGES: GameNewsPage[] = [
     ],
   },
   {
+    gameId: 'pubg_battlegrounds',
+    title: 'PUBG: BATTLEGROUNDS News: Update 43.1 & PGC 2026 | Tradivex',
+    description: 'PUBG PC Update 43.1 patch notes, Jujutsu Kaisen event dates, Solo Deathmatch and the confirmed PGC 2026 schedule in Istanbul.',
+    heading: 'PUBG: BATTLEGROUNDS News: Update 43.1 and PGC 2026',
+    intro: 'This page covers the PC and console version of PUBG: BATTLEGROUNDS. It is separate from PUBG Mobile and focuses on Update 43.1, its timed modes and the next confirmed PUBG esports championship.',
+    updateHeading: 'Update 43.1 adds Jujutsu Kaisen, Solo Deathmatch and balance changes',
+    updateDate: '5 October 2026',
+    update: [
+      'KRAFTON’s Update 43.1 notes say the update deployed on PC on 10 September and consoles on 17 September. It brings the Jujutsu Kaisen collaboration world, LMG balance adjustments, DLSS 4.5 and FSR 4.1 support on PC, and hitbox tuning on console.',
+      'The limited-time Solo Deathmatch mode runs through 14 October on PC and 22 October on consoles. PC Duo Rumble is scheduled through 14 October in Asia, Europe and North America. Check your platform’s service notice for local maintenance and exact availability.',
+      'The next global PUBG esports date is the PUBG Global Championship (PGC) 2026 in Istanbul, Türkiye, from 1–13 December. KRAFTON has announced a 32-team field and a prize pool of at least US$1.5 million; final team rosters and match schedule should be taken from later organizer updates.'
+    ],
+    detailSections: [
+      { title: 'PUBG Update 43.1 — platform and event dates', description: 'The same patch has separate PC and console rollout and event end dates.', columns: ['Item', 'Official detail'], rows: [['PC service update', '10 September 2026'], ['Console service update', '17 September 2026'], ['Jujutsu Kaisen collaboration', 'Available through the next update; check the live in-game timer'], ['Solo Deathmatch', 'PC through 14 October; console through 22 October'], ['Duo Rumble', 'PC, Asia / Europe / North America, through 14 October'], ['PC graphics support', 'NVIDIA DLSS 4.5 and AMD FSR 4.1'], ['Console changes', 'Hitbox tuning']], sourceUrl: 'https://www.pubg.com/en/news/11057' },
+      { title: 'PGC 2026 — confirmed championship information', description: 'The global championship is upcoming; team names and a complete match-by-match schedule must be verified against the event hub as organizers publish them.', columns: ['Field', 'Confirmed detail'], rows: [['Dates', '1–13 December 2026'], ['Location', 'Istanbul, Türkiye'], ['Teams', '32'], ['Prize pool', 'US$1.5 million or more'], ['Next meta update', 'Update 44.2 planned for December; exact deployment date and details are not confirmed here']], sourceUrl: 'https://www.pubg.com/en/news/10110' }
+    ],
+    playerFocusHeading: 'What PUBG PC and console players should check',
+    playerFocus: [
+      'Solo Deathmatch ends on different dates by platform. Check the in-game event tile before planning a final session, especially on console where the listed window runs to 22 October.',
+      'The developer has said a second Meta Rotation Update is planned with Update 44.2 in December. The exact date and full map or balance changes are not yet confirmed in the cited developer letter.',
+      'PC graphics features do not imply a performance guarantee; compare the in-game settings and your hardware before changing upscaling options.'
+    ],
+    competitionHeading: 'Upcoming PUBG: BATTLEGROUNDS esports',
+    competition: ['PUBG Global Championship 2026: 1–13 December in Istanbul, Türkiye; 32 teams and at least US$1.5 million announced.', 'The 2026 PGC team list and detailed daily schedule are not treated as confirmed until posted by PUBG Esports.'],
+    sources: [
+      { name: 'PUBG — Update 43.1 patch notes', url: 'https://www.pubg.com/en/news/11057' },
+      { name: 'PUBG — PGC 2026 announcement', url: 'https://www.pubg.com/en/news/10110' },
+      { name: 'PUBG — Meta Rotation Update developer letter', url: 'https://www.pubg.com/en/news/10874' }
+    ],
+    faqs: [
+      { question: 'Is PUBG: BATTLEGROUNDS the same as PUBG Mobile?', answer: 'No. This news page covers the PC and console game. PUBG Mobile has a separate client, update schedule and esports coverage.' },
+      { question: 'When does PUBG Update 43.1 Solo Deathmatch end?', answer: 'The official notes list 14 October 2026 for PC and 22 October for consoles.' },
+      { question: 'When and where is PGC 2026?', answer: 'PUBG has announced 1–13 December 2026 in Istanbul, Türkiye, with 32 teams. Check the official event hub for the eventual roster and detailed match schedule.' }
+    ]
+  },
+  {
+    gameId: 'dota2',
+    title: 'Dota 2 News: Patch 7.41e, BLAST & Upcoming Events | Tradivex',
+    description: 'Dota 2 latest patch and esports news for 5 October 2026: 7.41e, BLAST Slam VIII playoffs, Slam IX and DreamLeague Season 30 dates.',
+    heading: 'Dota 2 News: Patch 7.41e and the 2026 Tournament Calendar',
+    intro: 'Dota 2’s Steam announcements and tournament organizers are the primary sources for this update. The calendar below separates the live BLAST event from confirmed November and December events, and marks details that remain unpublished.',
+    updateHeading: 'Patch 7.41e is live; BLAST Slam VIII playoffs are next',
+    updateDate: '5 October 2026',
+    update: [
+      'Valve’s Dota 2 announcement feed lists gameplay patch 7.41e and the Summer Scrub update, posted 2 September 2026. Read the linked Steam announcement for the full gameplay changes and bug fixes; patch details can change with later hotfixes.',
+      'As of 5 October, BLAST Slam VIII is in progress in Malta. Its 16-team event runs 29 September–11 October, with the LAN playoffs scheduled for 9–11 October and a US$750,000 prize pool. Use BLAST’s live bracket for results and match times.',
+      'Confirmed future dates include BLAST Slam IX online from 20–29 November and DreamLeague Season 30 from 2–13 December with 24 teams. The International 2026 and PGL Wallachia Season 9 have concluded; completed events should not be presented as upcoming.'
+    ],
+    detailSections: [
+      { title: 'Dota 2 patch status checked 5 October', description: 'Valve’s Steam community announcement page is the publisher source for patch releases and gameplay updates.', columns: ['Update', 'Status'], rows: [['Gameplay patch 7.41e', 'Listed by Valve on 2 September 2026'], ['Summer Scrub', 'Listed in the same September announcement feed'], ['Later changes', 'Check Valve’s current announcement feed for any newer hotfix']], sourceUrl: 'https://steamcommunity.com/app/570/announcements/?l=english' },
+      { title: 'Dota 2 esports — live and upcoming dates', description: 'Dates and format below follow the tournament organizer’s announcements; results and match times can change during live play.', columns: ['Event', 'Dates and confirmed detail'], rows: [['BLAST Slam VIII', '29 September–11 October; 16 teams; Malta; US$750,000'], ['Slam VIII LAN playoffs', '9–11 October 2026'], ['BLAST Slam IX', '20–29 November 2026; online'], ['DreamLeague Season 30', '2–13 December 2026; 24 teams'], ['PGL Wallachia Season 9', 'Completed 17–27 September; Team Yandex beat NAVI 3–0 in the final'], ['The International 2026', 'Completed; Team Spirit won']], sourceUrl: 'https://blast.tv/dota/tournaments/blast-slam-viii/series?view=upcoming' }
+    ],
+    playerFocusHeading: 'Patch notes, brackets and viewing times',
+    playerFocus: [
+      'For hero builds and ranked decisions, read the current Valve patch notes rather than relying on older 7.41 guides; small balance updates can change lane matchups and item choices.',
+      'Tournament match times are published in event-local time and may shift with bracket progression. Check BLAST’s live series page before tuning in.',
+      'The official organizer calendar lists future events, but team invitations and full match schedules may arrive later. This page avoids treating unannounced lineups as final.'
+    ],
+    competitionHeading: 'Upcoming Dota 2 tournaments',
+    competition: ['BLAST Slam VIII playoffs: 9–11 October in Malta; event concludes 11 October.', 'BLAST Slam IX: 20–29 November, online.', 'DreamLeague Season 30: 2–13 December; 24 teams.'],
+    sources: [
+      { name: 'Valve — Dota 2 announcements and patch notes', url: 'https://steamcommunity.com/app/570/announcements/?l=english' },
+      { name: 'BLAST — Slam VIII event page', url: 'https://blast.tv/dota/tournaments/blast-slam-viii/series?view=upcoming' },
+      { name: 'BLAST — Slam IX online event announcement', url: 'https://dev.blast.tv/dota/news/blast-slam-ix-the-battle-moves-online' },
+      { name: 'ESL FACEIT Group — Dota 2 Pro Tour calendar', url: 'https://eslfaceitgroup.com/press/esl-faceit-group-unveils-changes-to-the-dota-2-ecosystem-with-a-robust-esl-pro-tour-calendar-announcement/' }
+    ],
+    faqs: [
+      { question: 'What is the latest Dota 2 patch listed by Valve?', answer: 'Valve’s announcement feed checked for this 5 October update lists gameplay patch 7.41e and Summer Scrub from 2 September. Check the feed for any newer hotfixes.' },
+      { question: 'When are the next Dota 2 tournaments?', answer: 'BLAST Slam VIII playoffs are 9–11 October, BLAST Slam IX runs online 20–29 November, and DreamLeague Season 30 is scheduled for 2–13 December 2026.' },
+      { question: 'Is The International 2026 still upcoming?', answer: 'No. It has concluded; this page lists it as completed rather than as a future event.' }
+    ]
+  },
+  {
     gameId: 'freefire', title: 'Free Fire News: OB55, Booyah Pass & FFWS 2026 | Tradivex',
     description: 'Free Fire OB55 guide for October 2026: Naruto Shippuden return, Nine Tails gameplay, weapon and device changes, current pass checks and FFWS Global Finals.',
     heading: 'Free Fire News: OB55 Patch, Booyah Pass and FFWS',
