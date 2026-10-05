@@ -38,6 +38,7 @@ function GameArticle({ page }: { page: GameNewsRecord }) {
   const game = POPULAR_GAMES.find((item) => item.id === page.gameId)!;
   return <article className="overflow-hidden rounded-3xl border border-slate-800 bg-[#080d1a]/95 shadow-2xl shadow-black/30">
     <header className="bg-radial-hero px-6 py-9 sm:px-10 sm:py-12">
+      <a href="/game-news" className="mb-5 inline-flex items-center gap-2 rounded-lg border border-cyan-400/30 bg-cyan-500/10 px-3.5 py-2 text-xs font-bold text-cyan-200 transition hover:border-cyan-300 hover:bg-cyan-500/20 hover:text-white"><ArrowLeft className="h-4 w-4" />Back to Game News</a>
       <nav aria-label="Breadcrumb" className="text-xs text-slate-500"><a href="/" className="hover:text-white">Home</a><span className="px-2">/</span><a href="/game-news" className="hover:text-white">Game News</a><span className="px-2">/</span><span>{game.shortName}</span></nav>
       <div className="mt-6 flex flex-wrap items-center gap-2"><span className="rounded-full border border-cyan-400/25 bg-cyan-500/10 px-3 py-1 text-[10px] font-black uppercase tracking-wider text-cyan-300">{game.name}</span><span className="rounded-full border border-slate-700 bg-slate-950/50 px-3 py-1 text-[10px] text-slate-400">Updated {page.updateDate}</span></div>
       <h1 className="mt-5 max-w-4xl font-gaming text-2xl font-black leading-tight text-white sm:text-4xl">{page.heading}</h1>
