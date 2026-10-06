@@ -58,7 +58,7 @@ function HubHeader({ mode }: { mode: EsportsHubProps['mode'] }) {
             <a href="/" className="rounded-xl border border-slate-800 bg-[#0b101d] px-3 py-2 text-xs font-bold text-slate-300 transition hover:border-amber-400/50 hover:text-white">Name Generator</a>
             <a href="/tournaments" className="rounded-xl border border-amber-400/50 bg-amber-500 px-3 py-2 text-xs font-black text-slate-950">Tournaments</a>
           </nav>
-          <a href="/" className="inline-flex items-center gap-2 rounded-xl border border-slate-800 bg-[#0b101d] px-3 py-2 text-xs font-bold text-slate-300 transition hover:border-amber-400/50 hover:text-white"><ArrowLeft className="h-3.5 w-3.5" /> Generator</a>
+          <a href="/" aria-label="Back to home page" className="inline-flex items-center gap-2 rounded-xl border border-slate-800 bg-[#0b101d] px-3 py-2 text-xs font-bold text-slate-300 transition hover:border-amber-400/50 hover:text-white"><ArrowLeft className="h-3.5 w-3.5" /><span className="sm:hidden">Home</span><span className="hidden sm:inline">Back to Home</span></a>
         </>}
       </div>
     </header>
