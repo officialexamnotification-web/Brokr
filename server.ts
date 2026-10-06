@@ -94,6 +94,7 @@ function injectSeo(html: string, req: express.Request, gameId?: string, sitePage
     '@type': 'WebApplication',
     name: SITE_DISPLAY_NAME,
     applicationCategory: 'UtilitiesApplication',
+    applicationSubCategory: 'Video game name and gamertag generator',
     operatingSystem: 'All',
     description: seo.description,
     url: canonical,
@@ -160,6 +161,14 @@ function injectSeo(html: string, req: express.Request, gameId?: string, sitePage
   } : {
     '@context': 'https://schema.org',
     '@graph': [
+      {
+        '@type': 'Organization',
+        '@id': `${origin}/#organization`,
+        name: SITE_DISPLAY_NAME,
+        url: `${origin}/`,
+        description: 'An independent gaming utility for creating game-specific player names, nicknames, gamertags and clan tags.',
+        knowsAbout: POPULAR_GAMES.map((item) => `${item.name} gaming names and gamertags`),
+      },
       { '@type': 'WebSite', name: SITE_DISPLAY_NAME, alternateName: SITE_NAME, url: canonical },
       application,
     ],

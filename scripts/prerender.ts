@@ -69,6 +69,7 @@ function jsonLdFor(route: { slug: string; title: string; description: string; he
     '@type': 'WebApplication',
     name: SITE_DISPLAY_NAME,
     applicationCategory: 'UtilitiesApplication',
+    applicationSubCategory: 'Video game name and gamertag generator',
     operatingSystem: 'All',
     description: route.description,
     url,
@@ -76,6 +77,16 @@ function jsonLdFor(route: { slug: string; title: string; description: string; he
     ...(route.gameName ? { about: route.gameName } : {}),
   };
   const graph: Record<string, unknown>[] = [webpage, application, breadcrumbJson(url, route.heading)];
+  if (!route.slug) {
+    graph.push({
+      '@type': 'Organization',
+      '@id': `${ORIGIN}/#organization`,
+      name: SITE_DISPLAY_NAME,
+      url: `${ORIGIN}/`,
+      description: 'An independent gaming utility for creating game-specific player names, nicknames, gamertags and clan tags.',
+      knowsAbout: POPULAR_GAMES.map((game) => `${game.name} gaming names and gamertags`),
+    });
+  }
   if (route.faqs?.length) graph.push(faqJson(route.faqs));
   return { '@context': 'https://schema.org', '@graph': graph };
 }
@@ -279,8 +290,31 @@ for (const event of TOURNAMENT_EVENTS) {
 }
 
 const allSlugs = ['', ...POPULAR_GAMES.map((game) => game.slug), ...SITE_PAGES.map((page) => page.slug), 'esports-news', 'tournaments', 'game-news', ...GAME_NEWS_INDEX.map((game) => `game-news/${game.id}`), ...allTournamentNews.map((article) => `esports-news/${article.slug}`), ...TOURNAMENT_EVENTS.map((event) => `tournaments/${event.slug}`)];
-const lastmod = new Date().toISOString().slice(0, 10);
-const sitemapUrls = allSlugs.map((slug) => `  <url><loc>${escapeHtml(urlFor(slug))}</loc><lastmod>${lastmod}</lastmod></url>`).join('\n');
+const sitemapLastmod = new Map<string, string>();
+for (const game of GAME_NEWS_INDEX) {
+  const page = GAME_NEWS_BY_ID.get(game.id);
+  if (page) sitemapLastmod.set(`game-news/${game.id}`, isoDate(page.updateDate));
+}
+for (const article of allTournamentNews) {
+  if (/^\d{4}-\d{2}-\d{2}$/.test(article.updatedAt)) {
+    sitemapLastmod.set(`esports-news/${article.slug}`, article.updatedAt);
+  }
+}
+const latestGameNewsDate = [...sitemapLastmod.entries()]
+  .filter(([slug]) => slug.startsWith('game-news/'))
+  .map(([, date]) => date)
+  .sort()
+  .at(-1);
+if (latestGameNewsDate) sitemapLastmod.set('game-news', latestGameNewsDate);
+const latestTournamentNewsDate = allTournamentNews.map((article) => article.updatedAt)
+  .filter((date) => /^\d{4}-\d{2}-\d{2}$/.test(date))
+  .sort()
+  .at(-1);
+if (latestTournamentNewsDate) sitemapLastmod.set('esports-news', latestTournamentNewsDate);
+const sitemapUrls = allSlugs.map((slug) => {
+  const lastmod = sitemapLastmod.get(slug);
+  return `  <url><loc>${escapeHtml(urlFor(slug))}</loc>${lastmod ? `<lastmod>${lastmod}</lastmod>` : ''}</url>`;
+}).join('\n');
 const sitemapXml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${sitemapUrls}\n</urlset>\n`;
 fs.writeFileSync(path.join(DIST_DIR, 'sitemap.xml'), sitemapXml, 'utf8');
 fs.writeFileSync(path.resolve(process.cwd(), 'public', 'sitemap.xml'), sitemapXml, 'utf8');
