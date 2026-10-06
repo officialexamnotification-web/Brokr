@@ -40,7 +40,7 @@ function gameGeneratorSlug(gameId: string) {
   return POPULAR_GAMES.find((game) => game.id === gameId)?.slug || '';
 }
 
-function HubHeader() {
+function HubHeader({ mode }: { mode: EsportsHubProps['mode'] }) {
   return (
     <header className="sticky top-0 z-40 border-b border-slate-800/90 bg-[#060914]/95 shadow-2xl shadow-black/20 backdrop-blur-xl">
       <div className="mx-auto flex min-h-[72px] max-w-7xl items-center justify-between gap-4 px-3 sm:px-5 lg:px-7">
@@ -48,11 +48,18 @@ function HubHeader() {
           <span className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-gradient-to-br from-amber-400 to-orange-600 text-slate-950 shadow-lg shadow-orange-500/20"><Gamepad2 className="h-5 w-5 stroke-[2.6]" /></span>
           <span className="min-w-0"><span className="block whitespace-nowrap font-gaming text-[15px] font-black tracking-wide text-white sm:text-[18px]">{SITE_NAME.toUpperCase()}</span><span className="block text-[10px] font-medium text-amber-300">{SITE_SUFFIX}</span></span>
         </a>
-        <nav className="hidden items-center gap-2 sm:flex" aria-label="Esports navigation">
-          <a href="/" className="rounded-xl border border-slate-800 bg-[#0b101d] px-3 py-2 text-xs font-bold text-slate-300 transition hover:border-amber-400/50 hover:text-white">Name Generator</a>
-          <a href="/tournaments" className="rounded-xl border border-amber-400/50 bg-amber-500 px-3 py-2 text-xs font-black text-slate-950">Tournaments</a>
-        </nav>
-        <a href="/" className="inline-flex items-center gap-2 rounded-xl border border-slate-800 bg-[#0b101d] px-3 py-2 text-xs font-bold text-slate-300 transition hover:border-amber-400/50 hover:text-white"><ArrowLeft className="h-3.5 w-3.5" /> Generator</a>
+        {mode === 'tournaments' ? (
+          <nav className="flex shrink-0 items-center gap-2" aria-label="Tournament page navigation">
+            <a href="/esports-news" className="inline-flex items-center gap-1.5 rounded-xl border border-cyan-400/30 bg-cyan-500/10 px-2.5 py-2 text-[11px] font-bold text-cyan-200 transition hover:border-cyan-300 hover:bg-cyan-500/20 sm:px-3 sm:text-xs" aria-label="Back to game news"><ArrowLeft className="h-3.5 w-3.5" /><span className="sm:hidden">News</span><span className="hidden sm:inline">Back to News</span></a>
+            <a href="/" className="rounded-xl border border-slate-800 bg-[#0b101d] px-2.5 py-2 text-[11px] font-bold text-slate-300 transition hover:border-amber-400/50 hover:text-white sm:px-3 sm:text-xs" aria-label="Go to home page">Home</a>
+          </nav>
+        ) : <>
+          <nav className="hidden items-center gap-2 sm:flex" aria-label="Esports navigation">
+            <a href="/" className="rounded-xl border border-slate-800 bg-[#0b101d] px-3 py-2 text-xs font-bold text-slate-300 transition hover:border-amber-400/50 hover:text-white">Name Generator</a>
+            <a href="/tournaments" className="rounded-xl border border-amber-400/50 bg-amber-500 px-3 py-2 text-xs font-black text-slate-950">Tournaments</a>
+          </nav>
+          <a href="/" className="inline-flex items-center gap-2 rounded-xl border border-slate-800 bg-[#0b101d] px-3 py-2 text-xs font-bold text-slate-300 transition hover:border-amber-400/50 hover:text-white"><ArrowLeft className="h-3.5 w-3.5" /> Generator</a>
+        </>}
       </div>
     </header>
   );
@@ -149,7 +156,7 @@ export function EsportsHub({ mode, slug }: EsportsHubProps) {
 
   return (
     <div className="min-h-screen bg-[#050811] text-slate-100 bg-cyber-grid">
-      <HubHeader />
+      <HubHeader mode={mode} />
       <main className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
         {!isDetail ? <>
           <section className="overflow-hidden rounded-3xl border border-slate-800 bg-[#080d1a]/95 px-6 py-9 shadow-2xl shadow-black/30 sm:px-10 sm:py-12"><div className="max-w-4xl"><div className="mb-4 inline-flex items-center gap-2 rounded-full border border-cyan-400/25 bg-cyan-500/10 px-3 py-1 text-[10px] font-black uppercase tracking-[0.16em] text-cyan-300"><Newspaper className="h-3.5 w-3.5" /> Tradivex esports desk</div><h1 className="font-gaming text-2xl font-black leading-tight text-white sm:text-5xl">{mode === 'news' ? 'Latest game news and updates' : 'Upcoming and completed game tournaments'}</h1><p className="mt-4 max-w-3xl text-sm leading-7 text-slate-300 sm:text-base">{mode === 'news' ? 'Current updates for the games listed on Tradivex. Each game appears once; open its page for full details and publisher sources.' : 'Filter official tournament information by game, status and region. Dates and results are summaries; the linked organizer remains the source of truth.'}</p></div>{mode === 'tournaments' && <div className="mt-7 grid gap-3 sm:grid-cols-3"><div className="rounded-2xl border border-slate-800 bg-slate-950/50 p-4"><Radio className="h-4 w-4 text-red-300" /><p className="mt-3 text-sm font-bold text-white">Live and upcoming</p><p className="mt-1 text-xs leading-5 text-slate-500">Clear status labels instead of fake live scores.</p></div><div className="rounded-2xl border border-slate-800 bg-slate-950/50 p-4"><ShieldCheck className="h-4 w-4 text-emerald-300" /><p className="mt-3 text-sm font-bold text-white">Official source links</p><p className="mt-1 text-xs leading-5 text-slate-500">Every update points to the organizer or publisher.</p></div><div className="rounded-2xl border border-slate-800 bg-slate-950/50 p-4"><Gamepad2 className="h-4 w-4 text-amber-300" /><p className="mt-3 text-sm font-bold text-white">Connected to names</p><p className="mt-1 text-xs leading-5 text-slate-500">Jump from tournament news to a game name generator.</p></div></div>}</section>
