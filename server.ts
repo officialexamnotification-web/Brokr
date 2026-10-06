@@ -60,13 +60,13 @@ function canonicalOrigin(req: express.Request): string {
 // while Google refreshes its old index entries.
 const REMOVED_LEGACY_PATHS = new Set([
   '/privacy', '/terms', '/calculator', '/calculators', '/blog', '/compare', '/comparison',
-  '/directory', '/latest-additions', '/tools', '/markets', '/forex', '/brokers',
+  '/directory', '/latest-additions', '/tools', '/market', '/markets', '/forex', '/brokers',
   '/crypto-exchanges', '/stock-brokers', '/cfd-brokers', '/prop-firms', '/trading-tools',
   '/about-us', '/contact-us', '/affiliate-disclosure', '/methodology',
   '/category', '/tool', '/region', '/trading', '/investing', '/investment', '/stocks',
   '/crypto', '/options', '/futures', '/economic-calendar', '/compare-tools',
 ]);
-const REMOVED_LEGACY_PREFIXES = ['/tool/', '/category/', '/region/', '/calculator/', '/calculators/', '/blog/', '/compare/', '/comparison/', '/directory/', '/latest-additions/', '/tools/', '/markets/', '/forex/', '/brokers/', '/crypto-exchanges/', '/stock-brokers/', '/cfd-brokers/', '/prop-firms/', '/trading-tools/', '/trading/', '/investing/', '/investment/', '/stocks/', '/crypto/', '/options/', '/futures/', '/economic-calendar/', '/compare-tools/'];
+const REMOVED_LEGACY_PREFIXES = ['/tool/', '/category/', '/region/', '/calculator/', '/calculators/', '/blog/', '/compare/', '/comparison/', '/directory/', '/latest-additions/', '/tools/', '/market/', '/markets/', '/forex/', '/brokers/', '/crypto-exchanges/', '/stock-brokers/', '/cfd-brokers/', '/prop-firms/', '/trading-tools/', '/trading/', '/investing/', '/investment/', '/stocks/', '/crypto/', '/options/', '/futures/', '/economic-calendar/', '/compare-tools/'];
 
 function isRemovedLegacyPath(requestPath: string): boolean {
   const normalized = `/${requestPath.replace(/^\/+|\/+$/g, '')}`.toLowerCase();
