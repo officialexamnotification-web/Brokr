@@ -91,7 +91,7 @@ export default function App() {
     const languageCodes: Record<string, string> = {
       global: 'en-US', english: 'en-US', hindi: 'hi', hinglish: 'en-IN', spanish: 'es',
       portuguese: 'pt-BR', indonesian: 'id', french: 'fr', arabic: 'ar',
-      arabic_latin: 'en', bengali: 'bn',
+      arabic_latin: 'en', bengali: 'bn', japanese: 'ja', korean: 'ko', chinese_simplified: 'zh-CN', chinese_traditional: 'zh-TW', vietnamese: 'vi', thai: 'th', russian: 'ru', filipino: 'fil', malay: 'ms',
     };
     document.documentElement.lang = languageCodes[language] || 'en';
     document.documentElement.dir = language === 'arabic' ? 'rtl' : 'ltr';

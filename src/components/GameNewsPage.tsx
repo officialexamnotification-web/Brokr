@@ -4,6 +4,7 @@ import { POPULAR_GAMES } from '../data/games';
 import { GAME_NEWS_BY_ID, GAME_NEWS_INDEX, type GameNewsPage as GameNewsRecord } from '../data/tournament-data';
 import { SITE_DISPLAY_NAME } from '../data/game-seo';
 import { applyGameNewsSeo } from '../lib/seo';
+import { ContentLanguagePicker } from './ContentLanguagePicker';
 
 function returnToPreviousNewsPage(event: MouseEvent<HTMLAnchorElement>) {
   if (typeof window === 'undefined' || !document.referrer) return;
@@ -75,7 +76,7 @@ export function GameNewsPage({ gameId }: { gameId?: string }) {
   const game = gameId ? POPULAR_GAMES.find((item) => item.id === gameId) : undefined;
   useEffect(() => { if (page && game) applyGameNewsSeo(page, game); }, [page, game]);
   if (page && game) {
-    return <main className="min-h-screen bg-[#050811] px-4 py-8 text-slate-100 sm:px-6"><div className="mx-auto max-w-5xl"><GameArticle page={page} /><p className="mt-5 text-center text-[10px] text-slate-600">© 2026 {SITE_DISPLAY_NAME}. Independently summarized from linked official sources.</p></div></main>;
+    return <main className="min-h-screen bg-[#050811] px-4 py-8 text-slate-100 sm:px-6"><div className="mx-auto max-w-5xl"><ContentLanguagePicker /><GameArticle page={page} /><p className="mt-5 text-center text-[10px] text-slate-600">© 2026 {SITE_DISPLAY_NAME}. Independently summarized from linked official sources.</p></div></main>;
   }
   return <main className="min-h-screen bg-[#050811] px-4 py-10 text-slate-100 sm:px-6"><div className="mx-auto max-w-7xl"><header className="rounded-3xl border border-slate-800 bg-[#080d1a] px-6 py-9 sm:px-10"><p className="text-[10px] font-black uppercase tracking-[0.16em] text-cyan-300">Official-source game desk</p><h1 className="mt-3 font-gaming text-3xl font-black text-white sm:text-5xl">Game news, seasons and tournament updates</h1><p className="mt-4 max-w-3xl text-sm leading-7 text-slate-300">Separate update pages for each supported game. Find current patches, passes, live-service events and tournament schedules, with official links and missing details clearly called out.</p></header><section className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">{GAME_NEWS_INDEX.map((game) => <NewsCard key={game.id} gameId={game.id} />)}</section><p className="mt-8 text-xs leading-6 text-slate-500">News pages are available for game titles. Xbox, PlayStation Network and Steam are profile platforms in the name generator, so they do not have duplicate game tournament pages.</p></div></main>;
 }
