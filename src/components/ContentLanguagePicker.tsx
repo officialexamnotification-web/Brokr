@@ -3,7 +3,7 @@ import { Globe2, X } from 'lucide-react';
 import { NAME_LANGUAGES } from '../data/languages';
 
 const STORAGE_KEY = 'gamingnamehub_language';
-const CONTENT_PROMPT_KEY = 'gamingnamehub_content_language_prompted';
+const CONTENT_PROMPT_KEY = 'gamingnamehub_language_prompted';
 const GOOGLE_LANGUAGES: Record<string, string> = {
   global: 'en', english: 'en', hindi: 'hi', hinglish: 'en', spanish: 'es', portuguese: 'pt', indonesian: 'id', french: 'fr', arabic: 'ar', arabic_latin: 'en', bengali: 'bn', japanese: 'ja', korean: 'ko', chinese_simplified: 'zh-CN', chinese_traditional: 'zh-TW', vietnamese: 'vi', thai: 'th', russian: 'ru', filipino: 'tl', malay: 'ms',
 };
@@ -12,7 +12,7 @@ declare global {
   interface Window { google?: { translate?: { TranslateElement: new (options: Record<string, string>, element: string) => unknown } } }
 }
 
-export function ContentLanguagePicker() {
+export function ContentLanguagePicker({ onLanguageChange }: { onLanguageChange?: (language: string) => void }) {
   const [language, setLanguage] = useState('global');
   const [showPrompt, setShowPrompt] = useState(false);
 
@@ -57,6 +57,7 @@ export function ContentLanguagePicker() {
 
   const changeLanguage = (next: string) => {
     setLanguage(next);
+    onLanguageChange?.(next);
     try { localStorage.setItem(STORAGE_KEY, next); } catch { /* private browsing */ }
     try { localStorage.setItem(CONTENT_PROMPT_KEY, 'true'); } catch { /* private browsing */ }
     setShowPrompt(false);

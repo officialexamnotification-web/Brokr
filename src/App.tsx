@@ -6,6 +6,7 @@ import { applySeo } from './lib/seo';
 import { getGameNameMode } from './lib/game-mode';
 import { copyTextToClipboard } from './lib/clipboard';
 import { Header } from './components/Header';
+import { ContentLanguagePicker } from './components/ContentLanguagePicker';
 import { GameSelector } from './components/GameSelector';
 import { NameInputStyler } from './components/NameInputStyler';
 import { FontResultsList } from './components/FontResultsList';
@@ -234,6 +235,7 @@ export default function App() {
 
       {/* Main Container */}
       <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-6 sm:space-y-8">
+        <ContentLanguagePicker onLanguageChange={setLanguage} />
         {/* Game Selector Bar */}
         <section>
           <GameSelector
