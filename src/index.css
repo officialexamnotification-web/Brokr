@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+/* Keep the translation engine's control off the visual page; our selector is the public control. */
+.goog-te-banner-frame, .skiptranslate iframe { display: none !important; }
+body { top: 0 !important; }
+
 @layer base {
   body {
     font-family: 'Inter', system-ui, -apple-system, sans-serif;

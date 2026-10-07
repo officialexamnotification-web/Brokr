@@ -3,10 +3,48 @@ import { Globe2, X } from 'lucide-react';
 import { NAME_LANGUAGES } from '../data/languages';
 
 const STORAGE_KEY = 'gamingnamehub_language';
+const GOOGLE_LANGUAGES: Record<string, string> = {
+  global: 'en', english: 'en', hindi: 'hi', hinglish: 'en', spanish: 'es', portuguese: 'pt', indonesian: 'id', french: 'fr', arabic: 'ar', arabic_latin: 'en', bengali: 'bn', japanese: 'ja', korean: 'ko', chinese_simplified: 'zh-CN', chinese_traditional: 'zh-TW', vietnamese: 'vi', thai: 'th', russian: 'ru', filipino: 'tl', malay: 'ms',
+};
+
+declare global {
+  interface Window { google?: { translate?: { TranslateElement: new (options: Record<string, string>, element: string) => unknown } } }
+}
 
 export function ContentLanguagePicker() {
   const [language, setLanguage] = useState('global');
   const [showPrompt, setShowPrompt] = useState(false);
+
+  useEffect(() => {
+    (window as Window & { tradivexGoogleTranslateInit?: () => void }).tradivexGoogleTranslateInit = () => {
+      if (window.google?.translate?.TranslateElement && !document.querySelector('.goog-te-combo')) {
+        new window.google.translate.TranslateElement({ pageLanguage: 'en', autoDisplay: 'false' }, 'tradivex-google-translate');
+      }
+    };
+    const existing = document.querySelector('script[data-tradivex-translate]');
+    if (!existing) {
+      const script = document.createElement('script');
+      script.src = 'https://translate.google.com/translate_a/element.js?cb=tradivexGoogleTranslateInit';
+      script.async = true;
+      script.dataset.tradivexTranslate = 'true';
+      document.head.appendChild(script);
+    }
+    const timer = window.setTimeout(() => (window as Window & { tradivexGoogleTranslateInit?: () => void }).tradivexGoogleTranslateInit?.(), 900);
+    return () => window.clearTimeout(timer);
+  }, []);
+
+  const applyPageLanguage = (next: string) => {
+    const target = GOOGLE_LANGUAGES[next] || 'en';
+    const combo = document.querySelector('.goog-te-combo') as HTMLSelectElement | null;
+    if (!combo) return;
+    combo.value = target;
+    combo.dispatchEvent(new Event('change', { bubbles: true }));
+  };
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => applyPageLanguage(language), 1400);
+    return () => window.clearTimeout(timer);
+  }, [language]);
 
   useEffect(() => {
     try {
@@ -20,9 +58,11 @@ export function ContentLanguagePicker() {
     setLanguage(next);
     try { localStorage.setItem(STORAGE_KEY, next); } catch { /* private browsing */ }
     setShowPrompt(false);
+    window.setTimeout(() => applyPageLanguage(next), 250);
   };
 
   return <>
+    <div id="tradivex-google-translate" className="pointer-events-none absolute -left-[9999px] h-0 w-0 overflow-hidden" aria-hidden="true" />
     <div className="mb-5 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-slate-800 bg-[#080d1a] px-4 py-3">
       <div className="flex items-center gap-2 text-xs font-bold text-slate-300"><Globe2 className="h-4 w-4 text-cyan-300" />Content language</div>
       <select value={language} onChange={(event) => changeLanguage(event.target.value)} aria-label="Content language" className="rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-xs font-semibold text-white outline-none focus:border-cyan-400">
