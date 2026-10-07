@@ -54,17 +54,20 @@ const GAME_INTENTS: Record<string, string> = {
   psn: 'PSN Online ID ideas for PlayStation multiplayer profiles',
   steam: 'Steam profile names, aliases and clean gaming identities',
   gta_online: 'GTA Online crew names, Rockstar handles and player identities',
+  marvel_rivals: 'Marvel Rivals names, hero-inspired nicknames, faction tags and competitive player handles',
+  arena_of_valor: 'Arena of Valor nicknames, AoV hero names, ranked player tags and esports team identities',
+  teamfight_tactics: 'Teamfight Tactics names, TFT tactician handles and competitive Riot ID ideas',
 };
 
 export const HOME_SEO: GameSeoContent = {
   slug: '',
-  title: 'Free Game Name Generator for 25+ Games | Tradivex GamingNameHub',
-  description: 'Free game name generator for stylish gamer names, nicknames, gamertags and clan tags for BGMI, PUBG, Free Fire, Valorant, COD, Fortnite, Roblox and Minecraft.',
+  title: 'Free Game Name Generator for 30+ Games | Tradivex GamingNameHub',
+  description: 'Free game name generator for stylish gamer names, nicknames, gamertags and clan tags for BGMI, PUBG, Free Fire, Valorant, COD, Fortnite, Marvel Rivals, Arena of Valor, TFT, Roblox and Minecraft.',
   h1: 'Game Name Generator for Every Online Game',
   intro: 'Create stylish gamer names, cool nicknames, clean gamertags and clan tags for the game you actually play. Choose a game first so the name style and character guidance match your platform.',
   features: ['Game-specific name ideas', 'Clean and stylish output modes', 'Unicode character counting', 'One-click copy and save'],
   faqs: [
-    { question: 'What games can I generate names for?', answer: 'Tradivex GamingNameHub supports popular mobile, PC, console and platform identities including BGMI, PUBG Mobile, Free Fire, Fortnite, Roblox, Minecraft, Valorant, Call of Duty, Steam, Xbox and more.' },
+    { question: 'What games can I generate names for?', answer: 'Tradivex GamingNameHub supports popular mobile, PC, console and platform identities including BGMI, PUBG Mobile, Free Fire, Fortnite, Marvel Rivals, Arena of Valor, Teamfight Tactics, Roblox, Minecraft, Valorant, Call of Duty, Steam, Xbox and more.' },
     { question: 'Are all decorative symbols guaranteed to work?', answer: 'No. Symbol support changes by game, platform and client update. Names are labelled conservatively and should be tested in the current rename or profile screen.' },
     { question: 'How do I choose a game-ready name?', answer: 'Select the exact game first, start with a clean readable result, check the character guidance, and test the final name in the current rename or profile screen.' },
   ],
@@ -101,6 +104,9 @@ const LABELS: Record<string, { noun: string; identity: string; audience: string;
   psn: { noun: 'PlayStation', pageTitle: 'PSN Name Generator', identity: 'PSN Online ID', audience: 'PlayStation players' },
   steam: { noun: 'Steam', pageTitle: 'Steam Name Generator', identity: 'Steam profile name', audience: 'Steam players' },
   gta_online: { noun: 'GTA Online', pageTitle: 'GTA Online Name Generator', identity: 'GTA Online crew or player name', audience: 'GTA Online players' },
+  marvel_rivals: { noun: 'Marvel Rivals', pageTitle: 'Marvel Rivals Name Generator', identity: 'Marvel Rivals player name', audience: 'Marvel Rivals players' },
+  arena_of_valor: { noun: 'Arena of Valor', pageTitle: 'Arena of Valor Name Generator', identity: 'Arena of Valor nickname', audience: 'Arena of Valor players' },
+  teamfight_tactics: { noun: 'Teamfight Tactics', pageTitle: 'Teamfight Tactics Name Generator', identity: 'TFT player name or Riot ID', audience: 'Teamfight Tactics players' },
 };
 
 export function getGameSeo(game: GameProfile): GameSeoContent {
@@ -116,6 +122,9 @@ export function getGameSeo(game: GameProfile): GameSeoContent {
     cod: 'COD Name Generator for Warzone & CODM | Tradivex GamingNameHub',
     cs2: 'CS2 Name Generator & Nickname Ideas | Tradivex GamingNameHub',
     apex: 'Apex Legends Name Generator & Gamertags | Tradivex GamingNameHub',
+    marvel_rivals: 'Marvel Rivals Name Generator: Hero Tags & Faction Names | Tradivex',
+    arena_of_valor: 'Arena of Valor Name Generator: AoV Nicknames & Tags | Tradivex',
+    teamfight_tactics: 'TFT Name Generator: Teamfight Tactics Names & Tags | Tradivex',
   };
   const title = titleByGame[game.id] || `${pageTitle} | Tradivex GamingNameHub`;
   const intent = GAME_INTENTS[game.id] || `${label.identity} ideas and clean gamer tags`;
@@ -129,6 +138,9 @@ export function getGameSeo(game: GameProfile): GameSeoContent {
     cod: 'Generate COD names for Call of Duty, Warzone and COD Mobile. Explore tactical gamertags, then check the rules for your current title and platform.',
     cs2: 'Create CS2 nicknames, Counter-Strike names and Steam aliases for competitive play. Copy a clean or stylish idea and check how it displays in Steam.',
     apex: 'Generate Apex Legends names, gamertags and squad identities. Copy a clean or stylish idea and check how it displays on your EA or console profile.',
+    marvel_rivals: 'Create Marvel Rivals names, hero-inspired nicknames and faction tags for competitive play. Copy a clean player handle and check current account display rules.',
+    arena_of_valor: 'Generate Arena of Valor names, AoV nicknames, hero-inspired tags and squad identities. Copy a clean or stylish idea and test it in your regional game client.',
+    teamfight_tactics: 'Make Teamfight Tactics names, TFT tactician handles and competitive Riot ID ideas. Copy a readable name and check current Riot account rules.',
   };
   const description = descriptionByGame[game.id] || `Generate ${intent}. Copy clean or stylish results with ${game.shortName} character guidance and no account required.`;
   const searchIntentFaqs: Record<string, SeoFaq[]> = {
@@ -149,6 +161,15 @@ export function getGameSeo(game: GameProfile): GameSeoContent {
     ],
     apex: [
       { question: 'Can I create an Apex Legends name style for my platform?', answer: 'Yes. Use these ideas as EA, Steam or console profile-name inspiration, then confirm the active account and platform accept the characters.' },
+    ],
+    marvel_rivals: [
+      { question: 'Can I use a custom name in Marvel Rivals?', answer: 'This tool creates name ideas only. Check the current Marvel Rivals account and platform display-name rules before applying a name.' },
+    ],
+    arena_of_valor: [
+      { question: 'Does this Arena of Valor name generator work for Liên Quân Mobile and RoV?', answer: 'It generates Arena of Valor nickname ideas. Regional versions such as Liên Quân Mobile and RoV may apply different name rules, so verify the name in your local client.' },
+    ],
+    teamfight_tactics: [
+      { question: 'Can I use these TFT names in Teamfight Tactics?', answer: 'The generator suggests Teamfight Tactics player names and Riot ID ideas. It does not check name availability; confirm the current Riot ID rules in your Riot account.' },
     ],
   };
   return {

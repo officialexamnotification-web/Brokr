@@ -255,6 +255,53 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
     sourceUrl: 'https://about.roblox.com/newsroom/2026/09/roblox-fall-games-preview', sourceName: 'Roblox Newsroom', updatedAt: '2026-10-02',
     summary: 'Roblox’s September preview says an India-based studio was launching its first Showdown Cup tournament that month in an in-game esports arena. The preview does not publish exact dates, participants or prize details, so this should not be read as an official platform-wide Roblox championship.',
   },
+  {
+    id: 'marvel-rivals-ignite-stage-2-2026', slug: 'marvel-rivals-ignite-stage-2-2026', gameId: 'marvel_rivals', gameName: 'Marvel Rivals',
+    name: 'Marvel Rivals Ignite 2026 Stage 2 Playoffs', organizer: 'NetEase / Marvel Rivals Esports', startDate: '2026-10-08', endDate: '2026-10-18', dateLabel: '8–18 Oct 2026',
+    region: 'Global: Pacific, Americas, EMEA and China', location: 'Online regional playoffs', prizePool: '$650,000', teams: 12,
+    format: 'Regional double-elimination playoffs; BO5 matches, BO7 regional finals', status: 'upcoming',
+    sourceUrl: 'https://www.marvelrivalsesports.com/20260908/42828_1313342.html', sourceName: 'Marvel Rivals Ignite', updatedAt: '2026-10-07',
+    summary: 'Official Stage 2 guide schedules playoffs for 8–18 October. Pacific plays first; Americas and EMEA begin 15 October, China begins 16 October, and regional finals are 11 October (Pacific) and 18 October (Americas, EMEA and China). Twelve teams qualify for the late-November Grand Finals; venue/date are still to be announced.',
+  },
+  {
+    id: 'marvel-rivals-ignite-grand-finals-2026', slug: 'marvel-rivals-ignite-grand-finals-2026', gameId: 'marvel_rivals', gameName: 'Marvel Rivals',
+    name: 'Marvel Rivals Ignite 2026 Grand Finals', organizer: 'NetEase / Marvel Rivals Esports',
+    dateLabel: 'Late November 2026; exact dates and location pending', region: 'Global', location: 'Venue to be announced', teams: 12,
+    format: 'Twelve teams qualify from Ignite regional competitions; full finals format pending', status: 'upcoming',
+    sourceUrl: 'https://www.marvelrivalsesports.com/20260908/42828_1313342.html', sourceName: 'Marvel Rivals Ignite', updatedAt: '2026-10-07',
+    summary: 'The official Stage 2 guide confirms 12 Grand Finals teams and says the finals location will be announced later. The official 2026 circuit overview places Stage 2 and its Grand Finals in late November; exact dates, venue and match schedule are not yet confirmed.',
+  },
+  {
+    id: 'aov-10fest-winter-finals-2026', slug: 'aov-10fest-winter-finals-2026', gameId: 'arena_of_valor', gameName: 'Arena of Valor',
+    name: 'Arena of Valor 10Fest — Winter 2026 Finals', organizer: 'Garena Liên Quân Mobile', startDate: '2026-11-07', endDate: '2026-11-07', dateLabel: '7 Nov 2026',
+    region: 'Vietnam', location: 'My Dinh National Stadium, Hanoi',
+    format: 'Đấu Trường Danh Vọng (Arena of Glory) Winter 2026 Grand Final; matchup details pending', status: 'upcoming',
+    sourceUrl: 'https://lienquan.garena.vn/tag/dau-truong-danh-vong/', sourceName: 'Garena Liên Quân Mobile', updatedAt: '2026-10-07',
+    summary: 'Garena’s official 10Fest announcement schedules the Đấu Trường Danh Vọng Winter 2026 Grand Final for 7 November at My Dinh National Stadium in Hanoi, as part of AoV’s tenth-anniversary event. The opponent names and match start time were not specified in the announcement.',
+  },
+  {
+    id: 'aov-aic-2026', slug: 'aov-aic-2026', gameId: 'arena_of_valor', gameName: 'Arena of Valor',
+    name: 'Arena of Valor International Championship 2026', organizer: 'Garena', dateLabel: 'Year-end 2026 in Thailand; exact dates pending',
+    region: 'International', location: 'Thailand', format: 'Year-end international championship; teams and format pending', status: 'upcoming',
+    sourceUrl: 'https://www.garena.sg/news/2M54DC', sourceName: 'Garena', updatedAt: '2026-10-07',
+    summary: 'Garena confirms AIC 2026 as a year-end championship in Thailand. The linked official announcement does not yet give exact dates, team count, format, prize pool or match schedule; those fields are left open until the organizer publishes them.',
+  },
+  {
+    id: 'tft-tacticians-superbrawl-2026', slug: 'tft-tacticians-superbrawl-2026', gameId: 'teamfight_tactics', gameName: 'Teamfight Tactics',
+    name: 'TFT Tactician’s Superbrawl — Set 18', organizer: 'Riot Games', startDate: '2026-11-06', endDate: '2026-11-08', dateLabel: '6–8 Nov 2026',
+    region: 'AMER, EMEA and APAC', location: 'Online regional competition', teams: 96,
+    format: '96 teams per region; four-player rosters; single-elimination BO3 bracket', status: 'upcoming',
+    sourceUrl: 'https://teamfighttactics.leagueoflegends.com/en-us/news/esports/4v4-arrives-to-compete-tft/', sourceName: 'Riot Games TFT Esports', updatedAt: '2026-10-07',
+    summary: 'Riot’s official announcement schedules the open-to-all regional 4v4 team tournament for 6–8 November. Each region has 96 teams in a single-elimination best-of-three bracket. Ladder snapshots are 2 November; exact regional qualifiers and prize breakdown vary and are still to be published.',
+  },
+  {
+    id: 'tft-vegas-open-2026', slug: 'tft-vegas-open-2026', gameId: 'teamfight_tactics', gameName: 'Teamfight Tactics',
+    name: 'TFT Vegas Open 2026', organizer: 'Riot Games', startDate: '2026-12-11', endDate: '2026-12-13', dateLabel: '11–13 Dec 2026',
+    region: 'Global open bracket', location: 'Las Vegas, Nevada, USA', prizePool: '$311,300', teams: 1024,
+    format: 'Three-day open-bracket LAN; 1,024 competitors, eight-player lobbies and checkmate final', status: 'upcoming',
+    sourceUrl: 'https://teamfighttactics.leagueoflegends.com/en-us/news/esports/tft-vegas-open-2026-competitor-info/', sourceName: 'Riot Games TFT Esports', updatedAt: '2026-10-07',
+    summary: 'Riot confirms a 1,024-player open bracket at Convergence Fest in Las Vegas from 11–13 December. The top 128 share a $311,300 prize pool, with $100,000 for the champion. The published format uses eight-player lobbies and a checkmate final; Set 19 is planned for the event.',
+  },
 ];
 
 const CURATED_TOURNAMENT_NEWS: TournamentNews[] = [
@@ -498,6 +545,48 @@ const CURATED_TOURNAMENT_NEWS: TournamentNews[] = [
     sourceUrl: 'https://about.roblox.com/newsroom/2026/09/roblox-fall-games-preview', sourceName: 'Roblox Newsroom', sourceVerified: true,
     tags: ['Roblox', 'Showdown Cup', 'In-game tournament'], eventId: 'roblox-showdown-cup-2026',
   },
+  {
+    id: 'news-marvel-rivals-ignite-stage-2-2026', slug: 'news-marvel-rivals-ignite-stage-2-2026', gameId: 'marvel_rivals', gameName: 'Marvel Rivals',
+    title: 'Marvel Rivals Ignite Stage 2 Playoffs: dates, format and Grand Finals spots',
+    excerpt: 'The official 8–18 October playoffs carry a $650,000 prize pool and decide 12 places at the late-November Ignite Grand Finals.',
+    content: [
+      'Marvel Rivals Season 10 launched on 11 September. NetEase’s official Ignite Stage 2 guide schedules the regional playoffs from 8 to 18 October 2026, played on Season 10 and using Thebes in the map pool.',
+      'The Pacific playoffs start 8 October and its regional final is 11 October. Americas and EMEA playoffs start 15 October, while China starts 16 October; all three regional finals are set for 18 October. Playoffs use double elimination, best-of-five matches and best-of-seven regional finals. The total Stage 2 prize pool is $650,000.',
+      'Twelve teams qualify for the Ignite Grand Finals in late November. The official guide says the finals location will be announced later, so the exact venue and dates remain unconfirmed. The game’s in-client Esports panel is the official place for match times, teams and live brackets.',
+      'Checked 7 October 2026: the next scheduled playoff day is 8 October for Pacific. This is a competitive schedule update, not a claim that a new game patch was released today.'
+    ],
+    tournamentName: 'Marvel Rivals Ignite 2026 Stage 2', status: 'upcoming', publishedAt: '2026-10-07', updatedAt: '2026-10-07',
+    sourceUrl: 'https://www.marvelrivalsesports.com/20260908/42828_1313342.html', sourceName: 'Marvel Rivals Ignite', sourceVerified: true,
+    tags: ['Marvel Rivals', 'Ignite 2026', 'Stage 2 Playoffs', 'Grand Finals', 'Season 10'], eventId: 'marvel-rivals-ignite-stage-2-2026',
+  },
+  {
+    id: 'news-arena-of-valor-10fest-aic-2026', slug: 'news-arena-of-valor-10fest-aic-2026', gameId: 'arena_of_valor', gameName: 'Arena of Valor',
+    title: 'Arena of Valor esports: 10Fest Winter Finals on 7 November; AIC 2026 in Thailand',
+    excerpt: 'Garena schedules the Đấu Trường Danh Vọng Winter Grand Final in Hanoi on 7 November and confirms AIC as a year-end Thailand event; exact AIC dates are pending.',
+    content: [
+      'Garena’s Arena of Valor portal lists its 18 September 2026 English patch notes as the latest dated English patch entry visible on the official game hub checked. No newer English patch post was listed there on 7 October; regional game clients may show additional localized notices.',
+      'The next confirmed event on the Vietnam competitive calendar is Liên Quân 10Fest. Garena’s official event announcement sets the Đấu Trường Danh Vọng (Arena of Glory) Winter 2026 Grand Final for 7 November at My Dinh National Stadium in Hanoi. The announcement does not identify the finalists or match start time.',
+      'Garena separately confirms Arena of Valor International Championship 2026 (AIC) as a year-end championship in Thailand. Its exact dates, teams, format, prize pool and daily schedule have not been published in the linked announcement. AIC is a distinct AoV competition and should not be merged with Honor of Kings event listings.',
+      'Checked 7 October 2026: no newer official AIC schedule detail was found in Garena’s linked announcement. We will show the confirmed location and time window without inventing dates or teams.'
+    ],
+    tournamentName: 'Arena of Valor 2026 esports calendar', status: 'upcoming', publishedAt: '2026-10-07', updatedAt: '2026-10-07',
+    sourceUrl: 'https://lienquan.garena.vn/tag/dau-truong-danh-vong/', sourceName: 'Garena Liên Quân Mobile', sourceVerified: true,
+    tags: ['Arena of Valor', 'AoV esports', 'Liên Quân Mobile', 'AIC 2026', '10Fest', 'Arena of Glory'], eventId: 'aov-10fest-winter-finals-2026',
+  },
+  {
+    id: 'news-teamfight-tactics-esports-fall-2026', slug: 'news-teamfight-tactics-esports-fall-2026', gameId: 'teamfight_tactics', gameName: 'Teamfight Tactics',
+    title: 'TFT esports calendar: Tactician’s Superbrawl and Vegas Open dates',
+    excerpt: 'Riot’s 4v4 Tactician’s Superbrawl runs 6–8 November; the 1,024-player TFT Vegas Open follows 11–13 December with $311,300 in prizes.',
+    content: [
+      'Riot’s Enchanted Wilds Pro Circuit schedule listed the Blossom Cup for 2–4 October; that cup is complete. The next confirmed global participation event is Tactician’s Superbrawl, an official 4v4 team tournament open to players in AMER, EMEA and APAC.',
+      'Tactician’s Superbrawl runs 6–8 November. Riot specifies 96 teams per region, four players per roster and a single-elimination best-of-three bracket. The ladder snapshot is 2 November; region-specific qualification details and prize breakdown are still pending on Riot’s regional channels.',
+      'The TFT Vegas Open returns as a 1,024-player open-bracket LAN from 11–13 December in Las Vegas. Riot lists a $311,300 prize pool, with $100,000 for the champion and awards for the top 128. Its format uses eight-player lobbies and a checkmate final. Riot says competitors will play Set 19.',
+      'Checked 7 October 2026: the official TFT esports hub provides the current event announcements and regional schedules. Check Riot’s current rules and regional channels before relying on local qualification instructions.'
+    ],
+    tournamentName: 'Teamfight Tactics esports 2026', status: 'upcoming', publishedAt: '2026-10-07', updatedAt: '2026-10-07',
+    sourceUrl: 'https://teamfighttactics.leagueoflegends.com/en-us/news/esports/4v4-arrives-to-compete-tft/', sourceName: 'Riot Games TFT Esports', sourceVerified: true,
+    tags: ['Teamfight Tactics', 'TFT esports', 'Tactician’s Superbrawl', 'TFT Vegas Open', 'Set 18', 'Set 19'], eventId: 'tft-tacticians-superbrawl-2026',
+  },
 ];
 
 // The sync workflow replaces this generated section in this same data file.
@@ -589,6 +678,9 @@ export const OFFICIAL_TOURNAMENT_SOURCES: TournamentSource[] = [
   { gameId: 'stumble_guys', gameName: 'Stumble Guys', url: 'https://www.stumbleguys.com/news', sourceName: 'Scopely Stumble Guys', note: 'Official news page checked; no current publisher-run esports calendar found. Community competitions are separate. Checked 7 Oct 2026; no newer official schedule detail was listed.', checkedAt: '2026-10-07' },
   { gameId: 'among_us', gameName: 'Among Us', url: 'https://www.innersloth.com/games/among-us/', sourceName: 'Innersloth', note: 'Official game page checked; no current official esports tournament schedule found. Checked 7 Oct 2026; no newer official schedule detail was listed.', checkedAt: '2026-10-07' },
   { gameId: 'gta_online', gameName: 'GTA Online', url: 'https://www.rockstargames.com/newswire', sourceName: 'Rockstar Games Newswire', note: 'Official Newswire checked for organized competitive events; no current GTA Online esports championship schedule found. Weekly in-game activities are not esports tournaments. Checked 7 Oct 2026; no newer official schedule detail was listed.', checkedAt: '2026-10-07' },
+  { gameId: 'marvel_rivals', gameName: 'Marvel Rivals', url: 'https://www.marvelrivalsesports.com/20260908/42828_1313342.html', sourceName: 'Marvel Rivals Ignite', note: 'Stage 2 playoffs run 8–18 Oct; 12 teams advance to late-November Grand Finals. Checked 7 Oct 2026.', checkedAt: '2026-10-07' },
+  { gameId: 'arena_of_valor', gameName: 'Arena of Valor', url: 'https://lienquan.garena.vn/tag/dau-truong-danh-vong/', sourceName: 'Garena Liên Quân Mobile', note: 'Winter 2026 Grand Final is announced for 7 Nov at 10Fest, Hanoi; AIC 2026 is confirmed for year-end in Thailand, exact dates pending. Checked 7 Oct 2026.', checkedAt: '2026-10-07' },
+  { gameId: 'teamfight_tactics', gameName: 'Teamfight Tactics', url: 'https://teamfighttactics.leagueoflegends.com/en-us/news/esports/', sourceName: 'Riot Games TFT Esports', note: 'Tactician’s Superbrawl is 6–8 Nov; the 1,024-player Vegas Open is 11–13 Dec. Checked 7 Oct 2026.', checkedAt: '2026-10-07' },
 ];
 
 export function getTournamentGameName(gameId: string): string {
@@ -1439,6 +1531,104 @@ export const GAME_NEWS_PAGES: GameNewsPage[] = [
     faqs: [
       { question: 'What is happening in GTA Online in October 2026?', answer: 'Rockstar’s 1 October Newswire post announces Halloween thrills throughout October. Check the full post for this week’s modes, rewards and exact dates.' },
       { question: 'Are GTA Online weekly races esports tournaments?', answer: 'No. Weekly races and adversary modes are live-service activities; Rockstar’s Newswire checked did not list a current official esports championship.' },
+    ],
+  },
+  {
+    gameId: 'marvel_rivals',
+    title: 'Marvel Rivals News: Season 10, Ignite 2026 Stage 2 & Playoffs | Tradivex',
+    description: 'Marvel Rivals Season 10 news and Ignite 2026 esports schedule: Stage 2 playoffs, regional finals, prize pool, Grand Finals qualification and official NetEase links.',
+    heading: 'Marvel Rivals News, Season 10 and Ignite Esports',
+    intro: 'Track Marvel Rivals Season 10, official game updates and the 2026 Ignite competitive circuit. Dates, playoff format, qualified Grand Finals places and unknown event details are separated and linked to NetEase’s official sources.',
+    updateHeading: 'Ignite Stage 2 playoffs begin 8 October', updateDate: '7 October 2026',
+    update: [
+      'Marvel Rivals Season 10 began on 11 September 2026. The current official patch notes describe the season launch and the IGNITE Stage 2 schedule; this page does not label that September patch as a new update published today.',
+      'Ignite Stage 2 playoffs run 8–18 October. Pacific starts 8 October and its regional final is 11 October; Americas and EMEA begin 15 October; China begins 16 October. The Americas, EMEA and China regional finals are scheduled for 18 October.',
+      'The official guide lists a $650,000 Stage 2 prize pool. Twelve teams qualify for the Ignite Grand Finals in late November. NetEase has not yet announced the Grand Finals venue, exact dates, final match schedule or all qualified teams.',
+      'Checked 7 October 2026: Pacific playoffs are the next scheduled matches on 8 October. Use the in-game Esports panel or official Ignite page for live brackets and stream times.'
+    ],
+    detailSections: [
+      { title: 'Marvel Rivals Ignite Stage 2 — schedule and format', description: 'NetEase’s official event guide confirms the dates, regional format and qualification places.', columns: ['Stage / region', 'Officially confirmed detail'], rows: [['Group Stage', '17 September–4 October 2026'], ['Playoffs', '8–18 October 2026'], ['Pacific regional final', '11 October; Asia and Oceania combined for playoffs'], ['Americas and EMEA playoffs', 'Begin 15 October; regional finals 18 October'], ['China playoffs', 'Begin 16 October; regional final 18 October'], ['Playoff format', 'Regional double elimination; BO5 matches, BO7 regional finals'], ['Stage 2 prize pool', 'US$650,000'], ['Grand Finals qualification', '12 teams total: AMER 4, EMEA 4, PAC 2, China 2'], ['Ignite Grand Finals', 'Late November; exact date and venue not yet announced']], sourceUrl: 'https://www.marvelrivalsesports.com/20260908/42828_1313342.html' },
+      { title: 'Marvel Rivals Season 10 — patch and player notes', description: 'Season 10 is live; consult the official patch notes for the full hero, map and gameplay change list.', columns: ['Topic', 'Confirmed detail'], rows: [['Season 10 launch', '11 September 2026'], ['Season 10 tournament build', 'Ignite Stage 2 uses Season 10'], ['Map pool', 'Thebes added for Stage 2; a new Domination map added for playoffs'], ['Season rank reward', 'Gorr the God Butcher — Gods’ Graveyard for Gold tier'], ['Official match schedules', 'Use the in-game Esports system for current matches and teams'], ['Last checked', '7 October 2026']], sourceUrl: 'https://www.marvelrivals.com/gameupdate/20260909/41548_1313441.html' },
+    ],
+    playerFocusHeading: 'Marvel Rivals Season 10 and competitive play',
+    playerFocus: ['Season 10 launched 11 September. Check the current in-game event and rank reward panels for account-specific claim windows.', 'The Ignite guide says official match schedules, participating teams and player information are available in the in-game Esports system. Subscribe there for match reminders.'],
+    competitionHeading: 'Marvel Rivals esports schedule and tournaments',
+    competition: ['Ignite Stage 2 playoffs are scheduled 8–18 October 2026, with regional finals on 11 and 18 October.', 'Twelve regional finalists qualify for the Ignite Grand Finals in late November; NetEase has not published the venue or exact Grand Finals dates yet.', 'Marvel Rivals Championship (MRC) is a separate in-game competition that awards Champion Points toward the annual Ignite pathway.'],
+    sources: [
+      { name: 'Marvel Rivals Ignite — Stage 2 schedule, format and prize pool', url: 'https://www.marvelrivalsesports.com/20260908/42828_1313342.html' },
+      { name: 'Marvel Rivals — Season 10 official patch notes', url: 'https://www.marvelrivals.com/gameupdate/20260909/41548_1313441.html' },
+      { name: 'Marvel Rivals Ignite — official esports news', url: 'https://www.marvelrivalsesports.com/news/official/index.html' },
+    ],
+    faqs: [
+      { question: 'When are the Marvel Rivals Ignite 2026 Stage 2 playoffs?', answer: 'NetEase schedules Stage 2 playoffs from 8 to 18 October 2026. Pacific starts first; Americas and EMEA begin 15 October, and China begins 16 October.' },
+      { question: 'How many teams qualify for the Marvel Rivals Ignite Grand Finals?', answer: 'Twelve teams qualify: four from Americas, four from EMEA, two from Pacific and two from China.' },
+      { question: 'Where and when are the Marvel Rivals Grand Finals?', answer: 'The official Stage 2 guide says late November 2026 and confirms 12 teams, but the exact dates and venue have not yet been announced.' },
+    ],
+  },
+  {
+    gameId: 'arena_of_valor',
+    title: 'Arena of Valor News: AoV Esports, AIC 2026 & 10Fest Winter Finals | Tradivex',
+    description: 'Arena of Valor (AoV) news and esports schedule: Garena 10Fest Winter Grand Final in Hanoi on 7 November, AIC 2026 in Thailand and official patch sources.',
+    heading: 'Arena of Valor News and Esports Schedule',
+    intro: 'Follow Arena of Valor, also known regionally as Liên Quân Mobile and RoV, with separate official tournament details for its regional leagues and international AIC championship. Arena of Valor is covered separately from Honor of Kings.',
+    updateHeading: '10Fest Winter Grand Final set for Hanoi on 7 November', updateDate: '7 October 2026',
+    update: [
+      'Garena’s Arena of Valor game hub showed English patch notes dated 18 September 2026 as its latest English patch entry when checked on 7 October. Regional clients can publish additional localized patch notices; the game hub is linked below.',
+      'Garena’s official Liên Quân 10Fest announcement schedules the Đấu Trường Danh Vọng (Arena of Glory) Winter 2026 Grand Final for 7 November at My Dinh National Stadium in Hanoi. Finalist teams and match start times were not listed in the announcement.',
+      'Garena also confirms AIC 2026, the year-end Arena of Valor International Championship, will be held in Thailand. Exact dates, team count, format, prize pool and match schedule are not yet published in the cited official announcement.',
+      'Checked 7 October 2026: only the confirmed 10Fest finals date and AIC country/time window are listed. Do not confuse AoV’s distinct tournament ecosystem with Honor of Kings events.'
+    ],
+    detailSections: [
+      { title: 'Arena of Valor esports — confirmed 2026 events', description: 'Garena’s official sources confirm the November Vietnam final and a year-end international championship in Thailand.', columns: ['Event', 'Confirmed detail'], rows: [['Đấu Trường Danh Vọng Winter Grand Final', '7 November 2026 at My Dinh National Stadium, Hanoi'], ['10Fest day 2', '8 November 2026 is the AoV tenth-anniversary music festival, not an esports match day'], ['Winter final matchup and start time', 'Not stated in the official event announcement'], ['AIC 2026', 'Year-end 2026 in Thailand; exact dates and format pending'], ['AIC team list / prize pool', 'Not yet published in the cited Garena announcement'], ['Official AoV patch hub', 'Latest English patch entry visible: 18 September 2026'], ['Last checked', '7 October 2026']], sourceUrl: 'https://lienquan.garena.vn/tag/dau-truong-danh-vong/' },
+      { title: 'AoV tournament pathway and regional identities', description: 'Garena’s 2026 plan identifies the regional leagues and keeps Arena of Valor distinct from Honor of Kings.', columns: ['Competition', 'Organizer detail'], rows: [['Arena of Glory (AOG)', 'Vietnam regional league; Winter 2026 final is part of 10Fest'], ['RoV Pro League (RPL)', 'Thailand regional league'], ['Garena Challenger Series (GCS)', 'Taiwan, Hong Kong and Macau regional competition'], ['Arena of Valor Premier League 2026', 'Returned mid-year with main and women’s competition formats'], ['AIC International Championship', 'Year-end championship in Thailand; detailed schedule pending'], ['EWC 2026 AoV event', 'Completed 30 July–8 August; do not list as upcoming']], sourceUrl: 'https://www.garena.sg/news/2M54DC' },
+    ],
+    playerFocusHeading: 'Arena of Valor updates and regional game names',
+    playerFocus: ['Arena of Valor may appear as Liên Quân Mobile in Vietnam and RoV in Thailand. Confirm your region’s game client before applying a display name.', 'Garena’s public AIC announcement does not provide the 2026 roster or daily schedule yet. Follow the official tournament hub for the next release.'],
+    competitionHeading: 'Arena of Valor tournaments and future schedule',
+    competition: ['Đấu Trường Danh Vọng Winter 2026 Grand Final: 7 November in Hanoi, Vietnam.', 'Arena of Valor International Championship 2026: confirmed for year-end in Thailand; exact dates, teams and format await Garena’s announcement.', 'Arena of Valor’s AoV Premier League and regional AOG, RPL and GCS leagues are separate events; this page does not combine their standings.'],
+    sources: [
+      { name: 'Garena Liên Quân Mobile — 10Fest and Winter Grand Final announcement', url: 'https://lienquan.garena.vn/tag/dau-truong-danh-vong/' },
+      { name: 'Garena — Arena of Valor 2026 esports plans and AIC', url: 'https://www.garena.sg/news/2M54DC' },
+      { name: 'Garena Arena of Valor — regional game and patch hub', url: 'https://main.aov.garena.co.id/' },
+    ],
+    faqs: [
+      { question: 'When is the Arena of Valor Winter 2026 Grand Final?', answer: 'Garena’s Liên Quân 10Fest announcement schedules the Đấu Trường Danh Vọng Winter Grand Final for 7 November 2026 at My Dinh National Stadium in Hanoi.' },
+      { question: 'When is the Arena of Valor International Championship 2026?', answer: 'Garena confirms AIC 2026 will be a year-end championship in Thailand, but exact dates and the match schedule have not yet been announced in the cited source.' },
+      { question: 'Is Arena of Valor the same game as Honor of Kings?', answer: 'They are distinct game titles with separate tournament coverage. This page tracks AoV, including its regional AOG, RPL and GCS competitions.' },
+    ],
+  },
+  {
+    gameId: 'teamfight_tactics',
+    title: 'TFT News: Teamfight Tactics Esports, Superbrawl & Vegas Open 2026 | Tradivex',
+    description: 'Teamfight Tactics (TFT) esports news and tournament calendar: Tactician’s Superbrawl 6–8 November, TFT Vegas Open 11–13 December, format and prize details.',
+    heading: 'Teamfight Tactics News and TFT Esports Calendar',
+    intro: 'Find Teamfight Tactics Set updates, TFT Pro Circuit coverage and official esports dates. The calendar separates individual auto-battler competitions from TFT’s newer 4v4 team format and marks unannounced regional details clearly.',
+    updateHeading: 'TFT esports: November Superbrawl and December Vegas Open confirmed', updateDate: '7 October 2026',
+    update: [
+      'Riot’s current Enchanted Wilds Pro Circuit page scheduled the Blossom Cup for 2–4 October; that event has ended. Riot’s next announced open-format event is Tactician’s Superbrawl, a regional 4v4 competition scheduled for 6–8 November.',
+      'Tactician’s Superbrawl is open across AMER, EMEA and APAC. Riot specifies 96 teams per region, single-elimination best-of-three matches and a ladder snapshot on 2 November. Regional qualification instructions and prize details are still being released through local channels.',
+      'The TFT Vegas Open is a 1,024-player LAN open bracket in Las Vegas from 11–13 December. Riot lists a $311,300 prize pool, with $100,000 for the champion; the top 128 receive a share. Riot says competitors will play Set 19.',
+      'Checked 7 October 2026: no newly dated TFT gameplay patch was listed in the official esports items reviewed. These are confirmed tournament updates, not claims of a new game patch today.'
+    ],
+    detailSections: [
+      { title: 'TFT Tactician’s Superbrawl — 4v4 tournament', description: 'Riot has officially added a team competition alongside its usual solo TFT circuit.', columns: ['Detail', 'Official announcement'], rows: [['Dates', '6–8 November 2026'], ['Regions', 'AMER, EMEA and APAC'], ['Teams', '96 teams per region; four players per team'], ['Bracket', 'Single elimination, best-of-three'], ['Ladder snapshot', '2 November 2026'], ['Qualification', 'Ladder captain slots and sub-regional 4v4 qualifiers; region-specific details vary'], ['Trials pathway', 'Top two teams in each region can earn non-TPC player places in Set 19 Tactician’s Trials'], ['Prize breakdown', 'Not yet published']], sourceUrl: 'https://teamfighttactics.leagueoflegends.com/en-us/news/esports/4v4-arrives-to-compete-tft/' },
+      { title: 'TFT Vegas Open 2026 — LAN, prize pool and format', description: 'Riot’s official competitor guide lists event dates, field size, scoring and prize money.', columns: ['Detail', 'Official announcement'], rows: [['Dates', '11–13 December 2026'], ['Venue city', 'Las Vegas, Nevada; exact venue details pending'], ['Competitors', '1,024-player open bracket'], ['Prize pool', 'US$311,300; US$100,000 for champion; top 128 paid'], ['Format', 'Three-day event with eight-player lobbies and checkmate final'], ['Game set', 'Set 19 planned for the tournament'], ['Qualifier note', 'Tactician’s Gauntlet: Vegas Qualifiers were cancelled; passes and entry details use Riot’s current event guide']], sourceUrl: 'https://teamfighttactics.leagueoflegends.com/en-us/news/esports/tft-vegas-open-2026-competitor-info/' },
+      { title: 'TFT Pro Circuit — Enchanted Wilds', description: 'Riot’s tier-one regional circuit offers Pro Points and qualification into the Tactician’s Crown.', columns: ['Cup', 'Official 2026 dates / status'], rows: [['Riftbeast Cup', '4–6 September; completed'], ['Elderwood Cup', '18–20 September; completed'], ['Blossom Cup', '2–4 October; completed'], ['Pro Circuit field', 'Top 32 players per region'], ['Prize pool', 'US$30,000 per Cup'], ['Next Crown details', 'Consult Riot’s regional standings and subsequent event announcements']], sourceUrl: 'https://teamfighttactics.leagueoflegends.com/en-us/news/esports/tft-pro-circuit-enchanted-wilds-everything-you-need-to-know/' },
+    ],
+    playerFocusHeading: 'TFT Set 18 and Set 19 competitive updates',
+    playerFocus: ['Enchanted Wilds is the current Set 18 Pro Circuit set in the published tournament guide. Regional ladder standings and qualification rules vary by server.', 'Riot’s Vegas Open guide says Set 19 will be used in December. Check the official competitor guide for later changes to passes, entry, seeding and prize terms.'],
+    competitionHeading: 'TFT tournaments, Pro Circuit and esports schedule',
+    competition: ['Tactician’s Superbrawl: 6–8 November, open regional 4v4 competition with 96 teams per region.', 'TFT Vegas Open: 11–13 December in Las Vegas, 1,024 competitors and a US$311,300 prize pool.', 'Enchanted Wilds Pro Circuit Blossom Cup took place 2–4 October; the next Crown pathway and regional results should be checked on Riot’s live esports hub.'],
+    sources: [
+      { name: 'Riot TFT — Tactician’s Superbrawl official announcement', url: 'https://teamfighttactics.leagueoflegends.com/en-us/news/esports/4v4-arrives-to-compete-tft/' },
+      { name: 'Riot TFT — Vegas Open 2026 competitor guide', url: 'https://teamfighttactics.leagueoflegends.com/en-us/news/esports/tft-vegas-open-2026-competitor-info/' },
+      { name: 'Riot TFT — Enchanted Wilds Pro Circuit dates and format', url: 'https://teamfighttactics.leagueoflegends.com/en-us/news/esports/tft-pro-circuit-enchanted-wilds-everything-you-need-to-know/' },
+      { name: 'Riot TFT — official esports news', url: 'https://teamfighttactics.leagueoflegends.com/en-us/news/esports/' },
+    ],
+    faqs: [
+      { question: 'When is the TFT Tactician’s Superbrawl 2026?', answer: 'Riot schedules the 4v4 regional tournament for 6–8 November 2026 across AMER, EMEA and APAC.' },
+      { question: 'How many players can compete in the TFT Vegas Open 2026?', answer: 'Riot’s competitor guide lists a 1,024-player open bracket for the Las Vegas event on 11–13 December.' },
+      { question: 'What is the TFT Vegas Open prize pool?', answer: 'Riot lists a US$311,300 prize pool, including US$100,000 for the champion, with the top 128 players sharing prizes.' },
     ],
   },
 ];
