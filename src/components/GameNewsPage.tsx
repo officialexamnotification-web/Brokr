@@ -32,7 +32,7 @@ function NewsCard({ gameId }: { gameId: string; key?: string }) {
 }
 
 function VerifiedDetailTables({ sections }: { sections: NonNullable<GameNewsRecord['detailSections']> }) {
-  return <section aria-label="Verified game and tournament details" className="space-y-5">
+  return <section aria-label="Game and tournament details" className="space-y-5">
     {sections.map((section) => <div key={section.title} className="overflow-hidden rounded-2xl border border-cyan-400/20 bg-cyan-500/5">
       <div className="border-b border-cyan-400/15 px-5 py-4">
         <h2 className="text-lg font-bold text-cyan-100">{section.title}</h2>
