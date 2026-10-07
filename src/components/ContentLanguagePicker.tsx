@@ -34,12 +34,22 @@ export function ContentLanguagePicker({ onLanguageChange }: { onLanguageChange?:
     return () => window.clearTimeout(timer);
   }, []);
 
-  const applyPageLanguage = (next: string) => {
+  const applyPageLanguage = (next: string, reload = false) => {
     const target = GOOGLE_LANGUAGES[next] || 'en';
+    if (target === 'en') {
+      document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/';
+    } else {
+      document.cookie = `googtrans=/en/${target}; path=/`;
+    }
+    if (reload) {
+      window.location.reload();
+      return;
+    }
     const combo = document.querySelector('.goog-te-combo') as HTMLSelectElement | null;
-    if (!combo) return;
-    combo.value = target;
-    combo.dispatchEvent(new Event('change', { bubbles: true }));
+    if (combo) {
+      combo.value = target;
+      combo.dispatchEvent(new Event('change', { bubbles: true }));
+    }
   };
 
   useEffect(() => {
@@ -61,7 +71,7 @@ export function ContentLanguagePicker({ onLanguageChange }: { onLanguageChange?:
     try { localStorage.setItem(STORAGE_KEY, next); } catch { /* private browsing */ }
     try { localStorage.setItem(CONTENT_PROMPT_KEY, 'true'); } catch { /* private browsing */ }
     setShowPrompt(false);
-    window.setTimeout(() => applyPageLanguage(next), 250);
+    window.setTimeout(() => applyPageLanguage(next, true), 250);
   };
 
   return <>
