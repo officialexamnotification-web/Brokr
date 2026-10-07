@@ -23,7 +23,7 @@ function NewsCard({ gameId }: { gameId: string; key?: string }) {
   const game = POPULAR_GAMES.find((item) => item.id === gameId)!;
   const page = GAME_NEWS_BY_ID.get(gameId)!;
   return <a href={`/game-news/${gameId}`} className="group rounded-2xl border border-slate-800 bg-[#080d1a] p-5 transition hover:border-cyan-400/50 hover:bg-slate-900/70">
-    <div className="flex items-center justify-between gap-3"><span className="rounded-full border border-cyan-400/20 bg-cyan-500/10 px-2.5 py-1 text-[10px] font-black uppercase tracking-wider text-cyan-300">{game.shortName}</span><span className="text-[10px] text-slate-500">Updated {page.updateDate}</span></div>
+    <div className="flex items-center justify-between gap-3"><span className="rounded-full border border-cyan-400/20 bg-cyan-500/10 px-2.5 py-1 text-[10px] font-black uppercase tracking-wider text-cyan-300">{game.shortName}</span><span className="text-[10px] text-slate-500">Checked {page.updateDate}</span></div>
     <h2 className="mt-4 text-lg font-extrabold leading-snug text-white group-hover:text-cyan-200">{page.updateHeading}</h2>
     <p className="mt-2 line-clamp-3 text-sm leading-6 text-slate-400">{page.intro}</p>
     <span className="mt-4 inline-flex items-center gap-2 text-xs font-bold text-amber-300">Read {game.shortName} update <ExternalLink className="h-3.5 w-3.5" /></span>
@@ -54,7 +54,7 @@ function GameArticle({ page }: { page: GameNewsRecord }) {
     <header className="bg-radial-hero px-6 py-9 sm:px-10 sm:py-12">
       <a href="/game-news" onClick={returnToPreviousNewsPage} className="mb-5 inline-flex items-center gap-2 rounded-lg border border-cyan-400/30 bg-cyan-500/10 px-3.5 py-2 text-xs font-bold text-cyan-200 transition hover:border-cyan-300 hover:bg-cyan-500/20 hover:text-white"><ArrowLeft className="h-4 w-4" />Back to Game News</a>
       <nav aria-label="Breadcrumb" className="text-xs text-slate-500"><a href="/" className="hover:text-white">Home</a><span className="px-2">/</span><a href="/game-news" className="hover:text-white">Game News</a><span className="px-2">/</span><span>{game.shortName}</span></nav>
-      <div className="mt-6 flex flex-wrap items-center gap-2"><span className="rounded-full border border-cyan-400/25 bg-cyan-500/10 px-3 py-1 text-[10px] font-black uppercase tracking-wider text-cyan-300">{game.name}</span><span className="rounded-full border border-slate-700 bg-slate-950/50 px-3 py-1 text-[10px] text-slate-400">Updated {page.updateDate}</span></div>
+      <div className="mt-6 flex flex-wrap items-center gap-2"><span className="rounded-full border border-cyan-400/25 bg-cyan-500/10 px-3 py-1 text-[10px] font-black uppercase tracking-wider text-cyan-300">{game.name}</span><span className="rounded-full border border-slate-700 bg-slate-950/50 px-3 py-1 text-[10px] text-slate-400">Checked {page.updateDate}</span></div>
       <h1 className="mt-5 max-w-4xl font-gaming text-2xl font-black leading-tight text-white sm:text-4xl">{page.heading}</h1>
       <p className="mt-4 max-w-3xl text-sm leading-7 text-slate-300">{page.intro}</p>
     </header>

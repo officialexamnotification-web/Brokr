@@ -86,7 +86,7 @@ const LatestGameNewsCard: React.FC<{ page: GameNewsPage }> = ({ page }) => {
   if (!game) return null;
   return (
     <article className="flex h-full flex-col rounded-2xl border border-cyan-400/20 bg-[#080d1a]/95 p-5 transition hover:-translate-y-0.5 hover:border-cyan-400/45">
-      <div className="flex items-center justify-between gap-3"><span className="rounded-full border border-cyan-400/20 bg-cyan-500/10 px-2.5 py-1 text-[10px] font-black uppercase tracking-wider text-cyan-300">{game.shortName}</span><span className="text-[10px] text-slate-500">Updated {page.updateDate}</span></div>
+      <div className="flex items-center justify-between gap-3"><span className="rounded-full border border-cyan-400/20 bg-cyan-500/10 px-2.5 py-1 text-[10px] font-black uppercase tracking-wider text-cyan-300">{game.shortName}</span><span className="text-[10px] text-slate-500">Checked {page.updateDate}</span></div>
       <h3 className="mt-4 font-gaming text-sm font-bold leading-snug text-white">{page.updateHeading}</h3>
       <p className="mt-2 text-xs leading-6 text-slate-400">{page.intro}</p>
       <a href={`/game-news/${page.gameId}`} className="mt-auto inline-flex pt-4 text-xs font-black text-cyan-300 hover:text-white">Open current details →</a>
