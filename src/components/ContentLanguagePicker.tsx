@@ -17,11 +17,17 @@ export function ContentLanguagePicker({ onLanguageChange }: { onLanguageChange?:
   const [showPrompt, setShowPrompt] = useState(false);
 
   useEffect(() => {
-    (window as Window & { tradivexGoogleTranslateInit?: () => void }).tradivexGoogleTranslateInit = () => {
+    const init = () => {
       if (window.google?.translate?.TranslateElement && !document.querySelector('.goog-te-combo')) {
         new window.google.translate.TranslateElement({ pageLanguage: 'en', autoDisplay: 'false' }, 'tradivex-google-translate');
       }
     };
+    (window as Window & { tradivexGoogleTranslateInit?: () => void }).tradivexGoogleTranslateInit = init;
+    let savedLanguage = 'global';
+    try { savedLanguage = localStorage.getItem(STORAGE_KEY) || 'global'; } catch { /* private browsing */ }
+    const target = GOOGLE_LANGUAGES[savedLanguage] || 'en';
+    if (target === 'en') return;
+    document.cookie = `googtrans=/en/${target}; path=/`;
     const existing = document.querySelector('script[data-tradivex-translate]');
     if (!existing) {
       const script = document.createElement('script');
@@ -51,11 +57,6 @@ export function ContentLanguagePicker({ onLanguageChange }: { onLanguageChange?:
       combo.dispatchEvent(new Event('change', { bubbles: true }));
     }
   };
-
-  useEffect(() => {
-    const timer = window.setTimeout(() => applyPageLanguage(language), 1400);
-    return () => window.clearTimeout(timer);
-  }, [language]);
 
   useEffect(() => {
     try {
