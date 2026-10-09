@@ -102,7 +102,7 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
     name: 'Game Changers Americas Last Chance Qualifier 2026', organizer: 'Riot Games', startDate: '2026-10-14', endDate: '2026-10-15', dateLabel: '14–15 Oct 2026',
     region: 'Americas', location: 'Riot Games Arena, São Paulo, Brazil', teams: 3,
     format: 'Three-team round robin Bo3 on 14 Oct; top two advance to a Bo5 final on 15 Oct', status: 'upcoming',
-    sourceUrl: 'https://valorantesports.com/en-US/news/eyntk-gc-americas-lcq-2026', sourceName: 'VALORANT Esports', updatedAt: '2026-10-07',
+    sourceUrl: 'https://valorantesports.com/en-US/news/eyntk-gc-americas-lcq-2026', sourceName: 'VALORANT Esports', updatedAt: '2026-10-09',
     summary: 'Riot’s 6 October guide names MIBR, Akave Esports Black and FlyQuest RED. Matches start 14 October at 11:00 AM PT; the final is 15 October at 1:00 PM PT. The winner claims the final Americas place at Game Changers Championship São Paulo (22 Oct–1 Nov).',
   },
   {
@@ -110,7 +110,7 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
     name: 'VALORANT Game Changers Championship 2026', organizer: 'Riot Games', startDate: '2026-10-22', endDate: '2026-11-01', dateLabel: '22 Oct – 1 Nov 2026',
     region: 'Global', location: 'São Paulo, Brazil',
     format: 'Global championship; field and full match schedule are on Riot’s official event pages', status: 'upcoming',
-    sourceUrl: 'https://valorantesports.com/en-US/news/eyntk-gc-americas-lcq-2026', sourceName: 'VALORANT Esports', updatedAt: '2026-10-07',
+    sourceUrl: 'https://valorantesports.com/en-US/news/eyntk-gc-americas-lcq-2026', sourceName: 'VALORANT Esports', updatedAt: '2026-10-09',
     summary: 'Riot’s 6 October LCQ guide confirms the Championship dates in São Paulo. The Americas LCQ winner takes the fourth Americas qualification place; consult the live Riot event page for the complete global field and match schedule.',
   },
   {
@@ -132,7 +132,7 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
     id: 'cs2-pgl-singapore-major-2026', slug: 'cs2-pgl-singapore-major-2026', gameId: 'cs2', gameName: 'Counter-Strike 2',
     name: 'PGL Singapore Major 2026', organizer: 'PGL', startDate: '2026-11-25', endDate: '2026-12-13', dateLabel: '25 Nov – 13 Dec 2026',
     region: 'Global', location: 'Singapore', prizePool: '$1,250,000', teams: 32, format: 'Counter-Strike Major', status: 'upcoming',
-    sourceUrl: 'https://blast.tv/cs/tournaments/pgl-singapore-major-2026', sourceName: 'BLAST.tv Counter-Strike', updatedAt: '2026-10-07',
+    sourceUrl: 'https://blast.tv/cs/tournaments/pgl-singapore-major-2026', sourceName: 'BLAST.tv Counter-Strike', updatedAt: '2026-10-09',
     summary: 'PGL’s official event listing confirms a 32-team Major in Singapore from 25 November to 13 December, with a $1.25 million prize pool.',
   },
   {
@@ -140,7 +140,7 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
     name: 'IEM Beijing 2026', organizer: 'ESL', startDate: '2026-11-02', endDate: '2026-11-08', dateLabel: '2–8 Nov 2026',
     region: 'Global', location: 'Beijing, China', prizePool: '$1,250,000', teams: 16,
     format: 'Four stages: groups, playoffs and third-place playoff', status: 'upcoming',
-    sourceUrl: 'https://blast.tv/cs/tournaments/iem-china-2026', sourceName: 'BLAST.tv Counter-Strike', updatedAt: '2026-10-07',
+    sourceUrl: 'https://blast.tv/cs/tournaments/iem-china-2026', sourceName: 'BLAST.tv Counter-Strike', updatedAt: '2026-10-09',
     summary: 'The official event listing confirms 16 teams, a $1.25 million prize pool and the 2–8 November dates in Beijing. Match times and broadcast details may change; use the organizer event page for the live bracket.',
   },
   {
@@ -148,14 +148,14 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
     name: 'BLAST Premier Rivals Hong Kong 2026', organizer: 'BLAST', startDate: '2026-11-11', endDate: '2026-11-15', dateLabel: '11–15 Nov 2026',
     region: 'Global', location: 'Hong Kong', prizePool: '$1,000,000', teams: 8,
     format: 'Eight teams; group stage and playoffs', status: 'upcoming',
-    sourceUrl: 'https://blast.tv/cs/tournaments/rivals-2026-season-2', sourceName: 'BLAST.tv Counter-Strike', updatedAt: '2026-10-07',
+    sourceUrl: 'https://blast.tv/cs/tournaments/rivals-2026-season-2', sourceName: 'BLAST.tv Counter-Strike', updatedAt: '2026-10-09',
     summary: 'BLAST lists an eight-team event with a $1 million prize pool from 11–15 November in Hong Kong. Team lineups and further event details remain on the official event page.',
   },
   {
     id: 'fortnite-fncs-solo-october-2026', slug: 'fortnite-fncs-solo-october-2026', gameId: 'fortnite', gameName: 'Fortnite',
     name: 'FNCS Solo Tournament (October 2026)', organizer: 'Epic Games', startDate: '2026-10-05', endDate: '2026-10-27', dateLabel: '5–27 Oct 2026',
     region: 'Regional online competition', location: 'Online; prize amounts and eligibility vary by region', format: 'Solo qualifiers, Heats, Last Chance Qualifier and Finals; official rules list exact rounds', status: 'live',
-    sourceUrl: 'https://www.fortnite.com/competitive/rules-guidelines/rules-library/fortnite-championship-series-fncs-solos-2026-official-rules?region=NAC', sourceName: 'Fortnite Competitive official rules', updatedAt: '2026-10-07',
+    sourceUrl: 'https://www.fortnite.com/competitive/rules-guidelines/rules-library/fortnite-championship-series-fncs-solos-2026-official-rules?region=NAC', sourceName: 'Fortnite Competitive official rules', updatedAt: '2026-10-09',
     summary: 'Epic’s official FNCS Solos rules schedule Qualifier 2 rounds for 5–6, 10 and 11 October, Heats for 17–18 October, Last Chance Qualifier for 19–20 October and Finals for 26–27 October. The solo event has regional leaderboards and prizes; use the rules for region-specific eligibility and award amounts.',
   },
   {
@@ -229,7 +229,7 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
     name: 'Brawl Stars Championship broadcast weekend', organizer: 'Supercell', startDate: '2026-10-17', endDate: '2026-10-18', dateLabel: '17–18 Oct 2026',
     region: 'Global', location: 'Online broadcast',
     format: 'Two broadcast days; match title and full schedule are shown on the official event hub', status: 'upcoming',
-    sourceUrl: 'https://event.supercell.com/brawlstars/en/', sourceName: 'Brawl Stars Championship', updatedAt: '2026-10-07',
+    sourceUrl: 'https://event.supercell.com/brawlstars/en/', sourceName: 'Brawl Stars Championship', updatedAt: '2026-10-09',
     summary: 'Supercell’s live Championship hub lists Day 1 on 17 October and Day 2 on 18 October, both at 05:00 UTC. It does not show the event name or matchups in the public schedule snapshot; check the hub for the live details.',
   },
   {
@@ -260,7 +260,7 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
     name: 'Marvel Rivals Ignite 2026 Stage 2 Playoffs', organizer: 'NetEase / Marvel Rivals Esports', startDate: '2026-10-08', endDate: '2026-10-18', dateLabel: '8–18 Oct 2026',
     region: 'Global: Pacific, Americas, EMEA and China', location: 'Online regional playoffs', prizePool: '$650,000', teams: 12,
     format: 'Regional double-elimination playoffs; BO5 matches, BO7 regional finals', status: 'upcoming',
-    sourceUrl: 'https://www.marvelrivalsesports.com/20260908/42828_1313342.html', sourceName: 'Marvel Rivals Ignite', updatedAt: '2026-10-07',
+    sourceUrl: 'https://www.marvelrivalsesports.com/20260908/42828_1313342.html', sourceName: 'Marvel Rivals Ignite', updatedAt: '2026-10-09',
     summary: 'Official Stage 2 guide schedules playoffs for 8–18 October. Pacific plays first; Americas and EMEA begin 15 October, China begins 16 October, and regional finals are 11 October (Pacific) and 18 October (Americas, EMEA and China). Twelve teams qualify for the late-November Grand Finals; venue/date are still to be announced.',
   },
   {
@@ -268,7 +268,7 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
     name: 'Marvel Rivals Ignite 2026 Grand Finals', organizer: 'NetEase / Marvel Rivals Esports',
     dateLabel: 'Late November 2026; exact dates and location pending', region: 'Global', location: 'Venue to be announced', teams: 12,
     format: 'Twelve teams qualify from Ignite regional competitions; full finals format pending', status: 'upcoming',
-    sourceUrl: 'https://www.marvelrivalsesports.com/20260908/42828_1313342.html', sourceName: 'Marvel Rivals Ignite', updatedAt: '2026-10-07',
+    sourceUrl: 'https://www.marvelrivalsesports.com/20260908/42828_1313342.html', sourceName: 'Marvel Rivals Ignite', updatedAt: '2026-10-09',
     summary: 'The official Stage 2 guide confirms 12 Grand Finals teams and says the finals location will be announced later. The official 2026 circuit overview places Stage 2 and its Grand Finals in late November; exact dates, venue and match schedule are not yet confirmed.',
   },
   {
@@ -276,14 +276,14 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
     name: 'Arena of Valor 10Fest — Winter 2026 Finals', organizer: 'Garena Liên Quân Mobile', startDate: '2026-11-07', endDate: '2026-11-07', dateLabel: '7 Nov 2026',
     region: 'Vietnam', location: 'My Dinh National Stadium, Hanoi',
     format: 'Đấu Trường Danh Vọng (Arena of Glory) Winter 2026 Grand Final; matchup details pending', status: 'upcoming',
-    sourceUrl: 'https://lienquan.garena.vn/tag/dau-truong-danh-vong/', sourceName: 'Garena Liên Quân Mobile', updatedAt: '2026-10-07',
+    sourceUrl: 'https://lienquan.garena.vn/tag/dau-truong-danh-vong/', sourceName: 'Garena Liên Quân Mobile', updatedAt: '2026-10-09',
     summary: 'Garena’s official 10Fest announcement schedules the Đấu Trường Danh Vọng Winter 2026 Grand Final for 7 November at My Dinh National Stadium in Hanoi, as part of AoV’s tenth-anniversary event. The opponent names and match start time were not specified in the announcement.',
   },
   {
     id: 'aov-aic-2026', slug: 'aov-aic-2026', gameId: 'arena_of_valor', gameName: 'Arena of Valor',
     name: 'Arena of Valor International Championship 2026', organizer: 'Garena', dateLabel: 'Year-end 2026 in Thailand; exact dates pending',
     region: 'International', location: 'Thailand', format: 'Year-end international championship; teams and format pending', status: 'upcoming',
-    sourceUrl: 'https://www.garena.sg/news/2M54DC', sourceName: 'Garena', updatedAt: '2026-10-07',
+    sourceUrl: 'https://www.garena.sg/news/2M54DC', sourceName: 'Garena', updatedAt: '2026-10-09',
     summary: 'Garena confirms AIC 2026 as a year-end championship in Thailand. The linked official announcement does not yet give exact dates, team count, format, prize pool or match schedule; those fields are left open until the organizer publishes them.',
   },
   {
@@ -291,7 +291,7 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
     name: 'TFT Tactician’s Superbrawl — Set 18', organizer: 'Riot Games', startDate: '2026-11-06', endDate: '2026-11-08', dateLabel: '6–8 Nov 2026',
     region: 'AMER, EMEA and APAC', location: 'Online regional competition', teams: 96,
     format: '96 teams per region; four-player rosters; single-elimination BO3 bracket', status: 'upcoming',
-    sourceUrl: 'https://teamfighttactics.leagueoflegends.com/en-us/news/esports/4v4-arrives-to-compete-tft/', sourceName: 'Riot Games TFT Esports', updatedAt: '2026-10-07',
+    sourceUrl: 'https://teamfighttactics.leagueoflegends.com/en-us/news/esports/4v4-arrives-to-compete-tft/', sourceName: 'Riot Games TFT Esports', updatedAt: '2026-10-09',
     summary: 'Riot’s official announcement schedules the open-to-all regional 4v4 team tournament for 6–8 November. Each region has 96 teams in a single-elimination best-of-three bracket. Ladder snapshots are 2 November; exact regional qualifiers and prize breakdown vary and are still to be published.',
   },
   {
@@ -299,7 +299,7 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
     name: 'TFT Vegas Open 2026', organizer: 'Riot Games', startDate: '2026-12-11', endDate: '2026-12-13', dateLabel: '11–13 Dec 2026',
     region: 'Global open bracket', location: 'Las Vegas, Nevada, USA', prizePool: '$311,300', teams: 1024,
     format: 'Three-day open-bracket LAN; 1,024 competitors, eight-player lobbies and checkmate final', status: 'upcoming',
-    sourceUrl: 'https://teamfighttactics.leagueoflegends.com/en-us/news/esports/tft-vegas-open-2026-competitor-info/', sourceName: 'Riot Games TFT Esports', updatedAt: '2026-10-07',
+    sourceUrl: 'https://teamfighttactics.leagueoflegends.com/en-us/news/esports/tft-vegas-open-2026-competitor-info/', sourceName: 'Riot Games TFT Esports', updatedAt: '2026-10-09',
     summary: 'Riot confirms a 1,024-player open bracket at Convergence Fest in Las Vegas from 11–13 December. The top 128 share a $311,300 prize pool, with $100,000 for the champion. The published format uses eight-player lobbies and a checkmate final; Set 19 is planned for the event.',
   },
 ];
@@ -378,7 +378,7 @@ const CURATED_TOURNAMENT_NEWS: TournamentNews[] = [
       'PGL’s event page confirms 16 teams and a $1.25 million total prize pool for Bucharest. The event page also describes a group stage, playoffs and third-place match. The calendar page does not expose ESL Pro League’s full team list or detailed format in the listing.',
       'The organizer calendar also confirms IEM Beijing (2–8 November, 16 teams, $1.25 million) and BLAST Premier Rivals Hong Kong (11–15 November, eight teams, $1 million). PGL Singapore Major follows from 25 November to 13 December with 32 teams and a $1.25 million prize pool. Use the individual organizer event pages for brackets and changing match times.',
     ],
-    tournamentName: 'CS2 October–November 2026 tournament calendar', status: 'upcoming', publishedAt: '2026-10-02', updatedAt: '2026-10-07',
+    tournamentName: 'CS2 October–November 2026 tournament calendar', status: 'upcoming', publishedAt: '2026-10-02', updatedAt: '2026-10-09',
     sourceUrl: 'https://blast.tv/cs/tournaments', sourceName: 'BLAST.tv Counter-Strike', sourceVerified: true,
     tags: ['CS2', 'ESL Pro League', 'PGL', 'October'], eventId: 'cs2-esl-pro-league-s24-2026',
   },
@@ -391,7 +391,7 @@ const CURATED_TOURNAMENT_NEWS: TournamentNews[] = [
       'Epic’s May schedule announcement confirmed a standalone FNCS solos tournament after the Global Championship. Epic’s official 2026 FNCS Solos rules now publish the regional structure and round dates: Qualifier 2 rounds on 5–6, 10 and 11 October; Heats on 17–18 October; Last Chance Qualifier on 19–20 October; Finals on 26–27 October.',
       'The event is regional and individual, with leaderboard placement and prize details varying by region. The rules list a 60-point Victory Royale and four points per Finals elimination; check the official rules for the region-specific prize schedule, eligibility and scoring.',
     ],
-    tournamentName: 'FNCS Solo Tournament (October 2026)', status: 'live', publishedAt: '2026-10-02', updatedAt: '2026-10-07',
+    tournamentName: 'FNCS Solo Tournament (October 2026)', status: 'live', publishedAt: '2026-10-02', updatedAt: '2026-10-09',
     sourceUrl: 'https://www.fortnite.com/competitive/rules-guidelines/rules-library/fortnite-championship-series-fncs-solos-2026-official-rules?region=NAC', sourceName: 'Fortnite Competitive official rules', sourceVerified: true,
     tags: ['Fortnite', 'FNCS', 'Solo', 'Qualifier', 'Heats', 'Finals'], eventId: 'fortnite-fncs-solo-october-2026',
   },
@@ -553,9 +553,9 @@ const CURATED_TOURNAMENT_NEWS: TournamentNews[] = [
       'Marvel Rivals Season 10 launched on 11 September. NetEase’s official Ignite Stage 2 guide schedules the regional playoffs from 8 to 18 October 2026, played on Season 10 and using Thebes in the map pool.',
       'The Pacific playoffs start 8 October and its regional final is 11 October. Americas and EMEA playoffs start 15 October, while China starts 16 October; all three regional finals are set for 18 October. Playoffs use double elimination, best-of-five matches and best-of-seven regional finals. The total Stage 2 prize pool is $650,000.',
       'Twelve teams qualify for the Ignite Grand Finals in late November. The official guide says the finals location will be announced later, so the exact venue and dates remain unconfirmed. The game’s in-client Esports panel is the official place for match times, teams and live brackets.',
-      'Checked 7 October 2026: the next scheduled playoff day is 8 October for Pacific. This is a competitive schedule update, not a claim that a new game patch was released today.'
+      'Checked 9 October 2026: the next scheduled playoff day is 8 October for Pacific. This is a competitive schedule update, not a claim that a new game patch was released today.'
     ],
-    tournamentName: 'Marvel Rivals Ignite 2026 Stage 2', status: 'upcoming', publishedAt: '2026-10-07', updatedAt: '2026-10-07',
+    tournamentName: 'Marvel Rivals Ignite 2026 Stage 2', status: 'upcoming', publishedAt: '2026-10-07', updatedAt: '2026-10-09',
     sourceUrl: 'https://www.marvelrivalsesports.com/20260908/42828_1313342.html', sourceName: 'Marvel Rivals Ignite', sourceVerified: true,
     tags: ['Marvel Rivals', 'Ignite 2026', 'Stage 2 Playoffs', 'Grand Finals', 'Season 10'], eventId: 'marvel-rivals-ignite-stage-2-2026',
   },
@@ -567,9 +567,9 @@ const CURATED_TOURNAMENT_NEWS: TournamentNews[] = [
       'Garena’s Arena of Valor portal lists its 18 September 2026 English patch notes as the latest dated English patch entry visible on the official game hub checked. No newer English patch post was listed there on 7 October; regional game clients may show additional localized notices.',
       'The next confirmed event on the Vietnam competitive calendar is Liên Quân 10Fest. Garena’s official event announcement sets the Đấu Trường Danh Vọng (Arena of Glory) Winter 2026 Grand Final for 7 November at My Dinh National Stadium in Hanoi. The announcement does not identify the finalists or match start time.',
       'Garena separately confirms Arena of Valor International Championship 2026 (AIC) as a year-end championship in Thailand. Its exact dates, teams, format, prize pool and daily schedule have not been published in the linked announcement. AIC is a distinct AoV competition and should not be merged with Honor of Kings event listings.',
-      'Checked 7 October 2026: no newer official AIC schedule detail was found in Garena’s linked announcement. We will show the confirmed location and time window without inventing dates or teams.'
+      'Checked 9 October 2026: no newer official AIC schedule detail was found in Garena’s linked announcement. We will show the confirmed location and time window without inventing dates or teams.'
     ],
-    tournamentName: 'Arena of Valor 2026 esports calendar', status: 'upcoming', publishedAt: '2026-10-07', updatedAt: '2026-10-07',
+    tournamentName: 'Arena of Valor 2026 esports calendar', status: 'upcoming', publishedAt: '2026-10-07', updatedAt: '2026-10-09',
     sourceUrl: 'https://lienquan.garena.vn/tag/dau-truong-danh-vong/', sourceName: 'Garena Liên Quân Mobile', sourceVerified: true,
     tags: ['Arena of Valor', 'AoV esports', 'Liên Quân Mobile', 'AIC 2026', '10Fest', 'Arena of Glory'], eventId: 'aov-10fest-winter-finals-2026',
   },
@@ -581,9 +581,9 @@ const CURATED_TOURNAMENT_NEWS: TournamentNews[] = [
       'Riot’s Enchanted Wilds Pro Circuit schedule listed the Blossom Cup for 2–4 October; that cup is complete. The next confirmed global participation event is Tactician’s Superbrawl, an official 4v4 team tournament open to players in AMER, EMEA and APAC.',
       'Tactician’s Superbrawl runs 6–8 November. Riot specifies 96 teams per region, four players per roster and a single-elimination best-of-three bracket. The ladder snapshot is 2 November; region-specific qualification details and prize breakdown are still pending on Riot’s regional channels.',
       'The TFT Vegas Open returns as a 1,024-player open-bracket LAN from 11–13 December in Las Vegas. Riot lists a $311,300 prize pool, with $100,000 for the champion and awards for the top 128. Its format uses eight-player lobbies and a checkmate final. Riot says competitors will play Set 19.',
-      'Checked 7 October 2026: the official TFT esports hub provides the current event announcements and regional schedules. Check Riot’s current rules and regional channels before relying on local qualification instructions.'
+      'Checked 9 October 2026: the official TFT esports hub provides the current event announcements and regional schedules. Check Riot’s current rules and regional channels before relying on local qualification instructions.'
     ],
-    tournamentName: 'Teamfight Tactics esports 2026', status: 'upcoming', publishedAt: '2026-10-07', updatedAt: '2026-10-07',
+    tournamentName: 'Teamfight Tactics esports 2026', status: 'upcoming', publishedAt: '2026-10-07', updatedAt: '2026-10-09',
     sourceUrl: 'https://teamfighttactics.leagueoflegends.com/en-us/news/esports/4v4-arrives-to-compete-tft/', sourceName: 'Riot Games TFT Esports', sourceVerified: true,
     tags: ['Teamfight Tactics', 'TFT esports', 'Tactician’s Superbrawl', 'TFT Vegas Open', 'Set 18', 'Set 19'], eventId: 'tft-tacticians-superbrawl-2026',
   },
@@ -653,34 +653,34 @@ export const TOURNAMENT_NEWS: TournamentNews[] = [
 ];
 
 export const OFFICIAL_TOURNAMENT_SOURCES: TournamentSource[] = [
-  { gameId: 'bgmi', gameName: 'BGMI', url: 'https://esports.battlegroundsmobileindia.com/', sourceName: 'KRAFTON India Esports', note: 'BMSD is live 22 Sep–18 Oct; BMIC is announced for 30 Oct–1 Nov. Checked 7 Oct 2026; no newer official schedule detail was listed.', checkedAt: '2026-10-07' },
-  { gameId: 'pubg', gameName: 'PUBG Mobile', url: 'https://esports.pubgmobile.kr/en/events', sourceName: 'PUBG MOBILE Esports Korea', note: 'PMPS Season 2 began 3 Oct; circuit resumes 9 Oct and Finals are 17–18 Oct. Checked 7 Oct 2026; no newer official schedule detail was listed.', checkedAt: '2026-10-07' },
-  { gameId: 'freefire', gameName: 'Free Fire', url: 'https://ff.garena.com/en/article/1605/', sourceName: 'Garena Free Fire', note: 'Official 2026 roadmap confirms FFWS Global Finals from 6 Nov in Bangkok; daily schedule pending. Checked 7 Oct 2026; no newer official schedule detail was listed.', checkedAt: '2026-10-07' },
-  { gameId: 'valorant', gameName: 'VALORANT', url: 'https://valorantesports.com/en-US/news/eyntk-gc-americas-lcq-2026', sourceName: 'Riot Games VALORANT Esports', note: 'Checked 7 Oct 2026: Champions playoffs start 7 Oct; Game Changers Americas LCQ runs 14–15 Oct in São Paulo, ahead of the Championship on 22 Oct–1 Nov.', checkedAt: '2026-10-07' },
-  { gameId: 'cod', gameName: 'Call of Duty', url: 'https://www.callofdutyleague.com/en-us/schedule?stage=entire-season', sourceName: 'Call of Duty League', note: 'The 2026 CDL season and Championship ended 19 Jul. COD Mobile and Warzone have separate schedules; no common series assumed. Checked 7 Oct 2026; no newer official schedule detail was listed.', checkedAt: '2026-10-07' },
-  { gameId: 'cs2', gameName: 'Counter-Strike 2', url: 'https://blast.tv/cs/tournaments', sourceName: 'BLAST.tv Counter-Strike', note: 'Checked 7 Oct 2026: October lists ESL Pro League S24 and PGL Masters Bucharest; November adds IEM Beijing, BLAST Premier Rivals Hong Kong and PGL Singapore Major. Use each event page for the live bracket.', checkedAt: '2026-10-07' },
-  { gameId: 'fortnite', gameName: 'Fortnite', url: 'https://www.fortnite.com/competitive/rules-guidelines/rules-library/fortnite-championship-series-fncs-solos-2026-official-rules?region=NAC', sourceName: 'Epic Games Fortnite Competitive', note: 'Epic lists Qualifier 2 on 5–6, 10 and 11 Oct; Heats on 17–18 Oct; LCQ on 19–20 Oct; and Finals on 26–27 Oct. Checked 7 Oct 2026.', checkedAt: '2026-10-07' },
-  { gameId: 'apex', gameName: 'Apex Legends', url: 'https://algs.ea.com/en/year-6/split-2-playoffs/competition-overview', sourceName: 'EA Apex Legends Global Series', note: 'Split 2 Pro League runs through 4 Oct; 40-team Playoffs are 29 Oct–1 Nov in Las Vegas. Checked 7 Oct 2026; no newer official schedule detail was listed.', checkedAt: '2026-10-07' },
-  { gameId: 'minecraft', gameName: 'Minecraft', url: 'https://www.minecraft.net/en-us/live', sourceName: 'Minecraft Official', note: 'Official page checked for publisher events; it lists Minecraft Live, not an official esports tournament calendar. Community competitions are separate. Checked 7 Oct 2026; no newer official schedule detail was listed.', checkedAt: '2026-10-07' },
-  { gameId: 'roblox', gameName: 'Roblox', url: 'https://about.roblox.com/newsroom/2026/09/roblox-fall-games-preview', sourceName: 'Roblox Newsroom', note: 'September preview mentions one experience-level Showdown Cup, not a platform-wide pro league. Exact dates/results were not provided. Checked 7 Oct 2026; no newer official schedule detail was listed.', checkedAt: '2026-10-07' },
-  { gameId: 'league', gameName: 'League of Legends', url: 'https://lolesports.com/en-US', sourceName: 'Riot Games LoL Esports', note: 'Regional splits continue into October; Worlds runs 15 Oct–14 Nov. Checked 7 Oct 2026; no newer official schedule detail was listed.', checkedAt: '2026-10-07' },
-  { gameId: 'rocket_league', gameName: 'Rocket League', url: 'https://www.rocketleague.com/competitive/schedule', sourceName: 'Rocket League Esports', note: 'RLCS World Championship ended 20 Sep; the official schedule is checked for the next dated events. Checked 7 Oct 2026; no newer official schedule detail was listed.', checkedAt: '2026-10-07' },
-  { gameId: 'overwatch', gameName: 'Overwatch 2', url: 'https://ga.overwatch.blizzard.com/en-us/news/24246297/owcs-2026-season-competitive-details/', sourceName: 'Blizzard Overwatch Esports', note: 'OWCS Stage 3 regular season starts 10 Oct; playoffs are scheduled for 30 Oct–1 Nov. Checked 7 Oct 2026; no newer official schedule detail was listed.', checkedAt: '2026-10-07' },
-  { gameId: 'rainbow_six', gameName: 'Rainbow Six Siege', url: 'https://www.ubisoft.com/en-us/esports/rainbow-six/siege', sourceName: 'Ubisoft R6 Esports', note: 'BLAST R6 Major Osaka is scheduled for 7–15 Nov. Checked 7 Oct 2026; no newer official schedule detail was listed.', checkedAt: '2026-10-07' },
-  { gameId: 'destiny2', gameName: 'Destiny 2', url: 'https://help.bungie.net/hc/en-us/articles/360049199711-Destiny-and-Destiny-2-Competition-License', sourceName: 'Bungie Help', note: 'Bungie provides a license for community-run tournaments; no Bungie-run 2026 esports circuit was found in the official source checked. Checked 7 Oct 2026; no newer official schedule detail was listed.', checkedAt: '2026-10-07' },
-  { gameId: 'ea_fc', gameName: 'EA Sports FC', url: 'https://www.ea.com/games/ea-sports-fc/fc-pro/news/fc-pro-27-deep-dive', sourceName: 'EA SPORTS FC Pro', note: 'Open Ladder closed 3 Oct; Regional Qualifiers are 10–11 Oct, with the Global Qualifier 5–7 Nov. Checked 7 Oct 2026; no newer official schedule detail was listed.', checkedAt: '2026-10-07' },
-  { gameId: 'mobile_legends', gameName: 'Mobile Legends: Bang Bang', url: 'https://en.moonton.com/news/377.html', sourceName: 'MOONTON Games', note: 'MPL Philippines S18 playoffs are 21–25 Oct in Pasig; other regions have separate dates. Checked 7 Oct 2026; no newer official schedule detail was listed.', checkedAt: '2026-10-07' },
-  { gameId: 'honor_of_kings', gameName: 'Honor of Kings', url: 'https://oca.asia/news/7711-oca-announces-nocs-for-asian-games-esports-competition.html', sourceName: 'Olympic Council of Asia', note: 'Asian Games esports event including Honor of Kings runs through 2 Oct. Checked 7 Oct 2026; no newer official schedule detail was listed.', checkedAt: '2026-10-07' },
-  { gameId: 'brawl_stars', gameName: 'Brawl Stars', url: 'https://event.supercell.com/brawlstars/en/', sourceName: 'Supercell Brawl Stars Esports', note: 'Checked 7 Oct 2026: official hub lists broadcast days 17–18 Oct; World Finals are 20–22 Nov in Tokyo. The live hub supplies current match and stream details.', checkedAt: '2026-10-07' },
-  { gameId: 'clash_of_clans', gameName: 'Clash of Clans', url: 'https://event.supercell.com/clashofclans/en/cups/world-championship/how-to-compete', sourceName: 'Supercell Clash of Clans Esports', note: 'October Last Chance Qualifier confirmed; exact dates pending. Checked 7 Oct 2026; no newer official schedule detail was listed.', checkedAt: '2026-10-07' },
-  { gameId: 'clash_royale', gameName: 'Clash Royale', url: 'https://event.supercell.com/clashroyale/en', sourceName: 'Supercell Clash Royale League', note: 'CRL Last Chance Qualifier completed 5–6 Sep; Woo listed as winner. Next live event date not yet posted. Checked 7 Oct 2026; no newer official schedule detail was listed.', checkedAt: '2026-10-07' },
-  { gameId: 'genshin', gameName: 'Genshin Impact', url: 'https://www.hoyolab.com/#/article', sourceName: 'HoYoverse HoYoLAB', note: 'Official event/news channel checked; no current official Genshin esports tournament schedule found. Community events are not represented as official tournaments. Checked 7 Oct 2026; no newer official schedule detail was listed.', checkedAt: '2026-10-07' },
-  { gameId: 'stumble_guys', gameName: 'Stumble Guys', url: 'https://www.stumbleguys.com/news', sourceName: 'Scopely Stumble Guys', note: 'Official news page checked; no current publisher-run esports calendar found. Community competitions are separate. Checked 7 Oct 2026; no newer official schedule detail was listed.', checkedAt: '2026-10-07' },
-  { gameId: 'among_us', gameName: 'Among Us', url: 'https://www.innersloth.com/games/among-us/', sourceName: 'Innersloth', note: 'Official game page checked; no current official esports tournament schedule found. Checked 7 Oct 2026; no newer official schedule detail was listed.', checkedAt: '2026-10-07' },
-  { gameId: 'gta_online', gameName: 'GTA Online', url: 'https://www.rockstargames.com/newswire', sourceName: 'Rockstar Games Newswire', note: 'Official Newswire checked for organized competitive events; no current GTA Online esports championship schedule found. Weekly in-game activities are not esports tournaments. Checked 7 Oct 2026; no newer official schedule detail was listed.', checkedAt: '2026-10-07' },
-  { gameId: 'marvel_rivals', gameName: 'Marvel Rivals', url: 'https://www.marvelrivalsesports.com/20260908/42828_1313342.html', sourceName: 'Marvel Rivals Ignite', note: 'Stage 2 playoffs run 8–18 Oct; 12 teams advance to late-November Grand Finals. Checked 7 Oct 2026.', checkedAt: '2026-10-07' },
-  { gameId: 'arena_of_valor', gameName: 'Arena of Valor', url: 'https://lienquan.garena.vn/tag/dau-truong-danh-vong/', sourceName: 'Garena Liên Quân Mobile', note: 'Winter 2026 Grand Final is announced for 7 Nov at 10Fest, Hanoi; AIC 2026 is confirmed for year-end in Thailand, exact dates pending. Checked 7 Oct 2026.', checkedAt: '2026-10-07' },
-  { gameId: 'teamfight_tactics', gameName: 'Teamfight Tactics', url: 'https://teamfighttactics.leagueoflegends.com/en-us/news/esports/', sourceName: 'Riot Games TFT Esports', note: 'Tactician’s Superbrawl is 6–8 Nov; the 1,024-player Vegas Open is 11–13 Dec. Checked 7 Oct 2026.', checkedAt: '2026-10-07' },
+  { gameId: 'bgmi', gameName: 'BGMI', url: 'https://esports.battlegroundsmobileindia.com/', sourceName: 'KRAFTON India Esports', note: 'BMSD is live 22 Sep–18 Oct; BMIC is announced for 30 Oct–1 Nov. Checked 9 Oct 2026; no newer official schedule detail was listed.', checkedAt: '2026-10-09' },
+  { gameId: 'pubg', gameName: 'PUBG Mobile', url: 'https://esports.pubgmobile.kr/en/events', sourceName: 'PUBG MOBILE Esports Korea', note: 'PMPS Season 2 began 3 Oct; circuit resumes 9 Oct and Finals are 17–18 Oct. Checked 9 Oct 2026; no newer official schedule detail was listed.', checkedAt: '2026-10-09' },
+  { gameId: 'freefire', gameName: 'Free Fire', url: 'https://ff.garena.com/en/article/1605/', sourceName: 'Garena Free Fire', note: 'Official 2026 roadmap confirms FFWS Global Finals from 6 Nov in Bangkok; daily schedule pending. Checked 9 Oct 2026; no newer official schedule detail was listed.', checkedAt: '2026-10-09' },
+  { gameId: 'valorant', gameName: 'VALORANT', url: 'https://valorantesports.com/en-US/news/eyntk-gc-americas-lcq-2026', sourceName: 'Riot Games VALORANT Esports', note: 'Checked 9 Oct 2026: Champions playoffs start 7 Oct; Game Changers Americas LCQ runs 14–15 Oct in São Paulo, ahead of the Championship on 22 Oct–1 Nov.', checkedAt: '2026-10-09' },
+  { gameId: 'cod', gameName: 'Call of Duty', url: 'https://www.callofdutyleague.com/en-us/schedule?stage=entire-season', sourceName: 'Call of Duty League', note: 'The 2026 CDL season and Championship ended 19 Jul. COD Mobile and Warzone have separate schedules; no common series assumed. Checked 9 Oct 2026; no newer official schedule detail was listed.', checkedAt: '2026-10-09' },
+  { gameId: 'cs2', gameName: 'Counter-Strike 2', url: 'https://blast.tv/cs/tournaments', sourceName: 'BLAST.tv Counter-Strike', note: 'Checked 9 Oct 2026: October lists ESL Pro League S24 and PGL Masters Bucharest; November adds IEM Beijing, BLAST Premier Rivals Hong Kong and PGL Singapore Major. Use each event page for the live bracket.', checkedAt: '2026-10-09' },
+  { gameId: 'fortnite', gameName: 'Fortnite', url: 'https://www.fortnite.com/competitive/rules-guidelines/rules-library/fortnite-championship-series-fncs-solos-2026-official-rules?region=NAC', sourceName: 'Epic Games Fortnite Competitive', note: 'Epic lists Qualifier 2 on 5–6, 10 and 11 Oct; Heats on 17–18 Oct; LCQ on 19–20 Oct; and Finals on 26–27 Oct. Checked 9 Oct 2026.', checkedAt: '2026-10-09' },
+  { gameId: 'apex', gameName: 'Apex Legends', url: 'https://algs.ea.com/en/year-6/split-2-playoffs/competition-overview', sourceName: 'EA Apex Legends Global Series', note: 'Split 2 Pro League runs through 4 Oct; 40-team Playoffs are 29 Oct–1 Nov in Las Vegas. Checked 9 Oct 2026; no newer official schedule detail was listed.', checkedAt: '2026-10-09' },
+  { gameId: 'minecraft', gameName: 'Minecraft', url: 'https://www.minecraft.net/en-us/live', sourceName: 'Minecraft Official', note: 'Official page checked for publisher events; it lists Minecraft Live, not an official esports tournament calendar. Community competitions are separate. Checked 9 Oct 2026; no newer official schedule detail was listed.', checkedAt: '2026-10-09' },
+  { gameId: 'roblox', gameName: 'Roblox', url: 'https://about.roblox.com/newsroom/2026/09/roblox-fall-games-preview', sourceName: 'Roblox Newsroom', note: 'September preview mentions one experience-level Showdown Cup, not a platform-wide pro league. Exact dates/results were not provided. Checked 9 Oct 2026; no newer official schedule detail was listed.', checkedAt: '2026-10-09' },
+  { gameId: 'league', gameName: 'League of Legends', url: 'https://lolesports.com/en-US', sourceName: 'Riot Games LoL Esports', note: 'Regional splits continue into October; Worlds runs 15 Oct–14 Nov. Checked 9 Oct 2026; no newer official schedule detail was listed.', checkedAt: '2026-10-09' },
+  { gameId: 'rocket_league', gameName: 'Rocket League', url: 'https://www.rocketleague.com/competitive/schedule', sourceName: 'Rocket League Esports', note: 'RLCS World Championship ended 20 Sep; the official schedule is checked for the next dated events. Checked 9 Oct 2026; no newer official schedule detail was listed.', checkedAt: '2026-10-09' },
+  { gameId: 'overwatch', gameName: 'Overwatch 2', url: 'https://ga.overwatch.blizzard.com/en-us/news/24246297/owcs-2026-season-competitive-details/', sourceName: 'Blizzard Overwatch Esports', note: 'OWCS Stage 3 regular season starts 10 Oct; playoffs are scheduled for 30 Oct–1 Nov. Checked 9 Oct 2026; no newer official schedule detail was listed.', checkedAt: '2026-10-09' },
+  { gameId: 'rainbow_six', gameName: 'Rainbow Six Siege', url: 'https://www.ubisoft.com/en-us/esports/rainbow-six/siege', sourceName: 'Ubisoft R6 Esports', note: 'BLAST R6 Major Osaka is scheduled for 7–15 Nov. Checked 9 Oct 2026; no newer official schedule detail was listed.', checkedAt: '2026-10-09' },
+  { gameId: 'destiny2', gameName: 'Destiny 2', url: 'https://help.bungie.net/hc/en-us/articles/360049199711-Destiny-and-Destiny-2-Competition-License', sourceName: 'Bungie Help', note: 'Bungie provides a license for community-run tournaments; no Bungie-run 2026 esports circuit was found in the official source checked. Checked 9 Oct 2026; no newer official schedule detail was listed.', checkedAt: '2026-10-09' },
+  { gameId: 'ea_fc', gameName: 'EA Sports FC', url: 'https://www.ea.com/games/ea-sports-fc/fc-pro/news/fc-pro-27-deep-dive', sourceName: 'EA SPORTS FC Pro', note: 'Open Ladder closed 3 Oct; Regional Qualifiers are 10–11 Oct, with the Global Qualifier 5–7 Nov. Checked 9 Oct 2026; no newer official schedule detail was listed.', checkedAt: '2026-10-09' },
+  { gameId: 'mobile_legends', gameName: 'Mobile Legends: Bang Bang', url: 'https://en.moonton.com/news/377.html', sourceName: 'MOONTON Games', note: 'MPL Philippines S18 playoffs are 21–25 Oct in Pasig; other regions have separate dates. Checked 9 Oct 2026; no newer official schedule detail was listed.', checkedAt: '2026-10-09' },
+  { gameId: 'honor_of_kings', gameName: 'Honor of Kings', url: 'https://oca.asia/news/7711-oca-announces-nocs-for-asian-games-esports-competition.html', sourceName: 'Olympic Council of Asia', note: 'Asian Games esports event including Honor of Kings runs through 2 Oct. Checked 9 Oct 2026; no newer official schedule detail was listed.', checkedAt: '2026-10-09' },
+  { gameId: 'brawl_stars', gameName: 'Brawl Stars', url: 'https://event.supercell.com/brawlstars/en/', sourceName: 'Supercell Brawl Stars Esports', note: 'Checked 9 Oct 2026: official hub lists broadcast days 17–18 Oct; World Finals are 20–22 Nov in Tokyo. The live hub supplies current match and stream details.', checkedAt: '2026-10-09' },
+  { gameId: 'clash_of_clans', gameName: 'Clash of Clans', url: 'https://event.supercell.com/clashofclans/en/cups/world-championship/how-to-compete', sourceName: 'Supercell Clash of Clans Esports', note: 'October Last Chance Qualifier confirmed; exact dates pending. Checked 9 Oct 2026; no newer official schedule detail was listed.', checkedAt: '2026-10-09' },
+  { gameId: 'clash_royale', gameName: 'Clash Royale', url: 'https://event.supercell.com/clashroyale/en', sourceName: 'Supercell Clash Royale League', note: 'CRL Last Chance Qualifier completed 5–6 Sep; Woo listed as winner. Next live event date not yet posted. Checked 9 Oct 2026; no newer official schedule detail was listed.', checkedAt: '2026-10-09' },
+  { gameId: 'genshin', gameName: 'Genshin Impact', url: 'https://www.hoyolab.com/#/article', sourceName: 'HoYoverse HoYoLAB', note: 'Official event/news channel checked; no current official Genshin esports tournament schedule found. Community events are not represented as official tournaments. Checked 9 Oct 2026; no newer official schedule detail was listed.', checkedAt: '2026-10-09' },
+  { gameId: 'stumble_guys', gameName: 'Stumble Guys', url: 'https://www.stumbleguys.com/news', sourceName: 'Scopely Stumble Guys', note: 'Official news page checked; no current publisher-run esports calendar found. Community competitions are separate. Checked 9 Oct 2026; no newer official schedule detail was listed.', checkedAt: '2026-10-09' },
+  { gameId: 'among_us', gameName: 'Among Us', url: 'https://www.innersloth.com/games/among-us/', sourceName: 'Innersloth', note: 'Official game page checked; no current official esports tournament schedule found. Checked 9 Oct 2026; no newer official schedule detail was listed.', checkedAt: '2026-10-09' },
+  { gameId: 'gta_online', gameName: 'GTA Online', url: 'https://www.rockstargames.com/newswire', sourceName: 'Rockstar Games Newswire', note: 'Official Newswire checked for organized competitive events; no current GTA Online esports championship schedule found. Weekly in-game activities are not esports tournaments. Checked 9 Oct 2026; no newer official schedule detail was listed.', checkedAt: '2026-10-09' },
+  { gameId: 'marvel_rivals', gameName: 'Marvel Rivals', url: 'https://www.marvelrivalsesports.com/20260908/42828_1313342.html', sourceName: 'Marvel Rivals Ignite', note: 'Stage 2 playoffs run 8–18 Oct; 12 teams advance to late-November Grand Finals. Checked 9 Oct 2026.', checkedAt: '2026-10-09' },
+  { gameId: 'arena_of_valor', gameName: 'Arena of Valor', url: 'https://lienquan.garena.vn/tag/dau-truong-danh-vong/', sourceName: 'Garena Liên Quân Mobile', note: 'Winter 2026 Grand Final is announced for 7 Nov at 10Fest, Hanoi; AIC 2026 is confirmed for year-end in Thailand, exact dates pending. Checked 9 Oct 2026.', checkedAt: '2026-10-09' },
+  { gameId: 'teamfight_tactics', gameName: 'Teamfight Tactics', url: 'https://teamfighttactics.leagueoflegends.com/en-us/news/esports/', sourceName: 'Riot Games TFT Esports', note: 'Tactician’s Superbrawl is 6–8 Nov; the 1,024-player Vegas Open is 11–13 Dec. Checked 9 Oct 2026.', checkedAt: '2026-10-09' },
 ];
 
 export function getTournamentGameName(gameId: string): string {
@@ -732,11 +732,11 @@ export const GAME_NEWS_PAGES: GameNewsPage[] = [
     description: 'BGMI updates for Indian players: BMSD 2026 dates, BMIC Mumbai announcement, official esports links and what to check in the current Royale Pass.',
     heading: 'BGMI News and Player Update: BMSD, BMIC and Royale Pass',
     intro: 'BGMI has two major esports dates on the calendar: the domestic BMSD finals in Hyderabad and the international BMIC in Mumbai. KRAFTON’s public 2026 competition announcement is the source for both; pass rewards and account-specific offers should be checked in the live game client.',
-    updateHeading: 'BMSD is live; BMIC follows in Mumbai', updateDate: '7 October 2026',
+    updateHeading: 'BMSD is live; BMIC follows in Mumbai', updateDate: '9 October 2026',
     update: [
       'KRAFTON India’s 2026 announcement describes BMSD as a 48-team invitational for teams drawn from the KRAFTON India Esports leaderboard, BGIS and BMPS. The event runs 22 September–18 October, with its Hyderabad LAN finals scheduled for 16–18 October.',
       'The same announcement schedules the 16-team BGMI International Cup (BMIC) for 30 October–1 November in Mumbai, with teams from India, South Korea and Japan. It does not provide the final roster, match-by-match timetable or complete format, so those details remain unconfirmed here.',
-      "Checked 7 October 2026: BMSD is still in progress, with Hyderabad LAN finals set for 16–18 October; BMIC follows in Mumbai on 30 October–1 November. KRAFTON has not published a complete current Royale Pass reward schedule in the cited public announcement, so confirm the live RP timer and rewards in-game."
+      "Checked 9 October 2026: BMSD is still in progress, with Hyderabad LAN finals set for 16–18 October; BMIC follows in Mumbai on 30 October–1 November. KRAFTON has not published a complete current Royale Pass reward schedule in the cited public announcement, so confirm the live RP timer and rewards in-game."
     ],
     detailSections: [{"title":"BMSD 2026 — official tournament details","description":"The organizer announcement confirms the event window and qualification route. It does not publish a full roster, player list or official live points table.","columns":["Field","Officially confirmed detail"],"rows":[["Tournament window","22 September–18 October 2026"],["Team field","48 invite-only Indian BGMI teams"],["Invitation route","KRAFTON India Esports leaderboard, BGIS and BMPS results"],["LAN Grand Finals","Hyderabad, 16–18 October"],["Official live points table","Not published in the cited KRAFTON announcement"],["Official player rosters","Not published in the cited KRAFTON announcement"],["Next international event","BMIC: Mumbai, 30 October–1 November; 16 teams from India, South Korea and Japan"]],"sourceUrl":"https://www.linkedin.com/posts/kraftoninc-india_kraftonforindia-gamingforindia-bgmi-activity-7485252349389643776-GtHg"},{"title":"BMSD — prizes, rosters and live scoreboard status","description":"This page uses the organizer announcement only. KRAFTON’s public announcement does not state a BMSD prize pool, team-by-team roster or official running points table.","columns":["Item","Official status as of 6 October"],"rows":[["Prize pool","Not stated in KRAFTON India’s public BMSD/BMIC announcement"],["Team roster","48 invitees confirmed, but a complete player roster is not published in that announcement"],["Live points table","Not published in that announcement"],["Grand Finals positions","Not yet decided; Finals are 16–18 October"],["BMIC field","16 teams from India, South Korea and Japan; full roster pending organizer release"]],"sourceUrl":"https://www.linkedin.com/posts/kraftoninc-india_kraftonforindia-gamingforindia-bgmi-activity-7485252349389643776-GtHg"}],
     playerFocusHeading: 'Royale Pass, ranked play and account checks',
@@ -761,11 +761,11 @@ export const GAME_NEWS_PAGES: GameNewsPage[] = [
     description: 'PUBG Mobile September–October 2026 update: Royale Pass A21, PMPS Korea Season 2 schedule, Daejeon finals and qualification routes from official sources.',
     heading: 'PUBG Mobile News: Royale Pass A21 and PMPS Korea',
     intro: 'This page separates PUBG Mobile’s global live-game update from Korea’s regional esports calendar. Royale Pass A21 is listed in the official September event catalogue, while PMPS Korea Season 2 has its own dates, venue and international qualification slots.',
-    updateHeading: 'Royale Pass A21 appears in the September event catalogue', updateDate: '7 October 2026',
+    updateHeading: 'Royale Pass A21 appears in the September event catalogue', updateDate: '9 October 2026',
     update: [
       'PUBG MOBILE’s official New Events catalogue lists “New Royale Pass A21” under September 2026, alongside the Midnight Hunters event. The listing confirms the pass cycle exists, but does not expose its complete regional reward track or account-specific purchase options in the catalogue view.',
       'The Korean PUBG MOBILE Esports site separately schedules PMPS Korea 2026 Season 2 from 3–18 October at Daejeon Dream Arena. It lists 16 teams, a ₩40 million prize pool, five circuit days and two Finals days; the event is regional, not the global PUBG Mobile calendar.',
-      "Checked 7 October 2026: PMPS Korea Season 2 resumes its Circuit Stage on 9–11 October, then holds Finals at Daejeon Esports Arena on 17–18 October at 3 p.m. KST. The organizer lists ₩40 million total prize money; the winner earns a PMGC place and the top three BMIC places subject to duplicate-slot rules."
+      "Checked 9 October 2026: PMPS Korea Season 2 resumes its Circuit Stage on 9–11 October, then holds Finals at Daejeon Esports Arena on 17–18 October at 3 p.m. KST. The organizer lists ₩40 million total prize money; the winner earns a PMGC place and the top three BMIC places subject to duplicate-slot rules."
     ],
     detailSections: [{"title":"PMPS Korea Season 2 — verified participant list","description":"The Korean PUBG MOBILE Esports event page lists these 16 teams. Player-by-player rosters should be taken from the organizer’s roster update, not inferred from team names.","columns":["Team","Status"],"rows":[["5Hz","Official participant"],["APEX","Official participant"],["Chungnam CNJ esports","Official participant"],["DAEJEON GAME PT","Official participant"],["Dplus Kia","Official participant"],["FN SEJONG","Official participant"],["FOCUS","Official participant"],["G.N. Revenant NOVA","Official participant"],["GyeongBuk Ascenders","Official participant"],["INCHEON WAVE","Official participant"],["Jeonnam Esports","Official participant"],["KIWOOM DRX","Official participant"],["KX GAMING","Official participant"],["NS RedForce","Official participant"],["Re Mind","Official participant"],["TEAM CG","Official participant"]],"sourceUrl":"https://esports.pubgmobile.kr/en/events"},{"title":"PMPS Korea Season 2 — schedule and points rules","description":"The circuit uses daily score resets. Benefit points earned by the daily top three apply in the Finals.","columns":["Stage","Date / rule"],"rows":[["Circuit Stage — Days 1–2","3–4 October, 3 p.m. KST"],["Circuit Stage — Days 3–5","9–11 October, 3 p.m. KST"],["Finals","17–18 October, 3 p.m. KST, Daejeon Dream Arena"],["Match count","Six matches on each listed competition day"],["Daily standings","Scores reset after each circuit day"],["Benefit points","Daily top three receive benefit points for Finals"],["Qualification","Champion to PMGC; top three to BMIC subject to duplicate-slot rule"]],"sourceUrl":"https://esports.pubgmobile.kr/en/events"},{"title":"PMPS Korea Season 2 — prize, qualification and live-table status","description":"The official event notice confirms the prize pool and qualification. It also says circuit scores reset daily, so a running table must be read for the selected match day.","columns":["Item","Official detail"],"rows":[["Prize pool","₩40,000,000"],["PMGC reward","Season 2 champion qualifies for PMGC 2026"],["BMIC reward","Final top three qualify, subject to the duplicate-slot rule"],["Circuit points","Daily score resets after each circuit day"],["Finals advantage","Daily top three earn benefit points"],["Roster / match table","Organizer’s event and match-result pages are the source when published"]],"sourceUrl":"https://esports.pubgmobile.kr/en/news/208"}],
     playerFocusHeading: 'What to check in Royale Pass A21',
@@ -792,7 +792,7 @@ export const GAME_NEWS_PAGES: GameNewsPage[] = [
     heading: 'PUBG: BATTLEGROUNDS News: Update 43.1 and PGC 2026',
     intro: 'This page covers the PC and console version of PUBG: BATTLEGROUNDS. It is separate from PUBG Mobile and focuses on Update 43.1, its timed modes and the next confirmed PUBG esports championship.',
     updateHeading: 'Update 43.1 adds Jujutsu Kaisen, Solo Deathmatch and balance changes',
-    updateDate: '7 October 2026',
+    updateDate: '9 October 2026',
     update: [
       'KRAFTON’s Update 43.1 notes say the update deployed on PC on 10 September and consoles on 17 September. It brings the Jujutsu Kaisen collaboration world, LMG balance adjustments, DLSS 4.5 and FSR 4.1 support on PC, and hitbox tuning on console.',
       'The limited-time Solo Deathmatch mode runs through 14 October on PC and 22 October on consoles. PC Duo Rumble is scheduled through 14 October in Asia, Europe and North America. Check your platform’s service notice for local maintenance and exact availability.',
@@ -828,7 +828,7 @@ export const GAME_NEWS_PAGES: GameNewsPage[] = [
     heading: 'Dota 2 News: Patch 7.41f and the 2026 Tournament Calendar',
     intro: 'Dota 2’s Steam announcements and tournament organizers are the primary sources for this update. The calendar below separates the live BLAST event from confirmed November and December events, and marks details that remain unpublished.',
     updateHeading: 'Patch 7.41f is live; BLAST Slam VIII playoffs are next',
-    updateDate: '7 October 2026',
+    updateDate: '9 October 2026',
     update: [
       'Valve’s official Dota 2 feed lists gameplay patch 7.41f, released 15 September, after 7.41e and Summer Scrub. The 7.41f notes contain gameplay fixes.',
       'As of 7 October, BLAST Slam VIII is in progress in Malta. Its 16-team event runs 29 September–11 October, with the LAN playoffs scheduled for 9–11 October and a US$750,000 prize pool. Use BLAST’s live bracket for results and match times.',
@@ -863,11 +863,11 @@ export const GAME_NEWS_PAGES: GameNewsPage[] = [
     description: 'Free Fire OB55 guide for October 2026: Naruto Shippuden return, Nine Tails gameplay, weapon and device changes, current pass checks and FFWS Global Finals.',
     heading: 'Free Fire News: OB55 Patch, Booyah Pass and FFWS',
     intro: 'Garena’s OB55 update is the major player-facing change for October: it brings back Naruto Shippuden content and changes Battle Royale events, weapons and devices. FFWS Global Finals is a separate esports event scheduled for Bangkok in November.',
-    updateHeading: 'OB55 brings back Naruto Shippuden and changes match flow', updateDate: '7 October 2026',
+    updateHeading: 'OB55 brings back Naruto Shippuden and changes match flow', updateDate: '9 October 2026',
     update: [
       'Garena’s OB55 patch notes set the update release for 1 October. The returning Nine Tails event can alter a Battle Royale match before takeoff, open Bermuda Arsenals or leave a loot crater; players can also use returning ninjutsu and the Hidden Leaf Village map feature.',
       'OB55 adds active and passive device categories, allowing one of each, adjusts airdrop timing and clarity, and introduces the M7, Skorp, RPK and Hawk weapon lineup in October. Garena also lists a full Kenta rework and Clash Squad weapon/economy changes. These changes make the patch notes more useful than old tier lists for loadout decisions.',
-      "Checked 7 October 2026: Garena’s OB55 is the current October game update, while the 2026 FFWS Global Finals are scheduled for 6 November in Bangkok. Use the in-game event page for each region’s live Booyah Pass rewards and expiry because the public roadmap does not define every account’s offer."
+      "Checked 9 October 2026: Garena’s OB55 is the current October game update, while the 2026 FFWS Global Finals are scheduled for 6 November in Bangkok. Use the in-game event page for each region’s live Booyah Pass rewards and expiry because the public roadmap does not define every account’s offer."
     ],
     detailSections: [{"title":"Free Fire — live service and esports tracker","description":"OB55 is the current game update. The official roadmap identifies the global finals, but regional team qualification and live standings are published separately.","columns":["Area","Current verified detail"],"rows":[["Game update","OB55 is live"],["Seasonal content","Naruto Shippuden content and Nine Tails gameplay are part of OB55"],["Player changes","New devices, M7/Skorp/RPK/Hawk weapon changes and Kenta rework"],["Global event","FFWS Global Finals: 6 November, Bangkok"],["Teams / player rosters","Not confirmed in the cited global roadmap"],["Official points table","Use the regional FFWS broadcast or organizer standings after qualification"]],"sourceUrl":"https://ff.garena.com/en/article/1712/"},{"title":"FFWS 2026 — prize, teams and rewards status","description":"Garena’s official 2026 roadmap confirms team count and the global-finals date, but does not give a FFWS Global Finals prize-pool breakdown or the final team/player list.","columns":["Item","Official status"],"rows":[["FFWS Global Finals field","24 teams"],["Finals location / timing","Bangkok; four weekends beginning 6 November"],["Prize pool","Not stated in the cited 2026 roadmap"],["EWC reward","2026 EWC champion receives direct FFWS Global Finals qualification"],["Final team rosters","Not published in the roadmap"],["Live standings","Use Garena’s regional/global event broadcast once qualification is complete"]],"sourceUrl":"https://ff.garena.com/en/article/1605/"}],
     playerFocusHeading: 'Booyah Pass and OB55 player checklist',
@@ -892,11 +892,11 @@ export const GAME_NEWS_PAGES: GameNewsPage[] = [
     description: 'VALORANT Champions Shanghai playoffs begin 7 October, alongside the Game Changers Americas LCQ schedule, 16-team format and official Riot links.',
     heading: 'VALORANT News: Patch 13.06 and Champions Shanghai',
     intro: 'Riot’s current VALORANT story has two tracks: Patch 13.06 is the live game update, while Champions Shanghai is the 2026 international season finale. The competition includes watch rewards and Pick’Ems alongside the matches.',
-    updateHeading: 'Patch 13.06 is live as Champions playoffs begin', updateDate: '7 October 2026',
+    updateHeading: 'Patch 13.06 is live as Champions playoffs begin', updateDate: '9 October 2026',
     update: [
       'Riot’s official news feed lists VALORANT Patch 13.06 on 22 September 2026. The game news page also highlights the new Gauntlet: Glitched mode reveal and confirms VALORANT console launch in Australia and New Zealand. Check the patch notes for the precise agent and weapon changes on your platform.',
       'Champions Shanghai runs 24 September–18 October with 16 teams from Americas, China, EMEA and Pacific. The four-group stage continues through 4 October; eight teams advance to double-elimination playoffs from 7–18 October. Riot lists the Grand Final for 18 October.',
-      "Checked 7 October 2026: Riot’s latest linked VALORANT Esports article, published 6 October, adds the Game Changers Americas LCQ schedule. The round robin is 14 October and the Bo5 final is 15 October in São Paulo; the winner qualifies for the 22 October–1 November Championship. Champions Shanghai playoffs also begin today and continue through 18 October."
+      "Checked 9 October 2026: Riot’s schedule places Champions Shanghai on playoff day 13, with Paper Rex vs T1 and Nongshim RedForce vs 100 Thieves listed for the day. The Game Changers Americas LCQ remains scheduled for 14 October (round robin) and 15 October (Bo5 final) in São Paulo; use Riot’s live event feed for results and any schedule change."
     ],
     detailSections: [{"title":"VALORANT Champions Shanghai — tournament tracker","description":"Champions has 16 qualified teams. Riot’s guide gives the format and dates; the official event feed is the source for live brackets, team lineups and match results.","columns":["Stage","Official detail"],"rows":[["Field","16 qualified teams from Americas, China, EMEA and Pacific"],["Group Stage","24 September–4 October; four groups; best-of-three matches"],["Advancement","Two losses eliminate a team; eight teams advance"],["Playoffs","7–18 October; double elimination"],["Grand Final","18 October"],["Points / standings","Use the official Champions bracket; group stage is complete as of 6 October"],["Player rosters","Official team lineups are on the Champions event/broadcast pages"]],"sourceUrl":"https://valorantesports.com/en-US/news/champions-shanghai-everything-you-need-to-know"},{"title":"Champions Shanghai — rewards, rosters and standings status","description":"Riot’s event guide confirms Drops and Pick’Ems. The guide is the event-format source; the official Champions event feed is the source for bracket movement and team lineups.","columns":["Item","Official detail"],"rows":[["Viewer rewards","Eligible live broadcasts can grant Champions Drops"],["Prediction rewards","Champions Pick’Ems are available in-client and on the event site"],["Prize pool","Not stated in the cited Champions event guide"],["Teams","16 qualified teams"],["Player rosters","Use Riot’s official team/event pages; roster status can change before a match"],["Live bracket","Official Champions bracket after groups; playoffs start 7 October"]],"sourceUrl":"https://valorantesports.com/en-US/news/champions-shanghai-everything-you-need-to-know"}],
     playerFocusHeading: 'Ranked, event drops and Pick’Ems',
@@ -922,11 +922,11 @@ export const GAME_NEWS_PAGES: GameNewsPage[] = [
     description: 'Call of Duty news for Black Ops 7, Warzone and COD Mobile: Season 6 Haunting, new Battle Pass weapons, Season 8 CODM and separate esports calendars.',
     heading: 'Call of Duty News: Black Ops, Warzone and COD Mobile',
     intro: 'The site’s Call of Duty profile covers multiple titles, so their seasons and tournament schedules are kept distinct here. Black Ops 7/Warzone Season 6 is live, COD Mobile has its own Season 8, and neither should be confused with the CDL season calendar.',
-    updateHeading: 'Season 6: The Haunting is live in Black Ops 7 and Warzone', updateDate: '7 October 2026',
+    updateHeading: 'Season 6: The Haunting is live in Black Ops 7 and Warzone', updateDate: '9 October 2026',
     update: [
       'Activision’s Season 6 announcement introduces Haunted Hollow, Giant Infected, the T.E.D.D. Trials and Hordepoint modes, Zombies content and the DOOM Event Pass. The Season 6 Battle Pass is led by Blackjack and contains 100+ rewards; the VMP SMG and TR51 Para Assault Rifle are free weapon unlocks on its reward pages.',
       'Warzone’s 30 September patch note also adjusts loot cleanup and gas damage. Call of Duty Mobile has a separate current cycle: the official Season 8 “Against All Fate” announcement lists a Honkai Impact 3rd collaboration, roguelike top-down Multiplayer mode, Isolated POI and new Battle Pass content.',
-      "Checked 7 October 2026: Activision’s Black Ops 7 news feed has published Season 06 patch notes, the newest patch entry in the official feed. Season 6 is The Haunting; Warzone patch notes are listed separately, and COD Mobile follows its own Season 8 cycle."
+      "Checked 9 October 2026: Activision’s Black Ops 7 news feed has published Season 06 patch notes, the newest patch entry in the official feed. Season 6 is The Haunting; Warzone patch notes are listed separately, and COD Mobile follows its own Season 8 cycle."
     ],
     detailSections: [{"title":"Call of Duty — current confirmed details","description":"Call of Duty releases are split by game and mode. Season 6 is current for Black Ops 7/Warzone; COD Mobile runs a separate Season 8 cycle.","columns":["Area","Current verified detail"],"rows":[["Black Ops 7 / Warzone","Season 06: The Haunting"],["Latest official entry","Season 06 patch notes in Activision’s Black Ops 7 news feed"],["Warzone","Season patch notes are published separately from the seasonal announcement"],["COD Mobile","Season 8: Against All Fate"],["Esports table","No universal live points table spans Black Ops, Warzone and COD Mobile"],["Teams / rosters","Use the current event organizer page because each COD circuit maintains separate lineups"]],"sourceUrl":"https://www.callofduty.com/blog/2026/09/call-of-duty-black-ops-7-warzone-season-6-the-haunting-announcement"},{"title":"Season 06 — Battle Pass rewards and competitive status","description":"This is publisher-confirmed player content for Black Ops 7 and Warzone, not a combined Call of Duty esports prize table.","columns":["Item","Official detail"],"rows":[["Battle Pass price","1,100 COD Points"],["Battle Pass Bundle","2,400 COD Points; includes 20 Tokens"],["Pass rewards","100+ items and up to 1,100 COD Points"],["Free weapons","VMP SMG (Page 3) and TR51 Para Assault Rifle (Page 6)"],["BlackCell instant content","Revenant Operator, Mastercraft Blueprint, 1,100 COD Points and more"],["Esports table","No single official points table combines Black Ops 7, Warzone and COD Mobile circuits"]],"sourceUrl":"https://www.callofduty.com/blog/2026/09/call-of-duty-black-ops-7-warzone-season-6-the-haunting-announcement"}],
     playerFocusHeading: 'Battle Pass, event pass and COD Mobile',
@@ -952,7 +952,7 @@ export const GAME_NEWS_PAGES: GameNewsPage[] = [
     description: 'Counter-Strike 2 September update adds Rush, a fast 3v3 queued mode. See official update details, Premier/Prime notes and October CS2 tournaments.',
     heading: 'Counter-Strike 2 News: Rush Mode and CS2 Events',
     intro: 'Valve’s September 22 CS2 update adds Rush, a new 3v3 queued mode. It is a gameplay update rather than a replacement for Premier; October’s professional events remain listed on the organizer calendar.',
-    updateHeading: 'Counter-Strike 2 maintenance update fixes map gaps and clipping', updateDate: '7 October 2026',
+    updateHeading: 'Counter-Strike 2 maintenance update fixes map gaps and clipping', updateDate: '9 October 2026',
     update: [
       'Valve’s 6 October update fixes pixel gaps on Rush and clipping in T and CT Castle rooms. This follows the September Rush 3v3 release and its earlier map fixes; check Steam announcements for any further maintenance notes.',
       'The CS2 page also reiterates that Prime Status affects Prime matchmaking and eligibility for Prime-exclusive souvenir items, drops and weapon cases. Prime is not required to play the free game, but it changes matchmaking and rewards eligibility.',
@@ -982,7 +982,7 @@ export const GAME_NEWS_PAGES: GameNewsPage[] = [
     description: 'Fortnite October 2026 guide: Fortnitemares spreads to Battle Royale, Horde Rush and Reload; official FNCS Solo tournament details and dates.',
     heading: 'Fortnite News: Fortnitemares 2026 and Competitive Play',
     intro: 'Fortnitemares is Fortnite’s main October update, with horror-themed content rolling through several modes. Epic’s published FNCS Solos rules now provide the October qualification path, scoring and region-specific cash prizes.',
-    updateHeading: 'Fortnitemares is live; Nitemare Island arrives 8 October', updateDate: '7 October 2026',
+    updateHeading: 'Fortnitemares is live; Nitemare Island arrives 8 October', updateDate: '9 October 2026',
     update: [
       'Epic’s 1 October Fortnitemares announcement says the Halloween event spreads through Battle Royale, Horde Rush and Reload during October. It features Nightmare Neighborhood, Freddy Krueger and the Bone Rattler SMG, with additional horror characters and cosmetics arriving over the month.',
       'Epic’s published FNCS Solos rules now schedule Qualifier 2 for 5–11 October, Heats for 17–18 October, the Last Chance Qualifier for 19–20 October and Finals for 26–27 October. It is an individual competition: a Victory Royale is worth 60 points and Finals eliminations are worth four points each; cash prizes vary by region.',
@@ -1011,7 +1011,7 @@ export const GAME_NEWS_PAGES: GameNewsPage[] = [
     description: 'Apex Legends Marked midseason guide: September balance changes, ranked ladder dates, EA Javelin anti-cheat rollout and ALGS Split 2 Playoffs.',
     heading: 'Apex Legends News: Marked Midseason and ALGS',
     intro: 'Apex Legends’ September midseason patch affects loot, long-range weapons, maps and ranked ladders. EA also announced a PC anti-cheat transition, while ALGS Split 2 Playoffs bring 40 teams to Las Vegas later in October.',
-    updateHeading: 'EA publishes new Apex matchmaking test notes for 7 October', updateDate: '7 October 2026',
+    updateHeading: 'EA publishes new Apex matchmaking test notes for 7 October', updateDate: '9 October 2026',
     update: [
       'Respawn’s 14 September Marked midseason notes say Split 2 began on 15 September. The patch adjusts Legend balance and loot availability, buffs three long-range weapons, and includes more than 150 map quality-of-life fixes, with substantial work on World’s Edge.',
       'The same notes list Ranked Ladder 2 for 29 September–4 October and Ladder 3 for 6–11 October, followed by further weekly ladders through 1 November. EA separately announced that PC moves to Javelin Anti-Cheat effective 29 September; the notice says enforcement applies across platforms for detected prohibited behavior.',
@@ -1041,7 +1041,7 @@ export const GAME_NEWS_PAGES: GameNewsPage[] = [
     description: 'Minecraft October 2026 update: Minecraft Dungeons II launch, Wilderness Bound game drop, Aurora Cape promotion and official Java/Bedrock links.',
     heading: 'Minecraft News: Wilderness Bound and Minecraft Live',
     intro: 'Minecraft’s current official headline is the Wilderness Bound game drop, listed as out now. Minecraft Live is a developer presentation, not an esports tournament; community server events and creator competitions should be labelled separately.',
-    updateHeading: 'Minecraft Dungeons II is live; Wilderness Bound remains current', updateDate: '7 October 2026',
+    updateHeading: 'Minecraft Dungeons II is live; Wilderness Bound remains current', updateDate: '9 October 2026',
     update: [
       'Minecraft’s official Live page lists the Wilderness Bound drop as available now. Check the linked drop page for the exact Java and Bedrock feature list, version number and platform rollout before updating a server or modded client.',
       'Minecraft Live was scheduled for 26 September 2026 at 1 p.m. ET and has now passed. That livestream shares Minecraft news and creator updates; it is not itself an esports event. Back up a world and confirm a server’s supported version before switching a long-running save.',
@@ -1070,7 +1070,7 @@ export const GAME_NEWS_PAGES: GameNewsPage[] = [
     description: 'Roblox October 2026 player guide: The Hunt Roblox 20 ended September 28, Showdown Cup is experience-level, and new Roblox games are arriving.',
     heading: 'Roblox News: The Hunt Roblox 20 and Showdown Cup',
     intro: 'Roblox is a platform of creator-made experiences, so an event inside one game is not automatically a platform-wide tournament. This update separates Roblox’s anniversary event, Showdown’s in-experience cup and the fall game release slate.',
-    updateHeading: 'October creator games and platform updates', updateDate: '7 October 2026',
+    updateHeading: 'October creator games and platform updates', updateDate: '9 October 2026',
     update: [
       'Roblox’s official newsroom scheduled The Hunt: Roblox 20 for 17–28 September. The platform-wide anniversary event sent players through games representing Roblox history, with quests, UGC rewards and a leaderboard. It has ended as of this update date.',
       'Roblox also spotlighted Showdown’s first in-game Showdown Cup, hosted inside SuperGaming’s experience and its Esports Arena. Roblox’s fall preview listed Prime Heroes, Octane, Starforged and other experiences for October; availability can vary by release and region, so open each experience listing for its live status.',
@@ -1100,7 +1100,7 @@ export const GAME_NEWS_PAGES: GameNewsPage[] = [
     description: 'League of Legends October 2026 update: Worlds 2026 stage locations, revised broadcast start times, LoL esports news and official Riot sources.',
     heading: 'League of Legends News: Worlds 2026 Player and Fan Guide',
     intro: 'Worlds 2026 begins in October, and Riot has published venue policies plus updated broadcast start times. This page covers where each stage is played and what fans should verify before travelling or planning a watch party.',
-    updateHeading: 'Riot updates Worlds venues and stage start times', updateDate: '7 October 2026',
+    updateHeading: 'Riot updates Worlds venues and stage start times', updateDate: '9 October 2026',
     update: [
       'Riot’s 22 September venue notice places Play-Ins in Los Angeles, the Swiss Stage and knockout rounds at the Credit Union of Texas Event Center in Allen, Texas, and the Final at Barclays Center in Brooklyn on 14 November.',
       'Riot also adjusted some broadcast start times. Its notice lists Texas Swiss matches on 23–26 October at noon CDT, 28–30 October at 3 p.m. CDT and 31 October at noon CDT; check the full official schedule for later stages, ticket policies and any further timing changes.',
@@ -1129,11 +1129,11 @@ export const GAME_NEWS_PAGES: GameNewsPage[] = [
     description: 'Rocket League Season 24 is live: Rocket Pass cars, Honor Duels, Black Market trade-ins, Bullet Ball dates, ranked rewards and RLCS updates.',
     heading: 'Rocket League News: Season 24 and Rocket Pass',
     intro: 'Season 24 launched on 23 September with player-facing changes to duels, item trade-ins, controls and ranked rewards. The official season post also gives exact dates for the current limited-time modes and Rocket Pass content.',
-    updateHeading: 'Bullet Ball has ended; Season 24 content continues', updateDate: '7 October 2026',
+    updateHeading: 'Bullet Ball has ended; Season 24 content continues', updateDate: '9 October 2026',
     update: [
       'Psyonix’s Season 24 patch adds Honor Duels and Black Market trade-ins. The Bullet Ball limited-time mode is scheduled through 6 October; Persona 5 content remains available through 12 October, while Run It Up is scheduled through 9 December.',
       'The season adds a custom scoreboard, free-look camera options, updated mouse-and-keyboard controls and new Top 100 ranked titles. Bullet Ball runs 23 September–6 October; the Persona 5 event runs 25 September–12 October. Season 24 Rocket Pass includes the Volkswagen Golf GTI Edition 50, Dominus GT 76 and Pareto 5S bodies.',
-      "Checked 7 October 2026: the listed Bullet Ball window ended on 6 October. The Persona 5 event remains scheduled through 12 October, and the Run It Up track through 9 December. Check the in-game event panel for remaining claim windows and local end times."
+      "Checked 9 October 2026: the listed Bullet Ball window ended on 6 October. The Persona 5 event remains scheduled through 12 October, and the Run It Up track through 9 December. Check the in-game event panel for remaining claim windows and local end times."
     ],
     detailSections: [{"title":"Rocket League — Season 24 tracker","description":"Season content and official esports are separate. Current player items have clear expiry dates, while RLCS standings are published on the competitive schedule.","columns":["Area","Current verified detail"],"rows":[["Season","Season 24"],["Limited-time mode","Bullet Ball: 23 September–6 October"],["Crossover event","Persona 5: 25 September–12 October"],["Player content","Honor Duels, Black Market trade-ins, updated controls and ranked rewards"],["Team standings","Use the Rocket League competitive schedule for the active RLCS region"],["Player rosters","Published by teams and RLCS event pages"]],"sourceUrl":"https://www.rocketleague.com/news/rocket-league-heads-to-the-streets-in-season-24"},{"title":"RLCS — prize, rewards and standings status","description":"Rocket League’s official competitive hub gives the 2026 global prize amount and the Club Championship figure; individual tournament standings live on the competitive pages.","columns":["Item","Official detail"],"rows":[["2026 RLCS global prize pool","More than US$6,000,000"],["Club Championship prize pool","US$2,500,000"],["Season 24 event reward","Bullet Ball available through 6 October"],["Crossover reward window","Persona 5 event through 12 October"],["Team / player standings","Official Rocket League Competitive schedule and regional event pages"],["Roster status","Use the listed team/event page before each RLCS match"]],"sourceUrl":"https://www.rocketleague.com/competitive"}],
     playerFocusHeading: 'Rocket Pass, ranked rewards and limited-time events',
@@ -1158,7 +1158,7 @@ export const GAME_NEWS_PAGES: GameNewsPage[] = [
     description: 'Overwatch 2 Season 5, launched 6 October 2026, adds Support Hero Doctrine, Grímsvötn map, Unvaulted Passes and October events.',
     heading: 'Overwatch 2 News: Season 5 and Hero Doctrine',
     intro: 'Overwatch 2 Season 5 begins on 6 October with new Support Hero Doctrine, Escort map Grímsvötn and returning Unvaulted Passes. October collaborations and OWCS Stage 3 dates are listed separately below.',
-    updateHeading: 'Season 5 is live with new Support Hero Doctrine', updateDate: '7 October 2026',
+    updateHeading: 'Season 5 is live with new Support Hero Doctrine', updateDate: '9 October 2026',
     update: [
       'Overwatch 2 Season 5 launches on 6 October with new Support Hero Doctrine and Escort map Grímsvötn. Unvaulted Passes cover Seasons 1–15; the Shadow Monarch collaboration runs 6–26 October, followed by Tech Witches 9–26 October.',
       'Blizzard also lists Team Drives for 29–31 October. Check the live client for local availability and reward progress.',
@@ -1188,7 +1188,7 @@ export const GAME_NEWS_PAGES: GameNewsPage[] = [
     description: 'Rainbow Six Siege Operation Split Fire update: Y11S3.1 patch, September Wasteland Circuit event, Ranked 3.0 and Osaka Major dates.',
     heading: 'Rainbow Six Siege News: Operation Split Fire and Osaka Major',
     intro: 'Rainbow Six Siege is in Year 11 Season 3, Operation Split Fire. Ubisoft’s 22 September Y11S3.1 patch and Wasteland Circuit event are the latest player-facing notes, while the next global Major is scheduled for Osaka in November.',
-    updateHeading: 'Y11S3.1 patch and Wasteland Circuit event', updateDate: '7 October 2026',
+    updateHeading: 'Y11S3.1 patch and Wasteland Circuit event', updateDate: '9 October 2026',
     update: [
       'Ubisoft’s official update feed lists Y11S3.1 patch notes on 22 September and a new Wasteland Circuit Twitch Drop on 23 September. The patch-note page is the authoritative place to check operator, map, bug-fix and platform-specific changes; the headline alone does not enumerate all details.',
       'Year 11 also brings Ranked 3.0, which Ubisoft said would launch with Operation System Override on 2 June. For season progression, check current ranked placement, seasonal challenges and any battle-pass timer in the client because rewards and availability are time-limited.',
@@ -1217,7 +1217,7 @@ export const GAME_NEWS_PAGES: GameNewsPage[] = [
     description: 'Destiny 2 current player notes: Bungie’s 9.7.0.3 hotfix, Monument of Triumph major update and official status of publisher-run esports events.',
     heading: 'Destiny 2 News: Update 9.7 and Guardian Checklist',
     intro: 'Bungie’s 9.7.0 release was identified as the final major patch for Destiny 2, with smaller maintenance updates still possible. The 9.7.0.3 notes include Crucible and Trials fixes; licensed community competitions follow separate organizer schedules.',
-    updateHeading: 'Update 9.7 is the final major patch; hotfixes can follow', updateDate: '7 October 2026',
+    updateHeading: 'Update 9.7 is the final major patch; hotfixes can follow', updateDate: '9 October 2026',
     update: [
       'Bungie’s 9 June Update 9.7.0 notes describe the release as the final major Destiny 2 patch, while explicitly allowing for smaller maintenance patches and hotfixes afterward. It includes changes across activities, rewards, raids, dungeons and the Monument of Triumph update.',
       'The later 9.7.0.3 update on 7 July increased Vanguard and Crucible Ops reputation and fixed several Crucible and Trials issues. Bungie’s 9 June announcement describes 9.7.0 as the final major release, with smaller maintenance updates and hotfixes handled separately.',
@@ -1246,11 +1246,11 @@ export const GAME_NEWS_PAGES: GameNewsPage[] = [
     description: 'EA SPORTS FC 27 launch guide: Ones to Watch Season 1 pass runs through October 22, player item upgrades, Ultimate Team and FC Pro details.',
     heading: 'EA SPORTS FC 27 News: Season 1 and FC Pro',
     intro: 'EA SPORTS FC 27 launched in September, and Football Ultimate Team Season 1 is active through 22 October. This page separates Ultimate Team’s player-facing campaign from the FC Pro esports ladder and the new Grounds/Clubs modes.',
-    updateHeading: 'Season 1: Ones to Watch runs through 22 October', updateDate: '7 October 2026',
+    updateHeading: 'Season 1: Ones to Watch runs through 22 October', updateDate: '9 October 2026',
     update: [
       'EA’s launch update sets Season 1: Ones to Watch for 17 September–22 October. The campaign links Ones to Watch, Destined for Glory and Future Stars; eligible Ones to Watch items can receive upgrades for Team of the Week, Star Performer or Player of the Month recognition, plus a club-results boost described in EA’s rules.',
       'EA’s 30 September Gameplay Developer Launch Update and 29 September Career Mode update are the newest title-specific news posts. The Grounds, including Clubs, is available only on PlayStation 5, Xbox Series X|S, PC and Nintendo Switch 2 according to EA’s platform note; older consoles do not get that mode.',
-      "Checked 7 October 2026: the FC Pro 27 Open Ladder ended on 3 October. Its next listed step is the Open Global Qualifier on 5–7 November. FUT Season 1: Ones to Watch remains scheduled through 22 October; check Ultimate Team for shorter objective/SBC timers."
+      "Checked 9 October 2026: the FC Pro 27 Open Ladder ended on 3 October. Its next listed step is the Open Global Qualifier on 5–7 November. FUT Season 1: Ones to Watch remains scheduled through 22 October; check Ultimate Team for shorter objective/SBC timers."
     ],
     detailSections: [{"title":"EA SPORTS FC 27 — Season 1 and FC Pro tracker","description":"Ultimate Team’s season and FC Pro are different systems. This table distinguishes player-content deadlines from professional qualification.","columns":["Area","Current verified detail"],"rows":[["FUT Season 1","Ones to Watch: 17 September–22 October"],["Latest game updates","Gameplay Developer Launch Update: 30 September; Career Mode update: 29 September"],["FC Pro Open Ladder","21 September–3 October; complete"],["Next FC Pro step","Open Global Qualifier: 5–7 November"],["Team / player standings","Use the official FC Pro leaderboard and event bracket"],["Player content","Check in-game SBC/objective deadlines; they can end before the season"]],"sourceUrl":"https://www.ea.com/games/ea-sports-fc/fc-pro/news/fc-pro-27-deep-dive"},{"title":"FC Pro 27 — prize money, rewards and player pathway","description":"EA’s FC Pro Deep Dive provides a complete season prize outline. FC Pro is primarily individual competition, so it has player standings rather than standard team rosters.","columns":["Event / reward","Official detail"],"rows":[["Full FC Pro 27 prize pool","US$2,500,000"],["FC Pro World Championship","US$1,000,000; winner receives US$250,000"],["FC Pro Open","US$533,000; winner receives US$100,000"],["Global Qualifier","US$152,000"],["Open Cups","US$315,000 total"],["Open Ladder reward","Top 1–500 per region receive an in-game reward"],["Pathway","1,376 advance to regional qualifiers; 52 plus 12 invitees reach global qualifier; 16 reach FC Pro Open"],["Live rankings","Official FC Pro World Rankings / event bracket"]],"sourceUrl":"https://www.ea.com/games/ea-sports-fc/fc-pro/news/fc-pro-27-deep-dive"}],
     playerFocusHeading: 'Ultimate Team Season Pass and supported modes',
@@ -1275,7 +1275,7 @@ export const GAME_NEWS_PAGES: GameNewsPage[] = [
     description: 'Mobile Legends: Bang Bang October 2026 news: 10th anniversary campaign, Asian Games result, MPL Philippines playoffs and the road to M8.',
     heading: 'Mobile Legends: Bang Bang News: Anniversary and MPL',
     intro: 'MLBB’s 10th anniversary campaign is active, while the Asian Games esports debut has concluded and regional leagues continue. This page identifies which tournament is finished and which upcoming dates still matter to players and fans.',
-    updateHeading: 'MLBB marks 10 years; Myanmar wins the Asian Games event', updateDate: '7 October 2026',
+    updateHeading: 'MLBB marks 10 years; Myanmar wins the Asian Games event', updateDate: '9 October 2026',
     update: [
       'MOONTON launched the ALL IN MLBB 10th-anniversary campaign on 4 September. Its official 1 October report says Myanmar won the inaugural Asian Games MLBB gold by defeating Indonesia 4–0 at Aichi Sky Expo; this competition is complete, not live as of this page date.',
       'MPL Philippines Season 18 playoffs are scheduled for 21–25 October at PhilSports Arena in Pasig. MOONTON describes the playoffs as part of the Philippines’ route toward M8; Thailand’s MSL Season 2 also runs through 18 October. Each regional league has its own standings and qualification route.',
@@ -1304,11 +1304,11 @@ export const GAME_NEWS_PAGES: GameNewsPage[] = [
     description: 'Honor of Kings October 2026 guide: Season 16 Flow As One patch, iOS minimum-version notice, anti-cheat update and official esports events.',
     heading: 'Honor of Kings News: Season 16 and Global Esports',
     intro: 'Honor of Kings entered Season 16: Flow As One with a September patch and published an iOS minimum-version notice. Its esports calendar has regional and global events; the current official page should be used for event stages and regional qualifiers.',
-    updateHeading: 'Season 16 Flow As One patch and device compatibility notice', updateDate: '7 October 2026',
+    updateHeading: 'Season 16 Flow As One patch and device compatibility notice', updateDate: '9 October 2026',
     update: [
       'The official Honor of Kings site lists Season 16: Flow As One patch notes dated 22 September, an anti-cheat measures update and a minimum iOS system version adjustment dated 17 September. Players on older devices should confirm compatibility before updating, especially if they rely on an older operating system.',
       'The official esports hub separates global events, regional pro leagues and grassroots competitions. Event windows and team counts vary by region, so a single headline date should not be treated as a universal HoK schedule.',
-      "Checked 7 October 2026: the Asian Games esports competition window closed on 2 October; it should not be described as an upcoming tournament. Season 16: Flow As One is a separate live-game season. Honor of Kings’ official esports calendar is the source to watch for the next event announcement and regional schedule."
+      "Checked 9 October 2026: the Asian Games esports competition window closed on 2 October; it should not be described as an upcoming tournament. Season 16: Flow As One is a separate live-game season. Honor of Kings’ official esports calendar is the source to watch for the next event announcement and regional schedule."
     ],
     detailSections: [{"title":"Honor of Kings — Season 16 and esports tracker","description":"Honor of Kings runs regional competitions with their own teams, players and scoreboards. The completed Asian Games window is not a current tournament.","columns":["Area","Current verified detail"],"rows":[["Live season","Season 16: Flow As One"],["Asian Games esports window","Concluded 2 October"],["Current official source","Honor of Kings Esports calendar"],["Live team standings","Event-specific; check the organizer’s live bracket"],["Player rosters","Event/team specific"],["Global points table","No single all-region scoreboard published on the game hub"]],"sourceUrl":"https://www.honorofkings.com/esports/"},{"title":"Honor of Kings — rewards, teams and points status","description":"Season 16 is a live-game season. Regional esports events have separate rules, prize pools and team rosters.","columns":["Item","Official status"],"rows":[["Live reward source","In-game Season 16 and event tabs"],["Asian Games","Competition window closed 2 October"],["Publisher-wide prize pool","No current single global prize pool published on the official hub"],["Team/player roster","Event-specific official organizer page"],["Points table","Event-specific official bracket / standings"],["Where to check","Honor of Kings Esports calendar"]],"sourceUrl":"https://www.honorofkings.com/esports/"}],
     playerFocusHeading: 'Season pass, device requirements and fair play',
@@ -1333,11 +1333,11 @@ export const GAME_NEWS_PAGES: GameNewsPage[] = [
     description: 'Brawl Stars October 2026 update: Brawl-O-Ween and Royal Academy pass skins, September balance changes and November World Finals format.',
     heading: 'Brawl Stars News: Brawl Pass, Balance and World Finals',
     intro: 'Supercell’s September release notes list two themed pass seasons, balance changes and a 16 September maintenance patch. The World Finals are scheduled for November, with a published 12-team format and prize pool.',
-    updateHeading: 'Brawl Stars confirms its BSC 2027 qualification path', updateDate: '7 October 2026',
+    updateHeading: 'Brawl Stars confirms its BSC 2027 qualification path', updateDate: '9 October 2026',
     update: [
       'Supercell’s 1 October esports announcement outlines the road to Brawl Stars Championship 2027: four regions, six direct invitations per region based on 2026 results, and two more places per region decided through the BSC Invitational. Supercell’s current timeline lists team invitations on 23 November, roster responses by 20 December, invitation processing on 21–23 December, and the Invitational on 16–17 January 2027; dates may change.',
       'The 19 September Brawl Stars x Duolingo event ran through 30 September. Its community tasks and reward window are over by this update date; check the in-game news panel for the currently active season event rather than expecting expired collaboration rewards.',
-      "Checked 7 October 2026: the latest confirmed roadmap on Supercell’s linked Brawl esports source is the 1 October BSC 2027 announcement. The 2026 World Finals remain set for 20–22 November in Tokyo with 12 teams and a US$1 million prize pool. Supercell’s event hub also lists broadcast days on 17–18 October; check its live schedule for the event title and start-time changes."
+      "Checked 9 October 2026: the latest confirmed roadmap on Supercell’s linked Brawl esports source is the 1 October BSC 2027 announcement. The 2026 World Finals remain set for 20–22 November in Tokyo with 12 teams and a US$1 million prize pool. Supercell’s event hub also lists broadcast days on 17–18 October; check its live schedule for the event title and start-time changes."
     ],
     detailSections: [{"title":"Brawl Stars — balance and World Finals tracker","description":"Balance notes and World Finals are separate. The current live client is the source for actual Brawl Pass progress and time-limited rewards.","columns":["Area","Current verified detail"],"rows":[["Maintenance update","16 September balance changes and bug fixes"],["Seasons","Royal Academy and Brawl-O-Ween"],["World Finals","20–22 November, Tokyo"],["World Finals field","12 teams"],["Prize pool","US$1,000,000"],["Format","Two GSL groups; eight-team double-elimination bracket; best-of-seven Grand Final"],["Teams / player rosters","Official World Finals qualification and roster page required when field is complete"]],"sourceUrl":"https://supercell.com/en/games/brawlstars/blog/release-notes/release-notes-august-2026/"},{"title":"Brawl Stars World Finals — prize, teams and standings status","description":"Supercell has confirmed the event size, format and total prize money. The qualified team/player list belongs to the official World Finals event coverage.","columns":["Item","Official detail"],"rows":[["Dates / venue","20–22 November, Tokyo"],["Prize pool","US$1,000,000"],["Teams","12"],["Format","Two GSL groups of four; top two join four regional-leaderboard leaders in an eight-team double-elimination bracket"],["Grand Final","Best-of-seven"],["Live teams / rosters","Official Brawl Stars World Finals coverage once qualification is complete"],["Player rewards","Current Brawl Pass and event rewards are in-game and season-specific"]],"sourceUrl":"https://supercell.com/en/games/brawlstars/blog/esports/brawl-stars-world-finals-format/"}],
     playerFocusHeading: 'Brawl Pass, balance and ranked preparation',
@@ -1363,7 +1363,7 @@ export const GAME_NEWS_PAGES: GameNewsPage[] = [
     description: 'Clash of Clans October 2026 guide: Cosmic Curse, Totem Thrower, Shroud Queen Gold Pass, October Clan War League and World Championship LCQ.',
     heading: 'Clash of Clans News: October Portal Panic and Gold Pass',
     intro: 'October’s Cosmic Curse: Portal Panic season brings the temporary Totem Thrower, Shroud Queen Gold Pass skin and timed Portal events. Clan War League and challenge dates are listed below.',
-    updateHeading: 'Portal Challenge is live; Portal Panic starts 8 October', updateDate: '7 October 2026',
+    updateHeading: 'Portal Challenge is live; Portal Panic starts 8 October', updateDate: '9 October 2026',
     update: [
       'Supercell’s 1 October Clash-O-Ween announcement starts Cosmic Curse: Portal Panic for the month. The new temporary Totem Thrower attacks ground targets from range; every fourth attack throws a totem that stuns nearby defenses and creates a decoy. The event also schedules October Clan War League for 1–11 October and Clan Games for 22–28 October.',
       'The October Gold Pass includes Shroud Queen as its exclusive Hero Skin, with Ghost Champion as the alternate option named by Supercell. The September WWE event and its Yeti Undertaker temporary troop ended on 1 October, so those rewards should no longer be described as current.',
@@ -1393,7 +1393,7 @@ export const GAME_NEWS_PAGES: GameNewsPage[] = [
     description: 'Clash Royale October 2026 Shocktober season: Hero Electro Wizard, Electro Giant Evolution, album event and October tournament dates.',
     heading: 'Clash Royale News: September Balance and October Season',
     intro: 'Supercell’s Shocktober season begins on 6 October with Hero Electro Wizard and Electro Giant Evolution. Merge Tactics Season 11 remains a separate mode with its own October changes.',
-    updateHeading: 'Shocktober brings Hero Electro Wizard and Electro Giant Evolution', updateDate: '7 October 2026',
+    updateHeading: 'Shocktober brings Hero Electro Wizard and Electro Giant Evolution', updateDate: '9 October 2026',
     update: [
       'Supercell’s 5 October Shocktober announcement says the new season starts 6 October. It adds Hero Electro Wizard, an Electro Giant Evolution, the Spooky Chess league (5–19 October) and the C.H.A.O.S. event schedule beginning 19 October.',
       'The album event runs 6 October–2 November. Power Surge Global Tournament is scheduled for 20–25 October, followed by the 20-win challenge from 26 October–2 November. Check the in-game Events tab for entry rules, reward milestones and local reset times.',
@@ -1423,11 +1423,11 @@ export const GAME_NEWS_PAGES: GameNewsPage[] = [
     description: 'Genshin Impact Version 7.1 player update: Moonchase event-exclusive Silver Light sword, Primogems, new character notices and creator contest.',
     heading: 'Genshin Impact News: Version 7.1 and Moonchase',
     intro: 'Genshin Impact’s Version 7.1 “A Requiem for the Underworld” preview and the Moonchase event are the key September–October player updates. This is an action RPG with timed in-game events rather than an official esports tournament circuit.',
-    updateHeading: 'Version 7.1: October 5 story teaser and live Starlit Gala web event', updateDate: '7 October 2026',
+    updateHeading: 'Version 7.1: October 5 story teaser and live Starlit Gala web event', updateDate: '9 October 2026',
     update: [
       'HoYoverse’s 22 September event overview says “Silverwing in Pursuit of the Moon” begins 24 September at 10:00 server time. Completing event quests can award the event-exclusive Silver Light sword, Primogems, Crown of Insight and other materials.',
       'HoYoverse’s news page also lists the Version 7.1 “A Requiem for the Underworld” Phase I events preview, character trailers for Vesna and Vodyanitsa, and a Miliastra Wonderland creator contest published on 23 September. Check the in-game Events menu for each server’s remaining claim window and banner schedule.',
-      "Checked 7 October 2026: Version 7.1, “A Requiem for the Underworld,” is live, with its event schedule and banner windows shown in HoYoverse’s official in-game/news calendar. Event start and end times use server time; check the client before spending Primogems because banners and event rewards rotate."
+      "Checked 9 October 2026: Version 7.1, “A Requiem for the Underworld,” is live, with its event schedule and banner windows shown in HoYoverse’s official in-game/news calendar. Event start and end times use server time; check the client before spending Primogems because banners and event rewards rotate."
     ],
     detailSections: [{"title":"Genshin Impact — Version 7.1 player tracker","description":"Genshin is a live-service RPG, not a team esports circuit. The reliable detail for players is the version, server-time event schedule and individual banner timer.","columns":["Area","Current verified detail"],"rows":[["Current version","Version 7.1: A Requiem for the Underworld"],["Event timing","Uses server time"],["Banners / rewards","Confirm directly in-game before spending Primogems"],["Player teams","Personal party composition, not published esports rosters"],["Points table","No official global esports standings"],["Official calendar","HoYoverse news and in-game Events screen"]],"sourceUrl":"https://genshin.hoyoverse.com/en/"},{"title":"Genshin Impact — rewards and competition status","description":"Version 7.1 content is player-account and server-time based. It is not a permanent professional team league with a global cash prize table.","columns":["Item","Official status"],"rows":[["Current version","Version 7.1: A Requiem for the Underworld"],["Reward source","Official event calendar and in-game Events screen"],["Banner / event timing","Uses the player’s server time"],["Esports prize pool","No ongoing publisher-run global circuit announced"],["Team/player points","No official global standings"],["Player rewards","Verify exact Primogems, weapons and event conditions in-client before spending"]],"sourceUrl":"https://genshin.hoyoverse.com/en/"}],
     playerFocusHeading: 'Primogems, event weapon and banner timing',
@@ -1452,11 +1452,11 @@ export const GAME_NEWS_PAGES: GameNewsPage[] = [
     description: 'Stumble Guys October 2026 player guide: v0.103 Cursed Fair update, Ranked Season 27, Clubs Season 16, Stumbleween and upcoming Avatar items.',
     heading: 'Stumble Guys News: Cursed Fair and Ranked Seasons',
     intro: 'The official Stumble Guys news feed now lists version 0.103.0, the Cursed Fair season, after the September 0.102.0 Live, Laugh, Lava Land update. Ranked Season 26 ended on 1 October, while Clubs Season 15 continues through 15 October.',
-    updateHeading: 'Stumble Guys v0.103.0 adds Ranked Season 27 and October events', updateDate: '7 October 2026',
+    updateHeading: 'Stumble Guys v0.103.0 adds Ranked Season 27 and October events', updateDate: '9 October 2026',
     update: [
       'Scopely’s 0.103.0 Cursed Fair update adds the Pollo Stick ability and returns Avatar: The Last Airbender with Spirit Aang, Katara, Momo and Uncle Iroh shop items scheduled for 15–22 October.',
       'The official notes schedule Ranked Season 27 for 1 October–5 November and Clubs Season 16 for 15 October–19 November. Stumbleween community challenges run 22 October–2 November. These are separate event timers; check the client for local availability and reward claims.',
-      "Checked 7 October 2026 against Scopely’s 0.103.0 official patch notes. The update is a live game season/event update, not a publisher-run professional esports tournament calendar."
+      "Checked 9 October 2026 against Scopely’s 0.103.0 official patch notes. The update is a live game season/event update, not a publisher-run professional esports tournament calendar."
     ],
     detailSections: [{"title":"Stumble Guys — current season and events","description":"The 0.103.0 notes assign separate dates to Ranked, Clubs, shop items and Stumbleween.","columns":["Area","Official detail"],"rows":[["Latest update","Version 0.103.0 — Cursed Fair"],["New ability","Pollo Stick"],["Ranked Season 27","1 October–5 November 2026"],["Clubs Season 16","15 October–19 November 2026"],["Stumbleween","22 October–2 November 2026"],["Avatar: The Last Airbender shop items","15–22 October 2026"],["Professional esports","No publisher-run esports calendar confirmed"]],"sourceUrl":"https://communityhub.stumbleguys.com/news/update103"}],
     playerFocusHeading: 'Ranked reward, Clubs season and Stumble Pass',
@@ -1481,7 +1481,7 @@ export const GAME_NEWS_PAGES: GameNewsPage[] = [
     description: 'Among Us October 2026 update: v19.0.0 adds the Influencer ghost Crewmate role, with Impostor Month beginning and official patch details.',
     heading: 'Among Us News: Influencer Role and Impostor Month',
     intro: 'Innersloth shipped Among Us v19.0.0 on 29 September, adding the Influencer ghost role. The developer’s next-day post announces Impostor Month, so players should check new monthly tasks and event rewards in the official update feed.',
-    updateHeading: 'Impostor Month is live after the v19.0.0 Influencer update', updateDate: '7 October 2026',
+    updateHeading: 'Impostor Month is live after the v19.0.0 Influencer update', updateDate: '9 October 2026',
     update: [
       'Innersloth’s 29 September patch notes say v19.0.0 is available on all platforms and introduces the Influencer as a new Ghost Crewmate role. The role gives eliminated Crewmates a way to communicate information about the Impostor; the full ability rules and any lobby settings are in the linked dev log.',
       'On 1 October, Innersloth announced “Impostor Month Begins!” Check the official post and in-game event panel for the monthly challenges, claim windows and cosmetics. The public announcement headline did not include a full reward schedule in the page summary checked.',
@@ -1509,11 +1509,11 @@ export const GAME_NEWS_PAGES: GameNewsPage[] = [
     description: 'GTA Online October 2026 update: Rockstar confirms Halloween thrills throughout October; check weekly bonuses, GTA+ and limited-time rewards.',
     heading: 'GTA Online News: October Halloween Events and Weekly Updates',
     intro: 'Rockstar’s 1 October Newswire post announces Halloween thrills throughout October in GTA Online. GTA Online changes weekly, so this page distinguishes the month-long theme from each week’s exact bonuses and GTA+ benefits.',
-    updateHeading: 'Halloween season runs through 4 November; new weekly rewards start 8 October', updateDate: '7 October 2026',
+    updateHeading: 'Halloween season runs through 4 November; new weekly rewards start 8 October', updateDate: '9 October 2026',
     update: [
       'Rockstar’s 1 October Newswire listing confirms Halloween content throughout October. Its public headline does not provide every weekly activity, payout multiplier or reward deadline; open the linked article and in-game Newswire for the current week’s full list.',
       'The latest September items included GTA+ early access to the Pegassi Horus and the Business Rivalries event. Those are dated promotions; do not assume a past vehicle or bonus remains claimable after its week ends.',
-      "Checked 7 October 2026: Rockstar’s 1 October Halloween post says the current weekly challenge/reward window runs through today, 7 October. The next listed window is 8–14 October: win two Adversary modes for the Pink Skull Emissive Mask and GTA$100,000; a free Twilight Knife T-Shirt is also listed for that week. GTA+ changes on 8 October, so verify membership offers and platform terms in Rockstar’s live post."
+      "Checked 9 October 2026: Rockstar’s 1 October Halloween post says the current weekly challenge/reward window runs through today, 7 October. The next listed window is 8–14 October: win two Adversary modes for the Pink Skull Emissive Mask and GTA$100,000; a free Twilight Knife T-Shirt is also listed for that week. GTA+ changes on 8 October, so verify membership offers and platform terms in Rockstar’s live post."
     ],
     detailSections: [{"title":"GTA Online — Halloween and weekly tracker","description":"GTA Online rotates weekly bonuses. The title update confirms the seasonal window, but the Newswire is required for exact current payouts and claims.","columns":["Area","Current verified detail"],"rows":[["Halloween window","1 October–4 November"],["Returning content","Halloween content returns"],["Updated activity","Ghosts Exposed has new locations and rewards"],["Weekly bonuses","Check Rockstar’s Thursday Newswire"],["GTA+ benefits","Time-limited and platform/offer dependent"],["Team / player standings","No current publisher-run GTA Online esports championship table"]],"sourceUrl":"https://support.rockstargames.com/articles/4vRqEDvjUs9h7nqRUgc8YO/gtav-title-update-1-73-notes-ps5-ps4-xbox-series-x-or-s-xbox-one-pc-enhanced-legacy"},{"title":"GTA Online — rewards and competition status","description":"The official title update confirms the Halloween window and Ghosts Exposed update. Weekly payout amounts are intentionally kept in Rockstar’s rotating Newswire posts.","columns":["Item","Official status"],"rows":[["Halloween window","1 October–4 November"],["Updated reward activity","Ghosts Exposed: new locations and rewards"],["Exact weekly cash/RP bonuses","Check Rockstar’s current Thursday Newswire"],["GTA+ rewards","Time-limited and offer/platform dependent"],["Global esports prize pool","No current publisher-run championship listed"],["Teams / points table","No official GTA Online pro-league scoreboard"]],"sourceUrl":"https://support.rockstargames.com/articles/4vRqEDvjUs9h7nqRUgc8YO/gtav-title-update-1-73-notes-ps5-ps4-xbox-series-x-or-s-xbox-one-pc-enhanced-legacy"}],
     playerFocusHeading: 'Weekly bonuses, GTA+ and limited-time rewards',
@@ -1539,12 +1539,12 @@ export const GAME_NEWS_PAGES: GameNewsPage[] = [
     description: 'Marvel Rivals Season 10 news and Ignite 2026 esports schedule: Stage 2 playoffs, regional finals, prize pool, Grand Finals qualification and official NetEase links.',
     heading: 'Marvel Rivals News, Season 10 and Ignite Esports',
     intro: 'Track Marvel Rivals Season 10, official game updates and the 2026 Ignite competitive circuit. Dates, playoff format, qualified Grand Finals places and unknown event details are separated and linked to NetEase’s official sources.',
-    updateHeading: 'Ignite Stage 2 playoffs begin 8 October', updateDate: '7 October 2026',
+    updateHeading: 'Ignite Stage 2 playoffs begin 8 October', updateDate: '9 October 2026',
     update: [
       'Marvel Rivals Season 10 began on 11 September 2026. The current official patch notes describe the season launch and the IGNITE Stage 2 schedule; this page does not label that September patch as a new update published today.',
       'Ignite Stage 2 playoffs run 8–18 October. Pacific starts 8 October and its regional final is 11 October; Americas and EMEA begin 15 October; China begins 16 October. The Americas, EMEA and China regional finals are scheduled for 18 October.',
       'The official guide lists a $650,000 Stage 2 prize pool. Twelve teams qualify for the Ignite Grand Finals in late November. NetEase has not yet announced the Grand Finals venue, exact dates, final match schedule or all qualified teams.',
-      'Checked 7 October 2026: Pacific playoffs are the next scheduled matches on 8 October. Use the in-game Esports panel or official Ignite page for live brackets and stream times.'
+      'Checked 9 October 2026: Pacific playoffs are the next scheduled matches on 8 October. Use the in-game Esports panel or official Ignite page for live brackets and stream times.'
     ],
     detailSections: [
       { title: 'Marvel Rivals Ignite Stage 2 — schedule and format', description: 'NetEase’s official event guide confirms the dates, regional format and qualification places.', columns: ['Stage / region', 'Officially confirmed detail'], rows: [['Group Stage', '17 September–4 October 2026'], ['Playoffs', '8–18 October 2026'], ['Pacific regional final', '11 October; Asia and Oceania combined for playoffs'], ['Americas and EMEA playoffs', 'Begin 15 October; regional finals 18 October'], ['China playoffs', 'Begin 16 October; regional final 18 October'], ['Playoff format', 'Regional double elimination; BO5 matches, BO7 regional finals'], ['Stage 2 prize pool', 'US$650,000'], ['Grand Finals qualification', '12 teams total: AMER 4, EMEA 4, PAC 2, China 2'], ['Ignite Grand Finals', 'Late November; exact date and venue not yet announced']], sourceUrl: 'https://www.marvelrivalsesports.com/20260908/42828_1313342.html' },
@@ -1571,12 +1571,12 @@ export const GAME_NEWS_PAGES: GameNewsPage[] = [
     description: 'Arena of Valor (AoV) news and esports schedule: Garena 10Fest Winter Grand Final in Hanoi on 7 November, AIC 2026 in Thailand and official patch sources.',
     heading: 'Arena of Valor News and Esports Schedule',
     intro: 'Follow Arena of Valor, also known regionally as Liên Quân Mobile and RoV, with separate official tournament details for its regional leagues and international AIC championship. Arena of Valor is covered separately from Honor of Kings.',
-    updateHeading: '10Fest Winter Grand Final set for Hanoi on 7 November', updateDate: '7 October 2026',
+    updateHeading: '10Fest Winter Grand Final set for Hanoi on 7 November', updateDate: '9 October 2026',
     update: [
       'Garena’s Arena of Valor game hub showed English patch notes dated 18 September 2026 as its latest English patch entry when checked on 7 October. Regional clients can publish additional localized patch notices; the game hub is linked below.',
       'Garena’s official Liên Quân 10Fest announcement schedules the Đấu Trường Danh Vọng (Arena of Glory) Winter 2026 Grand Final for 7 November at My Dinh National Stadium in Hanoi. Finalist teams and match start times were not listed in the announcement.',
       'Garena also confirms AIC 2026, the year-end Arena of Valor International Championship, will be held in Thailand. Exact dates, team count, format, prize pool and match schedule are not yet published in the cited official announcement.',
-      'Checked 7 October 2026: only the confirmed 10Fest finals date and AIC country/time window are listed. Do not confuse AoV’s distinct tournament ecosystem with Honor of Kings events.'
+      'Checked 9 October 2026: only the confirmed 10Fest finals date and AIC country/time window are listed. Do not confuse AoV’s distinct tournament ecosystem with Honor of Kings events.'
     ],
     detailSections: [
       { title: 'Arena of Valor esports — confirmed 2026 events', description: 'Garena’s official sources confirm the November Vietnam final and a year-end international championship in Thailand.', columns: ['Event', 'Confirmed detail'], rows: [['Đấu Trường Danh Vọng Winter Grand Final', '7 November 2026 at My Dinh National Stadium, Hanoi'], ['10Fest day 2', '8 November 2026 is the AoV tenth-anniversary music festival, not an esports match day'], ['Winter final matchup and start time', 'Not stated in the official event announcement'], ['AIC 2026', 'Year-end 2026 in Thailand; exact dates and format pending'], ['AIC team list / prize pool', 'Not yet published in the cited Garena announcement'], ['Official AoV patch hub', 'Latest English patch entry visible: 18 September 2026'], ['Last checked', '7 October 2026']], sourceUrl: 'https://lienquan.garena.vn/tag/dau-truong-danh-vong/' },
@@ -1603,12 +1603,12 @@ export const GAME_NEWS_PAGES: GameNewsPage[] = [
     description: 'Teamfight Tactics (TFT) esports news and tournament calendar: Tactician’s Superbrawl 6–8 November, TFT Vegas Open 11–13 December, format and prize details.',
     heading: 'Teamfight Tactics News and TFT Esports Calendar',
     intro: 'Find Teamfight Tactics Set updates, TFT Pro Circuit coverage and official esports dates. The calendar separates individual auto-battler competitions from TFT’s newer 4v4 team format and marks unannounced regional details clearly.',
-    updateHeading: 'TFT esports: November Superbrawl and December Vegas Open confirmed', updateDate: '7 October 2026',
+    updateHeading: 'TFT esports: November Superbrawl and December Vegas Open confirmed', updateDate: '9 October 2026',
     update: [
       'Riot’s current Enchanted Wilds Pro Circuit page scheduled the Blossom Cup for 2–4 October; that event has ended. Riot’s next announced open-format event is Tactician’s Superbrawl, a regional 4v4 competition scheduled for 6–8 November.',
       'Tactician’s Superbrawl is open across AMER, EMEA and APAC. Riot specifies 96 teams per region, single-elimination best-of-three matches and a ladder snapshot on 2 November. Regional qualification instructions and prize details are still being released through local channels.',
       'The TFT Vegas Open is a 1,024-player LAN open bracket in Las Vegas from 11–13 December. Riot lists a $311,300 prize pool, with $100,000 for the champion; the top 128 receive a share. Riot says competitors will play Set 19.',
-      'Checked 7 October 2026: no newly dated TFT gameplay patch was listed in the official esports items reviewed. These are confirmed tournament updates, not claims of a new game patch today.'
+      'Checked 9 October 2026: no newly dated TFT gameplay patch was listed in the official esports items reviewed. These are confirmed tournament updates, not claims of a new game patch today.'
     ],
     detailSections: [
       { title: 'TFT Tactician’s Superbrawl — 4v4 tournament', description: 'Riot has officially added a team competition alongside its usual solo TFT circuit.', columns: ['Detail', 'Official announcement'], rows: [['Dates', '6–8 November 2026'], ['Regions', 'AMER, EMEA and APAC'], ['Teams', '96 teams per region; four players per team'], ['Bracket', 'Single elimination, best-of-three'], ['Ladder snapshot', '2 November 2026'], ['Qualification', 'Ladder captain slots and sub-regional 4v4 qualifiers; region-specific details vary'], ['Trials pathway', 'Top two teams in each region can earn non-TPC player places in Set 19 Tactician’s Trials'], ['Prize breakdown', 'Not yet published']], sourceUrl: 'https://teamfighttactics.leagueoflegends.com/en-us/news/esports/4v4-arrives-to-compete-tft/' },
@@ -1635,3 +1635,4 @@ export const GAME_NEWS_PAGES: GameNewsPage[] = [
 
 export const GAME_NEWS_BY_ID = new Map(GAME_NEWS_PAGES.map((page) => [page.gameId, page]));
 export const GAME_NEWS_INDEX = POPULAR_GAMES.filter((game) => GAME_NEWS_BY_ID.has(game.id));
+
