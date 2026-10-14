@@ -30,6 +30,16 @@ const LATEST_SOURCE_CHECK = OFFICIAL_TOURNAMENT_SOURCES
   .sort()
   .slice(-1)[0];
 
+const SOURCE_CHECK_BY_GAME = new Map(
+  OFFICIAL_TOURNAMENT_SOURCES
+    .filter((source) => source.checkedAt)
+    .map((source) => [source.gameId, source.checkedAt as string]),
+);
+
+function sourceCheckDate(gameId: string) {
+  return formatDate(SOURCE_CHECK_BY_GAME.get(gameId));
+}
+
 function statusClass(status: TournamentStatus) {
   if (status === 'live') return 'border-red-400/30 bg-red-500/10 text-red-300';
   if (status === 'upcoming') return 'border-amber-400/30 bg-amber-500/10 text-amber-300';
@@ -77,7 +87,7 @@ const EventCard: React.FC<{ event: TournamentEvent }> = ({ event }) => {
       <h2 className="mt-4 font-gaming text-base font-bold leading-snug text-white">{event.name}</h2>
       <p className="mt-2 text-xs leading-6 text-slate-400">{event.summary}</p>
       <dl className="mt-4 grid gap-2 border-t border-slate-800 pt-4 text-xs text-slate-300"><div className="flex items-center gap-2"><CalendarDays className="h-3.5 w-3.5 text-amber-300" /><span>{event.dateLabel}</span></div><div className="flex items-center gap-2"><Globe2 className="h-3.5 w-3.5 text-cyan-300" /><span>{event.region} · {event.location}</span></div>{(event.prizePool || event.teams) && <div className="flex items-center gap-2"><Trophy className="h-3.5 w-3.5 text-emerald-300" /><span>{[event.prizePool, event.teams ? `${event.teams} teams` : undefined].filter(Boolean).join(' · ')}</span></div>}</dl>
-      <div className="mt-auto flex flex-wrap items-center gap-3 pt-5"><a href={`/tournaments/${event.slug}`} className="rounded-lg bg-amber-500 px-3 py-2 text-xs font-black text-slate-950 transition hover:bg-amber-300">View event</a><a href={event.sourceUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-400 hover:text-white">Official source <ExternalLink className="h-3 w-3" /></a></div>
+      <div className="mt-auto flex flex-wrap items-center gap-3 pt-5"><span className="w-full text-[10px] text-slate-500">Schedule source checked {sourceCheckDate(event.gameId)}</span><a href={`/tournaments/${event.slug}`} className="rounded-lg bg-amber-500 px-3 py-2 text-xs font-black text-slate-950 transition hover:bg-amber-300">View event</a><a href={event.sourceUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-400 hover:text-white">Official source <ExternalLink className="h-3 w-3" /></a></div>
     </article>
   );
 };
@@ -113,7 +123,7 @@ function ArticleView({ article, event }: { article?: TournamentNews; event?: Tou
   const latestGameUpdate = article ? GAME_NEWS_BY_ID.get(article.gameId) : undefined;
   return (
     <article className="overflow-hidden rounded-3xl border border-slate-800 bg-[#080d1a]/95 shadow-2xl shadow-black/30">
-      <div className="bg-radial-hero px-6 py-9 sm:px-10 sm:py-12"><div className="flex flex-wrap items-center gap-2"><StatusBadge status={article?.status || event?.status || 'upcoming'} /><span className="rounded-full border border-cyan-400/25 bg-cyan-500/10 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.12em] text-cyan-300">{article?.gameName || event?.gameName}</span></div><h1 className="mt-5 max-w-4xl font-gaming text-2xl font-black leading-tight text-white sm:text-4xl">{title}</h1><p className="mt-4 max-w-3xl text-sm leading-7 text-slate-300">{article?.excerpt || event?.summary}</p><p className="mt-3 text-xs font-semibold text-slate-500">Updated {formatDate(article?.updatedAt || event?.updatedAt)}</p></div>
+      <div className="bg-radial-hero px-6 py-9 sm:px-10 sm:py-12"><div className="flex flex-wrap items-center gap-2"><StatusBadge status={article?.status || event?.status || 'upcoming'} /><span className="rounded-full border border-cyan-400/25 bg-cyan-500/10 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.12em] text-cyan-300">{article?.gameName || event?.gameName}</span></div><h1 className="mt-5 max-w-4xl font-gaming text-2xl font-black leading-tight text-white sm:text-4xl">{title}</h1><p className="mt-4 max-w-3xl text-sm leading-7 text-slate-300">{article?.excerpt || event?.summary}</p><p className="mt-3 text-xs font-semibold text-slate-500">Official schedule source checked {sourceCheckDate(gameId)}</p></div>
       <div className="space-y-7 px-6 py-8 sm:px-10 sm:py-10">
         {latestGameUpdate && <section className="rounded-2xl border border-cyan-400/25 bg-cyan-500/5 p-5"><div className="flex flex-wrap items-center justify-between gap-2"><h2 className="font-semibold text-cyan-200">Latest {article?.gameName} update</h2><span className="text-xs text-slate-500">Checked {latestGameUpdate.updateDate}</span></div><h3 className="mt-3 text-sm font-bold text-white">{latestGameUpdate.updateHeading}</h3>{latestGameUpdate.update.map((paragraph) => <p key={paragraph} className="mt-2 max-w-3xl text-sm leading-7 text-slate-300">{paragraph}</p>)}<a href={`/game-news/${latestGameUpdate.gameId}`} className="mt-4 inline-flex text-xs font-black text-cyan-300 hover:text-white">Open full current game details →</a></section>}
         {event && <dl className="grid gap-3 rounded-2xl border border-slate-800 bg-slate-950/50 p-5 text-sm text-slate-300 sm:grid-cols-2"><div><dt className="text-[10px] font-bold uppercase tracking-[0.14em] text-slate-500">Date</dt><dd className="mt-1">{event.dateLabel}</dd></div><div><dt className="text-[10px] font-bold uppercase tracking-[0.14em] text-slate-500">Organizer</dt><dd className="mt-1">{event.organizer}</dd></div><div><dt className="text-[10px] font-bold uppercase tracking-[0.14em] text-slate-500">Region / location</dt><dd className="mt-1">{event.region} · {event.location}</dd></div><div><dt className="text-[10px] font-bold uppercase tracking-[0.14em] text-slate-500">Format</dt><dd className="mt-1">{event.format || 'Official tournament event'}</dd></div>{event.prizePool && <div><dt className="text-[10px] font-bold uppercase tracking-[0.14em] text-slate-500">Prize pool</dt><dd className="mt-1">{event.prizePool}</dd></div>}</dl>}
