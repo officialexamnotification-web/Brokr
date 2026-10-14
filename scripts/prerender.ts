@@ -1,11 +1,11 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import { HOME_SEO, SITE_DISPLAY_NAME, SITE_NAME, getGameSeo } from '../src/data/game-seo';
+import { HOME_SEO, SITE_DISPLAY_NAME, SITE_NAME, getGameSeo, type GameNamingGuide } from '../src/data/game-seo';
 import { POPULAR_GAMES } from '../src/data/games';
 import { SITE_PAGES } from '../src/data/site-pages';
 import { TOURNAMENT_EVENTS, TOURNAMENT_NEWS } from '../src/data/tournament-data';
 import { TOURNAMENT_NEWS_SEO, TOURNAMENTS_SEO, getTournamentArticleSeo } from '../src/data/tournament-seo';
-import { getTournamentNews } from '../src/lib/tournament-feed';
+import { getTournamentEvents, getTournamentNews } from '../src/lib/tournament-feed';
 import { GAME_NEWS_BY_ID, GAME_NEWS_INDEX, type GameNewsPage } from '../src/data/tournament-data';
 
 const DIST_DIR = path.resolve(process.cwd(), 'dist');
@@ -91,16 +91,17 @@ function jsonLdFor(route: { slug: string; title: string; description: string; he
   return { '@context': 'https://schema.org', '@graph': graph };
 }
 
-function landingMarkup(route: { slug: string; title: string; description: string; heading: string; intro: string; features: string[]; faqs?: Array<{ question: string; answer: string }>; gameName?: string }) {
+function landingMarkup(route: { slug: string; title: string; description: string; heading: string; intro: string; features: string[]; faqs?: Array<{ question: string; answer: string }>; gameName?: string; guide?: GameNamingGuide }) {
   const featureList = route.features.map((feature) => `<li>${escapeHtml(feature)}</li>`).join('');
   const faqList = (route.faqs || []).map((faq) => `<section><h2>${escapeHtml(faq.question)}</h2><p>${escapeHtml(faq.answer)}</p></section>`).join('');
   const links = (route.gameName ? POPULAR_GAMES.filter((game) => game.name !== route.gameName).slice(0, 8) : POPULAR_GAMES.slice(0, 12))
     .map((game) => `<a href="/${game.slug}">${escapeHtml(game.shortName)} name generator</a>`).join('');
   const howTo = `<section><h2>How to create a name</h2><ol><li>Enter a word, nickname or clan handle.</li><li>Choose a language and style that match your identity.</li><li>Copy the result and test it in the current game or platform client.</li></ol></section>`;
-  const trustNote = route.gameName
-    ? `<section><h2>${escapeHtml(route.gameName)} name tips</h2><p>Start with a clean, readable option when you need the safest compatibility. Decorative Unicode can render differently across clients, so this page does not promise that every symbol will be accepted.</p></section>`
-    : `<section><h2>Built for real gaming profiles</h2><p>Tradivex GamingNameHub is a local name-idea tool. It does not check live username availability, access game accounts or claim affiliation with game publishers.</p></section>`;
-  return `<main id="seo-content"><nav aria-label="Breadcrumb"><a href="/">Home</a>${route.gameName ? ` / <span>${escapeHtml(route.heading)}</span>` : ''}</nav><article><h1>${escapeHtml(route.heading)}</h1><p>${escapeHtml(route.intro)}</p><ul>${featureList}</ul>${howTo}${trustNote}${faqList}<nav aria-label="Related game generators"><h2>Explore more game name generators</h2>${links}</nav></article></main>`;
+  const trustNote = route.gameName ? '' : `<section><h2>Built for real gaming profiles</h2><p>Tradivex GamingNameHub is a local name-idea tool. It does not check live username availability, access game accounts or claim affiliation with game publishers.</p></section>`;
+  const gameGuide = route.gameName && route.guide
+    ? `<section><h2>${escapeHtml(route.guide.heading)}</h2><p>${escapeHtml(route.guide.intro)}</p><ul>${route.guide.directions.map((direction) => `<li>${escapeHtml(direction)}</li>`).join('')}</ul><p><strong>Naming tip:</strong> ${escapeHtml(route.guide.tip)}</p></section>`
+    : '';
+  return `<main id="seo-content"><nav aria-label="Breadcrumb"><a href="/">Home</a>${route.gameName ? ` / <span>${escapeHtml(route.heading)}</span>` : ''}</nav><article><h1>${escapeHtml(route.heading)}</h1><p>${escapeHtml(route.intro)}</p><ul>${featureList}</ul>${route.gameName ? '' : howTo}${gameGuide}${trustNote}${faqList}<nav aria-label="Related game generators"><h2>Explore more game name generators</h2>${links}</nav></article></main>`;
 }
 
 function staticPageMarkup(page: typeof SITE_PAGES[number]) {
@@ -171,7 +172,7 @@ function tournamentMarkup(route: { slug: string; title: string; description: str
     return `<main id="seo-content"><nav aria-label="Breadcrumb"><a href="/">Home</a> / <a href="/tournaments">Tournaments</a> / <span>${escapeHtml(route.heading)}</span></nav><article><h1>${escapeHtml(route.heading)}</h1><p>${escapeHtml(route.intro)}</p><dl><dt>Status</dt><dd>${escapeHtml(route.event.status)}</dd><dt>Date</dt><dd>${escapeHtml(route.event.dateLabel)}</dd><dt>Organizer</dt><dd>${escapeHtml(route.event.organizer)}</dd><dt>Region</dt><dd>${escapeHtml(route.event.region)}</dd><dt>Location</dt><dd>${escapeHtml(route.event.location)}</dd></dl><p><strong>Official source:</strong> <a href="${escapeHtml(route.event.sourceUrl)}">${escapeHtml(route.event.sourceName)}</a></p></article></main>`;
   }
   const isNews = route.slug === 'esports-news';
-  const items = isNews ? getTournamentNews().map((item) => `<li><a href="/esports-news/${escapeHtml(item.slug)}">${escapeHtml(item.title)}</a><p>${escapeHtml(item.excerpt)}</p></li>`).join('') : TOURNAMENT_EVENTS.map((item) => `<li><a href="/tournaments/${escapeHtml(item.slug)}">${escapeHtml(item.name)}</a><p>${escapeHtml(item.summary)}</p></li>`).join('');
+  const items = isNews ? getTournamentNews().map((item) => `<li><a href="/esports-news/${escapeHtml(item.slug)}">${escapeHtml(item.title)}</a><p>${escapeHtml(item.excerpt)}</p></li>`).join('') : getTournamentEvents().map((item) => `<li><a href="/tournaments/${escapeHtml(item.slug)}">${escapeHtml(item.name)}</a><p>${escapeHtml(item.summary)}</p></li>`).join('');
   return `<main id="seo-content"><nav aria-label="Breadcrumb"><a href="/">Home</a> / <span>${escapeHtml(route.heading)}</span></nav><article><h1>${escapeHtml(route.heading)}</h1><p>${escapeHtml(route.intro)}</p><h2>${isNews ? 'Latest tournament updates' : 'Verified game tournament events'}</h2><ul>${items}</ul></article></main>`;
 }
 
@@ -272,6 +273,7 @@ for (const page of SITE_PAGES) {
 }
 
 const allTournamentNews = getTournamentNews();
+const allTournamentEvents = getTournamentEvents();
 writeRoute('esports-news', renderTournamentHtml({ slug: 'esports-news', ...TOURNAMENT_NEWS_SEO }));
 writeRoute('tournaments', renderTournamentHtml({ slug: 'tournaments', ...TOURNAMENTS_SEO }));
 const gameNewsIndexRoute = { slug: 'game-news', title: `Game News, Updates and Esports by Title | ${SITE_DISPLAY_NAME}`, description: `Official-source gaming news for ${GAME_NEWS_INDEX.length} titles: patches, seasonal events and esports schedules, with separate game details and publisher links.`, heading: 'Game news, seasons and tournament updates', intro: `Read separate, official-source update pages for ${GAME_NEWS_INDEX.length} supported games. Find current patches, passes, live-service events and upcoming tournament schedules, with unconfirmed details clearly identified.` };
@@ -284,12 +286,12 @@ for (const article of allTournamentNews) {
   const seo = getTournamentArticleSeo(article);
   writeRoute(`esports-news/${article.slug}`, renderTournamentHtml({ slug: `esports-news/${article.slug}`, ...seo, news: article }));
 }
-for (const event of TOURNAMENT_EVENTS) {
+for (const event of allTournamentEvents) {
   const seo = getTournamentArticleSeo(event);
   writeRoute(`tournaments/${event.slug}`, renderTournamentHtml({ slug: `tournaments/${event.slug}`, ...seo, event }));
 }
 
-const allSlugs = ['', ...POPULAR_GAMES.map((game) => game.slug), ...SITE_PAGES.map((page) => page.slug), 'esports-news', 'tournaments', 'game-news', ...GAME_NEWS_INDEX.map((game) => `game-news/${game.id}`), ...allTournamentNews.map((article) => `esports-news/${article.slug}`), ...TOURNAMENT_EVENTS.map((event) => `tournaments/${event.slug}`)];
+const allSlugs = ['', ...POPULAR_GAMES.map((game) => game.slug), ...SITE_PAGES.map((page) => page.slug), 'esports-news', 'tournaments', 'game-news', ...GAME_NEWS_INDEX.map((game) => `game-news/${game.id}`), ...allTournamentNews.map((article) => `esports-news/${article.slug}`), ...allTournamentEvents.map((event) => `tournaments/${event.slug}`)];
 const sitemapLastmod = new Map<string, string>();
 for (const game of GAME_NEWS_INDEX) {
   const page = GAME_NEWS_BY_ID.get(game.id);
