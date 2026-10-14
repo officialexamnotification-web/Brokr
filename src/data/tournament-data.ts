@@ -16,6 +16,12 @@ export interface TournamentEvent {
   location: string;
   prizePool?: string;
   teams?: number;
+  /** Named entrants confirmed for this event or event stage. */
+  participants?: string[];
+  participantsLabel?: string;
+  participantsNote?: string;
+  participantsSourceUrl?: string;
+  participantsSourceName?: string;
   format?: string;
   status: TournamentStatus;
   sourceUrl: string;
@@ -64,6 +70,11 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
     sourceUrl: 'https://www.linkedin.com/posts/kraftoninc-india_kraftonforindia-gamingforindia-bgmi-activity-7485252349389643776-GtHg',
     sourceName: 'KRAFTON India', updatedAt: '2026-10-02',
     summary: 'KRAFTON India says 48 top-performing teams qualified through the KIE leaderboard, BGIS and BMPS. The LAN finals are scheduled for 16–18 October in Hyderabad.',
+    participants: ['Meta Ninza', 'Team 8Bit', 'Revenant XSpark', 'Blitz Epigrotive Gaming', 'Team Apex Gaming', 'Nebula Esports', 'Team Soul', 'K9 Esports', 'Blue Army', 'GodLike Esports', 'Team Outrage', 'Gladiators Esports', 'MYTH Official', 'Welt Esports', 'Genesis Esports', 'Wyld Fangs'],
+    participantsLabel: 'Grand Finals teams',
+    participantsNote: 'These are the 16 teams reported as qualified for the LAN Grand Finals from the 48-team event field.',
+    participantsSourceUrl: 'https://www.talkesport.com/news/bmsd-2026-grand-finals-semi-finals-and-survival-stage-teams-confirmed/',
+    participantsSourceName: 'TalkEsport; roster names cross-checked against tournament coverage',
   },
   {
     id: 'bgmi-bmic-2026', slug: 'bgmi-bmic-2026', gameId: 'bgmi', gameName: 'BGMI',
@@ -74,6 +85,7 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
     sourceUrl: 'https://www.linkedin.com/posts/kraftoninc-india_kraftonforindia-gamingforindia-bgmi-activity-7485252349389643776-GtHg',
     sourceName: 'KRAFTON India', updatedAt: '2026-10-02',
     summary: 'KRAFTON India has announced a 16-team international BGMI event in Mumbai, featuring teams from India, Korea and Japan. Detailed match format and prize breakdown were not included in the announcement.',
+    participantsNote: 'KRAFTON has announced a 16-team India–Korea–Japan field; team names are not included in the announcement linked here.',
   },
   {
     id: 'pubgm-pmps-korea-s2-2026', slug: 'pubgm-pmps-korea-s2-2026', gameId: 'pubg', gameName: 'PUBG Mobile',
@@ -82,6 +94,10 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
     prizePool: '₩40,000,000', teams: 16, format: 'Five circuit days followed by two Finals days; six matches per day', status: 'live',
     sourceUrl: 'https://esports.pubgmobile.kr/en/news/208', sourceName: 'PUBG MOBILE Esports Korea', updatedAt: '2026-10-13',
     summary: 'PMPS Korea Season 2 began on 3 October and its circuit stage ran through 11 October. The Finals are scheduled for 17–18 October. Its winner qualifies for PMGC 2026 and the top three for BMIC, subject to the duplicate-slot rule.',
+    participants: ['5Hz', 'APEX', 'Chungnam CNJ esports', 'DAEJEON GAME PT', 'Dplus Kia', 'FN SEJONG', 'FOCUS', 'G.N. Revenant NOVA', 'GyeongBuk Ascenders', 'INCHEON WAVE', 'Jeonnam Esports', 'KIWOOM DRX', 'KX GAMING', 'NS RedForce', 'Re Mind', 'TEAM CG'],
+    participantsLabel: 'Participating teams',
+    participantsSourceUrl: 'https://esports.pubgmobile.kr/ko/events',
+    participantsSourceName: 'PUBG MOBILE Esports Korea',
   },
   {
     id: 'pubgm-pmwc-ewc-2026', slug: 'pubgm-pmwc-ewc-2026', gameId: 'pubg', gameName: 'PUBG Mobile',
@@ -90,6 +106,11 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
     prizePool: '$3,000,000', teams: 32, format: 'Group Stage, Survival Stage and Match Point Finals', status: 'completed',
     sourceUrl: 'https://ewc-web.prod.esf-systems.com/en/competitions/2026/pmwc', sourceName: 'Esports World Cup', updatedAt: '2026-10-14',
     summary: 'The official EWC results page lists S2G Esports as champion and QZZ as MVP. Thirty-two teams competed in Paris; the EWC rulebook lists a $3 million prize pool for PUBG MOBILE.',
+    participants: ['4Thrives Esports', '721 GS Esports', 'AG.AL', 'Alpha7 Esports', 'AlUla Club Esports', 'Aurora Gaming', 'DOPENESS', 'eArena', 'ETSH Esports', 'FURIA', 'Gaming Stars Esports', 'Geekay Esports', 'GOAT Team', 'GodLike Esports', 'Horaa Esports', 'Hustler Crew', 'IDA Esports', 'Kiwoom DRX', 'Nigma Galaxy', 'Nongshim RedForce', 'Orangutan', 'S2G Esports', 'Team Flash', 'Team RRQ', 'Team Vitality', 'ThunderTalk Gaming', 'Tianba', 'TT Project', 'ULF Esports', 'Wolves Esports', 'XForce Rejects', 'Yangon Galacticos'],
+    participantsLabel: 'Participating teams',
+    participantsNote: 'The roster list is cross-checked against official EWC event results; final standings are on the linked event page.',
+    participantsSourceUrl: 'https://ewc-web.prod.esf-systems.com/en/competitions/2026/pmwc',
+    participantsSourceName: 'Esports World Cup official results',
   },
   {
     id: 'pubgm-pmgc-2026', slug: 'pubgm-pmgc-2026', gameId: 'pubg', gameName: 'PUBG Mobile',
@@ -122,6 +143,10 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
     format: 'Four-group stage followed by double-elimination playoffs; best-of-three except best-of-five finals', status: 'live',
     sourceUrl: 'https://valorantesports.com/en-US/news/champions-shanghai-everything-you-need-to-know', sourceName: 'VALORANT Esports', updatedAt: '2026-10-05',
     summary: 'The group stage ended 4 October. Eight teams advance to double-elimination playoffs on 7–18 October; Riot lists 5–6 October as dark days between stages.',
+    participants: ['NRG', 'G2 Esports', 'LOUD', '100 Thieves', 'Team Vitality', 'FUT Esports', 'Team Liquid', 'Karmine Corp', 'Paper Rex', 'Nongshim RedForce', 'Global Esports', 'T1', 'JD Gaming', 'XLG Esports', 'TYLOO', 'EDward Gaming'],
+    participantsLabel: 'Qualified teams',
+    participantsSourceUrl: 'https://valorantesports.com/en-GB/tournament/115576361459045501/overview',
+    participantsSourceName: 'Riot Games VALORANT Esports',
   },
   {
     id: 'valorant-game-changers-americas-lcq-2026', slug: 'valorant-game-changers-americas-lcq-2026', gameId: 'valorant', gameName: 'VALORANT',
@@ -130,6 +155,10 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
     format: 'Three-team round robin Bo3 on 14 Oct; top two advance to a Bo5 final on 15 Oct', status: 'upcoming',
     sourceUrl: 'https://valorantesports.com/en-US/news/eyntk-gc-americas-lcq-2026', sourceName: 'VALORANT Esports', updatedAt: '2026-10-13',
     summary: 'Riot’s 6 October guide names MIBR, Akave Esports Black and FlyQuest RED. Matches start 14 October at 11:00 AM PT; the final is 15 October at 1:00 PM PT. The winner claims the final Americas place at Game Changers Championship São Paulo (22 Oct–1 Nov).',
+    participants: ['MIBR', 'Akave Esports Black', 'FlyQuest RED'],
+    participantsLabel: 'Participating teams',
+    participantsSourceUrl: 'https://valorantesports.com/en-US/news/eyntk-gc-americas-lcq-2026',
+    participantsSourceName: 'Riot Games VALORANT Esports',
   },
   {
     id: 'valorant-game-changers-championship-2026', slug: 'valorant-game-changers-championship-2026', gameId: 'valorant', gameName: 'VALORANT',
@@ -153,6 +182,10 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
     format: 'Group stage, playoffs and third-place match; 16 teams', status: 'upcoming',
     sourceUrl: 'https://blast.tv/cs/tournaments', sourceName: 'BLAST.tv Counter-Strike calendar', updatedAt: '2026-10-14',
     summary: 'The event page lists 16 teams and a $1.25 million total prize pool. PGL’s event is scheduled at its Bucharest studio from 24 to 31 October.',
+    participants: ['Team Spirit', 'Team Vitality', 'Natus Vincere', 'FURIA', 'MOUZ', 'Legacy', 'Aurora Gaming', 'G2 Esports', 'BetBoom Team', 'FUT Esports', '9z Team', 'The MongolZ', 'Nemiga Gaming', 'Team Liquid', 'DENDELE', 'TYLOO'],
+    participantsLabel: 'Invited teams',
+    participantsSourceUrl: 'https://blast.tv/cs/tournaments/pgl-belgrade-2026',
+    participantsSourceName: 'BLAST.tv event page (PGL Masters Bucharest)',
   },
   {
     id: 'cs2-pgl-singapore-major-2026', slug: 'cs2-pgl-singapore-major-2026', gameId: 'cs2', gameName: 'Counter-Strike 2',
@@ -199,6 +232,10 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
     format: 'International season finale; updated venue and start-time information is on the official event page', status: 'upcoming',
     sourceUrl: 'https://lolesports.com/en-US/lolesports/news/worlds-2026-venue-event-policies', sourceName: 'LoL Esports', updatedAt: '2026-10-02',
     summary: 'Worlds begins 15 October and concludes with the Final at Barclays Center on 14 November. Riot’s venue notice gives stage locations and updated broadcast start times; qualified teams and matchups are tracked on the live schedule.',
+    participants: ['Anyone’s Legend', 'Bilibili Gaming', 'TOP Esports', 'Shanghai Invictus Gaming Meituan', 'Gen.G', 'Hanwha Life Esports', 'T1', 'Dplus Kia', 'G2 Esports', 'Movistar KOI', 'Karmine Corp', 'Team Liquid Alienware', 'LYON', 'Cloud9 Kia', 'Team Secret Whales', 'CTBC Flying Oyster', 'MVK Esports', 'LOS', 'FURIA'],
+    participantsLabel: 'Qualified teams',
+    participantsSourceUrl: 'https://lolesports.com/en-GB/news/worlds-2026-primer',
+    participantsSourceName: 'Riot Games LoL Esports',
   },
   {
     id: 'rlcs-world-championship-2026', slug: 'rlcs-world-championship-2026', gameId: 'rocket_league', gameName: 'Rocket League',
@@ -206,6 +243,10 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
     region: 'Global', location: 'Dickies Arena, Fort Worth, Texas', prizePool: '$1,200,000', teams: 20, format: '2026 Rocket League World Championship', status: 'completed',
     sourceUrl: 'https://www.rocketleague.com/competitive/schedule', sourceName: 'Rocket League official schedule', updatedAt: '2026-10-02',
     summary: 'The official schedule marks the 20-team, $1.2 million World Championship complete. Rocket League’s September 9 event primer confirms Fort Worth and the 15–20 September dates.',
+    participants: ['Team Vitality', 'Karmine Korp', 'Gentle Mates', 'Ninjas in Pyjamas', 'Manchester City', 'Mate y Tapa', 'Spacestation Gaming', 'Shopify Rebellion', 'Virtus.pro', 'NRG', 'FUT Esports', 'Made In Brazil', 'FURIA', 'Bigodes', 'Twisted Minds', 'Team Falcons', 'R8 Esports', 'Wildcard', 'TSM', 'Five Fears'],
+    participantsLabel: 'Qualified teams',
+    participantsSourceUrl: 'https://www.rocketleague.com/news/2026-rocket-league-world-championship-primer',
+    participantsSourceName: 'Rocket League Esports',
   },
   {
     id: 'owcs-stage-3-2026', slug: 'owcs-stage-3-2026', gameId: 'overwatch', gameName: 'Overwatch 2',
@@ -382,6 +423,10 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
     region: 'Global', location: 'Shanghai, China', teams: 16, format: 'Modified-Swiss group stage followed by eight-team double-elimination main event', status: 'completed',
     sourceUrl: 'https://www.dota2.com/international/prelims/results/', sourceName: 'Dota 2 / Valve', updatedAt: '2026-10-14',
     summary: 'Valve’s official results page names Team Spirit the 2026 champions after a five-game Grand Final. The International took place in Shanghai; this calendar entry is marked complete.',
+    participants: ['Team Spirit', 'Team Falcons', 'Team Liquid', 'Aurora Gaming', 'Xtreme Gaming', 'Team Yandex', 'Boom Boys', 'Iron Wing', 'TEAM VISION', 'HULIGANI', 'OG', 'GamerLegion', 'LGD Gaming', 'Nigma Galaxy', 'Team Resilience', 'Vici Gaming'],
+    participantsLabel: 'Participating teams',
+    participantsSourceUrl: 'https://www.youtube.com/watch?v=V-P0Qk0zowo',
+    participantsSourceName: 'Official Dota 2 tournament broadcast',
   },
 ];
 
