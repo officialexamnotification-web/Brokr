@@ -77,6 +77,7 @@ export async function syncTournamentNews(options: { apiKey?: string; model?: str
   const drafts: TournamentNews[] = [];
   const updatedAt = new Date().toISOString().slice(0, 10);
   for (const source of OFFICIAL_TOURNAMENT_SOURCES) {
+    if (source.syncEnabled === false) continue;
     try {
       const text = await fetchSourceText(source.url);
       if (text.length < 160) continue;

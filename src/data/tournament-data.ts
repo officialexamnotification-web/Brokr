@@ -50,6 +50,8 @@ export interface TournamentSource {
   sourceName: string;
   note: string;
   checkedAt?: string;
+  /** Reference-only sources must not produce automated news drafts. */
+  syncEnabled?: boolean;
 }
 
 export const TOURNAMENT_EVENTS: TournamentEvent[] = [
@@ -80,6 +82,22 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
     prizePool: '₩40,000,000', teams: 16, format: 'Five circuit days followed by two Finals days; six matches per day', status: 'live',
     sourceUrl: 'https://esports.pubgmobile.kr/en/news/208', sourceName: 'PUBG MOBILE Esports Korea', updatedAt: '2026-10-13',
     summary: 'PMPS Korea Season 2 began on 3 October and its circuit stage ran through 11 October. The Finals are scheduled for 17–18 October. Its winner qualifies for PMGC 2026 and the top three for BMIC, subject to the duplicate-slot rule.',
+  },
+  {
+    id: 'pubgm-pmwc-ewc-2026', slug: 'pubgm-pmwc-ewc-2026', gameId: 'pubg', gameName: 'PUBG Mobile',
+    name: 'PUBG MOBILE World Cup 2026 at Esports World Cup', organizer: 'Esports World Cup Foundation / PUBG MOBILE Esports',
+    startDate: '2026-08-06', endDate: '2026-08-16', dateLabel: '6–16 Aug 2026', region: 'Global', location: 'Paris, France',
+    prizePool: '$3,000,000', teams: 32, format: 'Group Stage, Survival Stage and Match Point Finals', status: 'completed',
+    sourceUrl: 'https://ewc-web.prod.esf-systems.com/en/competitions/2026/pmwc', sourceName: 'Esports World Cup', updatedAt: '2026-10-14',
+    summary: 'The official EWC results page lists S2G Esports as champion and QZZ as MVP. Thirty-two teams competed in Paris; the EWC rulebook lists a $3 million prize pool for PUBG MOBILE.',
+  },
+  {
+    id: 'pubgm-pmgc-2026', slug: 'pubgm-pmgc-2026', gameId: 'pubg', gameName: 'PUBG Mobile',
+    name: 'PUBG MOBILE Global Championship 2026', organizer: 'KRAFTON / PUBG MOBILE Esports',
+    startDate: '2026-11-01', endDate: '2026-12-15', dateLabel: '1 Nov – 15 Dec 2026 (official listing window)', region: 'Global', location: 'Venue and stage dates not announced',
+    prizePool: '$3,000,000', format: 'Season-ending global championship; detailed stages and participant field pending', status: 'upcoming',
+    sourceUrl: 'https://pubgesportsqualifiers.com/tournament', sourceName: 'KRAFTON PUBG MOBILE Esports', updatedAt: '2026-10-14',
+    summary: 'KRAFTON’s official tournament listing shows PMGC 2026 in the 1 November–15 December window with a $3 million prize pool. The listing does not confirm the venue, individual stage dates or complete team field, so those details are left pending.',
   },
   {
     id: 'pubg-asia-stars-2026', slug: 'pubg-asia-stars-2026', gameId: 'pubg_battlegrounds', gameName: 'PUBG: BATTLEGROUNDS',
@@ -133,7 +151,7 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
     name: 'PGL Masters Bucharest 2026', organizer: 'PGL', startDate: '2026-10-24', endDate: '2026-10-31', dateLabel: '24–31 Oct 2026',
     region: 'Global', location: 'Bucharest, Romania', prizePool: '$1,250,000', teams: 16,
     format: 'Group stage, playoffs and third-place match; 16 teams', status: 'upcoming',
-    sourceUrl: 'https://blast.tv/cs/tournaments/pgl-belgrade-2026', sourceName: 'BLAST.tv Counter-Strike', updatedAt: '2026-10-02',
+    sourceUrl: 'https://blast.tv/cs/tournaments', sourceName: 'BLAST.tv Counter-Strike calendar', updatedAt: '2026-10-14',
     summary: 'The event page lists 16 teams and a $1.25 million total prize pool. PGL’s event is scheduled at its Bucharest studio from 24 to 31 October.',
   },
   {
@@ -208,7 +226,7 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
     name: 'EA SPORTS FC Pro 27 Open Ladder', organizer: 'Electronic Arts', startDate: '2026-09-21', endDate: '2026-10-03', dateLabel: '21 Sep – 3 Oct 2026',
     region: 'Ten online regions', location: 'In-game FC Pro mode', format: 'Open regional ladder; top-ranked competitors advance to Regional Qualifiers', status: 'completed',
     sourceUrl: 'https://www.ea.com/games/ea-sports-fc/fc-pro/news/fc-pro-27-deep-dive', sourceName: 'EA SPORTS FC Pro', updatedAt: '2026-10-05',
-    summary: 'The Open Ladder ended 3 October. EA lists 1,376 advancing players across ten regions; Regional Qualifiers are scheduled for 10–11 October, followed by the Global Qualifier on 5–7 November.',
+    summary: 'The Open Ladder ended 3 October. EA lists 1,376 advancing players across ten regions; Regional Qualifiers were scheduled for 10–11 October, followed by the Global Qualifier on 6–7 November according to EA’s newer event-specific announcement.',
   },
   {
     id: 'mlbb-mpl-ph-s18-playoffs-2026', slug: 'mlbb-mpl-ph-s18-playoffs-2026', gameId: 'mobile_legends', gameName: 'MLBB',
@@ -309,6 +327,61 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
     format: 'Three-day open-bracket LAN; 1,024 competitors, eight-player lobbies and checkmate final', status: 'upcoming',
     sourceUrl: 'https://teamfighttactics.leagueoflegends.com/en-us/news/esports/tft-vegas-open-2026-competitor-info/', sourceName: 'Riot Games TFT Esports', updatedAt: '2026-10-13',
     summary: 'Riot confirms a 1,024-player open bracket at Convergence Fest in Las Vegas from 11–13 December. The top 128 share a $311,300 prize pool, with $100,000 for the champion. The published format uses eight-player lobbies and a checkmate final; Set 19 is planned for the event.',
+  },
+  {
+    id: 'pubg-pgs-circuit-4-2026', slug: 'pubg-pgs-circuit-4-2026', gameId: 'pubg_battlegrounds', gameName: 'PUBG: BATTLEGROUNDS',
+    name: 'PUBG Global Series Circuit 4 (PGS 10–12)', organizer: 'KRAFTON / PUBG Esports',
+    startDate: '2026-10-14', endDate: '2026-11-01', dateLabel: '14 Oct – 1 Nov 2026', region: 'Global', location: 'Online / official event locations',
+    format: 'Three connected series; consult PUBG Esports for each match-day schedule', status: 'upcoming',
+    sourceUrl: 'https://pubgesports.com/en/news/11230', sourceName: 'PUBG Esports', updatedAt: '2026-10-14',
+    summary: 'PUBG Esports says the final 2026 PGS circuit runs 14 October–1 November and determines remaining PGC qualification places. Check the official series schedule for each match day and bracket.',
+  },
+  {
+    id: 'pubg-pgc-2026', slug: 'pubg-pgc-2026', gameId: 'pubg_battlegrounds', gameName: 'PUBG: BATTLEGROUNDS',
+    name: 'PUBG Global Championship 2026', organizer: 'KRAFTON / PUBG Esports',
+    startDate: '2026-12-01', endDate: '2026-12-13', dateLabel: '1–13 Dec 2026', region: 'Global', location: 'Istanbul, Türkiye',
+    prizePool: '$1,500,000+ with crowdfunding', teams: 32, format: 'Qualifying Stage, Survival Stage and 16-team Grand Finals', status: 'upcoming',
+    sourceUrl: 'https://pubgesports.com/en/news/10109', sourceName: 'PUBG Esports', updatedAt: '2026-10-14',
+    summary: 'The 32-team global championship runs in Istanbul. PUBG Esports confirms a $1.5 million base prize pool plus crowdfunding; the Grand Finals are 11–13 December. Remaining team qualification depends on PGS and regional results.',
+  },
+  {
+    id: 'apex-algs-y6-lcq', slug: 'apex-algs-y6-lcq', gameId: 'apex', gameName: 'Apex Legends',
+    name: 'ALGS Year 6 Last Chance Qualifier', organizer: 'Electronic Arts / Respawn',
+    startDate: '2026-11-20', endDate: '2026-11-22', dateLabel: '20–22 Nov 2026', region: 'Americas, EMEA, APAC North and APAC South', location: 'Online',
+    format: 'Regional LCQs; top two teams per region qualify for the Championship', status: 'upcoming',
+    sourceUrl: 'https://algs.ea.com/en/year-5/split-1-pro-league-apac-south/news/year-6-is-here', sourceName: 'Apex Legends Global Series', updatedAt: '2026-10-14',
+    summary: 'EA’s Year 6 calendar schedules the online Last Chance Qualifier for 20–22 November. The top two teams from each region earn the final Championship places.',
+  },
+  {
+    id: 'apex-algs-y6-championship', slug: 'apex-algs-y6-championship', gameId: 'apex', gameName: 'Apex Legends',
+    name: 'ALGS Year 6 Championship', organizer: 'Electronic Arts / Respawn',
+    startDate: '2027-01-28', endDate: '2027-01-31', dateLabel: '28–31 Jan 2027', region: 'Global', location: 'Daiwa House Premist Dome, Sapporo, Japan',
+    prizePool: '$2,000,000', teams: 40, format: 'Group Stage, double-elimination bracket and Match Point Finals', status: 'upcoming',
+    sourceUrl: 'https://algs.ea.com/en/year-5/split-1-pro-league-apac-south/news/year-6-is-here', sourceName: 'Apex Legends Global Series', updatedAt: '2026-10-14',
+    summary: 'The Year 6 season finale brings 40 teams from four regions to Sapporo for a $2 million prize pool. EA says 32 places come through Championship Points and eight through regional LCQs.',
+  },
+  {
+    id: 'ea-fc-pro-27-global-qualifier', slug: 'ea-fc-pro-27-global-qualifier', gameId: 'ea_fc', gameName: 'EA SPORTS FC',
+    name: 'FC Pro 27 Open Global Qualifier', organizer: 'Electronic Arts', startDate: '2026-11-06', endDate: '2026-11-07', dateLabel: '6–7 Nov 2026',
+    region: 'Global', location: 'London, United Kingdom', prizePool: '$152,000', teams: 64,
+    format: '64-player Swiss stage; top 32 enter knockout play; 16 qualify for FC Pro Open', status: 'upcoming',
+    sourceUrl: 'https://www.ea.com/games/ea-sports-fc/fc-pro/news/fc-pro-open-global-qualifier', sourceName: 'EA SPORTS FC Pro', updatedAt: '2026-10-14',
+    summary: 'EA’s event-specific announcement sets the 64-player Global Qualifier for 6–7 November in London. Sixteen players advance to FC Pro Open, joining eight already qualified competitors.',
+  },
+  {
+    id: 'madden-mcs-27-most-feared-qualifier', slug: 'madden-mcs-27-most-feared-qualifier', gameId: 'ea_madden', gameName: 'Madden NFL',
+    name: 'MCS 27 Open Qualifier: Most Feared', organizer: 'Electronic Arts', startDate: '2026-10-24', endDate: '2026-10-25', dateLabel: '24–25 Oct 2026',
+    region: 'Eligible online entrants', location: 'Online elimination stage; Open Qualifier Final on 11 Nov', prizePool: '$50,000',
+    format: 'Open ladder followed by a 256-player double-elimination bracket', status: 'upcoming',
+    sourceUrl: 'https://www.ea.com/games/madden-nfl/madden-nfl-27/news/mcs-27-announcement', sourceName: 'EA SPORTS Madden Championship Series', updatedAt: '2026-10-14',
+    summary: 'EA schedules the Most Feared ladder for 10–11 and 17–18 October, the elimination bracket for 24–25 October, and the Open Qualifier Final for 11 November. The qualifier winner earns a Madden Bowl place.',
+  },
+  {
+    id: 'dota2-ti-2026', slug: 'dota2-ti-2026', gameId: 'dota2', gameName: 'Dota 2',
+    name: 'The International 2026', organizer: 'Valve', startDate: '2026-08-13', endDate: '2026-08-23', dateLabel: '13–23 Aug 2026',
+    region: 'Global', location: 'Shanghai, China', teams: 16, format: 'Modified-Swiss group stage followed by eight-team double-elimination main event', status: 'completed',
+    sourceUrl: 'https://www.dota2.com/international/prelims/results/', sourceName: 'Dota 2 / Valve', updatedAt: '2026-10-14',
+    summary: 'Valve’s official results page names Team Spirit the 2026 champions after a five-game Grand Final. The International took place in Shanghai; this calendar entry is marked complete.',
   },
 ];
 
@@ -472,7 +545,7 @@ const CURATED_TOURNAMENT_NEWS: TournamentNews[] = [
     excerpt: 'The ladder ended 3 October. EA says 1,376 players across ten regions advance to the online Regional Qualifiers.',
     content: [
       'EA’s FC Pro 27 season overview sets the in-game Open Ladder window at 21 September–3 October. That ladder has now closed; EA lists 1,376 PlayStation 5 competitors across ten regions advancing to Regional Qualifiers.',
-      'The Regional Qualifiers are scheduled online for 10–11 October, followed by the Global Qualifier in London on 5–7 November. The $2.5 million figure in EA’s season announcement applies to the full FC Pro 27 season, not to the ladder alone.',
+      'The Regional Qualifiers were scheduled online for 10–11 October, followed by the Global Qualifier in London on 6–7 November according to EA’s newer event-specific announcement. The $2.5 million figure in EA’s season announcement applies to the full FC Pro 27 season, not to the ladder alone.',
     ],
     tournamentName: 'EA SPORTS FC Pro 27 Open Ladder', status: 'completed', publishedAt: '2026-10-02', updatedAt: '2026-10-05',
     sourceUrl: 'https://www.ea.com/games/ea-sports-fc/fc-pro/news/fc-pro-27-deep-dive', sourceName: 'EA SPORTS FC Pro', sourceVerified: true,
@@ -595,6 +668,94 @@ const CURATED_TOURNAMENT_NEWS: TournamentNews[] = [
     sourceUrl: 'https://teamfighttactics.leagueoflegends.com/en-us/news/esports/4v4-arrives-to-compete-tft/', sourceName: 'Riot Games TFT Esports', sourceVerified: true,
     tags: ['Teamfight Tactics', 'TFT esports', 'Tactician’s Superbrawl', 'TFT Vegas Open', 'Set 18', 'Set 19'], eventId: 'tft-tacticians-superbrawl-2026',
   },
+  {
+    id: 'news-pubg-pgc-2026', slug: 'news-pubg-pgc-2026', gameId: 'pubg_battlegrounds', gameName: 'PUBG: BATTLEGROUNDS',
+    title: 'PUBG Global Championship 2026 heads to Istanbul in December',
+    excerpt: 'KRAFTON confirms 32 teams, a $1.5 million base prize pool and the 11–13 December Grand Finals.',
+    content: [
+      'PUBG Esports schedules PGC 2026 from 1 to 13 December in Istanbul, Türkiye. The event brings together 32 teams and starts with a qualifying stage on 1 December, followed by five Survival Stage days and three Grand Finals days.',
+      'The confirmed base prize pool is at least $1.5 million, with additional crowdfunding. PUBG says teams qualify and earn starting-stage positions through PGS and regional results; the complete field is not yet final.',
+      'A separate final PGS circuit is scheduled from 14 October to 1 November. Those results affect the remaining PGC qualification places, so teams, seedings and bracket details should be updated only when PUBG Esports publishes them.'
+    ],
+    tournamentName: 'PUBG Global Championship 2026', status: 'upcoming', publishedAt: '2026-10-14', updatedAt: '2026-10-14',
+    sourceUrl: 'https://pubgesports.com/en/news/10109', sourceName: 'PUBG Esports', sourceVerified: true,
+    tags: ['PUBG', 'PGC 2026', 'Istanbul', 'Global Championship'], eventId: 'pubg-pgc-2026',
+  },
+  {
+    id: 'news-pubgm-pmwc-2026', slug: 'news-pubgm-pmwc-2026', gameId: 'pubg', gameName: 'PUBG Mobile',
+    title: 'S2G Esports wins PUBG MOBILE World Cup 2026 in Paris',
+    excerpt: 'The official EWC results list S2G Esports as champion and QZZ as MVP after the 32-team event.',
+    content: [
+      'The Esports World Cup’s official PUBG MOBILE page records S2G Esports as the 2026 PMWC champion and QZZ as MVP. The event took place in Paris from 6 to 16 August and featured 32 teams.',
+      'The EWC 2026 rulebook lists $3 million in total prize money for PUBG MOBILE. This PMWC result is separate from the season-ending PUBG MOBILE Global Championship, which KRAFTON lists for a 1 November–15 December competition window.'
+    ],
+    tournamentName: 'PUBG MOBILE World Cup 2026', status: 'completed', publishedAt: '2026-10-14', updatedAt: '2026-10-14',
+    sourceUrl: 'https://ewc-web.prod.esf-systems.com/en/competitions/2026/pmwc', sourceName: 'Esports World Cup', sourceVerified: true,
+    tags: ['PUBG Mobile', 'PMWC 2026', 'S2G Esports', 'Paris', 'EWC'], eventId: 'pubgm-pmwc-ewc-2026',
+  },
+  {
+    id: 'news-pubgm-pmgc-2026', slug: 'news-pubgm-pmgc-2026', gameId: 'pubg', gameName: 'PUBG Mobile',
+    title: 'PUBG MOBILE Global Championship 2026 listed for November–December',
+    excerpt: 'KRAFTON’s tournament directory lists a $3 million PMGC window; venue and stage dates are not yet confirmed there.',
+    content: [
+      'KRAFTON’s official PUBG MOBILE tournament listing shows the 2026 Global Championship between 1 November and 15 December with a $3 million prize pool.',
+      'The current listing does not give the venue, stage-by-stage schedule or complete team field. Those details are intentionally left unconfirmed until KRAFTON publishes them. PMGC is separate from PUBG: BATTLEGROUNDS’ PGC 2026 in Istanbul.'
+    ],
+    tournamentName: 'PUBG MOBILE Global Championship 2026', status: 'upcoming', publishedAt: '2026-10-14', updatedAt: '2026-10-14',
+    sourceUrl: 'https://pubgesportsqualifiers.com/tournament', sourceName: 'KRAFTON PUBG MOBILE Esports', sourceVerified: true,
+    tags: ['PUBG Mobile', 'PMGC 2026', 'Global Championship', 'KRAFTON'], eventId: 'pubgm-pmgc-2026',
+  },
+  {
+    id: 'news-apex-algs-year-6-road-to-champs', slug: 'news-apex-algs-year-6-road-to-champs', gameId: 'apex', gameName: 'Apex Legends',
+    title: 'ALGS Year 6: Las Vegas Playoffs, November LCQ and Sapporo Championship',
+    excerpt: 'EA’s calendar confirms the remaining route to the 40-team, $2 million Championship in Japan.',
+    content: [
+      'EA’s ALGS Year 6 schedule lists Split 2 Playoffs for 29 October–1 November in Las Vegas, a regional Last Chance Qualifier on 20–22 November, and the Championship on 28–31 January 2027 in Sapporo.',
+      'The Championship field will contain 40 teams from the Americas, EMEA, APAC North and APAC South. EA says 32 places come through Championship Points and eight through the LCQs, with the top two from each region qualifying.',
+      'EA lists the Championship prize pool as $2 million. This is the Championship pool; it should not be described as a total prize pool for all ALGS Year 6 events.'
+    ],
+    tournamentName: 'Apex Legends Global Series Year 6', status: 'upcoming', publishedAt: '2026-10-14', updatedAt: '2026-10-14',
+    sourceUrl: 'https://algs.ea.com/en/year-5/split-1-pro-league-apac-south/news/year-6-is-here', sourceName: 'Apex Legends Global Series', sourceVerified: true,
+    tags: ['Apex Legends', 'ALGS Year 6', 'Playoffs', 'Last Chance Qualifier', 'Championship'], eventId: 'apex-algs-y6-championship',
+  },
+  {
+    id: 'news-ea-fc-pro-27-global-qualifier', slug: 'news-ea-fc-pro-27-global-qualifier', gameId: 'ea_fc', gameName: 'EA SPORTS FC',
+    title: 'FC Pro 27 Global Qualifier confirmed for 6–7 November in London',
+    excerpt: 'EA names 64 players for the London event; 16 will advance to FC Pro Open.',
+    content: [
+      'EA’s event-specific announcement sets the FC Pro 27 Open Global Qualifier for 6–7 November in London. Sixty-four players compete, with the top 32 advancing from the Swiss stage into knockout play.',
+      'Sixteen players will qualify from this event for FC Pro Open, joining eight competitors who qualified earlier. EA lists $152,000 for the Global Qualifier; this is distinct from the full-season FC Pro 27 prize pool.',
+      'This corrects the earlier 5–7 November date shown in the season overview: the newer event-specific announcement gives 6–7 November.'
+    ],
+    tournamentName: 'FC Pro 27 Open Global Qualifier', status: 'upcoming', publishedAt: '2026-10-14', updatedAt: '2026-10-14',
+    sourceUrl: 'https://www.ea.com/games/ea-sports-fc/fc-pro/news/fc-pro-open-global-qualifier', sourceName: 'EA SPORTS FC Pro', sourceVerified: true,
+    tags: ['EA SPORTS FC', 'FC Pro 27', 'Global Qualifier', 'London'], eventId: 'ea-fc-pro-27-global-qualifier',
+  },
+  {
+    id: 'news-madden-mcs-27', slug: 'news-madden-mcs-27', gameId: 'ea_madden', gameName: 'Madden NFL',
+    title: 'Madden Championship Series 27: $750,000 season and path to Madden Bowl',
+    excerpt: 'EA’s MCS includes an eight-player Pro League, three Open Qualifiers, an LCQ and a 14-player Madden Bowl.',
+    content: [
+      'EA’s MCS 27 announcement describes a season-long Madden NFL competition with $750,000 total prizing. The structure includes an eight-player Pro League, three Open Qualifiers, a Last Chance Qualifier and a 14-player Madden Bowl.',
+      'The Most Feared Open Qualifier elimination stage runs online on 24–25 October; its Open Qualifier Final is scheduled for 11 November. EA lists a $50,000 prize pool for this qualifier and says its winner earns a direct Madden Bowl place.',
+      'The Madden Bowl is scheduled for 9–11 February 2027 at Full Sail University in Orlando, Florida, with $400,000 in prizes. The $750,000 figure covers the complete MCS 27 season, not the Madden Bowl alone.'
+    ],
+    tournamentName: 'Madden Championship Series 27', status: 'upcoming', publishedAt: '2026-10-14', updatedAt: '2026-10-14',
+    sourceUrl: 'https://www.ea.com/games/madden-nfl/madden-nfl-27/news/mcs-27-announcement', sourceName: 'EA SPORTS Madden Championship Series', sourceVerified: true,
+    tags: ['Madden NFL', 'MCS 27', 'Most Feared', 'Madden Bowl'], eventId: 'madden-mcs-27-most-feared-qualifier',
+  },
+  {
+    id: 'news-dota2-ti-2026', slug: 'news-dota2-ti-2026', gameId: 'dota2', gameName: 'Dota 2',
+    title: 'Team Spirit wins The International 2026 in Shanghai',
+    excerpt: 'Valve confirms Team Spirit as Grand Champions after a five-game final.',
+    content: [
+      'Valve’s official results page confirms Team Spirit won The International 2026 in Shanghai. The Grand Final went five games before Spirit claimed the Aegis.',
+      'The tournament brought together 16 teams. Valve’s results and replay pages are the primary references for the final bracket and match replays; this summary does not infer a prize amount that is absent from the cited result announcement.'
+    ],
+    tournamentName: 'The International 2026', status: 'completed', publishedAt: '2026-10-14', updatedAt: '2026-10-14',
+    sourceUrl: 'https://www.dota2.com/newsentry/680759856779493378', sourceName: 'Dota 2 / Valve', sourceVerified: true,
+    tags: ['Dota 2', 'The International', 'Team Spirit', 'Shanghai'], eventId: 'dota2-ti-2026',
+  },
 ];
 
 // The sync workflow replaces this generated section in this same data file.
@@ -618,7 +779,7 @@ export const GENERATED_TOURNAMENT_NEWS: TournamentNews[] = [
     "updatedAt": "2026-09-26",
     "sourceUrl": "https://blast.tv/cs/tournaments",
     "sourceName": "BLAST.tv Counter-Strike",
-    "sourceVerified": true,
+    "sourceVerified": false,
     "tags": [
       "Counter-Strike 2",
       "BLAST Premier",
@@ -643,7 +804,7 @@ export const GENERATED_TOURNAMENT_NEWS: TournamentNews[] = [
     "updatedAt": "2026-09-26",
     "sourceUrl": "https://algs.ea.com/",
     "sourceName": "Apex Legends Global Series",
-    "sourceVerified": true,
+    "sourceVerified": false,
     "tags": [
       "Apex Legends",
       "ALGS",
@@ -654,15 +815,18 @@ export const GENERATED_TOURNAMENT_NEWS: TournamentNews[] = [
 ];
 // END GENERATED TOURNAMENT NEWS
 
-// Both generated and curated tournament articles are served from one source.
-export const TOURNAMENT_NEWS: TournamentNews[] = [
-  ...GENERATED_TOURNAMENT_NEWS,
-  ...CURATED_TOURNAMENT_NEWS,
-];
+// Only source-checked editorial articles are public; generated AI output remains a private draft.
+// Article status follows the linked event dates so old news does not stay falsely "upcoming".
+export const TOURNAMENT_NEWS: TournamentNews[] = CURATED_TOURNAMENT_NEWS
+  .filter((article) => article.sourceVerified)
+  .map((article) => {
+    const event = article.eventId ? TOURNAMENT_EVENTS.find((candidate) => candidate.id === article.eventId) : undefined;
+    return event ? { ...article, status: statusForEvent(event) } : article;
+  });
 
 export const OFFICIAL_TOURNAMENT_SOURCES: TournamentSource[] = [
   { gameId: 'bgmi', gameName: 'BGMI', url: 'https://esports.battlegroundsmobileindia.com/', sourceName: 'KRAFTON India Esports', note: 'BMSD is live 22 Sep–18 Oct; BMIC is announced for 30 Oct–1 Nov. Checked 13 Oct 2026; no newer official schedule detail was listed.', checkedAt: '2026-10-13' },
-  { gameId: 'pubg', gameName: 'PUBG Mobile', url: 'https://esports.pubgmobile.kr/en/events', sourceName: 'PUBG MOBILE Esports Korea', note: 'PMPS Season 2 began 3 Oct; circuit resumes 9 Oct and Finals are 17–18 Oct. Checked 13 Oct 2026; no newer official schedule detail was listed.', checkedAt: '2026-10-13' },
+  { gameId: 'pubg', gameName: 'PUBG Mobile', url: 'https://pubgesportsqualifiers.com/tournament', sourceName: 'KRAFTON PUBG MOBILE Esports', note: 'Worldwide official directory. It lists PMGC 2026 for 1 Nov–15 Dec with a $3 million pool; venue, stages and full field have not been published there. Regional PMPS leagues use separate pages.', checkedAt: '2026-10-14' },
   { gameId: 'freefire', gameName: 'Free Fire', url: 'https://ff.garena.com/en/article/1605/', sourceName: 'Garena Free Fire', note: 'Official 2026 roadmap confirms FFWS Global Finals from 6 Nov in Bangkok; daily schedule pending. Checked 13 Oct 2026; no newer official schedule detail was listed.', checkedAt: '2026-10-13' },
   { gameId: 'valorant', gameName: 'VALORANT', url: 'https://valorantesports.com/en-US/news/eyntk-gc-americas-lcq-2026', sourceName: 'Riot Games VALORANT Esports', note: 'Checked 13 Oct 2026: Champions playoffs start 7 Oct; Game Changers Americas LCQ runs 14–15 Oct in São Paulo, ahead of the Championship on 22 Oct–1 Nov.', checkedAt: '2026-10-13' },
   { gameId: 'cod', gameName: 'Call of Duty', url: 'https://www.callofdutyleague.com/en-us/schedule?stage=entire-season', sourceName: 'Call of Duty League', note: 'The 2026 CDL season and Championship ended 19 Jul. COD Mobile and Warzone have separate schedules; no common series assumed. Checked 13 Oct 2026; no newer official schedule detail was listed.', checkedAt: '2026-10-13' },
@@ -676,7 +840,7 @@ export const OFFICIAL_TOURNAMENT_SOURCES: TournamentSource[] = [
   { gameId: 'overwatch', gameName: 'Overwatch 2', url: 'https://ga.overwatch.blizzard.com/en-us/news/24246297/owcs-2026-season-competitive-details/', sourceName: 'Blizzard Overwatch Esports', note: 'OWCS Stage 3 regular season starts 10 Oct; playoffs are scheduled for 30 Oct–1 Nov. Checked 13 Oct 2026; no newer official schedule detail was listed.', checkedAt: '2026-10-13' },
   { gameId: 'rainbow_six', gameName: 'Rainbow Six Siege', url: 'https://www.ubisoft.com/en-us/esports/rainbow-six/siege', sourceName: 'Ubisoft R6 Esports', note: 'BLAST R6 Major Osaka is scheduled for 7–15 Nov. Checked 13 Oct 2026; no newer official schedule detail was listed.', checkedAt: '2026-10-13' },
   { gameId: 'destiny2', gameName: 'Destiny 2', url: 'https://help.bungie.net/hc/en-us/articles/360049199711-Destiny-and-Destiny-2-Competition-License', sourceName: 'Bungie Help', note: 'Bungie provides a license for community-run tournaments; no Bungie-run 2026 esports circuit was found in the official source checked. Checked 13 Oct 2026; no newer official schedule detail was listed.', checkedAt: '2026-10-13' },
-  { gameId: 'ea_fc', gameName: 'EA Sports FC', url: 'https://www.ea.com/games/ea-sports-fc/fc-pro/news/fc-pro-27-deep-dive', sourceName: 'EA SPORTS FC Pro', note: 'Open Ladder closed 3 Oct; Regional Qualifiers are 10–11 Oct, with the Global Qualifier 5–7 Nov. Checked 13 Oct 2026; no newer official schedule detail was listed.', checkedAt: '2026-10-13' },
+  { gameId: 'ea_fc', gameName: 'EA Sports FC', url: 'https://www.ea.com/games/ea-sports-fc/fc-pro/news/fc-pro-open-global-qualifier', sourceName: 'EA SPORTS FC Pro', note: 'The event-specific announcement supersedes the older season overview: Global Qualifier is 6–7 Nov in London. FC Pro is one EA circuit; publisher-run console tournaments may have separate schedules.', checkedAt: '2026-10-14' },
   { gameId: 'mobile_legends', gameName: 'Mobile Legends: Bang Bang', url: 'https://en.moonton.com/news/377.html', sourceName: 'MOONTON Games', note: 'MPL Philippines S18 playoffs are 21–25 Oct in Pasig; other regions have separate dates. Checked 13 Oct 2026; no newer official schedule detail was listed.', checkedAt: '2026-10-13' },
   { gameId: 'honor_of_kings', gameName: 'Honor of Kings', url: 'https://oca.asia/news/7711-oca-announces-nocs-for-asian-games-esports-competition.html', sourceName: 'Olympic Council of Asia', note: 'Asian Games esports event including Honor of Kings runs through 2 Oct. Checked 13 Oct 2026; no newer official schedule detail was listed.', checkedAt: '2026-10-13' },
   { gameId: 'brawl_stars', gameName: 'Brawl Stars', url: 'https://event.supercell.com/brawlstars/en/', sourceName: 'Supercell Brawl Stars Esports', note: 'Checked 13 Oct 2026: official hub lists broadcast days 17–18 Oct; World Finals are 20–22 Nov in Tokyo. The live hub supplies current match and stream details.', checkedAt: '2026-10-13' },
@@ -689,6 +853,12 @@ export const OFFICIAL_TOURNAMENT_SOURCES: TournamentSource[] = [
   { gameId: 'marvel_rivals', gameName: 'Marvel Rivals', url: 'https://www.marvelrivalsesports.com/20260908/42828_1313342.html', sourceName: 'Marvel Rivals Ignite', note: 'Stage 2 playoffs run 8–18 Oct; 12 teams advance to late-November Grand Finals. Checked 13 Oct 2026.', checkedAt: '2026-10-13' },
   { gameId: 'arena_of_valor', gameName: 'Arena of Valor', url: 'https://lienquan.garena.vn/tag/dau-truong-danh-vong/', sourceName: 'Garena Liên Quân Mobile', note: 'Winter 2026 Grand Final is announced for 7 Nov at 10Fest, Hanoi; AIC 2026 is confirmed for year-end in Thailand, exact dates pending. Checked 13 Oct 2026.', checkedAt: '2026-10-13' },
   { gameId: 'teamfight_tactics', gameName: 'Teamfight Tactics', url: 'https://teamfighttactics.leagueoflegends.com/en-us/news/esports/', sourceName: 'Riot Games TFT Esports', note: 'Tactician’s Superbrawl is 6–8 Nov; the 1,024-player Vegas Open is 11–13 Dec. Checked 13 Oct 2026.', checkedAt: '2026-10-13' },
+  { gameId: 'pubg_battlegrounds', gameName: 'PUBG: BATTLEGROUNDS', url: 'https://pubgesports.com/en/news', sourceName: 'PUBG Esports / KRAFTON', note: 'Worldwide official circuit: regional series, PGS circuits, PNC, EWC and PGC. PGS Circuit 4 runs 14 Oct–1 Nov; PGC is 1–13 Dec in Istanbul. Checked 14 Oct 2026.', checkedAt: '2026-10-14' },
+  { gameId: 'dota2', gameName: 'Dota 2', url: 'https://www.dota2.com/international/overview', sourceName: 'Valve / Dota 2', note: 'Publisher source for The International and official results. Third-party events such as ESL, BLAST and tournament-organizer circuits are separate and should link to their own event pages. Checked 14 Oct 2026.', checkedAt: '2026-10-14' },
+  { gameId: 'ea_madden', gameName: 'Madden NFL', url: 'https://www.ea.com/games/madden-nfl/madden-nfl-27/news/mcs-27-announcement', sourceName: 'EA SPORTS Madden Championship Series', note: 'MCS 27 has an eight-player Pro League, three Open Qualifiers, LCQ and Madden Bowl; $750,000 is the season-wide prize total. Checked 14 Oct 2026.', checkedAt: '2026-10-14' },
+  { gameId: 'psn', gameName: 'PlayStation Tournaments (platform)', url: 'https://www.playstation.com/en-us/tournaments/', sourceName: 'PlayStation', note: 'Platform tournament listing for supported games (including sports and fighting titles). Events are game- and territory-specific; this is not one global league. Reference only; not used to auto-publish news.', checkedAt: '2026-10-14', syncEnabled: false },
+  { gameId: 'steam', gameName: 'Steam (platform)', url: 'https://store.steampowered.com/tourney/limited_license', sourceName: 'Valve / Steam tournament license', note: 'Policy page, not an event calendar. Steam hosts many games; each game publisher or independent organizer maintains its own competition schedule. Reference only; not used to auto-publish news.', checkedAt: '2026-10-14', syncEnabled: false },
+  { gameId: 'xbox', gameName: 'Xbox (platform)', url: 'https://www.xbox.com/en-US/community/esports', sourceName: 'Xbox Esports', note: 'Platform esports overview includes title-specific circuits such as Halo Championship Series and Forza Racing Championship. Follow each game’s organizer for event dates. Reference only; not used to auto-publish news.', checkedAt: '2026-10-14', syncEnabled: false },
 ];
 
 export function getTournamentGameName(gameId: string): string {
@@ -697,9 +867,12 @@ export function getTournamentGameName(gameId: string): string {
 
 export function statusForEvent(event: Pick<TournamentEvent, 'startDate' | 'endDate' | 'status'>, now = new Date()): TournamentStatus {
   if (event.status === 'cancelled' || event.status === 'draft') return event.status;
-  if (!event.startDate) return event.status;
+  // A stored "live" value is not enough to claim an event is still in progress.
+  // When dates are unknown, preserve an explicit completed state and otherwise
+  // avoid showing a stale live badge.
+  if (!event.startDate) return event.status === 'completed' ? 'completed' : 'upcoming';
   const start = new Date(`${event.startDate}T00:00:00Z`).getTime();
-  const end = new Date(`${event.endDate || event.startDate}T23:59:59Z`).getTime();
+  const end = new Date(`${event.endDate || event.startDate}T23:59:59.999Z`).getTime();
   const timestamp = now.getTime();
   if (timestamp < start) return 'upcoming';
   if (timestamp <= end) return 'live';
@@ -1256,20 +1429,20 @@ export const GAME_NEWS_PAGES: GameNewsPage[] = [
     description: 'EA SPORTS FC 27 launch guide: Ones to Watch Season 1 pass runs through October 22, player item upgrades, Ultimate Team and FC Pro details.',
     heading: 'EA SPORTS FC 27 News: Season 1 and FC Pro',
     intro: 'EA SPORTS FC 27 launched in September, and Football Ultimate Team Season 1 is active through 22 October. This page separates Ultimate Team’s player-facing campaign from the FC Pro esports ladder and the new Grounds/Clubs modes.',
-    updateHeading: 'Season 1: Ones to Watch runs through 22 October', updateDate: '13 October 2026',
+    updateHeading: 'Season 1: Ones to Watch runs through 22 October', updateDate: '14 October 2026',
     update: [
       'EA’s launch update sets Season 1: Ones to Watch for 17 September–22 October. The campaign links Ones to Watch, Destined for Glory and Future Stars; eligible Ones to Watch items can receive upgrades for Team of the Week, Star Performer or Player of the Month recognition, plus a club-results boost described in EA’s rules.',
       'EA’s 30 September Gameplay Developer Launch Update and 29 September Career Mode update are the newest title-specific news posts. The Grounds, including Clubs, is available only on PlayStation 5, Xbox Series X|S, PC and Nintendo Switch 2 according to EA’s platform note; older consoles do not get that mode.',
-      "Checked 13 October 2026: the FC Pro 27 Open Ladder ended on 3 October. Its next listed step is the Open Global Qualifier on 5–7 November. FUT Season 1: Ones to Watch remains scheduled through 22 October; check Ultimate Team for shorter objective/SBC timers."
+      "Checked 14 October 2026: the FC Pro 27 Open Ladder ended on 3 October. EA’s newer event announcement schedules the Open Global Qualifier for 6–7 November. FUT Season 1: Ones to Watch remains scheduled through 22 October; check Ultimate Team for shorter objective/SBC timers."
     ],
-    detailSections: [{"title":"EA SPORTS FC 27 — Season 1 and FC Pro tracker","description":"Ultimate Team’s season and FC Pro are different systems. This table distinguishes player-content deadlines from professional qualification.","columns":["Area","Current verified detail"],"rows":[["FUT Season 1","Ones to Watch: 17 September–22 October"],["Latest game updates","Gameplay Developer Launch Update: 30 September; Career Mode update: 29 September"],["FC Pro Open Ladder","21 September–3 October; complete"],["Next FC Pro step","Open Global Qualifier: 5–7 November"],["Team / player standings","Use the official FC Pro leaderboard and event bracket"],["Player content","Check in-game SBC/objective deadlines; they can end before the season"]],"sourceUrl":"https://www.ea.com/games/ea-sports-fc/fc-pro/news/fc-pro-27-deep-dive"},{"title":"FC Pro 27 — prize money, rewards and player pathway","description":"EA’s FC Pro Deep Dive provides a complete season prize outline. FC Pro is primarily individual competition, so it has player standings rather than standard team rosters.","columns":["Event / reward","Official detail"],"rows":[["Full FC Pro 27 prize pool","US$2,500,000"],["FC Pro World Championship","US$1,000,000; winner receives US$250,000"],["FC Pro Open","US$533,000; winner receives US$100,000"],["Global Qualifier","US$152,000"],["Open Cups","US$315,000 total"],["Open Ladder reward","Top 1–500 per region receive an in-game reward"],["Pathway","1,376 advance to regional qualifiers; 52 plus 12 invitees reach global qualifier; 16 reach FC Pro Open"],["Live rankings","Official FC Pro World Rankings / event bracket"]],"sourceUrl":"https://www.ea.com/games/ea-sports-fc/fc-pro/news/fc-pro-27-deep-dive"}],
+    detailSections: [{"title":"EA SPORTS FC 27 — Season 1 and FC Pro tracker","description":"Ultimate Team’s season and FC Pro are different systems. This table distinguishes player-content deadlines from professional qualification.","columns":["Area","Current verified detail"],"rows":[["FUT Season 1","Ones to Watch: 17 September–22 October"],["Latest game updates","Gameplay Developer Launch Update: 30 September; Career Mode update: 29 September"],["FC Pro Open Ladder","21 September–3 October; complete"],["Next FC Pro step","Open Global Qualifier: 6–7 November (newer event-specific announcement)"],["Team / player standings","Use the official FC Pro leaderboard and event bracket"],["Player content","Check in-game SBC/objective deadlines; they can end before the season"]],"sourceUrl":"https://www.ea.com/games/ea-sports-fc/fc-pro/news/fc-pro-open-global-qualifier"},{"title":"FC Pro 27 — prize money, rewards and player pathway","description":"EA’s FC Pro Deep Dive provides a complete season prize outline. FC Pro is primarily individual competition, so it has player standings rather than standard team rosters.","columns":["Event / reward","Official detail"],"rows":[["Full FC Pro 27 prize pool","US$2,500,000"],["FC Pro World Championship","US$1,000,000; winner receives US$250,000"],["FC Pro Open","US$533,000; winner receives US$100,000"],["Global Qualifier","US$152,000"],["Open Cups","US$315,000 total"],["Open Ladder reward","Top 1–500 per region receive an in-game reward"],["Pathway","1,376 advance to regional qualifiers; 52 plus 12 invitees reach global qualifier; 16 reach FC Pro Open"],["Live rankings","Official FC Pro World Rankings / event bracket"]],"sourceUrl":"https://www.ea.com/games/ea-sports-fc/fc-pro/news/fc-pro-27-deep-dive"}],
     playerFocusHeading: 'Ultimate Team Season Pass and supported modes',
     playerFocus: [
       'Check the Season 1 pass page in Ultimate Team for tier progress and the current campaign end date. EA’s launch notice gives the season window; individual SBC, objective and live-event windows can close earlier.',
       'Platform availability matters: The Grounds and Clubs are limited to current-generation/PC/Switch 2 platforms per EA’s disclaimer. Confirm edition-specific items and point grants through EA’s account and offer terms.',
     ],
     competitionHeading: 'FC Pro 27 competitive pathway',
-    competition: ['The FC Pro 27 Open Ladder runs 21 Sep–3 Oct across ten online regions; Regional Qualifiers are scheduled for 5–7 November.', 'The $2.5 million figure announced by EA applies to the full season pool, not to the Open Ladder alone. Registration and qualification rules differ by region.'],
+    competition: ['The FC Pro 27 Open Ladder ran 21 Sep–3 Oct across ten online regions; EA’s event-specific announcement schedules the Global Qualifier for 6–7 November in London.', 'The $2.5 million figure announced by EA applies to the full season pool, not to the Open Ladder alone. Registration and qualification rules differ by region.'],
     sources: [
       { name: 'EA — FC 27 launch update and Season 1', url: 'https://www.ea.com/games/ea-sports-fc/fc-27/news/pitch-notes-fc27-launch-update' },
       { name: 'EA — FC 27 latest news and developer updates', url: 'https://www.ea.com/games/ea-sports-fc/fc-27/news' },

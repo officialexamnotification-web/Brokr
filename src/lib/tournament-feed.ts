@@ -5,7 +5,12 @@ export function getTournamentEvents(): TournamentEvent[] {
 }
 
 export function getTournamentNews(): TournamentNews[] {
-  return [...TOURNAMENT_NEWS].sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime());
+  return TOURNAMENT_NEWS
+    .map((article) => {
+      const linkedEvent = article.eventId ? TOURNAMENT_EVENTS.find((event) => event.id === article.eventId) : undefined;
+      return linkedEvent ? { ...article, status: statusForEvent(linkedEvent) } : article;
+    })
+    .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime());
 }
 
 export function filterTournamentEvents(filters: { gameId?: string; status?: TournamentStatus; query?: string } = {}) {
