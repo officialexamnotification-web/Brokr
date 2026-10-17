@@ -40,6 +40,17 @@ export const GameSeoSection: React.FC<GameSeoSectionProps> = ({ game, seo, isHom
         </div>
       )}
 
+      {!isHome && seo.guide && (
+        <section className="rounded-xl border border-slate-800 bg-[#050811] p-4 sm:p-5" aria-labelledby="game-naming-guide">
+          <h2 id="game-naming-guide" className="text-base font-bold text-white">{seo.guide.heading}</h2>
+          <p className="mt-2 max-w-4xl text-sm leading-6 text-slate-300">{seo.guide.intro}</p>
+          <ul className="mt-4 grid gap-2 sm:grid-cols-3">
+            {seo.guide.directions.map((direction) => <li key={direction} className="rounded-lg border border-slate-800 bg-[#080d1a] p-3 text-xs leading-5 text-slate-300">{direction}</li>)}
+          </ul>
+          <p className="mt-3 rounded-lg border border-amber-500/20 bg-amber-500/5 p-3 text-xs leading-5 text-amber-100/90"><strong className="text-amber-300">Naming tip:</strong> {seo.guide.tip}</p>
+        </section>
+      )}
+
       <div className="grid gap-3 lg:grid-cols-3">
         {seo.faqs.map((faq) => (
           <article key={faq.question} className="rounded-xl border border-slate-800/90 bg-[#050811] p-4">
