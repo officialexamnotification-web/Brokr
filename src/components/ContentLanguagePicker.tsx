@@ -59,6 +59,20 @@ export function ContentLanguagePicker({ onLanguageChange }: { onLanguageChange?:
   };
 
   useEffect(() => {
+    const syncFromHeader = (event: Event) => {
+      const next = (event as CustomEvent<string>).detail;
+      if (!NAME_LANGUAGES.some((item) => item.id === next)) return;
+      setLanguage(next);
+      try { localStorage.setItem(STORAGE_KEY, next); } catch { /* private browsing */ }
+      try { localStorage.setItem(CONTENT_PROMPT_KEY, 'true'); } catch { /* private browsing */ }
+      setShowPrompt(false);
+      window.setTimeout(() => applyPageLanguage(next, true), 250);
+    };
+    window.addEventListener('tradivex:content-language', syncFromHeader);
+    return () => window.removeEventListener('tradivex:content-language', syncFromHeader);
+  }, []);
+
+  useEffect(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
       if (saved && NAME_LANGUAGES.some((item) => item.id === saved)) setLanguage(saved);

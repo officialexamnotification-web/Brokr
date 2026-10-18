@@ -63,6 +63,11 @@ function getYouTubeEmbedUrl(value?: string) {
   }
 }
 
+function getTournamentVideoSearchUrl(event: TournamentEvent) {
+  const query = `${event.name} ${event.gameName} tournament broadcast`;
+  return `https://www.youtube.com/results?search_query=${encodeURIComponent(query)}`;
+}
+
 const OFFICIAL_YOUTUBE_CHANNELS: Record<string, TournamentStream> = {
   'bgmi-bmsd-2026': { name: 'KRAFTON INDIA ESPORTS', url: 'https://www.youtube.com/@kraftonindiaesports', language: 'India', note: 'KRAFTON India’s verified esports channel; event broadcasts and replays are published here.' },
   'bgmi-bmic-2026': { name: 'KRAFTON INDIA ESPORTS', url: 'https://www.youtube.com/@kraftonindiaesports', language: 'India', note: 'KRAFTON India’s verified esports channel; event broadcasts and replays are published here.' },
@@ -223,9 +228,12 @@ function BroadcastSection({ event }: { event: TournamentEvent }) {
       {!videoEmbedUrl && (
         <div className="mt-4 rounded-xl border border-amber-400/20 bg-amber-500/5 p-4">
           <p className="text-xs font-bold text-amber-200">No verified event-specific video is embedded on this page.</p>
-          <p className="mt-1 text-xs leading-5 text-slate-400">Use the tournament broadcaster or official channel below to open its scheduled stream or archived VOD. The page does not guess a video URL.</p>
+          <p className="mt-1 text-xs leading-5 text-slate-400">Use the event-specific YouTube search below or the tournament broadcaster’s channel to find its stream or archived VOD. The page does not guess a video URL.</p>
         </div>
       )}
+      <a href={getTournamentVideoSearchUrl(event)} target="_blank" rel="noreferrer" className="mt-3 inline-flex items-center gap-2 rounded-xl border border-red-400/30 bg-red-500/10 px-4 py-3 text-sm font-bold text-red-100 transition hover:border-red-300 hover:bg-red-500/20" aria-label={`Find ${event.name} videos on YouTube`}>
+        <Video className="h-4 w-4" /> Find {event.name} videos on YouTube <ExternalLink className="h-3.5 w-3.5" />
+      </a>
       <div className="mt-4 grid gap-3 sm:grid-cols-2">
         {eventChannel && (
           <a href={eventChannel.url} target="_blank" rel="noreferrer" className="group rounded-xl border border-red-400/20 bg-[#080d1a] p-4 transition hover:border-red-400/50">

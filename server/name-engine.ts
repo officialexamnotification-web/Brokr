@@ -9,7 +9,16 @@ export type LanguageId =
   | "french"
   | "arabic"
   | "arabic_latin"
-  | "bengali";
+  | "bengali"
+  | "japanese"
+  | "korean"
+  | "chinese_simplified"
+  | "chinese_traditional"
+  | "vietnamese"
+  | "thai"
+  | "russian"
+  | "filipino"
+  | "malay";
 
 export type NameStyle = "aggressive" | "pro" | "aesthetic" | "mythic" | "stealth" | "funny";
 
@@ -292,6 +301,15 @@ export const LANGUAGES: LanguageOption[] = [
   { id: "arabic", label: "Arabic", description: "Native Arabic words in Arabic script" },
   { id: "arabic_latin", label: "Arabic Latin", description: "Readable Arabic transliteration for game IDs" },
   { id: "bengali", label: "Bengali", description: "Native Bengali words in Bengali script" },
+  { id: "japanese", label: "Japanese", description: "Japanese gamer words in Japanese script" },
+  { id: "korean", label: "Korean", description: "Korean gamer words in Hangul" },
+  { id: "chinese_simplified", label: "Chinese (Simplified)", description: "Simplified Chinese gamer words" },
+  { id: "chinese_traditional", label: "Chinese (Traditional)", description: "Traditional Chinese gamer words" },
+  { id: "vietnamese", label: "Vietnamese", description: "Vietnamese gamer vocabulary" },
+  { id: "thai", label: "Thai", description: "Thai gamer vocabulary" },
+  { id: "russian", label: "Russian", description: "Russian gamer words in Cyrillic" },
+  { id: "filipino", label: "Filipino", description: "Filipino gamer vocabulary" },
+  { id: "malay", label: "Malay", description: "Malay gamer vocabulary" },
 ];
 
 export const DECORATIONS: DecorationPreset[] = [
@@ -321,6 +339,15 @@ const WORDS: Record<LanguageId, string[]> = {
   arabic: ["صقر", "أسد", "ملك", "ليل", "نار", "روح", "قمر", "فارس", "جبار", "زعيم"],
   arabic_latin: ["Saqr", "Asad", "Malik", "Layl", "Nar", "Ruh", "Qamar", "Fares", "Jabbar", "Zaeem"],
   bengali: ["বাঘ", "রাজা", "ঝড়", "আগুন", "ছায়া", "বীর", "নাগ", "বজ্র", "শিকারি", "সম্রাট"],
+  japanese: ["影", "龍", "星", "炎", "風", "雷", "狼", "夜", "侍", "光"],
+  korean: ["그림자", "용", "별", "불꽃", "바람", "천둥", "늑대", "밤", "전사", "빛"],
+  chinese_simplified: ["影", "龙", "星", "炎", "风", "雷", "狼", "夜", "武士", "光"],
+  chinese_traditional: ["影", "龍", "星", "炎", "風", "雷", "狼", "夜", "武士", "光"],
+  vietnamese: ["Bóng", "Rồng", "Sao", "Lửa", "Gió", "Sấm", "Sói", "Đêm", "Thép", "Ánh"],
+  thai: ["เงา", "มังกร", "ดาว", "ไฟ", "ลม", "สายฟ้า", "หมาป่า", "ราตรี", "นักรบ", "แสง"],
+  russian: ["Тень", "Дракон", "Звезда", "Огонь", "Ветер", "Гром", "Волк", "Ночь", "Воин", "Свет"],
+  filipino: ["Anino", "Dragon", "Bituin", "Apoy", "Hangin", "Kidlat", "Lobo", "Gabi", "Mandirigma", "Liwanag"],
+  malay: ["Bayang", "Naga", "Bintang", "Api", "Angin", "Petir", "Serigala", "Malam", "Wira", "Cahaya"],
 };
 
 const ROLES = ["Ace", "Main", "One", "X", "OP", "YT", "MVP", "Prime", "Pro", "Zero"];
@@ -336,8 +363,17 @@ const LANGUAGE_ROLES: Record<LanguageId, string[]> = {
   arabic: ["بطل", "ملك", "واحد", "إكس", "محترف", "أسطورة", "نخبة", "برايم", "زعيم", "صفر"],
   arabic_latin: ["Ace", "Malik", "One", "X", "Pro", "MVP", "Elite", "Prime", "Zaeem", "Zero"],
   bengali: ["বীর", "রাজা", "এক", "এক্স", "প্রো", "এমভিপি", "সেরা", "প্রাইম", "নায়ক", "শূন্য"],
+  japanese: ["王", "神", "忍", "牙", "零", "将", "鬼", "覇", "剣", "皇"],
+  korean: ["왕", "신", "검", "제로", "장군", "전사", "영웅", "최강", "황제", "별"],
+  chinese_simplified: ["王", "神", "忍", "牙", "零", "将", "鬼", "霸", "剑", "皇"],
+  chinese_traditional: ["王", "神", "忍", "牙", "零", "將", "鬼", "霸", "劍", "皇"],
+  vietnamese: ["Vua", "Thần", "Pro", "Đỉnh", "MVP", "Huyền", "VôĐịch", "Chiến", "SốMột", "Zero"],
+  thai: ["ราชา", "เทพ", "โปร", "หนึ่ง", "นักรบ", "แชมป์", "ตำนาน", "ยอด", "ศูนย์", "เงา"],
+  russian: ["Царь", "Бог", "Про", "Ноль", "Титан", "Герой", "Мастер", "Легенда", "Лорд", "Тень"],
+  filipino: ["Hari", "Diyos", "Pro", "Una", "Mandirigma", "Alamat", "Kampeon", "Astig", "MVP", "Zero"],
+  malay: ["Raja", "Dewa", "Pro", "Juara", "Wira", "Legenda", "Sakti", "MVP", "Nol", "Utama"],
 };
-const NATIVE_OUTPUT_LANGUAGES = new Set<LanguageId>(["hindi", "spanish", "portuguese", "indonesian", "french", "arabic", "bengali"]);
+const NATIVE_OUTPUT_LANGUAGES = new Set<LanguageId>(["hindi", "spanish", "portuguese", "indonesian", "french", "arabic", "bengali", "japanese", "korean", "chinese_simplified", "chinese_traditional", "vietnamese", "thai", "russian", "filipino", "malay"]);
 const MEANINGS: Record<NameStyle, { vibe: string; meaning: string }> = {
   aggressive: { vibe: "Lethal", meaning: "Fast pressure, fearless finish" },
   pro: { vibe: "Esports", meaning: "Clean competitive team identity" },

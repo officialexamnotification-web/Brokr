@@ -88,6 +88,11 @@ export default function App() {
     }
   }, [language]);
 
+  const handleHeaderLanguageChange = (nextLanguage: string) => {
+    setLanguage(nextLanguage);
+    window.dispatchEvent(new CustomEvent('tradivex:content-language', { detail: nextLanguage }));
+  };
+
   useEffect(() => {
     const languageCodes: Record<string, string> = {
       global: 'en-US', english: 'en-US', hindi: 'hi', hinglish: 'en-IN', spanish: 'es',
@@ -230,7 +235,7 @@ export default function App() {
         onOpenRenameSimulator={() => handleOpenRenameCard(nameInput)}
         onHome={handleHome}
         language={language}
-        setLanguage={setLanguage}
+        setLanguage={handleHeaderLanguageChange}
       />
 
       {/* Main Container */}

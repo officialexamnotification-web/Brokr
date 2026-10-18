@@ -207,6 +207,8 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
       { name: 'Qualification field', dates: '22 Sep – 18 Oct 2026', format: '48 teams qualified through the KRAFTON India Esports leaderboard, BGIS and BMPS pathways.', status: 'Completed' },
       { name: 'LAN Grand Finals', dates: '16–18 Oct 2026', format: 'Sixteen qualified teams compete in Hyderabad. Final match-by-match results and champion are left pending until KRAFTON publishes a verified table.', status: 'Finals window', note: 'The linked organizer announcement confirms the venue dates and route into the final field; it does not include a live score table.' },
     ],
+    videoUrl: 'https://www.youtube.com/watch?v=-FksRuHMPeM',
+    videoTitle: '[HINDI] BMSD 2026 · Grand Finals · Day 3 · KRAFTON INDIA ESPORTS',
   },
   {
     id: 'bgmi-bmic-2026', slug: 'bgmi-bmic-2026', gameId: 'bgmi', gameName: 'BGMI',
@@ -319,6 +321,8 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
     participantsLabel: 'Qualified teams',
     participantsSourceUrl: 'https://valorantesports.com/en-GB/tournament/115576361459045501/overview',
     participantsSourceName: 'Riot Games VALORANT Esports',
+    videoUrl: 'https://www.youtube.com/watch?v=S4bpBlnnNMo',
+    videoTitle: 'Format Explained · VALORANT Champions Shanghai 2026 · VALORANT Champions Tour Vietnam',
   },
   {
     id: 'valorant-game-changers-americas-lcq-2026', slug: 'valorant-game-changers-americas-lcq-2026', gameId: 'valorant', gameName: 'VALORANT',
