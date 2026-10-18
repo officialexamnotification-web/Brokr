@@ -74,11 +74,17 @@ export interface TournamentEvent {
   format?: string;
   stages?: TournamentStage[];
   matches?: TournamentMatch[];
+  matchesNote?: string;
   streams?: TournamentStream[];
   /** Event-specific YouTube channel confirmed as the tournament's broadcaster. */
   broadcastChannel?: TournamentStream;
   broadcastTalents?: string[];
   standings?: TournamentStanding[];
+  standingsUpdatedAt?: string;
+  standingsSourceUrl?: string;
+  standingsSourceName?: string;
+  matchesSourceUrl?: string;
+  matchesSourceName?: string;
   results?: TournamentResult[];
   statistics?: TournamentStat[];
   videoUrl?: string;
@@ -125,39 +131,40 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
     id: 'mlbb-mtc-turkiye-s8-2026', slug: 'mlbb-mtc-turkiye-s8-2026', gameId: 'mobile_legends', gameName: 'MLBB',
     name: 'MTC Türkiye Championship Season 8', organizer: 'Moonton and ESA Esports',
     startDate: '2026-09-12', endDate: '2026-11-07', dateLabel: '12 Sep – 7 Nov 2026',
-    region: 'Türkiye', location: 'Istanbul, Türkiye', prizePool: '₺1,750,000 TRY (about US$35,344)', teams: 8,
-    format: 'Online regular season followed by an offline playoff stage; all regular-season matches are best-of-three', status: 'live',
-    sourceUrl: 'https://liquipedia.net/mobilelegends/MTC_Turkiye_Championship/Season_8', sourceName: 'Liquipedia tournament record', updatedAt: '2026-10-18',
-    summary: 'The eighth MTC Türkiye season has eight teams in a double round robin. The latest published table has Aurora Gaming first on 32 points, with FUT Esports and Bushido Wildcats next; the top six advance to the 24 October–7 November playoffs.',
+    region: 'Türkiye', location: 'Online regular season; Istanbul, Türkiye playoffs', prizePool: 'US$40,000', teams: 8,
+    format: 'Online double round-robin regular season; double-elimination playoffs. Regular-season series are best-of-three.', status: 'live',
+    sourceUrl: 'https://en.moonton.com/news/374.html', sourceName: 'MOONTON Games · official season announcement', updatedAt: '2026-10-18',
+    summary: 'MOONTON confirms eight teams in the 12 September–18 October regular season, with the top six advancing to playoffs and the Grand Final set for 7 November. The official announcement describes the season prize pool as US$40,000. The latest standings snapshot available here is after Week 6 Day 1 (17 October); the 18 October match-day results are not included until they are confirmed in the results source.',
     participants: ['Aurora Gaming', 'FUT Esports', 'Dark Passage', 'DIA Ozarox', 'Bushido Wildcats', 'PCIFIC Esports', 'Boostgate Esports', 'IDA Esports'],
     participantsLabel: 'Participating teams',
     participantsNote: 'Six teams advance from the regular season to playoffs. Team names and qualification routes are taken from the linked tournament record; player rosters can change during the season.',
     participantsSourceUrl: 'https://liquipedia.net/mobilelegends/MTC_Turkiye_Championship/Season_8',
-    participantsSourceName: 'Liquipedia tournament record',
+    participantsSourceName: 'Liquipedia tournament record · team list and match data',
     stages: [
-      { name: 'Regular Season', dates: '12 Sep – 18 Oct 2026', format: 'Double round robin · all matches Bo3', status: 'Latest table checked 18 Oct', note: '2-0 win = 3 points; 2-1 win = 2; 1-2 loss = 1; 0-2 loss = 0. Top six advance. Week 6 match results remain subject to the organiser’s live results update.' },
-      { name: 'Playoffs', dates: '24 Oct – 7 Nov 2026', format: 'Double elimination', status: 'Upcoming', note: 'Champion qualifies for M8 World Championship; runner-up qualifies for the M8 Wildcard.' },
+      { name: 'Regular Season', dates: '12 Sep – 18 Oct 2026', format: 'Eight teams · double round robin · best-of-three matches', status: 'Final match week', note: 'Top six qualify for the playoffs. The league’s listed scoring awards 3 points for a 2–0 win, 2 for a 2–1 win, 1 for a 1–2 loss and 0 for a 0–2 loss.' },
+      { name: 'Playoffs', dates: '24 Oct – 7 Nov 2026', format: 'Six-team double-elimination playoff; offline stage in Istanbul', status: 'Upcoming', note: 'MOONTON confirms the Grand Final on 7 November. The champion qualifies for M8; the runner-up advances to the M8 Wildcard.' },
     ],
     broadcastChannel: { name: 'Mobile Legends: Bang Bang Türkiye', url: 'https://www.youtube.com/@mobilelegendstr', language: 'Turkish', note: 'The tournament’s Turkish broadcast channel; the linked event stream is the MTC Season 8 broadcast.' },
     broadcastTalents: ['Gtrst', 'Jhonnie', 'Mehitra', 'Murano'],
     videoUrl: 'https://www.youtube.com/watch?v=4aY4YlWjj4o',
     videoTitle: 'Official MTC Season 8 · League Stage · Week 6 Day 2 broadcast',
+    standingsUpdatedAt: '2026-10-17',
+    standingsSourceUrl: 'https://liquipedia.net/mobilelegends/MTC_Turkiye_Championship/Season_8',
+    standingsSourceName: 'Liquipedia · community-maintained event record',
+    matchesSourceUrl: 'https://liquipedia.net/mobilelegends/MTC_Turkiye_Championship/Season_8',
+    matchesSourceName: 'Liquipedia · community-maintained event record',
     standings: [
-      { rank: 1, team: 'Aurora Gaming', matchRecord: '11–1', gameRecord: '23–4', gameDiff: '+19', points: 32, qualification: 'Playoffs' },
-      { rank: 2, team: 'FUT Esports', matchRecord: '10–2', gameRecord: '21–6', gameDiff: '+15', points: 29, qualification: 'Playoffs' },
-      { rank: 3, team: 'Bushido Wildcats', matchRecord: '10–2', gameRecord: '21–7', gameDiff: '+14', points: 28, qualification: 'Playoffs' },
-      { rank: 4, team: 'DIA Ozarox', matchRecord: '7–5', gameRecord: '15–14', gameDiff: '+1', points: 18, qualification: 'Playoffs' },
-      { rank: 5, team: 'PCIFIC Esports', matchRecord: '4–8', gameRecord: '11–18', gameDiff: '−7', points: 13, qualification: 'Playoffs' },
-      { rank: 6, team: 'Boostgate Esports', matchRecord: '3–9', gameRecord: '10–20', gameDiff: '−10', points: 11, qualification: 'Playoffs' },
-      { rank: 7, team: 'IDA Esports', matchRecord: '2–10', gameRecord: '8–22', gameDiff: '−14', points: 8, qualification: 'Outside top six' },
-      { rank: 8, team: 'Dark Passage', matchRecord: '1–11', gameRecord: '4–22', gameDiff: '−18', points: 5, qualification: 'Outside top six' },
+      { rank: 1, team: 'Aurora Gaming', matchRecord: '3–0', gameRecord: '6–1', gameDiff: '+5', points: 8, qualification: 'Top six · Week 6 Day 1 snapshot' },
+      { rank: 2, team: 'Bushido Wildcats', matchRecord: '3–0', gameRecord: '6–2', gameDiff: '+4', points: 7, qualification: 'Top six · Week 6 Day 1 snapshot' },
+      { rank: 3, team: 'FUT Esports', matchRecord: '2–1', gameRecord: '5–2', gameDiff: '+3', points: 7, qualification: 'Top six · Week 6 Day 1 snapshot' },
+      { rank: 4, team: 'DIA Ozarox', matchRecord: '2–0', gameRecord: '4–1', gameDiff: '+3', points: 5, qualification: 'Top six · Week 6 Day 1 snapshot' },
+      { rank: 5, team: 'Boostgate Esports', matchRecord: '0–2', gameRecord: '2–4', gameDiff: '−2', points: 2, qualification: 'Top six · Week 6 Day 1 snapshot' },
+      { rank: 6, team: 'PCIFIC Esports', matchRecord: '0–2', gameRecord: '1–4', gameDiff: '−3', points: 1, qualification: 'Top six · Week 6 Day 1 snapshot' },
+      { rank: 7, team: 'IDA Esports', matchRecord: '0–2', gameRecord: '0–4', gameDiff: '−4', points: 0, qualification: 'Week 6 Day 1 snapshot' },
+      { rank: 8, team: 'Dark Passage', matchRecord: '0–3', gameRecord: '0–6', gameDiff: '−6', points: 0, qualification: 'Week 6 Day 1 snapshot' },
     ],
     statistics: [
-      { label: 'Games recorded', value: '113', note: 'Regular-season statistics in the checked tournament record' },
-      { label: 'Most picked hero', value: 'Hirara · 62 picks', note: '53.23% win rate' },
-      { label: 'Highest pick/ban presence', value: 'Hirara · 97.35%', note: '110 total picks and bans' },
-      { label: 'Shortest game', value: '9:59', note: 'Aurora Gaming over Dark Passage · 12 Sep' },
-      { label: 'Longest game', value: '27:29', note: 'PCIFIC Esports vs DIA Ozarox · 26 Sep' },
+      { label: 'Standings snapshot', value: 'Week 6 · Day 1', note: '17 Oct 2026; Week 6 Day 2 results are not included in this snapshot.' },
     ],
     matches: [
       { date: '12 Sep 2026', stage: 'Regular Season · Week 1', left: 'Aurora Gaming', right: 'PCIFIC Esports', status: 'completed', result: '2–1' },
@@ -171,15 +178,16 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
       { date: '4 Oct 2026', stage: 'Regular Season · Week 4', left: 'Aurora Gaming', right: 'IDA Esports', status: 'completed', result: '2–0' },
       { date: '10 Oct 2026', stage: 'Regular Season · Week 5', left: 'Aurora Gaming', right: 'DIA Ozarox', status: 'completed', result: '1–2' },
       { date: '11 Oct 2026', stage: 'Regular Season · Week 5', left: 'Aurora Gaming', right: 'Boostgate Esports', status: 'completed', result: '2–0' },
-      { date: '17 Oct 2026', stage: 'Regular Season · Week 6', left: 'Aurora Gaming', right: 'Bushido Wildcats', status: 'scheduled', result: 'Awaiting published result' },
-      { date: '17 Oct 2026', stage: 'Regular Season · Week 6', left: 'IDA Esports', right: 'Dark Passage', status: 'scheduled', result: 'Awaiting published result' },
-      { date: '17 Oct 2026', stage: 'Regular Season · Week 6', left: 'DIA Ozarox', right: 'PCIFIC Esports', status: 'scheduled', result: 'Awaiting published result' },
-      { date: '17 Oct 2026', stage: 'Regular Season · Week 6', left: 'Boostgate Esports', right: 'FUT Esports', status: 'scheduled', result: 'Awaiting published result' },
+      { date: '17 Oct 2026', stage: 'Regular Season · Week 6', left: 'Aurora Gaming', right: 'Bushido Wildcats', status: 'completed', result: 'Official result not added to this record' },
+      { date: '17 Oct 2026', stage: 'Regular Season · Week 6', left: 'IDA Esports', right: 'Dark Passage', status: 'completed', result: 'Official result not added to this record' },
+      { date: '17 Oct 2026', stage: 'Regular Season · Week 6', left: 'DIA Ozarox', right: 'PCIFIC Esports', status: 'completed', result: 'Official result not added to this record' },
+      { date: '17 Oct 2026', stage: 'Regular Season · Week 6', left: 'Boostgate Esports', right: 'FUT Esports', status: 'completed', result: 'Official result not added to this record' },
       { date: '18 Oct 2026', stage: 'Regular Season · Week 6', left: 'PCIFIC Esports', right: 'IDA Esports', status: 'scheduled', result: 'Awaiting published result' },
       { date: '18 Oct 2026', stage: 'Regular Season · Week 6', left: 'Dark Passage', right: 'Boostgate Esports', status: 'scheduled', result: 'Awaiting published result' },
       { date: '18 Oct 2026', stage: 'Regular Season · Week 6', left: 'FUT Esports', right: 'Aurora Gaming', status: 'scheduled', result: 'Awaiting published result' },
       { date: '18 Oct 2026', stage: 'Regular Season · Week 6', left: 'Bushido Wildcats', right: 'DIA Ozarox', status: 'scheduled', result: 'Awaiting published result' },
     ],
+    matchesNote: 'This record includes Aurora Gaming matches and the remaining Week 6 fixtures, not the full season match history. Check the linked tournament record for the complete bracket and any newer results.',
   },
   {
     id: 'bgmi-bmsd-2026', slug: 'bgmi-bmsd-2026', gameId: 'bgmi', gameName: 'BGMI',
@@ -195,6 +203,10 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
     participantsNote: 'These are the 16 teams reported as qualified for the LAN Grand Finals from the 48-team event field.',
     participantsSourceUrl: 'https://www.talkesport.com/news/bmsd-2026-grand-finals-semi-finals-and-survival-stage-teams-confirmed/',
     participantsSourceName: 'TalkEsport; roster names cross-checked against tournament coverage',
+    stages: [
+      { name: 'Qualification field', dates: '22 Sep – 18 Oct 2026', format: '48 teams qualified through the KRAFTON India Esports leaderboard, BGIS and BMPS pathways.', status: 'Completed' },
+      { name: 'LAN Grand Finals', dates: '16–18 Oct 2026', format: 'Sixteen qualified teams compete in Hyderabad. Final match-by-match results and champion are left pending until KRAFTON publishes a verified table.', status: 'Finals window', note: 'The linked organizer announcement confirms the venue dates and route into the final field; it does not include a live score table.' },
+    ],
   },
   {
     id: 'bgmi-bmic-2026', slug: 'bgmi-bmic-2026', gameId: 'bgmi', gameName: 'BGMI',
@@ -211,13 +223,20 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
     id: 'pubgm-pmps-korea-s2-2026', slug: 'pubgm-pmps-korea-s2-2026', gameId: 'pubg', gameName: 'PUBG Mobile',
     name: 'PUBG MOBILE Pro Series Korea 2026 Season 2', organizer: 'PUBG MOBILE Esports Korea',
     startDate: '2026-10-03', endDate: '2026-10-18', dateLabel: '3–18 Oct 2026', region: 'South Korea', location: 'Daejeon Dream Arena',
-    prizePool: '₩40,000,000', teams: 16, format: 'Five circuit days followed by two Finals days; six matches per day', status: 'live',
+    prizePool: '₩40,000,000', teams: 16, format: 'Five circuit days followed by two Finals days; six matches per day', status: 'upcoming',
     sourceUrl: 'https://esports.pubgmobile.kr/en/news/208', sourceName: 'PUBG MOBILE Esports Korea', updatedAt: '2026-10-18',
     summary: 'The official notice schedules PMPS Korea Season 2 Finals for 17–18 October at 3 p.m. KST, with six matches per day. It confirms 16 teams, Daejeon Dream Arena and a ₩40 million prize pool. The champion qualifies for PMGC 2026; places 1–3 qualify for BMIC, subject to the duplicate-slot rule. The public schedule checked today does not expose a final standings table, so no final score or winner is claimed.',
     participants: ['5Hz', 'APEX', 'Chungnam CNJ esports', 'DAEJEON GAME PT', 'Dplus Kia', 'FN SEJONG', 'FOCUS', 'G.N. Revenant NOVA', 'GyeongBuk Ascenders', 'INCHEON WAVE', 'Jeonnam Esports', 'KIWOOM DRX', 'KX GAMING', 'NS RedForce', 'Re Mind', 'TEAM CG'],
     participantsLabel: 'Participating teams',
     participantsSourceUrl: 'https://esports.pubgmobile.kr/ko/events',
     participantsSourceName: 'PUBG MOBILE Esports Korea',
+    stages: [
+      { name: 'Circuit Stage · Days 1–5', dates: '3–4 and 9–11 Oct 2026', format: 'Six matches per day; daily standings reset. The top three teams each day earn benefit points for the Finals.', status: 'Completed' },
+      { name: 'Finals · Day 1', dates: '17 Oct 2026 · 15:00 KST', format: 'Six matches at Daejeon Esports Arena; benefit points carry into the Finals.', status: 'Live / results pending', note: 'The official schedule shows this day as live, but the organizer standings page did not return a published table when checked.' },
+      { name: 'Finals · Day 2', dates: '18 Oct 2026 · 15:00 KST', format: 'Six matches at Daejeon Esports Arena; combined Finals scoring determines champion and PMGC/BMIC qualification.', status: 'Scheduled', note: 'The checked organizer schedule still lists Day 2 as scheduled. No final score or champion is claimed.' },
+    ],
+    broadcastChannel: { name: 'PUBG MOBILE Esports Korea', url: 'https://www.youtube.com/@pubgmesportskr', language: 'Korean', note: 'Official Korean PUBG MOBILE Esports channel; the organizer schedule links the event VODs and match results.' },
+    participantsNote: 'The 16-team field is published on the organizer event page. Full match-by-match scoring is not yet exposed on the checked official standings page.',
   },
   {
     id: 'pubgm-pmwc-ewc-2026', slug: 'pubgm-pmwc-ewc-2026', gameId: 'pubg', gameName: 'PUBG Mobile',
@@ -253,10 +272,11 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
   {
     id: 'pubgm-pmgc-2026', slug: 'pubgm-pmgc-2026', gameId: 'pubg', gameName: 'PUBG Mobile',
     name: 'PUBG MOBILE Global Championship 2026', organizer: 'KRAFTON / PUBG MOBILE Esports',
-    startDate: '2026-11-01', endDate: '2026-12-15', dateLabel: '1 Nov – 15 Dec 2026 (official listing window)', region: 'Global', location: 'Venue and stage dates not announced',
-    prizePool: '$3,000,000', format: 'Season-ending global championship; detailed stages and participant field pending', status: 'upcoming',
+    dateLabel: 'November–December 2026; exact dates not confirmed in the checked official listing', region: 'Global', location: 'Venue not announced',
+    prizePool: '$3,000,000 (published listing)', format: 'Season-ending global championship; the official listing does not yet publish the stage schedule or complete field', status: 'upcoming',
     sourceUrl: 'https://pubgesportsqualifiers.com/tournament', sourceName: 'KRAFTON PUBG MOBILE Esports', updatedAt: '2026-10-18',
-    summary: 'KRAFTON’s official tournament listing shows PMGC 2026 in the 1 November–15 December window with a $3 million prize pool. The listing does not confirm the venue, individual stage dates or complete team field, so those details are left pending.',
+    summary: 'KRAFTON’s official listing identifies PMGC 2026 as the season-ending global championship and lists a $3 million prize pool. The checked listing does not confirm exact event dates, venue, stages or the complete team field; those details remain pending.',
+    participantsNote: 'The published team field has not been announced. This PUBG MOBILE event is separate from PUBG: BATTLEGROUNDS’ PGC 2026 in Istanbul.',
   },
   {
     id: 'pubg-asia-stars-2026', slug: 'pubg-asia-stars-2026', gameId: 'pubg_battlegrounds', gameName: 'PUBG: BATTLEGROUNDS',
@@ -304,13 +324,29 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
     id: 'valorant-game-changers-americas-lcq-2026', slug: 'valorant-game-changers-americas-lcq-2026', gameId: 'valorant', gameName: 'VALORANT',
     name: 'Game Changers Americas Last Chance Qualifier 2026', organizer: 'Riot Games', startDate: '2026-10-14', endDate: '2026-10-15', dateLabel: '14–15 Oct 2026',
     region: 'Americas', location: 'Riot Games Arena, São Paulo, Brazil', teams: 3,
-    format: 'Three-team round robin Bo3 on 14 Oct; top two advance to a Bo5 final on 15 Oct', status: 'upcoming',
+    format: 'Three-team single round robin Bo3 on 14 Oct; top two advanced to a Bo5 final on 15 Oct', status: 'completed',
     sourceUrl: 'https://valorantesports.com/en-US/leagues/gc_americas_lcq', sourceName: 'VALORANT Esports', updatedAt: '2026-10-18',
-    summary: 'The 14–15 October LCQ has ended. Riot’s live schedule lists FlyQuest RED wins over Akave Esports (2–1) and MIBR (2–0) in the round robin; the 15 October final decides the Americas place at the Game Changers Championship. The winner is not stated on the linked source, so no qualifier is named here.',
+    summary: 'MIBR won the 14–15 October LCQ and claimed the fourth Americas place at the Game Changers Championship. Riot’s published schedule confirms the match format and event dates; its live schedule lists FlyQuest RED 2–1 Akave, FlyQuest RED 2–0 MIBR, MIBR 2–0 Akave, then MIBR 3–2 FlyQuest RED in the final.',
     participants: ['MIBR', 'Akave Esports Black', 'FlyQuest RED'],
     participantsLabel: 'Participating teams',
     participantsSourceUrl: 'https://valorantesports.com/en-US/leagues/gc_americas_lcq',
     participantsSourceName: 'Riot Games VALORANT Esports',
+    stages: [
+      { name: 'Round robin', dates: '14 Oct 2026', format: 'Three teams played best-of-three matches. FlyQuest RED beat Akave 2–1 and MIBR 2–0; MIBR beat Akave 2–0. The top two advanced.', status: 'Completed' },
+      { name: 'Final', dates: '15 Oct 2026', format: 'Best-of-five: MIBR defeated FlyQuest RED 3–2 and qualified for Game Changers Championship 2026.', status: 'Completed' },
+    ],
+    results: [
+      { placement: '1st', participant: 'MIBR', result: '3–2 vs FlyQuest RED · LCQ winner', award: 'Qualified for VALORANT Game Changers Championship 2026' },
+      { placement: '2nd', participant: 'FlyQuest RED', result: '2–3 vs MIBR · Finalist' },
+      { placement: '3rd', participant: 'Akave Esports Black', result: 'Eliminated in round robin' },
+    ],
+    matches: [
+      { date: '14 Oct 2026', stage: 'Round robin', left: 'FlyQuest RED', right: 'Akave Esports Black', status: 'completed', result: '2–1', sourceUrl: 'https://valorantesports.com/en-US/live/champions/105670119600597710' },
+      { date: '14 Oct 2026', stage: 'Round robin', left: 'FlyQuest RED', right: 'MIBR', status: 'completed', result: '2–0', sourceUrl: 'https://valorantesports.com/en-US/live/champions/105670119600597710' },
+      { date: '14 Oct 2026', stage: 'Round robin', left: 'MIBR', right: 'Akave Esports Black', status: 'completed', result: '2–0', sourceUrl: 'https://valorantesports.com/en-US/live/champions/105670119600597710' },
+      { date: '15 Oct 2026', stage: 'Grand Final', left: 'MIBR', right: 'FlyQuest RED', status: 'completed', result: '3–2', sourceUrl: 'https://valorantesports.com/en-US/live/champions/105670119600597710' },
+    ],
+    broadcastChannel: { name: 'VALORANT Esports Americas', url: 'https://www.youtube.com/@valorant_americas', language: 'English / Portuguese / Spanish', note: 'Riot’s regional VALORANT Esports channel. The official LCQ guide identifies Riot broadcasts; no match-specific replay URL is embedded until verified.' },
   },
   {
     id: 'valorant-game-changers-championship-2026', slug: 'valorant-game-changers-championship-2026', gameId: 'valorant', gameName: 'VALORANT',
@@ -415,6 +451,16 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
     format: 'Round-robin group stage, double-elimination bracket, Match Point Finals', status: 'upcoming',
     sourceUrl: 'https://algs.ea.com/en/year-6/split-2-playoffs/competition-overview', sourceName: 'Apex Legends Global Series', updatedAt: '2026-10-18',
     summary: 'Forty teams from Americas, EMEA, APAC North and APAC South qualify through Split 2 Pro League. The four-day LAN awards a $2 million prize pool and Championship Points.',
+    participantsLabel: 'Forty qualified teams',
+    participantsNote: 'The 40-team regional allocation is Americas 15, EMEA 7, APAC North 10 and APAC South 8. The official teams page is the source for names and group assignment; those are not copied into this record until its published list is available.',
+    participantsSourceUrl: 'https://algs.ea.com/en/year-6/split-2-playoffs/teams',
+    participantsSourceName: 'ALGS official teams and groups',
+    stages: [
+      { name: 'Group Stage', dates: '29–31 Oct 2026', format: 'Two-day round-robin schedule; four groups of 10 play six-match series against the other groups.', status: 'Upcoming' },
+      { name: 'Bracket Stage', dates: '31 Oct – 1 Nov 2026', format: 'Double-elimination bracket with Elimination Round 1, Winners Round and Elimination Round 2.', status: 'Upcoming' },
+      { name: 'Match Point Finals', dates: '1 Nov 2026', format: 'Match Point format determines the Split 2 Playoffs champion.', status: 'Upcoming' },
+    ],
+    broadcastChannel: { name: 'Apex Legends Global Series', url: 'https://www.youtube.com/@playapexesports', language: 'English', note: 'EA’s official ALGS broadcast channel; event-specific match VODs will appear in the channel archive.' },
   },
   {
     id: 'league-worlds-2026', slug: 'league-worlds-2026', gameId: 'league', gameName: 'League of Legends',
@@ -496,10 +542,25 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
   {
     id: 'coc-world-championship-2026-lcq', slug: 'coc-world-championship-2026-lcq', gameId: 'clash_of_clans', gameName: 'Clash of Clans',
     name: 'Clash of Clans World Championship 2026 Last Chance Qualifier', organizer: 'Supercell',
-    dateLabel: 'October 2026; exact dates not yet published', region: 'Global', location: 'Online / details pending', prizePool: '$1,000,000 season prize pool', teams: 8,
-    format: 'Top eight unqualified teams on the leaderboard compete; top three earn World Finals Golden Tickets', status: 'upcoming',
-    sourceUrl: 'https://event.supercell.com/clashofclans/en/cups/world-championship/how-to-compete', sourceName: 'Clash of Clans World Championship Series', updatedAt: '2026-10-18',
-    summary: 'Supercell’s competition guide confirms an October Last Chance Qualifier for the eight highest-ranked teams that have not already qualified. The top three earn the final Golden Tickets; exact match dates are not stated in the guide.',
+    startDate: '2026-10-10', endDate: '2026-10-11', dateLabel: '10–11 Oct 2026', region: 'Global', location: 'Online', prizePool: 'US$1,000,000 2026 season prize pool; LCQ-specific breakdown is not published in the official rulebook', teams: 8,
+    format: 'Eight-team, two-day double-elimination bracket; the top three unqualified leaderboard teams earn World Finals Golden Tickets', status: 'completed',
+    sourceUrl: 'https://event.supercell.com/clashofclans/en/cups/world-championship', sourceName: 'Clash of Clans World Championship Series · official event results', updatedAt: '2026-10-18',
+    summary: 'The Clash of Clans World Championship LCQ ran 10–11 October as an eight-team, two-day double-elimination bracket. Supercell lists Tribe Gaming as the winner; the top three LCQ finishers earned World Finals Golden Tickets. The official event hub links both day replays and results.',
+    participants: ['Tribe Gaming', 'CB7 Esports', 'MG Esports'],
+    participantsLabel: 'Golden Ticket qualifiers from the Last Chance Qualifier',
+    participantsNote: 'The full LCQ had eight teams. Supercell’s official esports page names the three LCQ Golden Ticket teams; it does not list the other five entrants in the event summary.',
+    participantsSourceUrl: 'https://clashofclans.scescdn.com/',
+    participantsSourceName: 'Supercell · official esports results and Golden Ticket winners',
+    stages: [
+      { name: 'Last Chance Qualifier · Day 1', dates: '10 Oct 2026', format: 'Eight-team double-elimination bracket; seeded by leaderboard position.', status: 'Completed' },
+      { name: 'Last Chance Qualifier · Day 2', dates: '11 Oct 2026', format: 'Bracket concluded; top three teams qualified for the World Finals.', status: 'Completed', note: 'Supercell lists Tribe Gaming as the LCQ winner.' },
+    ],
+    results: [
+      { placement: 'Golden Ticket #1', participant: 'Tribe Gaming', result: 'LCQ winner', award: 'Qualified for World Finals' },
+      { placement: 'Golden Ticket #2', participant: 'CB7 Esports', result: 'LCQ qualifier', award: 'Qualified for World Finals' },
+      { placement: 'Golden Ticket #3', participant: 'MG Esports', result: 'LCQ qualifier', award: 'Qualified for World Finals' },
+    ],
+    broadcastChannel: { name: 'Clash of Clans Esports', url: 'https://www.youtube.com/@ClashofClansEsports', language: 'English', note: 'Official Clash of Clans esports channel. Supercell’s event hub links the Day 1 and Day 2 replays.' },
   },
   {
     id: 'clash-royale-league-lcq-2026', slug: 'clash-royale-league-lcq-2026', gameId: 'clash_royale', gameName: 'Clash Royale',
@@ -582,14 +643,36 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
     format: 'Three connected series; consult PUBG Esports for each match-day schedule', status: 'upcoming',
     sourceUrl: 'https://pubgesports.com/en/', sourceName: 'PUBG Esports', updatedAt: '2026-10-18',
     summary: 'PUBG Esports schedules PGS 10 Final Stage Day 1 for 17 October and Day 2 for 18 October; PGS 11 follows 22–25 October and PGS 12 runs 29 October–1 November. The official page snapshot checked today still exposes earlier-stage standings rather than a final-stage ranking, so no PGS 10 champion or final placement is claimed here.',
+    prizePool: '$500,000 across Circuit 4 (US$100,000 for Series 1, US$100,000 for Series 2 and US$300,000 for the Series Final)', teams: 24,
+    stages: [
+      { name: 'PGS 10 · Series 1', dates: '14–18 Oct 2026', format: '24 teams; Winners Stage, Survival Stage and Final Stage. Final Stage is scheduled for 17–18 Oct.', status: 'Final Stage scheduled' },
+      { name: 'PGS 11 · Series 2', dates: '22–25 Oct 2026', format: '24 teams; Winners Stage, Survival Stage and Final Stage.', status: 'Upcoming' },
+      { name: 'PGS 12 · Series Final', dates: '29 Oct – 1 Nov 2026', format: '24 teams; Survival Stage followed by a three-day Grand Final.', status: 'Upcoming', note: 'The official calendar lists match-day stages; check PUBG Esports for any schedule revision.' },
+    ],
+    participantsNote: 'Each PGS series has a 24-team field. The official event calendar and partner-team announcement provide the current field; final-stage standings for PGS 10 were not visible in the checked official page snapshot.',
   },
   {
     id: 'pubg-pgc-2026', slug: 'pubg-pgc-2026', gameId: 'pubg_battlegrounds', gameName: 'PUBG: BATTLEGROUNDS',
     name: 'PUBG Global Championship 2026', organizer: 'KRAFTON / PUBG Esports',
     startDate: '2026-12-01', endDate: '2026-12-13', dateLabel: '1–13 Dec 2026', region: 'Global', location: 'Istanbul, Türkiye',
     prizePool: '$1,500,000+ with crowdfunding', teams: 32, format: 'Qualifying Stage, Survival Stage and 16-team Grand Finals', status: 'upcoming',
-    sourceUrl: 'https://pubgesports.com/en/news/11230', sourceName: 'PUBG Esports', updatedAt: '2026-10-18',
-    summary: 'The 32-team global championship runs in Istanbul, with a $1.5 million base prize pool plus crowdfunding and Grand Finals on 11–13 December. PUBG Esports announced on 13 October that S2G Esports received the host-nation wildcard directly into the Grand Finals; remaining places are still being decided through PGS and regional results.',
+    sourceUrl: 'https://pubgesports.com/en/news/10109', sourceName: 'PUBG Esports · official tournament announcement', updatedAt: '2026-10-18',
+    summary: 'PGC 2026 brings 32 teams to Istanbul from 1–13 December for nine match days and a US$1.5 million-plus prize pool. The event uses a seeded Qualifying Stage, five-day Survival Stage and 16-team Grand Finals (15 matches). PUBG Esports confirmed S2G Esports as Türkiye’s host-nation wildcard, directly seeded to the Grand Finals; the other team names are still being finalized.',
+    participantsLabel: 'Confirmed Grand Finals direct invite',
+    participants: ['S2G Esports'],
+    participantsNote: 'S2G Esports is the announced host-nation wildcard and starts in the Grand Finals. This is not the full 32-team field; other teams qualify through PGS points and regional leagues.',
+    participantsSourceUrl: 'https://pubgesports.com/en/news/11230',
+    participantsSourceName: 'PUBG Esports · host-nation wildcard announcement',
+    stages: [
+      { name: 'Qualifying Stage', dates: '1 Dec 2026', format: 'Sixteen teams assigned to the qualifying seed play the opening stage. Top eight advance to Survival Day 1; the other eight enter Survival Day 2.', status: 'Upcoming' },
+      { name: 'Survival Stage', dates: '2–6 Dec 2026', format: 'Five competition days with 16 teams each day. Daily winners on Days 1–4 advance directly to Grand Finals; the final four spots go to the top four by cumulative points.', status: 'Upcoming' },
+      { name: 'Grand Finals', dates: '11–13 Dec 2026', format: 'Sixteen teams play 15 matches, five per day, to determine the world champion.', status: 'Upcoming', note: 'Eight teams are direct seeds, four qualify as Survival daily winners and four qualify by cumulative Survival points.' },
+    ],
+    statistics: [
+      { label: 'Teams', value: '32', note: 'Officially announced field size.' },
+      { label: 'Match days', value: '9', note: 'Qualifying 1 day · Survival 5 days · Grand Finals 3 days.' },
+      { label: 'Base prize pool', value: 'US$1.5M+', note: 'Ranking and special prizes; fan crowdfunding may increase the total.' },
+    ],
   },
   {
     id: 'apex-algs-y6-lcq', slug: 'apex-algs-y6-lcq', gameId: 'apex', gameName: 'Apex Legends',
@@ -1165,6 +1248,9 @@ export function statusForEvent(event: Pick<TournamentEvent, 'startDate' | 'endDa
   // in many time zones. Keep the published end date inclusive.
   const today = now.toISOString().slice(0, 10);
   if (today < event.startDate) return 'upcoming';
+  // On the final calendar day, keep a source-confirmed upcoming status when
+  // the organizer still lists the last session as scheduled.
+  if (today === event.endDate && event.status === 'upcoming') return 'upcoming';
   if (today <= (event.endDate || event.startDate)) return 'live';
   return 'completed';
 }
