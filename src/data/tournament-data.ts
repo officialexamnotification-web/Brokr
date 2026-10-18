@@ -223,6 +223,8 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
     participantsNote: 'The roster list is cross-checked against official EWC event results; final standings are on the linked event page.',
     participantsSourceUrl: 'https://ewc-web.prod.esf-systems.com/en/competitions/2026/pmwc',
     participantsSourceName: 'Esports World Cup official results',
+    videoUrl: 'https://www.youtube.com/watch?v=6Z1EoMN3sNg',
+    videoTitle: 'PMWC at EWC 2026 · Grand Finals Day 1 · Official PUBG MOBILE Thailand broadcast',
   },
   {
     id: 'pubgm-pmgc-2026', slug: 'pubgm-pmgc-2026', gameId: 'pubg', gameName: 'PUBG Mobile',
@@ -379,6 +381,8 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
     participantsLabel: 'Qualified teams',
     participantsSourceUrl: 'https://www.rocketleague.com/news/2026-rocket-league-world-championship-primer',
     participantsSourceName: 'Rocket League Esports',
+    videoUrl: 'https://www.youtube.com/watch?v=2YjJAB4aGPo',
+    videoTitle: 'RLCS World Championship 2026 · Championship Sunday · Official Rocket League broadcast',
   },
   {
     id: 'owcs-stage-3-2026', slug: 'owcs-stage-3-2026', gameId: 'overwatch', gameName: 'Overwatch 2',
@@ -559,6 +563,8 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
     participantsLabel: 'Participating teams',
     participantsSourceUrl: 'https://www.youtube.com/watch?v=V-P0Qk0zowo',
     participantsSourceName: 'Official Dota 2 tournament broadcast',
+    videoUrl: 'https://www.youtube.com/watch?v=GMbjTK8UVks',
+    videoTitle: 'The International 2026 · Grand Finals Day · Official Dota 2 broadcast',
   },
   {
     id: 'dota2-blast-slam-viii-2026', slug: 'dota2-blast-slam-viii-2026', gameId: 'dota2', gameName: 'Dota 2',

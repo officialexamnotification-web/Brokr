@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { ArrowLeft, BarChart3, CalendarDays, ChevronRight, ExternalLink, Gamepad2, Globe2, ListFilter, Newspaper, Radio, RadioTower, Search, ShieldCheck, Trophy, Users, Video } from 'lucide-react';
 import { POPULAR_GAMES } from '../data/games';
 import { SITE_DISPLAY_NAME, SITE_NAME, SITE_SUFFIX } from '../data/game-seo';
-import { GAME_NEWS_PAGES, OFFICIAL_TOURNAMENT_SOURCES, TOURNAMENT_NEWS, type GameNewsPage, type TournamentEvent, type TournamentNews, type TournamentStatus } from '../data/tournament-data';
+import { GAME_NEWS_PAGES, OFFICIAL_TOURNAMENT_SOURCES, TOURNAMENT_NEWS, type GameNewsPage, type TournamentEvent, type TournamentNews, type TournamentStatus, type TournamentStream } from '../data/tournament-data';
 import { filterTournamentEvents, getTournamentEventBySlug, getTournamentEvents, getTournamentNewsBySlug } from '../lib/tournament-feed';
 import { ContentLanguagePicker } from './ContentLanguagePicker';
 
@@ -61,6 +61,60 @@ function getYouTubeEmbedUrl(value?: string) {
   } catch {
     return undefined;
   }
+}
+
+const OFFICIAL_YOUTUBE_CHANNELS: Record<string, TournamentStream> = {
+  'bgmi-bmsd-2026': { name: 'KRAFTON INDIA ESPORTS', url: 'https://www.youtube.com/@kraftonindiaesports', language: 'India', note: 'KRAFTON India’s verified esports channel; event broadcasts and replays are published here.' },
+  'bgmi-bmic-2026': { name: 'KRAFTON INDIA ESPORTS', url: 'https://www.youtube.com/@kraftonindiaesports', language: 'India', note: 'KRAFTON India’s verified esports channel; event broadcasts and replays are published here.' },
+  'pubgm-pmps-korea-s2-2026': { name: 'PUBG MOBILE Esports KR', url: 'https://www.youtube.com/@pubgmesportskr', language: 'Korean', note: 'KRAFTON Korea lists this as the official PMPS 2026 S2 broadcast channel.' },
+  'pubgm-pmwc-ewc-2026': { name: 'PUBG MOBILE Esports', url: 'https://www.youtube.com/@PUBGMOBILEEsports', language: 'English', note: 'Official PUBG MOBILE Esports channel for global competition broadcasts.' },
+  'pubgm-pmgc-2026': { name: 'PUBG MOBILE Esports', url: 'https://www.youtube.com/@PUBGMOBILEEsports', language: 'English', note: 'Official PUBG MOBILE Esports channel for global competition broadcasts.' },
+  'pubg-asia-stars-2026': { name: 'PUBG Esports', url: 'https://www.youtube.com/@PUBGEsports', language: 'English', note: 'Official PUBG Esports channel; regional event streams may use local-language channels.' },
+  'free-fire-ffws-global-finals-2026': { name: 'Free Fire Esports Official', url: 'https://www.youtube.com/@freefireesportsofficial', language: 'English', note: 'Official Free Fire esports channel; regional-language broadcasts may use local channels.' },
+  'valorant-champions-shanghai-2026': { name: 'VALORANT Esports', url: 'https://www.youtube.com/@valorantesports', language: 'English', note: 'Official VALORANT Esports channel; regional-language feeds may be separate.' },
+  'valorant-game-changers-americas-lcq-2026': { name: 'VALORANT Esports', url: 'https://www.youtube.com/@valorantesports', language: 'English', note: 'Official VALORANT Esports channel; regional-language feeds may be separate.' },
+  'valorant-game-changers-championship-2026': { name: 'VALORANT Esports', url: 'https://www.youtube.com/@valorantesports', language: 'English', note: 'Official VALORANT Esports channel; regional-language feeds may be separate.' },
+  'cs2-esl-pro-league-s24-2026': { name: 'ESL Counter-Strike', url: 'https://www.youtube.com/@ESLCS', language: 'English', note: 'ESL confirms Season 24 broadcasts on its Counter-Strike YouTube channels.' },
+  'cs2-thunderpick-world-championship-2026': { name: 'BLAST Premier', url: 'https://www.youtube.com/@BLASTPremier', language: 'English', note: 'BLAST’s official Counter-Strike broadcast channel.' },
+  'cs2-pgl-masters-bucharest-2026': { name: 'PGL', url: 'https://www.youtube.com/@pglesports', language: 'English', note: 'PGL’s official esports broadcast channel.' },
+  'cs2-pgl-singapore-major-2026': { name: 'PGL', url: 'https://www.youtube.com/@pglesports', language: 'English', note: 'PGL’s official esports broadcast channel.' },
+  'cs2-iem-beijing-2026': { name: 'ESL Counter-Strike', url: 'https://www.youtube.com/@ESLCS', language: 'English', note: 'ESL’s official Counter-Strike broadcast channel.' },
+  'cs2-blast-rivals-hk-2026': { name: 'BLAST Premier', url: 'https://www.youtube.com/@BLASTPremier', language: 'English', note: 'BLAST’s official Counter-Strike broadcast channel.' },
+  'fortnite-fncs-solo-october-2026': { name: 'Fortnite', url: 'https://www.youtube.com/@Fortnite', language: 'English', note: 'Epic Games’ official Fortnite channel; event broadcasts may also use regional competitive channels.' },
+  'apex-algs-y6-split-2-playoffs': { name: 'Apex Legends Global Series', url: 'https://www.youtube.com/@playapexesports', language: 'English', note: 'Official ALGS channel for live streams, highlights and news.' },
+  'league-worlds-2026': { name: 'LoL Esports', url: 'https://www.youtube.com/@lolesports', language: 'English', note: 'Official League of Legends esports channel; regional language feeds may be separate.' },
+  'rlcs-world-championship-2026': { name: 'Rocket League Esports', url: 'https://www.youtube.com/@RocketLeagueEsports', language: 'English', note: 'Official Rocket League Esports channel.' },
+  'owcs-stage-3-2026': { name: 'Overwatch Esports', url: 'https://www.youtube.com/@OverwatchEsports', language: 'English', note: 'Official Overwatch Esports channel; regional broadcasts may be separate.' },
+  'r6-osaka-major-2026': { name: 'Rainbow Six Esports', url: 'https://www.youtube.com/@Rainbow6', language: 'English', note: 'Official Rainbow Six channel; regional broadcasts may be separate.' },
+  'ea-fc-pro-27-ladder-2026': { name: 'EA SPORTS FC', url: 'https://www.youtube.com/@EASPORTSFC', language: 'English', note: 'Official EA SPORTS FC channel; FC Pro event streams may also appear on regional channels.' },
+  'mlbb-mpl-ph-s18-playoffs-2026': { name: 'Mobile Legends: Bang Bang Esports', url: 'https://www.youtube.com/@MLBBEsports', language: 'English', note: 'Official MLBB esports channel; MPL Philippines may use its regional channel for local-language coverage.' },
+  'hok-asian-games-2026': { name: 'Asian Games Aichi-Nagoya 2026', url: 'https://www.youtube.com/@AsianGames_', language: 'International', note: 'Official Asian Games channel; esports feeds may be distributed by regional rights holders.' },
+  'brawl-stars-world-finals-2026': { name: 'Brawl Stars', url: 'https://www.youtube.com/@BrawlStars', language: 'English', note: 'Official Brawl Stars channel.' },
+  'brawl-stars-october-event-weekend-2026': { name: 'Brawl Stars', url: 'https://www.youtube.com/@BrawlStars', language: 'English', note: 'Official Brawl Stars channel.' },
+  'coc-world-championship-2026-lcq': { name: 'Clash of Clans', url: 'https://www.youtube.com/@ClashofClans', language: 'English', note: 'Official Clash of Clans channel.' },
+  'clash-royale-league-lcq-2026': { name: 'Clash Royale', url: 'https://www.youtube.com/@ClashRoyale', language: 'English', note: 'Official Clash Royale channel.' },
+  'roblox-showdown-cup-2026': { name: 'Roblox', url: 'https://www.youtube.com/@Roblox', language: 'English', note: 'Official Roblox channel; tournament broadcasts may be hosted by the event organizer.' },
+  'marvel-rivals-ignite-stage-2-2026': { name: 'Marvel Rivals Esports', url: 'https://www.youtube.com/@MarvelRivals', language: 'English', note: 'Official Marvel Rivals channel; event broadcasts may use regional feeds.' },
+  'marvel-rivals-ignite-grand-finals-2026': { name: 'Marvel Rivals Esports', url: 'https://www.youtube.com/@MarvelRivals', language: 'English', note: 'Official Marvel Rivals channel; event broadcasts may use regional feeds.' },
+  'aov-10fest-winter-finals-2026': { name: 'Garena Liên Quân Mobile', url: 'https://www.youtube.com/@LienQuanMobile', language: 'Vietnamese', note: 'Garena’s official Arena of Valor Vietnam esports channel.' },
+  'aov-aic-2026': { name: 'Garena Liên Quân Mobile', url: 'https://www.youtube.com/@LienQuanMobile', language: 'Vietnamese', note: 'Garena’s official Arena of Valor Vietnam esports channel; regional finals may use local channels.' },
+  'tft-tacticians-superbrawl-2026': { name: 'Teamfight Tactics', url: 'https://www.youtube.com/@TeamfightTactics', language: 'English', note: 'Official Teamfight Tactics channel.' },
+  'tft-vegas-open-2026': { name: 'Teamfight Tactics', url: 'https://www.youtube.com/@TeamfightTactics', language: 'English', note: 'Official Teamfight Tactics channel.' },
+  'pubg-pgs-circuit-4-2026': { name: 'PUBG Esports', url: 'https://www.youtube.com/@PUBGEsports', language: 'English', note: 'Official PUBG Esports channel; regional-language feeds may be separate.' },
+  'pubg-pgc-2026': { name: 'PUBG Esports', url: 'https://www.youtube.com/@PUBGEsports', language: 'English', note: 'Official PUBG Esports channel; regional-language feeds may be separate.' },
+  'apex-algs-y6-lcq': { name: 'Apex Legends Global Series', url: 'https://www.youtube.com/@playapexesports', language: 'English', note: 'Official ALGS channel for live streams, highlights and news.' },
+  'apex-algs-y6-championship': { name: 'Apex Legends Global Series', url: 'https://www.youtube.com/@playapexesports', language: 'English', note: 'Official ALGS channel for live streams, highlights and news.' },
+  'ea-fc-pro-27-global-qualifier': { name: 'EA SPORTS FC', url: 'https://www.youtube.com/@EASPORTSFC', language: 'English', note: 'Official EA SPORTS FC channel; FC Pro event streams may also appear on regional channels.' },
+  'madden-mcs-27-most-feared-qualifier': { name: 'Madden NFL', url: 'https://www.youtube.com/@EAMaddenNFL', language: 'English', note: 'Official Madden NFL channel; MCS broadcasts may also be linked from EA channels.' },
+  'dota2-ti-2026': { name: 'Dota 2', url: 'https://www.youtube.com/@DOTA2', language: 'English', note: 'Official Dota 2 channel; TI 2026 archived broadcasts are available here.' },
+  'dota2-blast-slam-viii-2026': { name: 'BLAST Dota', url: 'https://www.youtube.com/@BLASTDota', language: 'English', note: 'BLAST lists this channel for official BLAST Slam VIII broadcasts.' },
+};
+
+function getOfficialBroadcastStreams(event: TournamentEvent): TournamentStream[] {
+  const eventStream = event.streams || [];
+  const channel = OFFICIAL_YOUTUBE_CHANNELS[event.id];
+  if (!channel || eventStream.some((stream) => stream.url === channel.url)) return eventStream;
+  return [...eventStream, channel];
 }
 
 function gameGeneratorSlug(gameId: string) {
@@ -142,8 +196,11 @@ function TournamentSidebar({ events }: { events: TournamentEvent[] }) {
 }
 
 function BroadcastSection({ event }: { event: TournamentEvent }) {
-  const hasBroadcast = Boolean(event.streams?.length || event.broadcastTalents?.length || event.videoUrl);
-  return <section className="rounded-2xl border border-red-400/25 bg-red-500/[0.03] p-5"><div className="mb-4 flex flex-wrap items-start justify-between gap-3"><div><p className="text-[10px] font-black uppercase tracking-[0.14em] text-red-300">Broadcast</p><h2 className="mt-1 font-semibold text-white">Official streams and video</h2></div><span className={`rounded-full border px-2 py-1 text-[10px] font-black uppercase tracking-wide ${hasBroadcast ? 'border-emerald-400/25 bg-emerald-500/10 text-emerald-300' : 'border-amber-400/25 bg-amber-500/10 text-amber-300'}`}>{hasBroadcast ? 'Verified link available' : 'Awaiting verified link'}</span></div>{event.videoUrl && getYouTubeEmbedUrl(event.videoUrl) && <div className="overflow-hidden rounded-xl border border-slate-800 bg-black"><iframe className="aspect-video w-full" src={getYouTubeEmbedUrl(event.videoUrl)} title={event.videoTitle || `${event.name} official YouTube video`} loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen referrerPolicy="strict-origin-when-cross-origin" /></div>}{event.streams?.length ? <div className="mt-4 grid gap-3 sm:grid-cols-2">{event.streams.map((stream) => <a key={stream.url} href={stream.url} target="_blank" rel="noreferrer" className="group rounded-xl border border-slate-800 bg-[#080d1a] p-4 transition hover:border-red-400/40"><div className="flex items-start justify-between gap-3"><span className="font-bold text-white group-hover:text-red-200">{stream.name}</span><ExternalLink className="h-4 w-4 shrink-0 text-slate-500 group-hover:text-red-300" /></div>{stream.language && <p className="mt-2 text-xs font-semibold uppercase tracking-wide text-red-300">{stream.language} stream</p>}{stream.note && <p className="mt-2 text-xs leading-5 text-slate-500">{stream.note}</p>}</a>)}</div> : null}{event.broadcastTalents?.length ? <p className="mt-4 text-xs leading-5 text-slate-500"><span className="font-bold text-slate-300">Broadcast talents:</span> {event.broadcastTalents.join(' · ')}</p> : null}{!hasBroadcast && <p className="mt-2 text-sm leading-6 text-slate-400">The linked organiser or publisher has not exposed a verified YouTube video or stream URL for this event yet. The source link below remains the authoritative update.</p>}</section>;
+  const streams = getOfficialBroadcastStreams(event);
+  const videoEmbedUrl = getYouTubeEmbedUrl(event.videoUrl);
+  const hasBroadcast = Boolean(streams.length || event.broadcastTalents?.length || videoEmbedUrl);
+  const availabilityLabel = videoEmbedUrl ? 'Verified event video' : streams.length ? 'Official channel available' : 'Awaiting verified link';
+  return <section className="rounded-2xl border border-red-400/25 bg-red-500/[0.03] p-5"><div className="mb-4 flex flex-wrap items-start justify-between gap-3"><div><p className="text-[10px] font-black uppercase tracking-[0.14em] text-red-300">Broadcast</p><h2 className="mt-1 font-semibold text-white">Official streams and video</h2></div><span className={`rounded-full border px-2 py-1 text-[10px] font-black uppercase tracking-wide ${hasBroadcast ? 'border-emerald-400/25 bg-emerald-500/10 text-emerald-300' : 'border-amber-400/25 bg-amber-500/10 text-amber-300'}`}>{availabilityLabel}</span></div>{videoEmbedUrl && <><div className="overflow-hidden rounded-xl border border-slate-800 bg-black"><iframe className="aspect-video w-full" src={videoEmbedUrl} title={event.videoTitle || `${event.name} official YouTube video`} loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen referrerPolicy="strict-origin-when-cross-origin" /></div>{event.videoTitle && <p className="mt-2 text-xs font-semibold text-slate-300">{event.videoTitle}</p>}</>}{!videoEmbedUrl && streams.length > 0 && <div className="mt-4 rounded-xl border border-amber-400/20 bg-amber-500/5 p-4"><p className="text-xs font-bold text-amber-200">Event video is not published or verified yet.</p><p className="mt-1 text-xs leading-5 text-slate-400">Open the official broadcaster channel below for scheduled live streams or archived tournament VODs. A channel link is shown instead of an unverified event video.</p></div>}{streams.length ? <div className="mt-4 grid gap-3 sm:grid-cols-2">{streams.map((stream) => <a key={stream.url} href={stream.url} target="_blank" rel="noreferrer" className="group rounded-xl border border-slate-800 bg-[#080d1a] p-4 transition hover:border-red-400/40"><div className="flex items-start justify-between gap-3"><span className="font-bold text-white group-hover:text-red-200">{stream.name}</span><ExternalLink className="h-4 w-4 shrink-0 text-slate-500 group-hover:text-red-300" /></div>{stream.language && <p className="mt-2 text-xs font-semibold uppercase tracking-wide text-red-300">{stream.language} stream</p>}{stream.note && <p className="mt-2 text-xs leading-5 text-slate-500">{stream.note}</p>}</a>)}</div> : null}{event.broadcastTalents?.length ? <p className="mt-4 text-xs leading-5 text-slate-500"><span className="font-bold text-slate-300">Broadcast talents:</span> {event.broadcastTalents.join(' · ')}</p> : null}{!hasBroadcast && <p className="mt-2 text-sm leading-6 text-slate-400">The linked organiser or publisher has not exposed a verified YouTube video or stream URL for this event yet. The source link below remains the authoritative update.</p>}</section>;
 }
 
 function ArticleView({ article, event }: { article?: TournamentNews; event?: TournamentEvent }) {
