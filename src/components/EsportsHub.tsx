@@ -15,6 +15,7 @@ const STATUS_LABELS: Record<TournamentStatus, string> = {
   live: 'Live / ongoing',
   upcoming: 'Upcoming',
   completed: 'Completed',
+  postponed: 'Postponed',
   cancelled: 'Cancelled',
   draft: 'Draft',
 };
@@ -44,6 +45,7 @@ function statusClass(status: TournamentStatus) {
   if (status === 'live') return 'border-red-400/30 bg-red-500/10 text-red-300';
   if (status === 'upcoming') return 'border-amber-400/30 bg-amber-500/10 text-amber-300';
   if (status === 'completed') return 'border-slate-700 bg-slate-800/70 text-slate-300';
+  if (status === 'postponed') return 'border-orange-400/30 bg-orange-500/10 text-orange-300';
   return 'border-cyan-400/30 bg-cyan-500/10 text-cyan-300';
 }
 

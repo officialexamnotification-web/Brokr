@@ -547,4 +547,18 @@ export const POPULAR_GAMES: GameProfile[] = [
     popularSymbols: ['龍虎', 'AOF3', 'GG', '★', 'X', '✦'], mockupBg: 'from-orange-950/70 via-slate-900 to-black',
     compatibilityNote: 'This retro title’s platform and event registration options can vary. Follow the specific tournament’s rules for player IDs.',
   },
+  {
+    id: 'starcraft2', slug: 'starcraft-2-name-generator', name: 'StarCraft II', shortName: 'StarCraft II', maxChars: null,
+    badge: 'Grandmaster', accentColor: '#60a5fa', engine: 'Blizzard Entertainment',
+    description: 'StarCraft II commander-inspired player handles, race-themed aliases and competitive RTS identities.',
+    popularSymbols: ['SC2', 'GG', 'Zerg', 'Protoss', 'Terran', '★'], mockupBg: 'from-blue-950/70 via-slate-900 to-black',
+    compatibilityNote: 'BattleTag, Blizzard account and tournament registration names may be separate. Check the current client and event rules before applying special characters.',
+  },
+  {
+    id: 'efootball', slug: 'efootball-name-generator', name: 'eFootball', shortName: 'eFootball', maxChars: null,
+    badge: 'World Finals', accentColor: '#38bdf8', engine: 'KONAMI',
+    description: 'eFootball player, Dream Team and competitive football identity ideas for console, PC and mobile.',
+    popularSymbols: ['eF', 'FC', 'XI', 'GK', 'GG', '★'], mockupBg: 'from-sky-950/70 via-slate-900 to-black',
+    compatibilityNote: 'KONAMI ID, platform account and in-game user name can differ. Check the current client and platform rules; this generator does not verify name availability.',
+  },
 ];

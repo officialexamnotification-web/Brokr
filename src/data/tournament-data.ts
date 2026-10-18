@@ -1,6 +1,6 @@
 import { POPULAR_GAMES } from './games.js';
 
-export type TournamentStatus = 'upcoming' | 'live' | 'completed' | 'cancelled' | 'draft';
+export type TournamentStatus = 'upcoming' | 'live' | 'completed' | 'postponed' | 'cancelled' | 'draft';
 
 export interface TournamentStage {
   name: string;
@@ -778,6 +778,30 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
     broadcastChannel: { name: '2XKO', url: 'https://www.youtube.com/@2XKO', language: 'English', note: 'Riot’s official 2XKO channel; no event-specific stream URL has been confirmed.' },
   },
   {
+    id: 'efootball-championship-world-finals-2026', slug: 'efootball-championship-world-finals-2026', gameId: 'efootball', gameName: 'eFootball',
+    name: 'eFootball Championship 2026 World Finals', organizer: 'KONAMI Digital Entertainment', startDate: '2026-07-25', endDate: '2026-07-26', dateLabel: '25–26 Jul 2026',
+    region: 'Global', location: 'Siam Paragon, Bangkok, Thailand', format: '32 qualified players across Console and Mobile (16 per category); group stage followed by Round of 8, semifinals and Grand Finals in each category.', status: 'completed',
+    participants: ['usmakabyle', 'BlueFin_Akbar', '1mmpulseee', 'shesu', 'HASSAN PAJANI', 'Jvictor', 'Diablo', 'Zilo', 'RealFabiano93', 'FUTEASY_10', 'M_Mestre', 'RRQ_BINONGBOYS', 'ETTORITO', 'BRU_JEANSUI', 'RafaBraga_ZeN', 'Abod_iraqi', 'RRQ_RADIN', 'BRU_CantonaRuay', 'MAVERICK', 'NACEROX', 'DidouX', 'Le_ZJYLALY', 'WPS_APIZ', 'NEO • YOGATTUSO', 'Rentao', 'YASSINE ETTADLAOUI', 'AC_GEGE', 'WADIE_7', 'TJC_SWEAT20', 'Jxmxrn', 'Youness Falky', 'Mendonça'],
+    participantsLabel: '32 players · 16 Console + 16 Mobile', participantsNote: 'The names are the four-player group-stage fields published on KONAMI’s official World Finals results page.', participantsSourceUrl: 'https://efootballchampionship.konami.net/en/worldfinals/history/2026', participantsSourceName: 'KONAMI · eFootball Championship 2026 World Finals',
+    sourceUrl: 'https://efootballchampionship.konami.net/en/worldfinals/history/2026', sourceName: 'KONAMI · official World Finals results', updatedAt: '2026-10-18',
+    summary: 'The 2026 World Finals brought 32 qualified players to Bangkok: 16 Console and 16 Mobile. Console champion FUTEASY_10 (Brazil) defeated ETTORITO (Italy) 4–3; Mobile champion Rentao (Brazil) beat YASSINE ETTADLAOUI (Morocco) 5–2. KONAMI’s event history publishes the group standings and knockout results. The event was announced for 26 July as part of the eFootball World Festival.',
+    stages: [{ name: 'Group Stage', dates: '25 Jul 2026', format: 'Four groups of four in each category; official results archive lists group standings.', status: 'Completed' }, { name: 'Knockout Stage', dates: '26 Jul 2026', format: 'Round of 8, semifinals and Grand Final for Console and Mobile.', status: 'Completed' }],
+    results: [{ placement: 'Console Champion', participant: 'FUTEASY_10 (Brazil)', result: 'Defeated ETTORITO 4–3' }, { placement: 'Console Runner-up', participant: 'ETTORITO (Italy)' }, { placement: 'Mobile Champion', participant: 'Rentao (Brazil)', result: 'Defeated YASSINE ETTADLAOUI 5–2' }, { placement: 'Mobile Runner-up', participant: 'YASSINE ETTADLAOUI (Morocco)' }],
+    broadcastChannel: { name: 'eFootball', url: 'https://www.youtube.com/@play_efootball', language: 'English', note: 'KONAMI’s official eFootball YouTube channel published both World Finals day broadcasts.' },
+    videoUrl: 'https://www.youtube.com/watch?v=QIhTW_IlD8Y', videoTitle: 'eFootball Championship 2026 World Finals · Day 2 Knockout Stage',
+    videos: [{ name: 'Day 1 · Group Stage broadcast', url: 'https://www.youtube.com/watch?v=VAxMGUNGsoo', language: 'English', note: 'Official eFootball YouTube broadcast.' }, { name: 'Day 2 · Knockout Stage broadcast', url: 'https://www.youtube.com/watch?v=QIhTW_IlD8Y', language: 'English', note: 'Official eFootball YouTube broadcast featuring the knockout finals.' }],
+  },
+  {
+    id: 'fifae-world-cup-efootball-2026', slug: 'fifae-world-cup-efootball-2026', gameId: 'efootball', gameName: 'eFootball',
+    name: 'FIFAe World Cup 2026 featuring eFootball', organizer: 'FIFAe and KONAMI', dateLabel: 'Postponed · new dates TBA',
+    region: 'Global', location: 'Jeddah, Saudi Arabia · original venue; revised schedule pending', format: 'National-team eFootball competition; FIFAe/KONAMI have postponed the event and have not published replacement dates in the notice.', status: 'postponed',
+    sourceUrl: 'https://e-football.konami.net/fifae_world_cup/2026/en-us/', sourceName: 'FIFAe / KONAMI · official event notice', updatedAt: '2026-10-18',
+    summary: 'FIFAe and KONAMI announced on 15 October 2026 that the FIFAe World Cup 2026, originally scheduled to begin in Jeddah on 16 October, has been postponed. The official notice says further information will follow when details are confirmed. This event is postponed, not live; no replacement dates are currently published.',
+    stages: [{ name: 'FIFAe World Cup 2026', dates: 'Postponed · rescheduled dates not announced', format: 'Check the official FIFAe/KONAMI notice for the revised schedule.', status: 'Postponed' }],
+    participantsNote: 'No final national-team field or replacement schedule is stated in the postponement notice.',
+    broadcastChannel: { name: 'FIFAe', url: 'https://www.youtube.com/@FIFAe', language: 'English', note: 'Official FIFAe channel; no rescheduled event broadcast has been announced.' },
+  },
+  {
     id: 'sf6-ewc-2026', slug: 'street-fighter-6-ewc-2026', gameId: 'street_fighter_6', gameName: 'Street Fighter 6',
     name: 'Street Fighter 6 at Esports World Cup 2026', organizer: 'Esports World Cup Foundation', startDate: '2026-07-29', endDate: '2026-08-01', dateLabel: '29 Jul – 1 Aug 2026',
     region: 'Global', location: 'Paris Expo Porte de Versailles, Paris, France', prizePool: '$1,000,000',
@@ -1384,6 +1408,18 @@ const CURATED_TOURNAMENT_NEWS: TournamentNews[] = [
     tags: ['Madden NFL', 'MCS 27', 'Most Feared', 'Madden Bowl'], eventId: 'madden-mcs-27-most-feared-qualifier',
   },
   {
+    id: 'news-efootball-fifae-postponed-2026', slug: 'news-efootball-fifae-world-cup-postponed-2026', gameId: 'efootball', gameName: 'eFootball',
+    title: 'FIFAe World Cup 2026 featuring eFootball postponed; new dates pending',
+    excerpt: 'FIFAe and KONAMI postponed the Jeddah event planned from 16 October and say they will share details once confirmed.',
+    content: [
+      'The official FIFAe/KONAMI notice dated 15 October 2026 says the FIFAe World Cup 2026, originally scheduled to begin in Jeddah on 16 October, has been postponed due to various circumstances.',
+      'The notice does not announce a replacement date. The tournament listing therefore shows postponed status and TBA dates instead of treating the original schedule as live or upcoming.'
+    ],
+    tournamentName: 'FIFAe World Cup 2026 featuring eFootball', status: 'upcoming', publishedAt: '2026-10-15', updatedAt: '2026-10-18',
+    sourceUrl: 'https://e-football.konami.net/fifae_world_cup/2026/en-us/', sourceName: 'FIFAe / KONAMI · official event notice', sourceVerified: true,
+    tags: ['eFootball', 'FIFAe World Cup 2026', 'postponed', 'Jeddah'], eventId: 'fifae-world-cup-efootball-2026',
+  },
+  {
     id: 'news-dota2-ti-2026', slug: 'news-dota2-ti-2026', gameId: 'dota2', gameName: 'Dota 2',
     title: 'Team Spirit wins The International 2026 in Shanghai',
     excerpt: 'Valve confirms Team Spirit as Grand Champions after a five-game final.',
@@ -1506,6 +1542,8 @@ export const OFFICIAL_TOURNAMENT_SOURCES: TournamentSource[] = [
   { gameId: 'samurai_shodown', gameName: 'SAMURAI SHODOWN', url: 'https://snkesports.com/', sourceName: 'SNK Esports', note: 'SWC 2026 Finals are 27–29 Nov in Stockholm. Rulebook first-place prize for Samurai Shodown is $250,000; full entrant list and match schedule pending. Checked 18 Oct 2026.', checkedAt: '2026-10-18' },
   { gameId: 'kof98', gameName: 'THE KING OF FIGHTERS ’98', url: 'https://snkesports.com/', sourceName: 'SNK Esports', note: 'SNK lists KOF ’98 as a SWC 2026 title, with Finals 27–29 Nov in Stockholm. Title-specific prize, schedule and entry format are not published in the cited event page. Checked 18 Oct 2026.', checkedAt: '2026-10-18' },
   { gameId: 'art_of_fighting_3', gameName: 'THE PATH OF THE WARRIOR: ART OF FIGHTING 3', url: 'https://snkesports.com/', sourceName: 'SNK Esports', note: 'SWC Finals are 27–29 Nov in Stockholm. SNK’s rulebook says Art of Fighting 3 is open-entry, with no qualifiers or invitation slots; main-event first-place prize is $50,000. Checked 18 Oct 2026.', checkedAt: '2026-10-18' },
+  { gameId: 'efootball', gameName: 'eFootball', url: 'https://efootballchampionship.konami.net/en/worldfinals/history/2026', sourceName: 'KONAMI · eFootball Championship', note: 'World Finals completed in Bangkok on 26 Jul 2026. FUTEASY_10 won Console 4–3; Rentao won Mobile 5–2. FIFAe World Cup 2026 was postponed on 15 Oct; replacement dates TBA. Checked 18 Oct 2026.', checkedAt: '2026-10-18' },
+  { gameId: 'starcraft2', gameName: 'StarCraft II', url: 'https://news.blizzard.com/en-us/starcraft2', sourceName: 'Blizzard · StarCraft II', note: 'The EWC 2026 rules resource is not evidence that StarCraft II was an event title: it does not appear in the published 2026 competitions schedule. No EWC SC2 tournament is listed here. Use Blizzard and individual organizers for current SC2 announcements; source is reference-only and not auto-synced.', checkedAt: '2026-10-18', syncEnabled: false },
   { gameId: 'psn', gameName: 'PlayStation Tournaments (platform)', url: 'https://www.playstation.com/en-us/tournaments/', sourceName: 'PlayStation', note: 'Platform tournament listing for supported games (including sports and fighting titles). Events are game- and territory-specific; this is not one global league. Reference only; not used to auto-publish news.', checkedAt: '2026-10-18', syncEnabled: false },
   { gameId: 'steam', gameName: 'Steam (platform)', url: 'https://store.steampowered.com/tourney/limited_license', sourceName: 'Valve / Steam tournament license', note: 'Policy page, not an event calendar. Steam hosts many games; each game publisher or independent organizer maintains its own competition schedule. Reference only; not used to auto-publish news.', checkedAt: '2026-10-18', syncEnabled: false },
   { gameId: 'xbox', gameName: 'Xbox (platform)', url: 'https://www.xbox.com/en-US/community/esports', sourceName: 'Xbox Esports', note: 'Platform esports overview includes title-specific circuits such as Halo Championship Series and Forza Racing Championship. Follow each game’s organizer for event dates. Reference only; not used to auto-publish news.', checkedAt: '2026-10-18', syncEnabled: false },
@@ -1517,6 +1555,7 @@ export function getTournamentGameName(gameId: string): string {
 
 export function statusForEvent(event: Pick<TournamentEvent, 'startDate' | 'endDate' | 'status'>, now = new Date()): TournamentStatus {
   if (event.status === 'cancelled' || event.status === 'draft') return event.status;
+  if (event.status === 'postponed') return 'postponed';
   // A verified final result is authoritative even when the event's calendar
   // window includes today. Never turn an explicitly completed event back to live.
   if (event.status === 'completed') return 'completed';
@@ -2578,6 +2617,24 @@ export const GAME_NEWS_PAGES: GameNewsPage[] = [
     competition: ['KOF XV event dates, rules, broadcasts and results are listed separately on the tournaments page.'],
     sources: [{ name: 'SNK · KOF XV official game page and patch archive', url: 'https://www.snk-corp.co.jp/us/games/kof-xv/' }, { name: 'SNK · July 2026 balance update notice', url: 'https://www.snk-corp.co.jp/us/press/2026/were-not-done-yet-the-king-of-fighters-xv-gets-a-balance-update-on-july-2/' }],
     faqs: [{ question: 'What is the newest KOF XV patch listed by SNK?', answer: 'SNK’s official game page lists Patch Notes Ver.2.52 dated 31 August 2026.' }, { question: 'How many characters were included in the July balance update announcement?', answer: 'SNK said the balance update covered the full 61-character roster, including DLC characters.' }],
+  },
+  {
+    gameId: 'efootball', title: 'eFootball News: Patch v6.1.1 and October 2026 Fix | Tradivex',
+    description: 'KONAMI’s eFootball v6.1.1 patch and the Smart Assist shot power-gauge fix for iOS and Android.',
+    heading: 'eFootball game news and updates',
+    intro: 'KONAMI released eFootball patch v6.1.1 on 15 October 2026 for iOS and Android. This page covers game updates; tournament results and postponed event dates are maintained separately.',
+    updateHeading: 'Patch v6.1.1 fixes the Smart Assist power gauge issue on mobile', updateDate: '18 October 2026',
+    update: [
+      'KONAMI’s 15 October notice says patch v6.1.1 is available for iOS and Android. It fixes an online PvP issue where the Power Gauge did not appear when an opponent with Smart Assist enabled took a shot.',
+      'The notice describes a targeted bug fix, not a new season update. KONAMI’s official page separately reports the FIFAe World Cup 2026 postponement; that competition status is listed on the tournaments page.'
+    ],
+    detailSections: [{ title: 'eFootball v6.1.1 patch record', description: 'Mobile patch summary from KONAMI’s update notice.', columns: ['Field', 'Verified detail'], rows: [['Release notice', '15 October 2026'], ['Version', 'v6.1.1'], ['Platforms named', 'iOS and Android'], ['Fix', 'Restores the missing shot Power Gauge when an online PvP opponent uses Smart Assist']], sourceUrl: 'https://www.konami.com/efootball/en/topic/news/5962' }],
+    playerFocusHeading: 'Version and platform checks',
+    playerFocus: ['Install the current update from the relevant app store and confirm the version displayed by your client.', 'The v6.1.1 notice names iOS and Android. Check KONAMI’s official news listing for separate console or PC update notices.'],
+    competitionHeading: 'Where tournament details live',
+    competition: ['eFootball Championship 2026 results and the postponed FIFAe World Cup 2026 schedule are listed on the separate tournaments page.'],
+    sources: [{ name: 'KONAMI · Patch v6.1.1 Now Available', url: 'https://www.konami.com/efootball/en/topic/news/5962' }, { name: 'KONAMI · Official eFootball news archive', url: 'https://www.konami.com/efootball/en/topic/news/list' }],
+    faqs: [{ question: 'What does eFootball v6.1.1 fix?', answer: 'KONAMI says it fixes the missing shot Power Gauge when an online PvP opponent has Smart Assist enabled.' }, { question: 'Which platforms are listed for v6.1.1?', answer: 'The 15 October notice lists iOS and Android. Consult KONAMI’s news archive for platform-specific notices.' }],
   },
 ];
 

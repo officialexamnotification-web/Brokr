@@ -197,6 +197,22 @@ const RULES: Record<string, GameRule> = {
     sourceStatus: "needs-testing",
     note: "Tournament account and platform name rules vary for this legacy title; verify the specific event registration requirements.",
   },
+  starcraft2: {
+    id: "starcraft2",
+    name: "StarCraft II",
+    limit: null,
+    symbolStatus: "unknown",
+    sourceStatus: "needs-testing",
+    note: "BattleTag, in-game identity and tournament registration fields can differ; no unverified character cap or symbol support is assumed.",
+  },
+  efootball: {
+    id: "efootball",
+    name: "eFootball",
+    limit: null,
+    symbolStatus: "unknown",
+    sourceStatus: "needs-testing",
+    note: "KONAMI ID, platform profile and in-game user-name rules are distinct; verify the active client and event registration requirements.",
+  },
   cs2: {
     id: "cs2",
     name: "Counter-Strike 2",

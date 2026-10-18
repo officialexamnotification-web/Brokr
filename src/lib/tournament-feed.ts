@@ -21,7 +21,7 @@ export function filterTournamentEvents(filters: { gameId?: string; status?: Tour
     if (query && !`${event.name} ${event.gameName} ${event.organizer} ${event.region} ${event.location} ${(event.participants || []).join(' ')}`.toLowerCase().includes(query)) return false;
     return true;
   }).sort((a, b) => {
-    const rank = (status: TournamentStatus) => status === 'live' ? 0 : status === 'upcoming' ? 1 : status === 'completed' ? 2 : 3;
+    const rank = (status: TournamentStatus) => status === 'live' ? 0 : status === 'upcoming' ? 1 : status === 'postponed' ? 2 : status === 'completed' ? 3 : 4;
     const statusOrder = rank(a.status) - rank(b.status);
     if (statusOrder) return statusOrder;
     const aDate = a.startDate || '9999-12-31';
