@@ -108,13 +108,12 @@ const OFFICIAL_YOUTUBE_CHANNELS: Record<string, TournamentStream> = {
   'madden-mcs-27-most-feared-qualifier': { name: 'Madden NFL', url: 'https://www.youtube.com/@EAMaddenNFL', language: 'English', note: 'Official Madden NFL channel; MCS broadcasts may also be linked from EA channels.' },
   'dota2-ti-2026': { name: 'Dota 2', url: 'https://www.youtube.com/@DOTA2', language: 'English', note: 'Official Dota 2 channel; TI 2026 archived broadcasts are available here.' },
   'dota2-blast-slam-viii-2026': { name: 'BLAST Dota', url: 'https://www.youtube.com/@BLASTDota', language: 'English', note: 'BLAST lists this channel for official BLAST Slam VIII broadcasts.' },
+  'mlbb-mtc-turkiye-s8-2026': { name: 'Mobile Legends: Bang Bang Esports', url: 'https://www.youtube.com/@MLBBEsports', language: 'English', note: 'Official global MLBB esports channel; the Turkish event broadcast is linked separately above.' },
 };
 
 function getOfficialBroadcastStreams(event: TournamentEvent): TournamentStream[] {
-  const eventStream = event.streams || [];
   const channel = OFFICIAL_YOUTUBE_CHANNELS[event.id];
-  if (!channel || eventStream.some((stream) => stream.url === channel.url)) return eventStream;
-  return [...eventStream, channel];
+  return channel ? [channel] : [];
 }
 
 function gameGeneratorSlug(gameId: string) {
@@ -197,10 +196,62 @@ function TournamentSidebar({ events }: { events: TournamentEvent[] }) {
 
 function BroadcastSection({ event }: { event: TournamentEvent }) {
   const streams = getOfficialBroadcastStreams(event);
+  const eventChannel = event.broadcastChannel || event.streams?.[0];
+  const officialChannel = streams.find((stream) => stream.url !== eventChannel?.url);
   const videoEmbedUrl = getYouTubeEmbedUrl(event.videoUrl);
-  const hasBroadcast = Boolean(streams.length || event.broadcastTalents?.length || videoEmbedUrl);
-  const availabilityLabel = videoEmbedUrl ? 'Verified event video' : streams.length ? 'Official channel available' : 'Awaiting verified link';
-  return <section className="rounded-2xl border border-red-400/25 bg-red-500/[0.03] p-5"><div className="mb-4 flex flex-wrap items-start justify-between gap-3"><div><p className="text-[10px] font-black uppercase tracking-[0.14em] text-red-300">Broadcast</p><h2 className="mt-1 font-semibold text-white">Official streams and video</h2></div><span className={`rounded-full border px-2 py-1 text-[10px] font-black uppercase tracking-wide ${hasBroadcast ? 'border-emerald-400/25 bg-emerald-500/10 text-emerald-300' : 'border-amber-400/25 bg-amber-500/10 text-amber-300'}`}>{availabilityLabel}</span></div>{videoEmbedUrl && <><div className="overflow-hidden rounded-xl border border-slate-800 bg-black"><iframe className="aspect-video w-full" src={videoEmbedUrl} title={event.videoTitle || `${event.name} official YouTube video`} loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen referrerPolicy="strict-origin-when-cross-origin" /></div>{event.videoTitle && <p className="mt-2 text-xs font-semibold text-slate-300">{event.videoTitle}</p>}</>}{!videoEmbedUrl && streams.length > 0 && <div className="mt-4 rounded-xl border border-amber-400/20 bg-amber-500/5 p-4"><p className="text-xs font-bold text-amber-200">No event-specific video is verified for embedding here.</p><p className="mt-1 text-xs leading-5 text-slate-400">Open the official broadcaster channel below to check its live schedule or archived tournament VODs. This page links the channel rather than guessing a video URL.</p></div>}{streams.length ? <div className="mt-4 grid gap-3 sm:grid-cols-2">{streams.map((stream) => <a key={stream.url} href={stream.url} target="_blank" rel="noreferrer" className="group rounded-xl border border-slate-800 bg-[#080d1a] p-4 transition hover:border-red-400/40"><div className="flex items-start justify-between gap-3"><span className="font-bold text-white group-hover:text-red-200">{stream.name}</span><ExternalLink className="h-4 w-4 shrink-0 text-slate-500 group-hover:text-red-300" /></div>{stream.language && <p className="mt-2 text-xs font-semibold uppercase tracking-wide text-red-300">{stream.language} stream</p>}{stream.note && <p className="mt-2 text-xs leading-5 text-slate-500">{stream.note}</p>}</a>)}</div> : null}{event.broadcastTalents?.length ? <p className="mt-4 text-xs leading-5 text-slate-500"><span className="font-bold text-slate-300">Broadcast talents:</span> {event.broadcastTalents.join(' · ')}</p> : null}{!hasBroadcast && <p className="mt-2 text-sm leading-6 text-slate-400">The linked organiser or publisher has not exposed a verified YouTube video or stream URL for this event yet. The source link below remains the authoritative update.</p>}</section>;
+  const hasBroadcast = Boolean(eventChannel || streams.length || event.broadcastTalents?.length || videoEmbedUrl);
+  const availabilityLabel = videoEmbedUrl ? 'Verified event video' : eventChannel ? 'Event broadcaster linked' : streams.length ? 'Official channel available' : 'Awaiting verified link';
+  return (
+    <section className="rounded-2xl border border-red-400/25 bg-red-500/[0.03] p-5">
+      <div className="mb-4 flex flex-wrap items-start justify-between gap-3">
+        <div>
+          <p className="text-[10px] font-black uppercase tracking-[0.14em] text-red-300">Broadcast</p>
+          <h2 className="mt-1 font-semibold text-white">Official streams and video</h2>
+        </div>
+        <span className={`rounded-full border px-2 py-1 text-[10px] font-black uppercase tracking-wide ${hasBroadcast ? 'border-emerald-400/25 bg-emerald-500/10 text-emerald-300' : 'border-amber-400/25 bg-amber-500/10 text-amber-300'}`}>
+          {availabilityLabel}
+        </span>
+      </div>
+      {videoEmbedUrl && (
+        <>
+          <div className="overflow-hidden rounded-xl border border-slate-800 bg-black">
+            <iframe className="aspect-video w-full" src={videoEmbedUrl} title={event.videoTitle || `${event.name} official YouTube video`} loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen referrerPolicy="strict-origin-when-cross-origin" />
+          </div>
+          {event.videoTitle && <p className="mt-2 text-xs font-semibold text-slate-300">{event.videoTitle}</p>}
+        </>
+      )}
+      {!videoEmbedUrl && (
+        <div className="mt-4 rounded-xl border border-amber-400/20 bg-amber-500/5 p-4">
+          <p className="text-xs font-bold text-amber-200">No verified event-specific video is embedded on this page.</p>
+          <p className="mt-1 text-xs leading-5 text-slate-400">Use the tournament broadcaster or official channel below to open its scheduled stream or archived VOD. The page does not guess a video URL.</p>
+        </div>
+      )}
+      <div className="mt-4 grid gap-3 sm:grid-cols-2">
+        {eventChannel && (
+          <a href={eventChannel.url} target="_blank" rel="noreferrer" className="group rounded-xl border border-red-400/20 bg-[#080d1a] p-4 transition hover:border-red-400/50">
+            <div className="flex items-start justify-between gap-3">
+              <span><span className="block text-[10px] font-black uppercase tracking-wide text-red-300">{streams.some((stream) => stream.url === eventChannel.url) ? 'Tournament broadcaster · official channel' : 'Tournament broadcaster'}</span><span className="mt-1 block font-bold text-white group-hover:text-red-200">{eventChannel.name}</span></span>
+              <ExternalLink className="h-4 w-4 shrink-0 text-slate-500 group-hover:text-red-300" />
+            </div>
+            {eventChannel.language && <p className="mt-2 text-xs font-semibold uppercase tracking-wide text-red-300">{eventChannel.language} broadcast</p>}
+            {eventChannel.note && <p className="mt-2 text-xs leading-5 text-slate-500">{eventChannel.note}</p>}
+          </a>
+        )}
+        {officialChannel && (
+          <a href={officialChannel.url} target="_blank" rel="noreferrer" className="group rounded-xl border border-slate-800 bg-[#080d1a] p-4 transition hover:border-red-400/40">
+            <div className="flex items-start justify-between gap-3">
+              <span><span className="block text-[10px] font-black uppercase tracking-wide text-slate-400">Official game / organizer channel</span><span className="mt-1 block font-bold text-white group-hover:text-red-200">{officialChannel.name}</span></span>
+              <ExternalLink className="h-4 w-4 shrink-0 text-slate-500 group-hover:text-red-300" />
+            </div>
+            {officialChannel.language && <p className="mt-2 text-xs font-semibold uppercase tracking-wide text-red-300">{officialChannel.language} channel</p>}
+            {officialChannel.note && <p className="mt-2 text-xs leading-5 text-slate-500">{officialChannel.note}</p>}
+          </a>
+        )}
+      </div>
+      {!eventChannel && !officialChannel && <p className="mt-2 text-sm leading-6 text-slate-400">No tournament broadcaster YouTube channel has been verified yet. The organiser source remains the authoritative update.</p>}
+      {event.broadcastTalents?.length ? <p className="mt-4 text-xs leading-5 text-slate-500"><span className="font-bold text-slate-300">Broadcast talents:</span> {event.broadcastTalents.join(' · ')}</p> : null}
+    </section>
+  );
 }
 
 function ArticleView({ article, event }: { article?: TournamentNews; event?: TournamentEvent }) {

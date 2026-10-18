@@ -75,6 +75,8 @@ export interface TournamentEvent {
   stages?: TournamentStage[];
   matches?: TournamentMatch[];
   streams?: TournamentStream[];
+  /** Event-specific YouTube channel confirmed as the tournament's broadcaster. */
+  broadcastChannel?: TournamentStream;
   broadcastTalents?: string[];
   standings?: TournamentStanding[];
   results?: TournamentResult[];
@@ -136,9 +138,7 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
       { name: 'Regular Season', dates: '12 Sep – 18 Oct 2026', format: 'Double round robin · all matches Bo3', status: 'Latest table checked 18 Oct', note: '2-0 win = 3 points; 2-1 win = 2; 1-2 loss = 1; 0-2 loss = 0. Top six advance. Week 6 match results remain subject to the organiser’s live results update.' },
       { name: 'Playoffs', dates: '24 Oct – 7 Nov 2026', format: 'Double elimination', status: 'Upcoming', note: 'Champion qualifies for M8 World Championship; runner-up qualifies for the M8 Wildcard.' },
     ],
-    streams: [
-      { name: 'Mobile Legends: Bang Bang Türkiye', url: 'https://www.youtube.com/@mobilelegendstr', language: 'Turkish', note: 'Official YouTube channel; use it for the current MTC broadcast when a live video is scheduled.' },
-    ],
+    broadcastChannel: { name: 'Mobile Legends: Bang Bang Türkiye', url: 'https://www.youtube.com/@mobilelegendstr', language: 'Turkish', note: 'The tournament’s Turkish broadcast channel; the linked event stream is the MTC Season 8 broadcast.' },
     broadcastTalents: ['Gtrst', 'Jhonnie', 'Mehitra', 'Murano'],
     videoUrl: 'https://www.youtube.com/watch?v=4aY4YlWjj4o',
     videoTitle: 'Official MTC Season 8 · League Stage · Week 6 Day 2 broadcast',
@@ -248,6 +248,7 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
     ],
     videoUrl: 'https://www.youtube.com/watch?v=M7VmHilvBmM',
     videoTitle: 'PMWC at EWC 26 · Official Finals VOD · Esports World Cup',
+    broadcastChannel: { name: 'PUBG MOBILE Esports', url: 'https://www.youtube.com/@PUBGMOBILEEsports', language: 'English', note: 'Official PUBG MOBILE Esports channel carrying the global PMWC broadcast.' },
   },
   {
     id: 'pubgm-pmgc-2026', slug: 'pubgm-pmgc-2026', gameId: 'pubg', gameName: 'PUBG Mobile',
@@ -277,6 +278,7 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
     ],
     videoUrl: 'https://www.youtube.com/watch?v=g5d7jmFHd34',
     videoTitle: 'PUBG Asia Stars 2026 · Official Vietnam Day 1 broadcast',
+    broadcastChannel: { name: 'PUBG: BATTLEGROUNDS Vietnam', url: 'https://www.youtube.com/PUBGBattlegroundsVietnam', language: 'Vietnamese', note: 'PUBG’s official Vietnam event notice names this YouTube channel for the regional broadcast. The embedded Day 1 VOD is published by the event’s Vietnamese broadcast partner.' },
   },
   {
     id: 'free-fire-ffws-global-finals-2026', slug: 'free-fire-ffws-global-finals-2026', gameId: 'freefire', gameName: 'Free Fire',
@@ -335,6 +337,7 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
       { name: 'Playoffs · Spodek Arena', dates: '9–11 Oct 2026', format: 'Eight-team single-elimination bracket. Quarterfinals, semifinals and third-place decider were best-of-three; Grand Final was best-of-five.', status: 'Completed' },
       { name: 'Grand Final', dates: '11 Oct 2026', format: 'Team Vitality defeated MOUZ 3–0: Cache 13–8, Inferno 13–7, Dust2 16–12.', status: 'Completed', note: 'ZywOo received the DHL MVP award.' },
     ],
+    broadcastChannel: { name: 'ESL Counter-Strike', url: 'https://www.youtube.com/@ESLCS/streams', language: 'English', note: 'ESL confirms Season 24 live coverage on its official Counter-Strike YouTube channel; the channel archive contains the event broadcasts.' },
     results: [
       { placement: '1st', participant: 'Team Vitality', result: '3–0 vs MOUZ · Champions', award: '$125,000 player winnings + $170,000 club prize' },
       { placement: '2nd', participant: 'MOUZ', result: '0–3 vs Team Vitality · Grand Final runner-up', award: '$50,000 player winnings + $125,000 club prize' },
@@ -435,6 +438,7 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
     participantsLabel: 'Qualified teams',
     participantsSourceUrl: 'https://www.rocketleague.com/news/2026-rocket-league-world-championship-primer',
     participantsSourceName: 'Rocket League Esports',
+    broadcastChannel: { name: 'Rocket League Esports', url: 'https://www.youtube.com/@RocketLeagueEsports', language: 'English', note: 'Official Rocket League Esports channel; linked event VOD is its Championship Sunday broadcast.' },
     videoUrl: 'https://www.youtube.com/watch?v=2YjJAB4aGPo',
     videoTitle: 'RLCS World Championship 2026 · Championship Sunday · Official Rocket League broadcast',
   },
@@ -512,6 +516,7 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
       { name: 'Last Chance Qualifier · Day 2', dates: '6 Sep 2026', format: 'The bracket concluded and the final World Finals qualification place was decided.', status: 'Completed' },
     ],
     results: [{ placement: '1st', participant: 'Woo', result: 'Last Chance Qualifier winner', award: 'Qualified for the Clash Royale League World Finals' }],
+    broadcastChannel: { name: 'Clash Royale Esports', url: 'https://www.youtube.com/@esportsroyale', language: 'English', note: 'Official CRL channel that published both Last Chance Qualifier day broadcasts.' },
     videoUrl: 'https://www.youtube.com/watch?v=ati2w8Dei8A',
     videoTitle: 'Last Chance Qualifier · Day 2 · Clash Royale League 2026 · Official broadcast',
   },
@@ -636,6 +641,7 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
       { placement: '1st', participant: 'Team Spirit', result: '3–2 vs TEAM VISION · Champions', award: 'Aegis of Champions' },
       { placement: '2nd', participant: 'TEAM VISION', result: '2–3 vs Team Spirit · Grand Final runner-up' },
     ],
+    broadcastChannel: { name: 'Dota 2', url: 'https://www.youtube.com/@DOTA2', language: 'English', note: 'Valve’s official Dota 2 channel; the International 2026 broadcasts and replay are published here.' },
     videoUrl: 'https://www.youtube.com/watch?v=GMbjTK8UVks',
     videoTitle: 'The International 2026 · Grand Finals Day · Official Dota 2 broadcast',
   },
@@ -661,6 +667,7 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
       { placement: '3rd', participant: 'PARIVISION', result: 'Defeated Aurora 2–0 in the Lower Bracket semifinal', award: '$95,000' },
       { placement: '4th', participant: 'Aurora', result: 'Lost 0–2 to PARIVISION in the Lower Bracket semifinal', award: '$65,000' },
     ],
+    broadcastChannel: { name: 'BLAST Dota', url: 'https://www.youtube.com/@BLASTDota', language: 'English', note: 'BLAST’s official Dota channel used for BLAST Slam VIII broadcasts.' },
   },
 ];
 
