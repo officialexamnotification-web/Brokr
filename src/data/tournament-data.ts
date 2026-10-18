@@ -132,6 +132,8 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
       { name: 'Mobile Legends: Bang Bang Türkiye', url: 'https://www.youtube.com/@mobilelegendstr', language: 'Turkish', note: 'Official YouTube channel; use it for the current MTC broadcast when a live video is scheduled.' },
     ],
     broadcastTalents: ['Gtrst', 'Jhonnie', 'Mehitra', 'Murano'],
+    videoUrl: 'https://www.youtube.com/watch?v=4aY4YlWjj4o',
+    videoTitle: 'Official MTC Season 8 · League Stage · Week 6 Day 2 broadcast',
     standings: [
       { rank: 1, team: 'Aurora Gaming', matchRecord: '11–1', gameRecord: '23–4', gameDiff: '+19', points: 32, qualification: 'Playoffs' },
       { rank: 2, team: 'FUT Esports', matchRecord: '10–2', gameRecord: '21–6', gameDiff: '+15', points: 29, qualification: 'Playoffs' },
@@ -162,7 +164,13 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
       { date: '10 Oct 2026', stage: 'Regular Season · Week 5', left: 'Aurora Gaming', right: 'DIA Ozarox', status: 'completed', result: '1–2' },
       { date: '11 Oct 2026', stage: 'Regular Season · Week 5', left: 'Aurora Gaming', right: 'Boostgate Esports', status: 'completed', result: '2–0' },
       { date: '17 Oct 2026', stage: 'Regular Season · Week 6', left: 'Aurora Gaming', right: 'Bushido Wildcats', status: 'scheduled', result: 'Awaiting published result' },
-      { date: '18 Oct 2026', stage: 'Regular Season · Week 6', left: 'Aurora Gaming', right: 'FUT Esports', status: 'scheduled', result: 'Awaiting published result' },
+      { date: '17 Oct 2026', stage: 'Regular Season · Week 6', left: 'IDA Esports', right: 'Dark Passage', status: 'scheduled', result: 'Awaiting published result' },
+      { date: '17 Oct 2026', stage: 'Regular Season · Week 6', left: 'DIA Ozarox', right: 'PCIFIC Esports', status: 'scheduled', result: 'Awaiting published result' },
+      { date: '17 Oct 2026', stage: 'Regular Season · Week 6', left: 'Boostgate Esports', right: 'FUT Esports', status: 'scheduled', result: 'Awaiting published result' },
+      { date: '18 Oct 2026', stage: 'Regular Season · Week 6', left: 'PCIFIC Esports', right: 'IDA Esports', status: 'scheduled', result: 'Awaiting published result' },
+      { date: '18 Oct 2026', stage: 'Regular Season · Week 6', left: 'Dark Passage', right: 'Boostgate Esports', status: 'scheduled', result: 'Awaiting published result' },
+      { date: '18 Oct 2026', stage: 'Regular Season · Week 6', left: 'FUT Esports', right: 'Aurora Gaming', status: 'scheduled', result: 'Awaiting published result' },
+      { date: '18 Oct 2026', stage: 'Regular Season · Week 6', left: 'Bushido Wildcats', right: 'DIA Ozarox', status: 'scheduled', result: 'Awaiting published result' },
     ],
   },
   {
