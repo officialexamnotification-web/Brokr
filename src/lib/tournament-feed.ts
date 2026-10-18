@@ -18,8 +18,15 @@ export function filterTournamentEvents(filters: { gameId?: string; status?: Tour
   return getTournamentEvents().filter((event) => {
     if (filters.gameId && event.gameId !== filters.gameId) return false;
     if (filters.status && event.status !== filters.status) return false;
-    if (query && !`${event.name} ${event.gameName} ${event.organizer} ${event.region}`.toLowerCase().includes(query)) return false;
+    if (query && !`${event.name} ${event.gameName} ${event.organizer} ${event.region} ${event.location} ${(event.participants || []).join(' ')}`.toLowerCase().includes(query)) return false;
     return true;
+  }).sort((a, b) => {
+    const rank = (status: TournamentStatus) => status === 'live' ? 0 : status === 'upcoming' ? 1 : status === 'completed' ? 2 : 3;
+    const statusOrder = rank(a.status) - rank(b.status);
+    if (statusOrder) return statusOrder;
+    const aDate = a.startDate || '9999-12-31';
+    const bDate = b.startDate || '9999-12-31';
+    return a.status === 'completed' ? bDate.localeCompare(aDate) : aDate.localeCompare(bDate);
   });
 }
 

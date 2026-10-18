@@ -15,6 +15,7 @@ export interface TournamentEvent {
   region: string;
   location: string;
   prizePool?: string;
+  prizeDistribution?: Array<{ placement: string; playerPrize: string; clubReward: string }>;
   teams?: number;
   /** Named entrants confirmed for this event or event stage. */
   participants?: string[];
@@ -189,13 +190,23 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
     id: 'cs2-pgl-masters-bucharest-2026', slug: 'cs2-pgl-masters-bucharest-2026', gameId: 'cs2', gameName: 'Counter-Strike 2',
     name: 'PGL Masters Bucharest 2026', organizer: 'PGL', startDate: '2026-10-24', endDate: '2026-10-31', dateLabel: '24–31 Oct 2026',
     region: 'Global', location: 'Bucharest, Romania', prizePool: '$1,250,000', teams: 16,
-    format: 'Group stage, playoffs and third-place match; 16 teams', status: 'upcoming',
-    sourceUrl: 'https://blast.tv/cs/tournaments', sourceName: 'BLAST.tv Counter-Strike calendar', updatedAt: '2026-10-16',
-    summary: 'The event page lists 16 teams and a $1.25 million total prize pool. PGL’s event is scheduled at its Bucharest studio from 24 to 31 October.',
+    format: '16-team LAN event; PGL has not published the stage-by-stage format on its event page', status: 'upcoming',
+    sourceUrl: 'https://www.pglesports.com/cs2/pgl-masters-bucharest-2026/', sourceName: 'PGL Esports — official event page', updatedAt: '2026-10-18',
+    summary: 'PGL confirms an eight-day, 16-team LAN tournament at PGL Studios in Bucharest from 24–31 October. The $1.25 million total consists of $625,000 in player prize money and $625,000 in club rewards; PGL publishes the placement breakdown on its event page.',
+    prizeDistribution: [
+      { placement: '1st', playerPrize: '$225,000', clubReward: '$225,000' },
+      { placement: '2nd', playerPrize: '$100,000', clubReward: '$100,000' },
+      { placement: '3rd', playerPrize: '$68,750', clubReward: '$68,750' },
+      { placement: '4th', playerPrize: '$43,750', clubReward: '$43,750' },
+      { placement: '5th–8th', playerPrize: '$25,000 each', clubReward: '$25,000 each' },
+      { placement: '9th–11th', playerPrize: '$15,625 each', clubReward: '$15,625 each' },
+      { placement: '12th–14th', playerPrize: '$9,375 each', clubReward: '$9,375 each' },
+      { placement: '15th–16th', playerPrize: '$6,250 each', clubReward: '$6,250 each' },
+    ],
     participants: ['Team Spirit', 'Team Vitality', 'Natus Vincere', 'FURIA', 'MOUZ', 'Legacy', 'Aurora Gaming', 'G2 Esports', 'BetBoom Team', 'FUT Esports', '9z Team', 'The MongolZ', 'Nemiga Gaming', 'Team Liquid', 'DENDELE', 'TYLOO'],
     participantsLabel: 'Invited teams',
-    participantsSourceUrl: 'https://blast.tv/cs/tournaments/pgl-belgrade-2026',
-    participantsSourceName: 'BLAST.tv event page (PGL Masters Bucharest)',
+    participantsSourceUrl: 'https://www.hltv.org/events/8050/pgl-masters-bucharest-2026',
+    participantsSourceName: 'HLTV.org participant coverage; event details from PGL',
   },
   {
     id: 'cs2-pgl-singapore-major-2026', slug: 'cs2-pgl-singapore-major-2026', gameId: 'cs2', gameName: 'Counter-Strike 2',
@@ -934,11 +945,12 @@ export function statusForEvent(event: Pick<TournamentEvent, 'startDate' | 'endDa
   // When dates are unknown, preserve an explicit completed state and otherwise
   // avoid showing a stale live badge.
   if (!event.startDate) return event.status === 'completed' ? 'completed' : 'upcoming';
-  const start = new Date(`${event.startDate}T00:00:00Z`).getTime();
-  const end = new Date(`${event.endDate || event.startDate}T23:59:59.999Z`).getTime();
-  const timestamp = now.getTime();
-  if (timestamp < start) return 'upcoming';
-  if (timestamp <= end) return 'live';
+  // Tournament dates are calendar dates, not timestamps. Comparing parsed UTC
+  // midnights made an event ending today appear completed for part of the day
+  // in many time zones. Keep the published end date inclusive.
+  const today = now.toISOString().slice(0, 10);
+  if (today < event.startDate) return 'upcoming';
+  if (today <= (event.endDate || event.startDate)) return 'live';
   return 'completed';
 }
 
