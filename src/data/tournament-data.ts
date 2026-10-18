@@ -2,6 +2,31 @@ import { POPULAR_GAMES } from './games.js';
 
 export type TournamentStatus = 'upcoming' | 'live' | 'completed' | 'cancelled' | 'draft';
 
+export interface TournamentStage {
+  name: string;
+  dates?: string;
+  format?: string;
+  status?: string;
+  note?: string;
+}
+
+export interface TournamentMatch {
+  date: string;
+  stage: string;
+  left: string;
+  right: string;
+  status?: 'scheduled' | 'completed' | 'live';
+  result?: string;
+  sourceUrl?: string;
+}
+
+export interface TournamentStream {
+  name: string;
+  url: string;
+  language?: string;
+  note?: string;
+}
+
 export interface TournamentEvent {
   id: string;
   slug: string;
@@ -24,6 +49,12 @@ export interface TournamentEvent {
   participantsSourceUrl?: string;
   participantsSourceName?: string;
   format?: string;
+  stages?: TournamentStage[];
+  matches?: TournamentMatch[];
+  streams?: TournamentStream[];
+  broadcastTalents?: string[];
+  videoUrl?: string;
+  videoTitle?: string;
   status: TournamentStatus;
   sourceUrl: string;
   sourceName: string;
@@ -62,6 +93,28 @@ export interface TournamentSource {
 }
 
 export const TOURNAMENT_EVENTS: TournamentEvent[] = [
+  {
+    id: 'mlbb-mtc-turkiye-s8-2026', slug: 'mlbb-mtc-turkiye-s8-2026', gameId: 'mobile_legends', gameName: 'MLBB',
+    name: 'MTC Türkiye Championship Season 8', organizer: 'Moonton and ESA Esports',
+    startDate: '2026-09-12', endDate: '2026-11-07', dateLabel: '12 Sep – 7 Nov 2026',
+    region: 'Türkiye', location: 'Istanbul, Türkiye', prizePool: '₺1,750,000 TRY (about US$35,344)', teams: 8,
+    format: 'Online regular season followed by an offline playoff stage; all regular-season matches are best-of-three', status: 'live',
+    sourceUrl: 'https://liquipedia.net/mobilelegends/MTC_Turkiye_Championship/Season_8', sourceName: 'Liquipedia tournament record', updatedAt: '2026-10-18',
+    summary: 'The eighth MTC Türkiye season is in its final regular-season week. The verified event record lists eight teams, a double round robin, a top-six playoff cut and qualification for the M8 World Championship and Wildcard.',
+    participants: ['Aurora Gaming', 'FUT Esports', 'Dark Passage', 'DIA Ozarox', 'Bushido Wildcats', 'PCIFIC Esports', 'Boostgate Esports', 'IDA Esports'],
+    participantsLabel: 'Participating teams',
+    participantsNote: 'Six teams advance from the regular season to playoffs. Team names and qualification routes are taken from the linked tournament record; player rosters can change during the season.',
+    participantsSourceUrl: 'https://liquipedia.net/mobilelegends/MTC_Turkiye_Championship/Season_8',
+    participantsSourceName: 'Liquipedia tournament record',
+    stages: [
+      { name: 'Regular Season', dates: '12 Sep – 18 Oct 2026', format: 'Double round robin · all matches Bo3', status: 'In progress through 18 Oct', note: '2-0 win = 3 points; 2-1 win = 2; 1-2 loss = 1; 0-2 loss = 0. Top six advance.' },
+      { name: 'Playoffs', dates: '24 Oct – 7 Nov 2026', format: 'Double elimination', status: 'Upcoming', note: 'Champion qualifies for M8 World Championship; runner-up qualifies for the M8 Wildcard.' },
+    ],
+    streams: [
+      { name: 'Mobile Legends: Bang Bang Türkiye', url: 'https://www.youtube.com/@mobilelegendstr', language: 'Turkish', note: 'Official YouTube channel; use it for the current MTC broadcast when a live video is scheduled.' },
+    ],
+    broadcastTalents: ['Gtrst', 'Jhonnie', 'Mehitra', 'Murano'],
+  },
   {
     id: 'bgmi-bmsd-2026', slug: 'bgmi-bmsd-2026', gameId: 'bgmi', gameName: 'BGMI',
     name: 'Battlegrounds Mobile India Showdown 2026 (BMSD)', organizer: 'KRAFTON India',
