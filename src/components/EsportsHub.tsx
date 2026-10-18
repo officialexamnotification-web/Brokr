@@ -205,7 +205,7 @@ function BroadcastSection({ event }: { event: TournamentEvent }) {
   const officialChannel = streams.find((stream) => stream.url !== eventChannel?.url);
   const videoEmbedUrl = getYouTubeEmbedUrl(event.videoUrl);
   const hasBroadcast = Boolean(eventChannel || streams.length || event.broadcastTalents?.length || videoEmbedUrl);
-  const availabilityLabel = videoEmbedUrl ? 'Verified event video' : eventChannel ? 'Event broadcaster linked' : streams.length ? 'Official channel available' : 'Awaiting verified link';
+  const availabilityLabel = videoEmbedUrl ? 'Verified event video' : event.videos?.length ? 'Official event VODs available' : eventChannel ? 'Event broadcaster linked' : streams.length ? 'Official channel available' : 'Awaiting verified link';
   return (
     <section className="rounded-2xl border border-red-400/25 bg-red-500/[0.03] p-5">
       <div className="mb-4 flex flex-wrap items-start justify-between gap-3">
@@ -225,7 +225,7 @@ function BroadcastSection({ event }: { event: TournamentEvent }) {
           {event.videoTitle && <p className="mt-2 text-xs font-semibold text-slate-300">{event.videoTitle}</p>}
         </>
       )}
-      {!videoEmbedUrl && (
+      {!videoEmbedUrl && !event.videos?.length && (
         <div className="mt-4 rounded-xl border border-amber-400/20 bg-amber-500/5 p-4">
           <p className="text-xs font-bold text-amber-200">No verified event-specific video is embedded on this page.</p>
           <p className="mt-1 text-xs leading-5 text-slate-400">Use the event-specific YouTube search below or the tournament broadcaster’s channel to find its stream or archived VOD. The page does not guess a video URL.</p>
@@ -256,6 +256,7 @@ function BroadcastSection({ event }: { event: TournamentEvent }) {
           </a>
         )}
       </div>
+      {event.videos?.length ? <div className="mt-4"><p className="mb-2 text-[10px] font-black uppercase tracking-wide text-red-300">More official event VODs</p><div className="grid gap-2 sm:grid-cols-2">{event.videos.map((video) => <a key={video.url} href={video.url} target="_blank" rel="noreferrer" className="flex items-start justify-between gap-3 rounded-xl border border-slate-800 bg-[#080d1a] p-3 transition hover:border-red-400/40"><span><span className="block text-xs font-bold text-white">{video.name}</span>{video.language && <span className="mt-1 block text-[10px] uppercase text-slate-500">{video.language} · official replay</span>}{video.note && <span className="mt-1 block text-[11px] leading-5 text-slate-500">{video.note}</span>}</span><ExternalLink className="mt-0.5 h-4 w-4 shrink-0 text-red-300" /></a>)}</div></div> : null}
       {!eventChannel && !officialChannel && <p className="mt-2 text-sm leading-6 text-slate-400">No tournament broadcaster YouTube channel has been verified yet. The organiser source remains the authoritative update.</p>}
       {event.broadcastTalents?.length ? <p className="mt-4 text-xs leading-5 text-slate-500"><span className="font-bold text-slate-300">Broadcast talents:</span> {event.broadcastTalents.join(' · ')}</p> : null}
     </section>
