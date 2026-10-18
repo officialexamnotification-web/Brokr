@@ -227,7 +227,7 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
     id: 'pubgm-pmps-korea-s2-2026', slug: 'pubgm-pmps-korea-s2-2026', gameId: 'pubg', gameName: 'PUBG Mobile',
     name: 'PUBG MOBILE Pro Series Korea 2026 Season 2', organizer: 'PUBG MOBILE Esports Korea',
     startDate: '2026-10-03', endDate: '2026-10-18', dateLabel: '3–18 Oct 2026', region: 'South Korea', location: 'Daejeon Dream Arena',
-    prizePool: '₩40,000,000', teams: 16, format: 'Five circuit days followed by two Finals days; six matches per day', status: 'upcoming',
+    prizePool: '₩40,000,000', teams: 16, format: 'Five circuit days followed by two Finals days; six matches per day', status: 'completed',
     sourceUrl: 'https://esports.pubgmobile.kr/en/news/208', sourceName: 'PUBG MOBILE Esports Korea', updatedAt: '2026-10-18',
     summary: 'The official notice schedules PMPS Korea Season 2 Finals for 17–18 October at 3 p.m. KST, with six matches per day. It confirms 16 teams, Daejeon Dream Arena and a ₩40 million prize pool. The champion qualifies for PMGC 2026; places 1–3 qualify for BMIC, subject to the duplicate-slot rule. The public schedule checked today does not expose a final standings table, so no final score or winner is claimed.',
     participants: ['5Hz', 'APEX', 'Chungnam CNJ esports', 'DAEJEON GAME PT', 'Dplus Kia', 'FN SEJONG', 'FOCUS', 'G.N. Revenant NOVA', 'GyeongBuk Ascenders', 'INCHEON WAVE', 'Jeonnam Esports', 'KIWOOM DRX', 'KX GAMING', 'NS RedForce', 'Re Mind', 'TEAM CG'],
@@ -236,11 +236,11 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
     participantsSourceName: 'PUBG MOBILE Esports Korea',
     stages: [
       { name: 'Circuit Stage · Days 1–5', dates: '3–4 and 9–11 Oct 2026', format: 'Six matches per day; daily standings reset. The top three teams each day earn benefit points for the Finals.', status: 'Completed' },
-      { name: 'Finals · Day 1', dates: '17 Oct 2026 · 15:00 KST', format: 'Six matches at Daejeon Esports Arena; benefit points carry into the Finals.', status: 'Live / results pending', note: 'The official schedule shows this day as live, but the organizer standings page did not return a published table when checked.' },
-      { name: 'Finals · Day 2', dates: '18 Oct 2026 · 15:00 KST', format: 'Six matches at Daejeon Esports Arena; combined Finals scoring determines champion and PMGC/BMIC qualification.', status: 'Scheduled', note: 'The checked organizer schedule still lists Day 2 as scheduled. No final score or champion is claimed.' },
+      { name: 'Finals · Day 1', dates: '17 Oct 2026 · 15:00 KST', format: 'Six matches at Daejeon Esports Arena; benefit points carry into the Finals.', status: 'Scheduled window passed · results unverified', note: 'The organizer schedule window has passed, but the public standings page did not expose final Day 1 scores when checked.' },
+      { name: 'Finals · Day 2', dates: '18 Oct 2026 · 15:00 KST', format: 'Six matches at Daejeon Esports Arena; combined Finals scoring determines champion and PMGC/BMIC qualification.', status: 'Scheduled window passed · results unverified', note: '15:00 KST has passed. The public organizer schedule still shows the fixture as scheduled and its standings page does not expose a final table; no champion or score is inferred.' },
     ],
     broadcastChannel: { name: 'PUBG MOBILE Esports Korea', url: 'https://www.youtube.com/@pubgmesportskr', language: 'Korean', note: 'Official Korean PUBG MOBILE Esports channel; the organizer schedule links the event VODs and match results.' },
-    participantsNote: 'The 16-team field is published on the organizer event page. Full match-by-match scoring is not yet exposed on the checked official standings page.',
+    participantsNote: 'The 16-team field is published on the organizer event page. The finals schedule has elapsed, but final match-by-match scoring was not exposed on the official standings page checked on 18 October.',
   },
   {
     id: 'pubgm-pmwc-ewc-2026', slug: 'pubgm-pmwc-ewc-2026', gameId: 'pubg', gameName: 'PUBG Mobile',
@@ -541,9 +541,9 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
     id: 'brawl-stars-october-event-weekend-2026', slug: 'brawl-stars-october-event-weekend-2026', gameId: 'brawl_stars', gameName: 'Brawl Stars',
     name: 'Brawl Stars Championship broadcast weekend', organizer: 'Supercell', startDate: '2026-10-17', endDate: '2026-10-18', dateLabel: '17–18 Oct 2026',
     region: 'Global', location: 'Online broadcast',
-    format: 'Two broadcast days; match title and full schedule are shown on the official event hub', status: 'upcoming',
+    format: 'Two broadcast days; match title and full schedule are shown on the official event hub', status: 'completed',
     sourceUrl: 'https://event.supercell.com/brawlstars/en/?pog=true', sourceName: 'Brawl Stars Championship', updatedAt: '2026-10-18',
-    summary: 'Supercell’s official hub lists broadcast Day 1 on 17 October and Day 2 on 18 October at 05:00 UTC. The visible leaderboard is dated 17 October; the checked hub does not confirm Day 2 results or identify all matchups. Follow the official stream/results page for the current bracket.',
+    summary: 'Supercell’s official hub scheduled broadcast Day 1 on 17 October and Day 2 on 18 October at 05:00 UTC. The broadcast window has passed. The checked official hub does not expose verified Day 2 results or identify all matchups, so this record marks the event window completed without claiming a winner or scores.',
   },
   {
     id: 'coc-world-championship-2026-lcq', slug: 'coc-world-championship-2026-lcq', gameId: 'clash_of_clans', gameName: 'Clash of Clans',
@@ -1254,15 +1254,15 @@ const CURATED_TOURNAMENT_NEWS: TournamentNews[] = [
   },
   {
     id: 'news-coc-world-championship-lcq-2026', slug: 'news-coc-world-championship-lcq-2026', gameId: 'clash_of_clans', gameName: 'Clash of Clans',
-    title: 'Clash of Clans World Championship adds an October Last Chance Qualifier',
-    excerpt: 'The top eight unqualified teams on the leaderboard compete for the final three Golden Tickets.',
+    title: 'Tribe Gaming wins Clash of Clans World Championship Last Chance Qualifier',
+    excerpt: 'Tribe Gaming, CB7 Esports and MG Esports claimed the three Golden Tickets to the World Finals.',
     content: [
-      'Supercell’s 2026 competition guide says the eight highest-ranked teams that have not qualified for World Finals will meet in an October Last Chance Qualifier. The top three earn the remaining Golden Tickets.',
-      'The World Championship’s announced season prize pool is $1 million, and eight teams will contest the World Finals. Four monthly qualifier winners from June through September and the Chinese qualifier contribute Golden Ticket places.',
-      'Supercell has not listed exact LCQ match dates or its venue on the linked guide. Those details remain pending an organizer update.',
+      'Supercell’s official event hub links the matches and results for the October Last Chance Qualifier. Tribe Gaming won the eight-team, double-elimination LCQ on 11 October; CB7 Esports and MG Esports also earned the three Golden Tickets to the World Finals.',
+      'The LCQ is complete. The announced $1 million prize pool applies to the overall 2026 World Championship season, not to the qualifier alone.',
+      'The organizer’s event hub is the primary source for the bracket, Golden Ticket teams and match replays.',
     ],
-    tournamentName: 'Clash of Clans World Championship 2026 Last Chance Qualifier', status: 'upcoming', publishedAt: '2026-10-02', updatedAt: '2026-10-18',
-    sourceUrl: 'https://event.supercell.com/clashofclans/en/cups/world-championship/how-to-compete', sourceName: 'Clash of Clans World Championship Series', sourceVerified: true,
+    tournamentName: 'Clash of Clans World Championship 2026 Last Chance Qualifier', status: 'completed', publishedAt: '2026-10-02', updatedAt: '2026-10-18',
+    sourceUrl: 'https://event.supercell.com/clashofclans/en/cups/world-championship', sourceName: 'Clash of Clans World Championship Series', sourceVerified: true,
     tags: ['Clash of Clans', 'World Championship', 'Last Chance Qualifier'], eventId: 'coc-world-championship-2026-lcq',
   },
   {
@@ -1297,7 +1297,7 @@ const CURATED_TOURNAMENT_NEWS: TournamentNews[] = [
       'Marvel Rivals Season 10 launched on 11 September. NetEase’s official Ignite Stage 2 guide schedules the regional playoffs from 8 to 18 October 2026, played on Season 10 and using Thebes in the map pool.',
       'The Pacific playoffs start 8 October and its regional final is 11 October. Americas and EMEA playoffs start 15 October, while China starts 16 October; all three regional finals are set for 18 October. Playoffs use double elimination, best-of-five matches and best-of-seven regional finals. The total Stage 2 prize pool is $650,000.',
       'Twelve teams qualify for the Ignite Grand Finals in late November. The official guide says the finals location will be announced later, so the exact venue and dates remain unconfirmed. The game’s in-client Esports panel is the official place for match times, teams and live brackets.',
-      'Checked 18 October 2026: the next scheduled playoff day is 8 October for Pacific. This is a competitive schedule update, not a claim that a new game patch was released today.'
+      'Checked 18 October 2026: the published playoff window ends today. The linked guide confirms the schedule and qualification format but is not a live score feed, so no regional winner or final placement is stated here.'
     ],
     tournamentName: 'Marvel Rivals Ignite 2026 Stage 2', status: 'upcoming', publishedAt: '2026-10-07', updatedAt: '2026-10-18',
     sourceUrl: 'https://www.marvelrivalsesports.com/20260908/42828_1313342.html', sourceName: 'Marvel Rivals Ignite', sourceVerified: true,
@@ -1568,9 +1568,10 @@ export function statusForEvent(event: Pick<TournamentEvent, 'startDate' | 'endDa
   // in many time zones. Keep the published end date inclusive.
   const today = now.toISOString().slice(0, 10);
   if (today < event.startDate) return 'upcoming';
-  // On the final calendar day, keep a source-confirmed upcoming status when
-  // the organizer still lists the last session as scheduled.
-  if (today === event.endDate && event.status === 'upcoming') return 'upcoming';
+  // Preserve an upcoming state only when the event starts today and its source
+  // still lists it as scheduled. A multi-day event already underway is live on
+  // its final calendar day even if the stored source status was upcoming.
+  if (today === event.startDate && event.status === 'upcoming') return 'upcoming';
   if (today <= (event.endDate || event.startDate)) return 'live';
   return 'completed';
 }
@@ -2255,17 +2256,18 @@ export const GAME_NEWS_PAGES: GameNewsPage[] = [
       'Gold Pass progression uses daily tasks, Stamp Cards and choice nodes after the 2026 rework. Tasks stack to make catch-up possible, but unclaimed choice rewards may default at season end, so collect them before 31 October.',
     ],
     competitionHeading: 'Clash of Clans World Championship 2026',
-    competition: ['The official guide confirms an October Last Chance Qualifier: eight highest-ranked unqualified teams compete for the final three Golden Tickets.', 'Supercell has not listed exact LCQ match dates in the guide checked. The World Championship season prize pool is $1 million; the LCQ is not itself the full prize pool.'],
+    competition: ['The World Championship Last Chance Qualifier ran 10–11 October. Supercell lists Tribe Gaming as the winner; CB7 Esports and MG Esports also earned Golden Tickets.', 'The official event page links both day replays and results. The $1 million prize pool is for the overall World Championship season, not the LCQ alone.'],
     sources: [
       { name: 'Supercell — Home Village screen feedback update (15 October)', url: 'https://supercell.com/en/games/clashofclans/blog/news/a-word-on-the-new-home-village-screen/' },
       { name: 'Supercell Support — Clash of Clans September 2026 update', url: 'https://support.supercell.com/clash-of-clans/en/articles/whats-new-september-2026.html' },
       { name: 'Supercell — Cosmic Curse: Portal Panic October season', url: 'https://supercell.com/en/games/clashofclans/blog/news/cosmic-curse-portal-panic-teleports-in/' },
       { name: 'Supercell — Gold Pass changes', url: 'https://supercell.com/en/games/clashofclans/blog/news/big-changes-are-coming-to-gold-pass/' },
       { name: 'Clash of Clans World Championship — how to compete', url: 'https://event.supercell.com/clashofclans/en/cups/world-championship/how-to-compete' },
+      { name: 'Clash of Clans World Championship — official LCQ results', url: 'https://event.supercell.com/clashofclans/en/cups/world-championship' },
     ],
     faqs: [
       { question: 'What is the Clash of Clans October Gold Pass skin?', answer: 'Supercell’s October season announcement names Shroud Queen as the exclusive Hero Skin and Ghost Champion as an alternate skin option.' },
-      { question: 'When is the Clash of Clans 2026 Last Chance Qualifier?', answer: 'Supercell confirms an October LCQ, but the official guide checked does not give exact match dates.' },
+      { question: 'When was the Clash of Clans 2026 Last Chance Qualifier?', answer: 'It ran 10–11 October. Supercell lists Tribe Gaming as the winner and links the event replays and results.' },
     ],
   },
   {
@@ -2286,7 +2288,7 @@ export const GAME_NEWS_PAGES: GameNewsPage[] = [
       'Clash Royale and Merge Tactics have distinct season content. Check which mode a balance or leaderboard post applies to before using it for deck or placement decisions.',
     ],
     competitionHeading: 'Clash Royale League status',
-    competition: ['Supercell’s CRL 2026 Last Chance Qualifier ran 5–6 September; the official event site lists Woo as winner.', 'As of 6 October, Supercell’s event page says more events are coming but does not announce the next live CRL date. In-game Global Tournaments are separate limited-time competitions.'],
+    competition: ['Supercell’s CRL 2026 Last Chance Qualifier ran 5–6 September; the official event site lists Woo as winner.', 'Checked 18 October: Supercell’s event page still says more events are coming and does not announce the next live CRL date. In-game Global Tournaments are separate limited-time competitions.'],
     sources: [
       { name: 'Supercell — Shocktober season and October events', url: 'https://supercell.com/en/games/clashroyale/blog/release-notes/new-season-shocktober/' },
       { name: 'Supercell — Merge Tactics Season 11 October changes', url: 'https://supercell.com/en/games/clashroyale/blog/release-notes/merge-tactics-season-11-october-changes/' },
@@ -2640,6 +2642,7 @@ export const GAME_NEWS_PAGES: GameNewsPage[] = [
 
 export const GAME_NEWS_BY_ID = new Map(GAME_NEWS_PAGES.map((page) => [page.gameId, page]));
 export const GAME_NEWS_INDEX = POPULAR_GAMES.filter((game) => GAME_NEWS_BY_ID.has(game.id));
+
 
 
 
