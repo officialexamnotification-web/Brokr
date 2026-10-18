@@ -19,9 +19,14 @@ export function getTournamentArticleSeo(item: TournamentNews | TournamentEvent) 
   const title = 'title' in item ? item.title : item.name;
   const summary = 'excerpt' in item ? item.excerpt : item.summary;
   const gameName = item.gameName;
+  const category = 'excerpt' in item ? 'esports news' : 'game tournament';
+  const fullDescription = `${gameName} ${category}: ${summary}`;
+  const description = fullDescription.length <= 160
+    ? fullDescription
+    : `${fullDescription.slice(0, 157).replace(/\s+\S*$/, '')}...`;
   return {
-    title: `${title} | ${SITE_DISPLAY_NAME}`,
-    description: `${summary} Official ${gameName} tournament details and source links.`,
+    title: `${title} | Tradivex`,
+    description,
     heading: title,
     intro: summary,
     gameName,

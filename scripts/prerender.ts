@@ -7,6 +7,7 @@ import { TOURNAMENT_EVENTS, TOURNAMENT_NEWS } from '../src/data/tournament-data'
 import { TOURNAMENT_NEWS_SEO, TOURNAMENTS_SEO, getTournamentArticleSeo } from '../src/data/tournament-seo';
 import { getTournamentEvents, getTournamentNews } from '../src/lib/tournament-feed';
 import { GAME_NEWS_BY_ID, GAME_NEWS_INDEX, type GameNewsPage } from '../src/data/tournament-data';
+import { createSitemapXml } from '../src/lib/sitemap';
 
 const DIST_DIR = path.resolve(process.cwd(), 'dist');
 const ORIGIN = (process.env.PUBLIC_SITE_URL || 'https://www.tradivex.com').replace(/\/$/, '');
@@ -137,6 +138,7 @@ function tournamentJsonLd(route: { slug: string; title: string; description: str
     inLanguage: 'en-US',
     isPartOf: { '@type': 'WebSite', name: SITE_DISPLAY_NAME, alternateName: SITE_NAME, url: `${ORIGIN}/` },
     ...(route.event ? { about: { '@type': 'Thing', name: route.event.name } } : {}),
+    ...(route.event ? { keywords: [route.event.gameName, route.event.name, route.event.organizer, route.event.region, 'esports tournament'] } : {}),
   }, {
     '@type': 'BreadcrumbList',
     itemListElement: [
@@ -152,6 +154,7 @@ function tournamentJsonLd(route: { slug: string; title: string; description: str
       description: route.news.excerpt,
       datePublished: route.news.publishedAt,
       dateModified: route.news.updatedAt,
+      keywords: [...new Set([route.news.gameName, route.news.tournamentName, ...route.news.tags, 'esports news'])],
       author: { '@type': 'Organization', name: SITE_DISPLAY_NAME, url: `${ORIGIN}/about` },
       mainEntityOfPage: url,
       isBasedOn: route.news.sourceUrl,
@@ -197,7 +200,7 @@ function renderGameNewsHtml(page: GameNewsPage, game: typeof POPULAR_GAMES[numbe
   const graph = {
     '@context': 'https://schema.org',
     '@graph': [
-      { '@type': 'NewsArticle', headline: page.heading, description: page.description, datePublished: isoDate(page.updateDate), dateModified: isoDate(page.updateDate), articleSection: 'Game News', keywords: [game.shortName, `${game.name} news`, `${game.name} update`, page.updateHeading, page.competitionHeading], author: { '@type': 'Organization', name: SITE_DISPLAY_NAME, url: `${ORIGIN}/about` }, publisher: { '@type': 'Organization', name: SITE_DISPLAY_NAME, url: ORIGIN }, about: { '@type': 'Thing', name: game.name }, mainEntityOfPage: canonical, isBasedOn: page.sources.map((source) => source.url) },
+      { '@type': 'NewsArticle', headline: page.heading, description: page.description, dateModified: isoDate(page.updateDate), articleSection: 'Game News', keywords: [game.shortName, `${game.name} news`, `${game.name} update`, page.updateHeading, page.competitionHeading], author: { '@type': 'Organization', name: SITE_DISPLAY_NAME, url: `${ORIGIN}/about` }, publisher: { '@type': 'Organization', name: SITE_DISPLAY_NAME, url: ORIGIN }, about: { '@type': 'Thing', name: game.name }, mainEntityOfPage: canonical, isBasedOn: page.sources.map((source) => source.url) },
       { '@type': 'BreadcrumbList', itemListElement: [
         { '@type': 'ListItem', position: 1, name: 'Home', item: `${ORIGIN}/` },
         { '@type': 'ListItem', position: 2, name: 'Game News', item: `${ORIGIN}/game-news` },
@@ -291,35 +294,10 @@ for (const event of allTournamentEvents) {
   writeRoute(`tournaments/${event.slug}`, renderTournamentHtml({ slug: `tournaments/${event.slug}`, ...seo, event }));
 }
 
-const allSlugs = ['', ...POPULAR_GAMES.map((game) => game.slug), ...SITE_PAGES.map((page) => page.slug), 'esports-news', 'tournaments', 'game-news', ...GAME_NEWS_INDEX.map((game) => `game-news/${game.id}`), ...allTournamentNews.map((article) => `esports-news/${article.slug}`), ...allTournamentEvents.map((event) => `tournaments/${event.slug}`)];
-const sitemapLastmod = new Map<string, string>();
-for (const game of GAME_NEWS_INDEX) {
-  const page = GAME_NEWS_BY_ID.get(game.id);
-  if (page) sitemapLastmod.set(`game-news/${game.id}`, isoDate(page.updateDate));
-}
-for (const article of allTournamentNews) {
-  if (/^\d{4}-\d{2}-\d{2}$/.test(article.updatedAt)) {
-    sitemapLastmod.set(`esports-news/${article.slug}`, article.updatedAt);
-  }
-}
-const latestGameNewsDate = [...sitemapLastmod.entries()]
-  .filter(([slug]) => slug.startsWith('game-news/'))
-  .map(([, date]) => date)
-  .sort()
-  .at(-1);
-if (latestGameNewsDate) sitemapLastmod.set('game-news', latestGameNewsDate);
-const latestTournamentNewsDate = allTournamentNews.map((article) => article.updatedAt)
-  .filter((date) => /^\d{4}-\d{2}-\d{2}$/.test(date))
-  .sort()
-  .at(-1);
-if (latestTournamentNewsDate) sitemapLastmod.set('esports-news', latestTournamentNewsDate);
-const sitemapUrls = allSlugs.map((slug) => {
-  const lastmod = sitemapLastmod.get(slug);
-  return `  <url><loc>${escapeHtml(urlFor(slug))}</loc>${lastmod ? `<lastmod>${lastmod}</lastmod>` : ''}</url>`;
-}).join('\n');
-const sitemapXml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${sitemapUrls}\n</urlset>\n`;
+const sitemapXml = createSitemapXml(ORIGIN);
 fs.writeFileSync(path.join(DIST_DIR, 'sitemap.xml'), sitemapXml, 'utf8');
 fs.writeFileSync(path.resolve(process.cwd(), 'public', 'sitemap.xml'), sitemapXml, 'utf8');
 fs.writeFileSync(path.join(DIST_DIR, 'robots.txt'), `User-agent: *\nAllow: /\nDisallow: /api/\nSitemap: ${ORIGIN}/sitemap.xml\n`, 'utf8');
 
-console.log(`Prerendered ${allSlugs.length} SEO routes to ${DIST_DIR}`);
+const routeCount = sitemapXml.match(/<url>/g)?.length || 0;
+console.log(`Prerendered ${routeCount} SEO routes to ${DIST_DIR}`);

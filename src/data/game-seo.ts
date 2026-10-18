@@ -117,14 +117,28 @@ const GAME_INTENTS: Record<string, string> = {
   marvel_rivals: 'Marvel Rivals names, hero-inspired nicknames, faction tags and competitive player handles',
   arena_of_valor: 'Arena of Valor nicknames, AoV hero names, ranked player tags and esports team identities',
   teamfight_tactics: 'Teamfight Tactics names, TFT tactician handles and competitive Riot ID ideas',
+  ea_madden: 'Madden NFL 27 player names, Madden Ultimate Team identities and MCS tournament tags',
+  '2xko': '2XKO duo names, tag team player handles and Riot ID ideas',
+  street_fighter_6: 'Street Fighter 6 player tags, FGC tournament handles and Capcom Fighter ID ideas',
+  tekken8: 'TEKKEN 8 player names, fighter tags and tournament bracket handles',
+  chess: 'chess usernames, online chess player names and tournament handles',
+  crossfire: 'CROSSFIRE player names, clan tags and competitive FPS handles',
+  trackmania: 'Trackmania player names, racing handles and esports tags',
+  fatal_fury: 'FATAL FURY City of the Wolves player tags and fighting game handles',
+  kof_xv: 'THE KING OF FIGHTERS XV player names, team tags and FGC handles',
+  samurai_shodown: 'SAMURAI SHODOWN player names and fighting game tournament tags',
+  kof98: 'KOF ’98 player names, arcade handles and tournament tags',
+  art_of_fighting_3: 'Art of Fighting 3 arcade player names and tournament handles',
   starcraft2: 'StarCraft II BattleTag ideas, race-themed aliases and competitive RTS player names',
   efootball: 'eFootball player names, Dream Team identities and football-inspired competitive handles',
 };
 
+const GAME_COUNT = POPULAR_GAMES.length;
+
 export const HOME_SEO: GameSeoContent = {
   slug: '',
-  title: 'Free Game Name Generator for 30+ Games | Tradivex GamingNameHub',
-  description: 'Free game name generator for stylish gamer names, nicknames, gamertags and clan tags for BGMI, PUBG, Free Fire, Valorant, COD, Fortnite, Marvel Rivals, Arena of Valor, TFT, Roblox and Minecraft.',
+  title: `Free Game Name Generator for ${GAME_COUNT} Games | Tradivex GamingNameHub`,
+  description: `Free game name generator for ${GAME_COUNT} popular mobile, PC and console games. Create stylish gamer names, nicknames, gamertags and clan tags with game-specific guidance.`,
   h1: 'Game Name Generator for Every Online Game',
   intro: 'Create stylish gamer names, cool nicknames, clean gamertags and clan tags for the game you actually play. Choose a game first so the name style and character guidance match your platform.',
   features: ['Game-specific name ideas', 'Clean and stylish output modes', 'Unicode character counting', 'One-click copy and save'],

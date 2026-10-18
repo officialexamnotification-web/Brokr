@@ -14,8 +14,8 @@ import {
 import { HOME_SEO, SITE_DISPLAY_NAME, SITE_NAME, SITE_URL, getGameBySlug, getGameSeo } from "./src/data/game-seo";
 import { POPULAR_GAMES } from "./src/data/games";
 import { SITE_PAGES, getSitePageBySlug } from "./src/data/site-pages";
-import { GAME_NEWS_INDEX, TOURNAMENT_EVENTS } from "./src/data/tournament-data";
-import { filterTournamentEvents, filterTournamentNews, getTournamentNews } from "./src/lib/tournament-feed";
+import { filterTournamentEvents, filterTournamentNews } from "./src/lib/tournament-feed";
+import { createSitemapXml } from "./src/lib/sitemap";
 import { syncTournamentNews } from "./server/tournament-sync";
 
 dotenv.config({ path: path.resolve(process.cwd(), '.env.local') });
@@ -37,10 +37,6 @@ function asCount(value: unknown, fallback = 12): number {
 
 function escapeHtml(value: string): string {
   return value.replace(/[&<>\"']/g, (character) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[character] || character));
-}
-
-function escapeXml(value: string): string {
-  return escapeHtml(value);
 }
 
 function requestOrigin(req: express.Request): string {
@@ -193,23 +189,7 @@ app.get('/robots.txt', (req, res) => {
 });
 
 app.get('/sitemap.xml', (_req, res) => {
-  const allTournamentNews = getTournamentNews();
-  const slugs = [
-    '',
-    ...POPULAR_GAMES.map((game) => game.slug),
-    ...SITE_PAGES.map((page) => page.slug),
-    'esports-news',
-    'tournaments',
-    'game-news',
-    ...GAME_NEWS_INDEX.map((game) => `game-news/${game.id}`),
-    ...allTournamentNews.map((article) => `esports-news/${article.slug}`),
-    ...TOURNAMENT_EVENTS.map((event) => `tournaments/${event.slug}`),
-  ];
-  const urls = slugs.map((slug) => {
-    const location = `${SITE_URL}/${slug}`.replace(/\/$/, slug ? '' : '/');
-    return `  <url><loc>${escapeXml(location)}</loc></url>`;
-  }).join('\n');
-  res.type('application/xml').send(`<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>`);
+  res.type('application/xml').send(createSitemapXml(SITE_URL));
 });
 
 // Health check
