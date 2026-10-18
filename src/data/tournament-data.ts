@@ -27,6 +27,22 @@ export interface TournamentStream {
   note?: string;
 }
 
+export interface TournamentStanding {
+  rank: number;
+  team: string;
+  matchRecord: string;
+  gameRecord: string;
+  gameDiff: string;
+  points: number;
+  qualification?: string;
+}
+
+export interface TournamentStat {
+  label: string;
+  value: string;
+  note?: string;
+}
+
 export interface TournamentEvent {
   id: string;
   slug: string;
@@ -53,6 +69,8 @@ export interface TournamentEvent {
   matches?: TournamentMatch[];
   streams?: TournamentStream[];
   broadcastTalents?: string[];
+  standings?: TournamentStanding[];
+  statistics?: TournamentStat[];
   videoUrl?: string;
   videoTitle?: string;
   status: TournamentStatus;
@@ -100,20 +118,52 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
     region: 'Türkiye', location: 'Istanbul, Türkiye', prizePool: '₺1,750,000 TRY (about US$35,344)', teams: 8,
     format: 'Online regular season followed by an offline playoff stage; all regular-season matches are best-of-three', status: 'live',
     sourceUrl: 'https://liquipedia.net/mobilelegends/MTC_Turkiye_Championship/Season_8', sourceName: 'Liquipedia tournament record', updatedAt: '2026-10-18',
-    summary: 'The eighth MTC Türkiye season is in its final regular-season week. The verified event record lists eight teams, a double round robin, a top-six playoff cut and qualification for the M8 World Championship and Wildcard.',
+    summary: 'The eighth MTC Türkiye season has eight teams in a double round robin. The latest published table has Aurora Gaming first on 32 points, with FUT Esports and Bushido Wildcats next; the top six advance to the 24 October–7 November playoffs.',
     participants: ['Aurora Gaming', 'FUT Esports', 'Dark Passage', 'DIA Ozarox', 'Bushido Wildcats', 'PCIFIC Esports', 'Boostgate Esports', 'IDA Esports'],
     participantsLabel: 'Participating teams',
     participantsNote: 'Six teams advance from the regular season to playoffs. Team names and qualification routes are taken from the linked tournament record; player rosters can change during the season.',
     participantsSourceUrl: 'https://liquipedia.net/mobilelegends/MTC_Turkiye_Championship/Season_8',
     participantsSourceName: 'Liquipedia tournament record',
     stages: [
-      { name: 'Regular Season', dates: '12 Sep – 18 Oct 2026', format: 'Double round robin · all matches Bo3', status: 'In progress through 18 Oct', note: '2-0 win = 3 points; 2-1 win = 2; 1-2 loss = 1; 0-2 loss = 0. Top six advance.' },
+      { name: 'Regular Season', dates: '12 Sep – 18 Oct 2026', format: 'Double round robin · all matches Bo3', status: 'Latest table checked 18 Oct', note: '2-0 win = 3 points; 2-1 win = 2; 1-2 loss = 1; 0-2 loss = 0. Top six advance. Week 6 match results remain subject to the organiser’s live results update.' },
       { name: 'Playoffs', dates: '24 Oct – 7 Nov 2026', format: 'Double elimination', status: 'Upcoming', note: 'Champion qualifies for M8 World Championship; runner-up qualifies for the M8 Wildcard.' },
     ],
     streams: [
       { name: 'Mobile Legends: Bang Bang Türkiye', url: 'https://www.youtube.com/@mobilelegendstr', language: 'Turkish', note: 'Official YouTube channel; use it for the current MTC broadcast when a live video is scheduled.' },
     ],
     broadcastTalents: ['Gtrst', 'Jhonnie', 'Mehitra', 'Murano'],
+    standings: [
+      { rank: 1, team: 'Aurora Gaming', matchRecord: '11–1', gameRecord: '23–4', gameDiff: '+19', points: 32, qualification: 'Playoffs' },
+      { rank: 2, team: 'FUT Esports', matchRecord: '10–2', gameRecord: '21–6', gameDiff: '+15', points: 29, qualification: 'Playoffs' },
+      { rank: 3, team: 'Bushido Wildcats', matchRecord: '10–2', gameRecord: '21–7', gameDiff: '+14', points: 28, qualification: 'Playoffs' },
+      { rank: 4, team: 'DIA Ozarox', matchRecord: '7–5', gameRecord: '15–14', gameDiff: '+1', points: 18, qualification: 'Playoffs' },
+      { rank: 5, team: 'PCIFIC Esports', matchRecord: '4–8', gameRecord: '11–18', gameDiff: '−7', points: 13, qualification: 'Playoffs' },
+      { rank: 6, team: 'Boostgate Esports', matchRecord: '3–9', gameRecord: '10–20', gameDiff: '−10', points: 11, qualification: 'Playoffs' },
+      { rank: 7, team: 'IDA Esports', matchRecord: '2–10', gameRecord: '8–22', gameDiff: '−14', points: 8, qualification: 'Outside top six' },
+      { rank: 8, team: 'Dark Passage', matchRecord: '1–11', gameRecord: '4–22', gameDiff: '−18', points: 5, qualification: 'Outside top six' },
+    ],
+    statistics: [
+      { label: 'Games recorded', value: '113', note: 'Regular-season statistics in the checked tournament record' },
+      { label: 'Most picked hero', value: 'Hirara · 62 picks', note: '53.23% win rate' },
+      { label: 'Highest pick/ban presence', value: 'Hirara · 97.35%', note: '110 total picks and bans' },
+      { label: 'Shortest game', value: '9:59', note: 'Aurora Gaming over Dark Passage · 12 Sep' },
+      { label: 'Longest game', value: '27:29', note: 'PCIFIC Esports vs DIA Ozarox · 26 Sep' },
+    ],
+    matches: [
+      { date: '12 Sep 2026', stage: 'Regular Season · Week 1', left: 'Aurora Gaming', right: 'PCIFIC Esports', status: 'completed', result: '2–1' },
+      { date: '13 Sep 2026', stage: 'Regular Season · Week 1', left: 'Aurora Gaming', right: 'IDA Esports', status: 'completed', result: '2–0' },
+      { date: '19 Sep 2026', stage: 'Regular Season · Week 2', left: 'Aurora Gaming', right: 'DIA Ozarox', status: 'completed', result: '2–0' },
+      { date: '20 Sep 2026', stage: 'Regular Season · Week 2', left: 'Aurora Gaming', right: 'Boostgate Esports', status: 'completed', result: '2–1' },
+      { date: '26 Sep 2026', stage: 'Regular Season · Week 3', left: 'Aurora Gaming', right: 'Bushido Wildcats', status: 'completed', result: '2–0' },
+      { date: '26 Sep 2026', stage: 'Regular Season · Week 3', left: 'Aurora Gaming', right: 'FUT Esports', status: 'completed', result: '2–0' },
+      { date: '27 Sep 2026', stage: 'Regular Season · Week 3', left: 'Aurora Gaming', right: 'Dark Passage', status: 'completed', result: '2–0' },
+      { date: '3 Oct 2026', stage: 'Regular Season · Week 4', left: 'Aurora Gaming', right: 'PCIFIC Esports', status: 'completed', result: '2–0' },
+      { date: '4 Oct 2026', stage: 'Regular Season · Week 4', left: 'Aurora Gaming', right: 'IDA Esports', status: 'completed', result: '2–0' },
+      { date: '10 Oct 2026', stage: 'Regular Season · Week 5', left: 'Aurora Gaming', right: 'DIA Ozarox', status: 'completed', result: '1–2' },
+      { date: '11 Oct 2026', stage: 'Regular Season · Week 5', left: 'Aurora Gaming', right: 'Boostgate Esports', status: 'completed', result: '2–0' },
+      { date: '17 Oct 2026', stage: 'Regular Season · Week 6', left: 'Aurora Gaming', right: 'Bushido Wildcats', status: 'scheduled', result: 'Awaiting published result' },
+      { date: '18 Oct 2026', stage: 'Regular Season · Week 6', left: 'Aurora Gaming', right: 'FUT Esports', status: 'scheduled', result: 'Awaiting published result' },
+    ],
   },
   {
     id: 'bgmi-bmsd-2026', slug: 'bgmi-bmsd-2026', gameId: 'bgmi', gameName: 'BGMI',
