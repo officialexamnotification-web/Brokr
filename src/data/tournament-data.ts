@@ -43,6 +43,13 @@ export interface TournamentStat {
   note?: string;
 }
 
+export interface TournamentResult {
+  placement: string;
+  participant: string;
+  result?: string;
+  award?: string;
+}
+
 export interface TournamentEvent {
   id: string;
   slug: string;
@@ -70,6 +77,7 @@ export interface TournamentEvent {
   streams?: TournamentStream[];
   broadcastTalents?: string[];
   standings?: TournamentStanding[];
+  results?: TournamentResult[];
   statistics?: TournamentStat[];
   videoUrl?: string;
   videoTitle?: string;
@@ -217,14 +225,29 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
     startDate: '2026-08-06', endDate: '2026-08-16', dateLabel: '6–16 Aug 2026', region: 'Global', location: 'Paris, France',
     prizePool: '$3,000,000', teams: 32, format: 'Group Stage, Survival Stage and Match Point Finals', status: 'completed',
     sourceUrl: 'https://ewc-web.prod.esf-systems.com/en/competitions/2026/pmwc', sourceName: 'Esports World Cup', updatedAt: '2026-10-18',
-    summary: 'The official EWC results page lists S2G Esports as champion and QZZ as MVP. Thirty-two teams competed in Paris; the EWC rulebook lists a $3 million prize pool for PUBG MOBILE.',
+    summary: 'S2G Esports won the 32-team Paris event under the Smash Rule, with Nongshim RedForce second and Aurora Gaming third. The official EWC results page names QZZ as MVP and reports team payouts plus Club Championship points. The final day broadcast is embedded above.',
     participants: ['4Thrives Esports', '721 GS Esports', 'AG.AL', 'Alpha7 Esports', 'AlUla Club Esports', 'Aurora Gaming', 'DOPENESS', 'eArena', 'ETSH Esports', 'FURIA', 'Gaming Stars Esports', 'Geekay Esports', 'GOAT Team', 'GodLike Esports', 'Horaa Esports', 'Hustler Crew', 'IDA Esports', 'Kiwoom DRX', 'Nigma Galaxy', 'Nongshim RedForce', 'Orangutan', 'S2G Esports', 'Team Flash', 'Team RRQ', 'Team Vitality', 'ThunderTalk Gaming', 'Tianba', 'TT Project', 'ULF Esports', 'Wolves Esports', 'XForce Rejects', 'Yangon Galacticos'],
     participantsLabel: 'Participating teams',
     participantsNote: 'The roster list is cross-checked against official EWC event results; final standings are on the linked event page.',
     participantsSourceUrl: 'https://ewc-web.prod.esf-systems.com/en/competitions/2026/pmwc',
     participantsSourceName: 'Esports World Cup official results',
-    videoUrl: 'https://www.youtube.com/watch?v=6Z1EoMN3sNg',
-    videoTitle: 'PMWC at EWC 2026 · Grand Finals Day 1 · Official PUBG MOBILE Thailand broadcast',
+    stages: [
+      { name: 'Group Stage', dates: '6–9 Aug 2026', format: '32 teams split into two groups; top five from each group advanced directly to Finals, places 6–13 entered Survival, and places 14–16 were eliminated.', status: 'Completed' },
+      { name: 'Survival Stage', dates: '11–12 Aug 2026', format: 'Sixteen teams competed for six remaining Finals places.', status: 'Completed' },
+      { name: 'Grand Finals', dates: '14–16 Aug 2026', format: 'Sixteen teams played six matches per day; the final day used the Smash Rule.', status: 'Completed', note: 'The winner was determined when a team with an activated Smash Point secured a Chicken Dinner.' },
+    ],
+    results: [
+      { placement: '1st', participant: 'S2G Esports', result: '154 points · Champion', award: '$555,000 + 1,000 EWC Club Championship points' },
+      { placement: '2nd', participant: 'Nongshim RedForce', result: '149 points', award: '$293,000 + 750 Club Championship points' },
+      { placement: '3rd', participant: 'Aurora Gaming', result: '146 points', award: '$210,000 + 500 Club Championship points' },
+      { placement: '4th', participant: 'eArena', award: '$161,000 + 300 Club Championship points' },
+      { placement: '5th', participant: 'Tianba', award: '$141,000 + 200 Club Championship points' },
+      { placement: '6th', participant: '4thrives Esports', award: '$161,000 + 150 Club Championship points' },
+      { placement: '7th', participant: 'Team Flash', award: '$137,500 + 100 Club Championship points' },
+      { placement: '8th', participant: 'Horaa Esports', award: '$127,500 + 50 Club Championship points' },
+    ],
+    videoUrl: 'https://www.youtube.com/watch?v=M7VmHilvBmM',
+    videoTitle: 'PMWC at EWC 26 · Official Finals VOD · Esports World Cup',
   },
   {
     id: 'pubgm-pmgc-2026', slug: 'pubgm-pmgc-2026', gameId: 'pubg', gameName: 'PUBG Mobile',
@@ -237,10 +260,23 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
   {
     id: 'pubg-asia-stars-2026', slug: 'pubg-asia-stars-2026', gameId: 'pubg_battlegrounds', gameName: 'PUBG: BATTLEGROUNDS',
     name: 'PUBG Asia Stars Tournament & Web Event 2026', organizer: 'KRAFTON / PUBG: BATTLEGROUNDS',
-    startDate: '2026-09-11', endDate: '2026-10-13', dateLabel: '11 Sep – 13 Oct 2026', region: 'Asia', location: 'Online',
-    format: 'Regional streamer competition and web event', status: 'completed',
-    sourceUrl: 'https://www.pubg.com/en/events/notice', sourceName: 'PUBG: BATTLEGROUNDS Events', updatedAt: '2026-10-18',
-    summary: 'PUBG’s official event page lists the Asia Stars Tournament and Web Event through 13 October at 07:00 UTC. The event brings streamers from six Asian regions together; final results should be taken from PUBG’s event page.',
+    startDate: '2026-09-17', endDate: '2026-09-20', dateLabel: '17–20 Sep 2026 (web event ran through 13 Oct)', region: 'Six Asian regions', location: 'Online', teams: 6,
+    prizePool: '$70,000 announced',
+    format: 'Six regional 8-player squads planned to compete across nine modes over three broadcast days; the organizer cancelled the final day and no final standings were determined', status: 'completed',
+    sourceUrl: 'https://pubg.com/ko/news/11155?category=notice', sourceName: 'KRAFTON / PUBG: BATTLEGROUNDS official investigation notice', updatedAt: '2026-10-18',
+    summary: 'PUBG Asia Stars ended early after the organizer cancelled the final day. KRAFTON’s investigation notice confirms policy violations by two participants and acknowledges failures in event operations; no final standings or champion were declared. The embedded VOD is the official Vietnam Day 1 broadcast, not a final-results stream.',
+    participants: ['China', 'Japan', 'South Korea', 'Chinese Taipei', 'Thailand', 'Vietnam'],
+    participantsLabel: 'Participating regions · 8 players per region',
+    participantsNote: 'The planned field was 48 participants across six regional squads. The final day was cancelled, so no complete overall winner or final ranking is listed.',
+    participantsSourceUrl: 'https://pubg.com/en-asia/events/notice/10926?category=event&period=PROGRESS',
+    participantsSourceName: 'PUBG: BATTLEGROUNDS official event notice',
+    stages: [
+      { name: 'Day 1', dates: '17 Sep 2026', format: 'Survivor’s Climb, Crossbow Shooting, Glider Battle and two Platoon Battle Royale matches.', status: 'Broadcast held' },
+      { name: 'Day 2', dates: '19 Sep 2026', format: 'Circuit Racing, Solo Showdown, Melee Clash and two Platoon Battle Royale matches.', status: 'Disrupted / incomplete', note: 'The planned schedule was affected by organizer review and participant changes.' },
+      { name: 'Day 3', dates: '20 Sep 2026', format: 'Bluebomb Rush, Obstacle Challenge and two Platoon Battle Royale matches.', status: 'Cancelled', note: 'KRAFTON cancelled the remaining matches; no official final standings or champion were determined.' },
+    ],
+    videoUrl: 'https://www.youtube.com/watch?v=g5d7jmFHd34',
+    videoTitle: 'PUBG Asia Stars 2026 · Official Vietnam Day 1 broadcast',
   },
   {
     id: 'free-fire-ffws-global-finals-2026', slug: 'free-fire-ffws-global-finals-2026', gameId: 'freefire', gameName: 'Free Fire',
@@ -285,9 +321,27 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
   {
     id: 'cs2-esl-pro-league-s24-2026', slug: 'cs2-esl-pro-league-s24-2026', gameId: 'cs2', gameName: 'Counter-Strike 2',
     name: 'ESL Pro League Season 24', organizer: 'ESL', startDate: '2026-10-03', endDate: '2026-10-11', dateLabel: '3–11 Oct 2026',
-    region: 'Global', location: 'Katowice, Poland', format: 'Official tournament listing; match format and lineup on event page', status: 'completed',
-    sourceUrl: 'https://blast.tv/cs/tournaments', sourceName: 'BLAST.tv Counter-Strike calendar', updatedAt: '2026-10-18',
-    summary: 'The official BLAST.tv calendar lists ESL Pro League Season 24 in its Finished section after its 3–11 October run in Katowice.',
+    region: 'Global', location: 'Spodek Arena, Katowice, Poland', prizePool: '$1,000,000 total winnings', teams: 16,
+    format: '16-team Swiss group stage (best-of-three); top eight advanced to a single-elimination LAN playoff. Quarterfinals and semifinals were best-of-three; third-place match best-of-three; Grand Final best-of-five.', status: 'completed',
+    sourceUrl: 'https://eslfaceitgroup.com/press/team-vitality-crowned-esl-pro-league-season-24-champions-following-the-leagues-return-to-the-big-stage-in-katowice/', sourceName: 'ESL FACEIT Group · official Season 24 results', updatedAt: '2026-10-18',
+    summary: 'Team Vitality won ESL Pro League Season 24 with a 3–0 Grand Final sweep of MOUZ at Katowice’s Spodek Arena. Vitality won Cache 13–8, Inferno 13–7 and Dust2 16–12; ZywOo earned the DHL MVP award. This was Vitality’s fourth EPL title. The event had 16 teams and $1 million in total winnings.',
+    participants: ['Team Spirit', 'Team Falcons', 'MOUZ', '9z Globant', 'Team Vitality', 'Natus Vincere', 'Legacy', 'FURIA', 'BetBoom Team', 'Aurora Gaming', 'G2 Esports', 'PARIVISION', '1WIN', 'M80', 'ShindeN', 'TYLOO'],
+    participantsLabel: '16 participating teams',
+    participantsNote: '1WIN, M80, ShindeN and TYLOO qualified through ESL Challenger League Season 51; the other 12 received direct invitations.',
+    participantsSourceUrl: 'https://eslfaceitgroup.com/press/esl-pro-league-returns-to-the-big-stage-as-competition-kicks-off-in-katowice/',
+    participantsSourceName: 'ESL FACEIT Group · event format and team list',
+    stages: [
+      { name: 'Swiss Group Stage', dates: '3–7 Oct 2026', format: 'Sixteen teams played best-of-three Swiss matches; the top eight qualified for the playoffs.', status: 'Completed' },
+      { name: 'Playoffs · Spodek Arena', dates: '9–11 Oct 2026', format: 'Eight-team single-elimination bracket. Quarterfinals, semifinals and third-place decider were best-of-three; Grand Final was best-of-five.', status: 'Completed' },
+      { name: 'Grand Final', dates: '11 Oct 2026', format: 'Team Vitality defeated MOUZ 3–0: Cache 13–8, Inferno 13–7, Dust2 16–12.', status: 'Completed', note: 'ZywOo received the DHL MVP award.' },
+    ],
+    results: [
+      { placement: '1st', participant: 'Team Vitality', result: '3–0 vs MOUZ · Champions', award: '$125,000 player winnings + $170,000 club prize' },
+      { placement: '2nd', participant: 'MOUZ', result: '0–3 vs Team Vitality · Grand Final runner-up', award: '$50,000 player winnings + $125,000 club prize' },
+      { placement: '3rd', participant: 'Aurora Gaming', result: 'Won the third-place decider vs Team Spirit', award: '$30,000 player winnings + $90,000 club prize' },
+      { placement: '4th', participant: 'Team Spirit', result: 'Lost the third-place decider vs Aurora Gaming', award: '$20,000 player winnings + $65,000 club prize' },
+    ],
+    videoTitle: 'ESL Pro League Season 24 · official ESL Counter-Strike broadcasts',
   },
   {
     id: 'cs2-thunderpick-world-championship-2026', slug: 'cs2-thunderpick-world-championship-2026', gameId: 'cs2', gameName: 'Counter-Strike 2',
@@ -446,9 +500,20 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
   {
     id: 'clash-royale-league-lcq-2026', slug: 'clash-royale-league-lcq-2026', gameId: 'clash_royale', gameName: 'Clash Royale',
     name: 'Clash Royale League 2026 Last Chance Qualifier', organizer: 'Supercell', startDate: '2026-09-05', endDate: '2026-09-06', dateLabel: '5–6 Sep 2026',
-    region: 'Global', location: 'Online broadcast', format: 'Last Chance Qualifier; Woo won the two-day event', status: 'completed',
+    region: 'Global', location: 'Online broadcast', format: '16-player Last Chance Qualifier; two-day broadcast with the final bracket concluded on Day 2', status: 'completed',
     sourceUrl: 'https://event.supercell.com/clashroyale/en', sourceName: 'Clash Royale League', updatedAt: '2026-10-18',
     summary: 'Supercell’s CRL event site records the Last Chance Qualifier on 5–6 September and lists Woo as the winner. The event is complete; the site says more events are coming but does not yet date the next one.',
+    participants: ['EGW', 'Rin', 'Wallace', 'Ian77', 'Niuzi', 'SK Xopxsam', 'Batan', 'Woo', 'Rubizalez', 'LucasXGamer', 'Kimchi', 'Taa', 'ElMollejas', 'Coco', 'SK Dominik', 'Jorz'],
+    participantsLabel: '16 qualified players',
+    participantsSourceUrl: 'https://www.youtube.com/watch?v=ati2w8Dei8A',
+    participantsSourceName: 'Clash Royale Esports · official Day 2 broadcast',
+    stages: [
+      { name: 'Last Chance Qualifier · Day 1', dates: '5 Sep 2026', format: 'Sixteen players entered the final qualification bracket; the official broadcast listed eight opening matchups.', status: 'Completed' },
+      { name: 'Last Chance Qualifier · Day 2', dates: '6 Sep 2026', format: 'The bracket concluded and the final World Finals qualification place was decided.', status: 'Completed' },
+    ],
+    results: [{ placement: '1st', participant: 'Woo', result: 'Last Chance Qualifier winner', award: 'Qualified for the Clash Royale League World Finals' }],
+    videoUrl: 'https://www.youtube.com/watch?v=ati2w8Dei8A',
+    videoTitle: 'Last Chance Qualifier · Day 2 · Clash Royale League 2026 · Official broadcast',
   },
   {
     id: 'roblox-showdown-cup-2026', slug: 'roblox-showdown-cup-2026', gameId: 'roblox', gameName: 'Roblox',
@@ -556,13 +621,21 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
   {
     id: 'dota2-ti-2026', slug: 'dota2-ti-2026', gameId: 'dota2', gameName: 'Dota 2',
     name: 'The International 2026', organizer: 'Valve', startDate: '2026-08-13', endDate: '2026-08-23', dateLabel: '13–23 Aug 2026',
-    region: 'Global', location: 'Shanghai, China', teams: 16, format: 'Modified-Swiss group stage followed by eight-team double-elimination main event', status: 'completed',
+    region: 'Global', location: 'SPD Bank Oriental Sports Center, Shanghai, China', prizePool: '$3,906,263', teams: 16, format: 'Modified-Swiss group stage (16 teams; top eight advanced), followed by an eight-team double-elimination main event; grand final best-of-five', status: 'completed',
     sourceUrl: 'https://www.dota2.com/international/prelims/results/', sourceName: 'Dota 2 / Valve', updatedAt: '2026-10-18',
-    summary: 'Valve’s official results page names Team Spirit the 2026 champions after a five-game Grand Final. The International took place in Shanghai; this calendar entry is marked complete.',
+    summary: 'Team Spirit won The International 2026 by defeating TEAM VISION 3–2 in the best-of-five Grand Final in Shanghai. Sixteen teams played the Modified-Swiss group stage; the top eight advanced to the double-elimination main event. Valve’s event hub lists a $3,906,263 total prize pool.',
     participants: ['Team Spirit', 'Team Falcons', 'Team Liquid', 'Aurora Gaming', 'Xtreme Gaming', 'Team Yandex', 'Boom Boys', 'Iron Wing', 'TEAM VISION', 'HULIGANI', 'OG', 'GamerLegion', 'LGD Gaming', 'Nigma Galaxy', 'Team Resilience', 'Vici Gaming'],
     participantsLabel: 'Participating teams',
     participantsSourceUrl: 'https://www.youtube.com/watch?v=V-P0Qk0zowo',
     participantsSourceName: 'Official Dota 2 tournament broadcast',
+    stages: [
+      { name: 'Group Stage', dates: '13–16 Aug 2026', format: 'Sixteen teams split into two groups; all series best-of-three, with the top eight advancing.', status: 'Completed' },
+      { name: 'Main Event', dates: '20–23 Aug 2026', format: 'Eight-team double-elimination bracket; series best-of-three except the best-of-five Grand Final.', status: 'Completed' },
+    ],
+    results: [
+      { placement: '1st', participant: 'Team Spirit', result: '3–2 vs TEAM VISION · Champions', award: 'Aegis of Champions' },
+      { placement: '2nd', participant: 'TEAM VISION', result: '2–3 vs Team Spirit · Grand Final runner-up' },
+    ],
     videoUrl: 'https://www.youtube.com/watch?v=GMbjTK8UVks',
     videoTitle: 'The International 2026 · Grand Finals Day · Official Dota 2 broadcast',
   },
@@ -572,7 +645,22 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
     region: 'Global', location: 'BLAST Arena Studios, Malta', prizePool: '$750,000', teams: 16,
     format: 'Four-group stage followed by seeding matches and playoffs', status: 'completed',
     sourceUrl: 'https://blast.tv/dota/tournaments/blast-slam-viii/series?view=results', sourceName: 'BLAST Dota 2 results', updatedAt: '2026-10-18',
-    summary: 'BLAST’s results page confirms Team Yandex defeated Team Spirit 3–1 in the 11 October Grand Final. The 16-team event had a $750,000 prize pool.',
+    summary: 'Team Yandex won BLAST Slam VIII, defeating Team Spirit 3–1 in the best-of-five Grand Final on 11 October in Malta. The official BLAST event page lists 16 teams, a $750,000 prize pool, seven competition stages and the $270,000 first-place prize. Official results and the BLASTDota channel are linked below.',
+    participants: ['BetBoom Team', 'PARIVISION', 'Aurora', 'Team Yandex', 'Team Spirit', 'LGD Gaming', 'OG', '1win', 'Xtreme Gaming', 'Team Liquid', 'GamerLegion', 'MOUZ', 'Natus Vincere', 'Level UP', "Yakult's Brothers", 'Team Nemesis'],
+    participantsLabel: '16 participating teams',
+    participantsSourceUrl: 'https://blast.tv/dota/tournaments/blast-slam-viii',
+    participantsSourceName: 'BLAST official tournament page',
+    stages: [
+      { name: 'Group Stages A–D', dates: '29 Sep – 2 Oct 2026', format: 'Four groups of four teams; group-stage matches determined qualification and seeding.', status: 'Completed' },
+      { name: 'Seeding Matches', dates: '3 Oct 2026', format: 'Eight teams played seeding series for playoff placement.', status: 'Completed' },
+      { name: 'Playoffs', dates: '8–11 Oct 2026', format: 'Double-elimination bracket; playoff series best-of-three and Grand Final best-of-five.', status: 'Completed' },
+    ],
+    results: [
+      { placement: '1st', participant: 'Team Yandex', result: '3–1 vs Team Spirit · Champions', award: '$270,000' },
+      { placement: '2nd', participant: 'Team Spirit', result: '1–3 vs Team Yandex · Grand Final runner-up', award: '$135,000' },
+      { placement: '3rd', participant: 'PARIVISION', result: 'Defeated Aurora 2–0 in the Lower Bracket semifinal', award: '$95,000' },
+      { placement: '4th', participant: 'Aurora', result: 'Lost 0–2 to PARIVISION in the Lower Bracket semifinal', award: '$65,000' },
+    ],
   },
 ];
 
