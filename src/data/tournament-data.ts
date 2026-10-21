@@ -897,7 +897,7 @@ export const OFFICIAL_TOURNAMENT_SOURCES: TournamentSource[] = [
   { gameId: 'fortnite', gameName: 'Fortnite', url: 'https://www.fortnite.com/competitive/rules-guidelines/rules-library/fortnite-championship-series-fncs-solos-2026-official-rules?region=NAC', sourceName: 'Epic Games Fortnite Competitive', note: 'Rechecked 21 Oct 2026: the published FNCS Solos rules schedule Heats for 17–18 Oct, LCQ for 19–20 Oct and Finals for 26–27 Oct.', checkedAt: '2026-10-21' },
   { gameId: 'apex', gameName: 'Apex Legends', url: 'https://algs.ea.com/en/year-6/split-2-playoffs/competition-overview', sourceName: 'EA Apex Legends Global Series', note: 'Split 2 Pro League runs through 4 Oct; 40-team Playoffs are 29 Oct–1 Nov in Las Vegas. Checked 16 October 2026; no newer official schedule detail was listed.', checkedAt: '2026-10-21' },
   { gameId: 'minecraft', gameName: 'Minecraft', url: 'https://www.minecraft.net/en-us/live', sourceName: 'Minecraft Official', note: 'Official page checked for publisher events; it lists Minecraft Live, not an official esports tournament calendar. Community competitions are separate. Checked 16 October 2026; no newer official schedule detail was listed.', checkedAt: '2026-10-21' },
-  { gameId: 'roblox', gameName: 'Roblox', url: 'https://about.roblox.com/en-au/newsroom/2026/09/roblox-fall-games-preview', sourceName: 'Roblox Newsroom', note: 'Rechecked 17 October 2026: the September preview mentions one experience-level Showdown Cup, not a platform-wide pro league. Exact dates, entrants and results were not provided.', checkedAt: '2026-10-21' },
+  { gameId: 'roblox', gameName: 'Roblox', url: 'https://about.roblox.com/en-au/newsroom/2026/09/roblox-fall-games-preview', sourceName: 'Roblox Newsroom', note: 'Rechecked 21 October 2026: the September preview mentions one experience-level Showdown Cup, not a platform-wide pro league. Exact dates, entrants and results were not provided.', checkedAt: '2026-10-21' },
   { gameId: 'league', gameName: 'League of Legends', url: 'https://lolesports.com/en-US', sourceName: 'Riot Games LoL Esports', note: 'Regional splits continue into October; Worlds runs 15 Oct–14 Nov. Checked 16 October 2026; no newer official schedule detail was listed.', checkedAt: '2026-10-21' },
   { gameId: 'rocket_league', gameName: 'Rocket League', url: 'https://www.rocketleague.com/competitive/schedule', sourceName: 'Rocket League Esports', note: 'RLCS World Championship ended 20 Sep; the official schedule is checked for the next dated events. Checked 16 October 2026; no newer official schedule detail was listed.', checkedAt: '2026-10-21' },
   { gameId: 'overwatch', gameName: 'Overwatch 2', url: 'https://overwatch.blizzard.com/en-us/news/24246297/owcs-2026-/', sourceName: 'Blizzard Overwatch Esports', note: 'Checked 16 October 2026: Stage 3 calendars vary by region. China runs 3 Oct–8 Nov with playoffs 7–8 Nov; NA/EMEA run 10 Oct–1 Nov with playoffs 30 Oct–1 Nov. World Finals are 2–6 Dec.', checkedAt: '2026-10-21' },
@@ -1880,6 +1880,7 @@ export const GAME_NEWS_PAGES: GameNewsPage[] = [
 
 export const GAME_NEWS_BY_ID = new Map(GAME_NEWS_PAGES.map((page) => [page.gameId, page]));
 export const GAME_NEWS_INDEX = POPULAR_GAMES.filter((game) => GAME_NEWS_BY_ID.has(game.id));
+
 
 
 
