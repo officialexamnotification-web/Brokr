@@ -41,6 +41,19 @@ export interface TournamentEvent {
     amount: string;
     team?: string;
   }[];
+  /** Tournament bracket data */
+  bracket?: {
+    rounds: {
+      name: string;
+      matches: {
+        team1: string;
+        team2: string;
+        score1?: string;
+        score2?: string;
+        winner?: string;
+      }[];
+    }[];
+  };
 }
 
 export interface TournamentNews {
@@ -97,6 +110,32 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
       { placement: '13th-16th', amount: '$10,000' },
       { placement: '17th-24th', amount: '$5,000' }
     ],
+    bracket: {
+      rounds: [
+        {
+          name: 'Quarter Finals',
+          matches: [
+            { team1: 'Natus Vincere', team2: 'FaZe Clan', score1: '2', score2: '1', winner: 'Natus Vincere' },
+            { team1: 'Vitality', team2: 'G2 Esports', score1: '2', score2: '0', winner: 'Vitality' },
+            { team1: 'Team Spirit', team2: 'Cloud9', score1: '2', score2: '1', winner: 'Team Spirit' },
+            { team1: 'ENCE', team2: 'Astralis', score1: '2', score2: '1', winner: 'ENCE' }
+          ]
+        },
+        {
+          name: 'Semi Finals',
+          matches: [
+            { team1: 'Natus Vincere', team2: 'Vitality', score1: '2', score2: '0', winner: 'Natus Vincere' },
+            { team1: 'Team Spirit', team2: 'ENCE', score1: '2', score2: '1', winner: 'Team Spirit' }
+          ]
+        },
+        {
+          name: 'Grand Final',
+          matches: [
+            { team1: 'Natus Vincere', team2: 'Team Spirit', score1: '3', score2: '1', winner: 'Natus Vincere' }
+          ]
+        }
+      ]
+    },
     participantsLabel: 'Participating teams',
     participantsSourceUrl: 'https://liquipedia.net/counterstrike/IEM/Katowice/2026',
     participantsSourceName: 'Liquipedia',

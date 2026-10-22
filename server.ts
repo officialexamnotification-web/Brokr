@@ -16,6 +16,7 @@ import { POPULAR_GAMES } from "./src/data/games";
 import { SITE_PAGES, getSitePageBySlug } from "./src/data/site-pages";
 import { GAME_NEWS_INDEX, TOURNAMENT_EVENTS } from "./src/data/tournament-data";
 import { filterTournamentEvents, filterTournamentNews, getTournamentNews } from "./src/lib/tournament-feed";
+import { getTeamBySlug } from "./src/data/teams";
 import { syncTournamentNews } from "./server/tournament-sync";
 
 dotenv.config({ path: path.resolve(process.cwd(), '.env.local') });
@@ -332,6 +333,13 @@ async function startServer() {
         res.type('html').send(html);
       });
     });
+    
+    // Team profile route for development
+    app.get("/team/:slug", (req, res) => {
+      vite.transformIndexHtml(req.url, fs.readFileSync(path.join(process.cwd(), "index.html"), 'utf8')).then(html => {
+        res.type('html').send(html);
+      });
+    });
   } else {
     const distPath = path.join(process.cwd(), "dist");
     const indexPath = path.join(distPath, "index.html");
@@ -344,6 +352,10 @@ async function startServer() {
       res.status(404).json({ error: "API route not found" });
     });
     app.get("/archive", (req, res) => {
+      const indexHtml = fs.readFileSync(indexPath, 'utf8');
+      res.type('html').send(injectSeo(indexHtml, req));
+    });
+    app.get("/team/:slug", (req, res) => {
       const indexHtml = fs.readFileSync(indexPath, 'utf8');
       res.type('html').send(injectSeo(indexHtml, req));
     });

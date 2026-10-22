@@ -1,5 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { ArrowLeft, CalendarDays, ExternalLink, Gamepad2, Globe2, Newspaper, Radio, Search, ShieldCheck, Trophy, Download, Share2, X, Facebook } from 'lucide-react';
+import { BracketView } from './BracketView';
+import { ThemeToggle } from './ThemeToggle';
 import { POPULAR_GAMES } from '../data/games';
 import { SITE_DISPLAY_NAME, SITE_NAME, SITE_SUFFIX } from '../data/game-seo';
 import { GAME_NEWS_PAGES, OFFICIAL_TOURNAMENT_SOURCES, type GameNewsPage, type TournamentEvent, type TournamentNews, type TournamentStatus } from '../data/tournament-data';
@@ -59,18 +61,21 @@ function HubHeader({ mode }: { mode: EsportsHubProps['mode'] }) {
           <span className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-gradient-to-br from-amber-400 to-orange-600 text-slate-950 shadow-lg shadow-orange-500/20"><Gamepad2 className="h-5 w-5 stroke-[2.6]" /></span>
           <span className="min-w-0"><span className="block whitespace-nowrap font-gaming text-[15px] font-black tracking-wide text-white sm:text-[18px]">{SITE_NAME.toUpperCase()}</span><span className="block text-[10px] font-medium text-amber-300">{SITE_SUFFIX}</span></span>
         </a>
-        {mode === 'tournaments' ? (
-          <nav className="flex shrink-0 items-center gap-2" aria-label="Tournament page navigation">
-            <a href="/esports-news" className="inline-flex items-center gap-1.5 rounded-xl border border-cyan-400/30 bg-cyan-500/10 px-2.5 py-2 text-[11px] font-bold text-cyan-200 transition hover:border-cyan-300 hover:bg-cyan-500/20 sm:px-3 sm:text-xs" aria-label="Back to game news"><ArrowLeft className="h-3.5 w-3.5" /><span className="sm:hidden">News</span><span className="hidden sm:inline">Back to News</span></a>
-            <a href="/" className="rounded-xl border border-slate-800 bg-[#0b101d] px-2.5 py-2 text-[11px] font-bold text-slate-300 transition hover:border-amber-400/50 hover:text-white sm:px-3 sm:text-xs" aria-label="Go to home page">Home</a>
-          </nav>
-        ) : <>
-          <nav className="hidden items-center gap-2 sm:flex" aria-label="Esports navigation">
-            <a href="/" className="rounded-xl border border-slate-800 bg-[#0b101d] px-3 py-2 text-xs font-bold text-slate-300 transition hover:border-amber-400/50 hover:text-white">Name Generator</a>
-            <a href="/tournaments" className="rounded-xl border border-amber-400/50 bg-amber-500 px-3 py-2 text-xs font-black text-slate-950">Tournaments</a>
-          </nav>
-          <a href="/" aria-label="Back to home page" className="inline-flex items-center gap-2 rounded-xl border border-slate-800 bg-[#0b101d] px-3 py-2 text-xs font-bold text-slate-300 transition hover:border-amber-400/50 hover:text-white"><ArrowLeft className="h-3.5 w-3.5" /><span className="sm:hidden">Home</span><span className="hidden sm:inline">Back to Home</span></a>
-        </>}
+        <div className="flex items-center gap-3">
+          <ThemeToggle />
+          {mode === 'tournaments' ? (
+            <nav className="flex shrink-0 items-center gap-2" aria-label="Tournament page navigation">
+              <a href="/esports-news" className="inline-flex items-center gap-1.5 rounded-xl border border-cyan-400/30 bg-cyan-500/10 px-2.5 py-2 text-[11px] font-bold text-cyan-200 transition hover:border-cyan-300 hover:bg-cyan-500/20 sm:px-3 sm:text-xs" aria-label="Back to game news"><ArrowLeft className="h-3.5 w-3.5" /><span className="sm:hidden">News</span><span className="hidden sm:inline">Back to News</span></a>
+              <a href="/" className="rounded-xl border border-slate-800 bg-[#0b101d] px-2.5 py-2 text-[11px] font-bold text-slate-300 transition hover:border-amber-400/50 hover:text-white sm:px-3 sm:text-xs" aria-label="Go to home page">Home</a>
+            </nav>
+          ) : <>
+            <nav className="hidden items-center gap-2 sm:flex" aria-label="Esports navigation">
+              <a href="/" className="rounded-xl border border-slate-800 bg-[#0b101d] px-3 py-2 text-xs font-bold text-slate-300 transition hover:border-amber-400/50 hover:text-white">Name Generator</a>
+              <a href="/tournaments" className="rounded-xl border border-amber-400/50 bg-amber-500 px-3 py-2 text-xs font-black text-slate-950">Tournaments</a>
+            </nav>
+            <a href="/" aria-label="Back to home page" className="inline-flex items-center gap-2 rounded-xl border border-slate-800 bg-[#0b101d] px-3 py-2 text-xs font-bold text-slate-300 transition hover:border-amber-400/50 hover:text-white"><ArrowLeft className="h-3.5 w-3.5" /><span className="sm:hidden">Home</span><span className="hidden sm:inline">Back to Home</span></a>
+          </>}
+        </div>
       </div>
     </header>
   );
@@ -139,6 +144,7 @@ function ArticleView({ article, event }: { article?: TournamentNews; event?: Tou
       <div className="space-y-7 px-6 py-8 sm:px-10 sm:py-10">
         {event && <dl className="grid gap-3 rounded-2xl border border-slate-800 bg-slate-950/50 p-5 text-sm text-slate-300 sm:grid-cols-2"><div><dt className="text-[10px] font-bold uppercase tracking-[0.14em] text-slate-500">Date</dt><dd className="mt-1">{event.dateLabel}</dd></div><div><dt className="text-[10px] font-bold uppercase tracking-[0.14em] text-slate-500">Organizer</dt><dd className="mt-1">{event.organizer}</dd></div><div><dt className="text-[10px] font-bold uppercase tracking-[0.14em] text-slate-500">Region / location</dt><dd className="mt-1">{event.region} · {event.location}</dd></div><div><dt className="text-[10px] font-bold uppercase tracking-[0.14em] text-slate-500">Format</dt><dd className="mt-1">{event.format || 'Official tournament event'}</dd></div>{event.prizePool && <div><dt className="text-[10px] font-bold uppercase tracking-[0.14em] text-slate-500">Prize pool</dt><dd className="mt-1">{event.prizePool}</dd></div>}</dl>}
         {event && <section className="rounded-2xl border border-slate-800 bg-slate-950/50 p-5"><div className="flex flex-wrap items-start justify-between gap-3"><div><h2 className="font-semibold text-white">{event.participantsLabel || 'Teams and participants'}</h2>{event.teams && <p className="mt-1 text-xs text-slate-400">Published field size: {event.teams} teams</p>}</div>{event.participantsSourceUrl && <a href={event.participantsSourceUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 text-xs font-bold text-cyan-300 hover:text-white">Roster source{event.participantsSourceName ? ` · ${event.participantsSourceName}` : ''}<ExternalLink className="h-3 w-3" /></a>}</div>{event.participants?.length ? <ul className="mt-4 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">{event.participants.map((participant) => <li key={participant} className="rounded-lg border border-slate-800 bg-[#080d1a] px-3 py-2 text-xs font-semibold text-slate-200">{participant}</li>)}</ul> : <p className="mt-3 text-sm leading-6 text-slate-400">{event.participantsNote || 'Named entrants are not verified in this page yet. Open the official event source for the latest roster, bracket or regional standings.'}</p>}{event.participantsNote && event.participants?.length > 0 && <p className="mt-3 text-xs leading-5 text-slate-500">{event.participantsNote}</p>}</section>}
+        {event && event.bracket && <section className="mt-7"><BracketView rounds={event.bracket.rounds} tournamentName={event.name} /></section>}
         {(article?.content || [event?.summary || '']).map((paragraph) => <p key={paragraph} className="max-w-3xl text-sm leading-8 text-slate-300">{paragraph}</p>)}
         <div className={`rounded-2xl border p-5 ${article?.sourceVerified === false ? 'border-amber-400/25 bg-amber-500/5' : 'border-emerald-400/25 bg-emerald-500/5'}`}><div className="flex gap-3"><ShieldCheck className={`mt-0.5 h-5 w-5 shrink-0 ${article?.sourceVerified === false ? 'text-amber-300' : 'text-emerald-300'}`} /><div><h2 className={`font-semibold ${article?.sourceVerified === false ? 'text-amber-200' : 'text-emerald-200'}`}>{article?.sourceVerified === false ? 'Source check pending' : 'Checked against official source'}</h2><p className="mt-1 text-sm leading-6 text-slate-300">{article?.sourceVerified === false ? 'This is an unverified draft and is not an official result or confirmed event detail.' : 'This summary was checked against the linked publisher or organizer source. Match status, registration windows and bracket details can change, so check the source for the latest information.'}</p><a href={sourceUrl} target="_blank" rel="noreferrer" className="mt-3 inline-flex items-center gap-2 text-xs font-black text-emerald-300 hover:text-white">Open {sourceName} <ExternalLink className="h-3.5 w-3.5" /></a></div></div></div>
         <div className="flex flex-wrap items-center gap-3 border-t border-slate-800 pt-6">{gameGeneratorSlug(gameId) && <a href={`/` + gameGeneratorSlug(gameId)} className="rounded-lg bg-amber-500 px-4 py-2.5 text-xs font-black text-slate-950 hover:bg-amber-300">Generate {article?.gameName || event?.gameName} name</a>}<a href={event ? '/tournaments' : '/esports-news'} className="rounded-lg border border-slate-700 px-4 py-2.5 text-xs font-bold text-slate-300 hover:border-cyan-400/60 hover:text-white">{event ? 'Back to tournaments' : 'Back to esports news'}</a></div>

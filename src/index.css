@@ -119,3 +119,65 @@ body { top: 0 !important; }
   }
 }
 
+/* Light mode styles */
+.light body {
+  background-color: #f8fafc;
+  color: #1e293b;
+}
+
+.light .bg-[#050811] {
+  background-color: #ffffff;
+}
+
+.light .bg-[#080d1a] {
+  background-color: #f1f5f9;
+}
+
+.light .bg-[#0b101d] {
+  background-color: #ffffff;
+}
+
+.light .bg-slate-950 {
+  background-color: #f8fafc;
+}
+
+.light .bg-slate-950\/50 {
+  background-color: rgba(248, 250, 252, 0.5);
+}
+
+.light .bg-slate-950\/30 {
+  background-color: rgba(248, 250, 252, 0.3);
+}
+
+.light .text-slate-100 {
+  color: #1e293b;
+}
+
+.light .text-slate-200 {
+  color: #334155;
+}
+
+.light .text-slate-300 {
+  color: #475569;
+}
+
+.light .text-slate-400 {
+  color: #64748b;
+}
+
+.light .text-slate-500 {
+  color: #94a3b8;
+}
+
+.light .text-white {
+  color: #1e293b;
+}
+
+.light .border-slate-800 {
+  border-color: #e2e8f0;
+}
+
+.light .border-slate-700 {
+  border-color: #cbd5e1;
+}
+
