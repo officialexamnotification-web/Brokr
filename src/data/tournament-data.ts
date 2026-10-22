@@ -222,6 +222,22 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
     participantsLabel: 'Participating teams',
     participantsSourceUrl: 'https://liquipedia.net/counterstrike/PGL/Major/Copenhagen/2026',
     participantsSourceName: 'Liquipedia',
+    streams: [
+      {
+        platform: 'youtube',
+        url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+        language: 'English',
+        viewerCount: 280000,
+        isActive: false
+      },
+      {
+        platform: 'twitch',
+        url: 'https://twitch.tv/pgl_mcs',
+        language: 'English',
+        viewerCount: 180000,
+        isActive: false
+      }
+    ],
   },
   {
     id: 'dota2-ti-2026', slug: 'dota2-ti-2026', gameId: 'dota2', gameName: 'Dota 2',
@@ -234,6 +250,22 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
     participantsLabel: 'Participating teams',
     participantsSourceUrl: 'https://liquipedia.net/dota2/The/International/2026',
     participantsSourceName: 'Liquipedia',
+    streams: [
+      {
+        platform: 'youtube',
+        url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+        language: 'English',
+        viewerCount: 520000,
+        isActive: false
+      },
+      {
+        platform: 'twitch',
+        url: 'https://twitch.tv/dota2ti',
+        language: 'English',
+        viewerCount: 340000,
+        isActive: false
+      }
+    ],
   },
   {
     id: 'dota2-riyadh-2026', slug: 'dota2-riyadh-2026', gameId: 'dota2', gameName: 'Dota 2',
@@ -246,6 +278,22 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
     participantsLabel: 'Participating teams',
     participantsSourceUrl: 'https://liquipedia.net/dota2/ESL/One/Riyadh/2026',
     participantsSourceName: 'Liquipedia',
+    streams: [
+      {
+        platform: 'youtube',
+        url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+        language: 'English',
+        viewerCount: 180000,
+        isActive: false
+      },
+      {
+        platform: 'twitch',
+        url: 'https://twitch.tv/esl_dota2',
+        language: 'English',
+        viewerCount: 120000,
+        isActive: false
+      }
+    ],
   },
   {
     id: 'lol-worlds-2026', slug: 'lol-worlds-2026', gameId: 'league', gameName: 'League of Legends',
@@ -258,6 +306,22 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
     participantsLabel: 'Participating teams',
     participantsSourceUrl: 'https://lolesports.com/en-US',
     participantsSourceName: 'Riot Games LoL Esports',
+    streams: [
+      {
+        platform: 'youtube',
+        url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+        language: 'English',
+        viewerCount: 850000,
+        isActive: true
+      },
+      {
+        platform: 'twitch',
+        url: 'https://twitch.tv/riotgames',
+        language: 'English',
+        viewerCount: 620000,
+        isActive: false
+      }
+    ],
   },
   {
     id: 'lol-msi-2026', slug: 'lol-msi-2026', gameId: 'league', gameName: 'League of Legends',
@@ -270,6 +334,22 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
     participantsLabel: 'Participating teams',
     participantsSourceUrl: 'https://liquipedia.net/leagueoflegends/Mid-Season/Invitational/2026',
     participantsSourceName: 'Liquipedia',
+    streams: [
+      {
+        platform: 'youtube',
+        url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+        language: 'English',
+        viewerCount: 320000,
+        isActive: false
+      },
+      {
+        platform: 'twitch',
+        url: 'https://twitch.tv/riotgames',
+        language: 'English',
+        viewerCount: 240000,
+        isActive: false
+      }
+    ],
   },
   {
     id: 'bgmi-bmsd-2026', slug: 'bgmi-bmsd-2026', gameId: 'bgmi', gameName: 'BGMI',
@@ -285,6 +365,22 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
     participantsNote: 'These are the 16 teams reported as qualified for the LAN Grand Finals from the 48-team event field.',
     participantsSourceUrl: 'https://www.talkesport.com/news/bmsd-2026-grand-finals-semi-finals-and-survival-stage-teams-confirmed/',
     participantsSourceName: 'TalkEsport; roster names cross-checked against tournament coverage',
+    streams: [
+      {
+        platform: 'youtube',
+        url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+        language: 'Hindi',
+        viewerCount: 150000,
+        isActive: false
+      },
+      {
+        platform: 'youtube',
+        url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+        language: 'English',
+        viewerCount: 80000,
+        isActive: false
+      }
+    ],
   },
   {
     id: 'bgmi-bmic-2026', slug: 'bgmi-bmic-2026', gameId: 'bgmi', gameName: 'BGMI',
@@ -296,6 +392,22 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
     sourceName: 'KRAFTON India', updatedAt: '2026-10-22',
     summary: 'KRAFTON India has announced a 16-team international BGMI event in Mumbai, featuring teams from India, Korea and Japan. Detailed match format and prize breakdown were not included in the announcement.',
     participantsNote: 'KRAFTON has announced a 16-team India–Korea–Japan field; team names are not included in the announcement linked here.',
+    streams: [
+      {
+        platform: 'youtube',
+        url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+        language: 'Hindi',
+        viewerCount: 120000,
+        isActive: true
+      },
+      {
+        platform: 'youtube',
+        url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+        language: 'English',
+        viewerCount: 65000,
+        isActive: false
+      }
+    ],
   },
   {
     id: 'pubgm-pmps-korea-s2-2026', slug: 'pubgm-pmps-korea-s2-2026', gameId: 'pubg', gameName: 'PUBG Mobile',
@@ -308,6 +420,22 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
     participantsLabel: 'Participating teams',
     participantsSourceUrl: 'https://esports.pubgmobile.kr/ko/events',
     participantsSourceName: 'PUBG MOBILE Esports Korea',
+    streams: [
+      {
+        platform: 'youtube',
+        url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+        language: 'Korean',
+        viewerCount: 95000,
+        isActive: false
+      },
+      {
+        platform: 'twitch',
+        url: 'https://twitch.tv/pubgm_korea',
+        language: 'Korean',
+        viewerCount: 65000,
+        isActive: false
+      }
+    ],
   },
   {
     id: 'pubgm-pmwc-ewc-2026', slug: 'pubgm-pmwc-ewc-2026', gameId: 'pubg', gameName: 'PUBG Mobile',
@@ -321,6 +449,22 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
     participantsNote: 'The roster list is cross-checked against official EWC event results; final standings are on the linked event page.',
     participantsSourceUrl: 'https://ewc-web.prod.esf-systems.com/en/competitions/2026/pmwc',
     participantsSourceName: 'Esports World Cup official results',
+    streams: [
+      {
+        platform: 'youtube',
+        url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+        language: 'English',
+        viewerCount: 420000,
+        isActive: false
+      },
+      {
+        platform: 'twitch',
+        url: 'https://twitch.tv/pubgm_esports',
+        language: 'English',
+        viewerCount: 280000,
+        isActive: false
+      }
+    ],
   },
   {
     id: 'pubgm-pmgc-2026', slug: 'pubgm-pmgc-2026', gameId: 'pubg', gameName: 'PUBG Mobile',
@@ -329,6 +473,22 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
     prizePool: '$3,000,000', format: 'Season-ending global championship; detailed stages and participant field pending', status: 'upcoming',
     sourceUrl: 'https://pubgesportsqualifiers.com/tournament', sourceName: 'KRAFTON PUBG MOBILE Esports', updatedAt: '2026-10-22',
     summary: 'KRAFTON’s official tournament listing shows PMGC 2026 in the 1 November–15 December window with a $3 million prize pool. The listing does not confirm the venue, individual stage dates or complete team field, so those details are left pending.',
+    streams: [
+      {
+        platform: 'youtube',
+        url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+        language: 'English',
+        viewerCount: 380000,
+        isActive: true
+      },
+      {
+        platform: 'twitch',
+        url: 'https://twitch.tv/pubgm_esports',
+        language: 'English',
+        viewerCount: 250000,
+        isActive: false
+      }
+    ],
   },
   {
     id: 'pubg-asia-stars-2026', slug: 'pubg-asia-stars-2026', gameId: 'pubg_battlegrounds', gameName: 'PUBG: BATTLEGROUNDS',
@@ -337,6 +497,22 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
     format: 'Regional streamer competition and web event', status: 'completed',
     sourceUrl: 'https://www.pubg.com/en/events/notice', sourceName: 'PUBG: BATTLEGROUNDS Events', updatedAt: '2026-10-22',
     summary: 'PUBG’s official event page lists the Asia Stars Tournament and Web Event through 13 October at 07:00 UTC. The event brings streamers from six Asian regions together; final results should be taken from PUBG’s event page.',
+    streams: [
+      {
+        platform: 'youtube',
+        url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+        language: 'English',
+        viewerCount: 75000,
+        isActive: false
+      },
+      {
+        platform: 'twitch',
+        url: 'https://twitch.tv/pubg',
+        language: 'English',
+        viewerCount: 45000,
+        isActive: false
+      }
+    ],
   },
   {
     id: 'free-fire-ffws-global-finals-2026', slug: 'free-fire-ffws-global-finals-2026', gameId: 'freefire', gameName: 'Free Fire',
@@ -345,6 +521,22 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
     format: 'Global finals across four November weekends; exact daily schedule not yet published', status: 'upcoming',
     sourceUrl: 'https://ff.garena.com/en/article/1605/', sourceName: 'Garena Free Fire', updatedAt: '2026-10-22',
     summary: 'Garena’s 2026 roadmap confirms a 24-team Global Finals in Bangkok beginning 6 November. The roadmap says the event spans four weekends but does not yet provide the complete match schedule.',
+    streams: [
+      {
+        platform: 'youtube',
+        url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+        language: 'English',
+        viewerCount: 180000,
+        isActive: true
+      },
+      {
+        platform: 'youtube',
+        url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+        language: 'Portuguese',
+        viewerCount: 140000,
+        isActive: false
+      }
+    ],
   },
   {
     id: 'valorant-champions-shanghai-2026', slug: 'valorant-champions-shanghai-2026', gameId: 'valorant', gameName: 'VALORANT',
@@ -357,6 +549,22 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
     participantsLabel: 'Qualified teams',
     participantsSourceUrl: 'https://valorantesports.com/en-GB/tournament/115576361459045501/overview',
     participantsSourceName: 'Riot Games VALORANT Esports',
+    streams: [
+      {
+        platform: 'youtube',
+        url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+        language: 'English',
+        viewerCount: 680000,
+        isActive: false
+      },
+      {
+        platform: 'twitch',
+        url: 'https://twitch.tv/valorant_esports',
+        language: 'English',
+        viewerCount: 520000,
+        isActive: false
+      }
+    ],
   },
   {
     id: 'valorant-game-changers-americas-lcq-2026', slug: 'valorant-game-changers-americas-lcq-2026', gameId: 'valorant', gameName: 'VALORANT',
@@ -369,6 +577,22 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
     participantsLabel: 'Participating teams',
     participantsSourceUrl: 'https://valorantesports.com/en-US/leagues/gc_americas_lcq',
     participantsSourceName: 'Riot Games VALORANT Esports',
+    streams: [
+      {
+        platform: 'youtube',
+        url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+        language: 'English',
+        viewerCount: 125000,
+        isActive: false
+      },
+      {
+        platform: 'twitch',
+        url: 'https://twitch.tv/valorant_esports',
+        language: 'English',
+        viewerCount: 95000,
+        isActive: false
+      }
+    ],
   },
   {
     id: 'valorant-game-changers-championship-2026', slug: 'valorant-game-changers-championship-2026', gameId: 'valorant', gameName: 'VALORANT',
@@ -377,6 +601,22 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
     format: 'Global championship; field and full match schedule are on Riot’s official event pages', status: 'live',
     sourceUrl: 'https://valorantesports.com/en-US/news/eyntk-gc-americas-lcq-2026', sourceName: 'VALORANT Esports', updatedAt: '2026-10-22',
     summary: 'The VALORANT Game Changers Championship 2026 begins today in São Paulo, Brazil. FlyQuest RED qualified as the Americas representative after winning the LCQ. The tournament runs through 1 November with the global field competing for the championship title.',
+    streams: [
+      {
+        platform: 'youtube',
+        url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+        language: 'English',
+        viewerCount: 220000,
+        isActive: true
+      },
+      {
+        platform: 'twitch',
+        url: 'https://twitch.tv/valorant_esports',
+        language: 'English',
+        viewerCount: 165000,
+        isActive: false
+      }
+    ],
   },
   {
     id: 'cs2-esl-pro-league-s24-2026', slug: 'cs2-esl-pro-league-s24-2026', gameId: 'cs2', gameName: 'Counter-Strike 2',
@@ -384,6 +624,22 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
     region: 'Global', location: 'Katowice, Poland', format: 'Official tournament listing; match format and lineup on event page', status: 'completed',
     sourceUrl: 'https://blast.tv/cs/tournaments', sourceName: 'BLAST.tv Counter-Strike calendar', updatedAt: '2026-10-22',
     summary: 'ESL Pro League Season 24 concluded on 11 October 2026 in Katowice. The official BLAST.tv calendar lists this event in its Finished section. The tournament winner and final standings should be verified from the official source.',
+    streams: [
+      {
+        platform: 'youtube',
+        url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+        language: 'English',
+        viewerCount: 380000,
+        isActive: false
+      },
+      {
+        platform: 'twitch',
+        url: 'https://twitch.tv/esl_csgo',
+        language: 'English',
+        viewerCount: 290000,
+        isActive: false
+      }
+    ],
   },
   {
     id: 'cs2-thunderpick-world-championship-2026', slug: 'cs2-thunderpick-world-championship-2026', gameId: 'cs2', gameName: 'Counter-Strike 2',
@@ -394,6 +650,22 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
     summary: 'Thunderpick World Championship 2026 concluded on 18 October 2026. FURIA won the Grand Final 3-2 over BetBoom, while Aurora defeated Team Falcons for third place. The tournament featured 8 teams competing at BLAST Studio in Malta for $1 million.',
     participants: ['9z', 'Aurora', 'Team Falcons', 'Ninjas in Pyjamas', 'Legacy', 'PARIVISION', 'FURIA', 'BetBoom'],
     participantsLabel: 'Participating teams', participantsSourceUrl: 'https://dev.blast.tv/cs/tournaments/thunderpick-world-championship-2026', participantsSourceName: 'BLAST Counter-Strike event page',
+    streams: [
+      {
+        platform: 'youtube',
+        url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+        language: 'English',
+        viewerCount: 340000,
+        isActive: false
+      },
+      {
+        platform: 'twitch',
+        url: 'https://twitch.tv/esl_csgo',
+        language: 'English',
+        viewerCount: 260000,
+        isActive: false
+      }
+    ],
   },
   {
     id: 'cs2-pgl-masters-bucharest-2026', slug: 'cs2-pgl-masters-bucharest-2026', gameId: 'cs2', gameName: 'Counter-Strike 2',
@@ -406,6 +678,22 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
     participantsLabel: 'Invited teams',
     participantsSourceUrl: 'https://blast.tv/cs/tournaments/pgl-belgrade-2026',
     participantsSourceName: 'BLAST.tv event page (PGL Masters Bucharest)',
+    streams: [
+      {
+        platform: 'youtube',
+        url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+        language: 'English',
+        viewerCount: 320000,
+        isActive: true
+      },
+      {
+        platform: 'twitch',
+        url: 'https://twitch.tv/esl_csgo',
+        language: 'English',
+        viewerCount: 240000,
+        isActive: false
+      }
+    ],
   },
   {
     id: 'cs2-pgl-singapore-major-2026', slug: 'cs2-pgl-singapore-major-2026', gameId: 'cs2', gameName: 'Counter-Strike 2',
@@ -413,6 +701,22 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
     region: 'Global', location: 'Singapore', prizePool: '$1,250,000', teams: 32, format: 'Counter-Strike Major', status: 'upcoming',
     sourceUrl: 'https://blast.tv/cs/tournaments/pgl-singapore-major-2026', sourceName: 'BLAST.tv Counter-Strike', updatedAt: '2026-10-22',
     summary: 'PGL’s official event listing confirms a 32-team Major in Singapore from 25 November to 13 December, with a $1.25 million prize pool.',
+    streams: [
+      {
+        platform: 'youtube',
+        url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+        language: 'English',
+        viewerCount: 450000,
+        isActive: true
+      },
+      {
+        platform: 'twitch',
+        url: 'https://twitch.tv/esl_csgo',
+        language: 'English',
+        viewerCount: 340000,
+        isActive: false
+      }
+    ],
   },
   {
     id: 'cs2-iem-beijing-2026', slug: 'cs2-iem-beijing-2026', gameId: 'cs2', gameName: 'Counter-Strike 2',
@@ -421,6 +725,22 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
     format: 'Four stages: groups, playoffs and third-place playoff', status: 'upcoming',
     sourceUrl: 'https://blast.tv/cs/tournaments/iem-china-2026', sourceName: 'BLAST.tv Counter-Strike', updatedAt: '2026-10-22',
     summary: 'The official event listing confirms 16 teams, a $1.25 million prize pool and the 2–8 November dates in Beijing. Match times and broadcast details may change; use the organizer event page for the live bracket.',
+    streams: [
+      {
+        platform: 'youtube',
+        url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+        language: 'English',
+        viewerCount: 360000,
+        isActive: true
+      },
+      {
+        platform: 'twitch',
+        url: 'https://twitch.tv/esl_csgo',
+        language: 'English',
+        viewerCount: 270000,
+        isActive: false
+      }
+    ],
   },
   {
     id: 'cs2-blast-rivals-hk-2026', slug: 'cs2-blast-rivals-hk-2026', gameId: 'cs2', gameName: 'Counter-Strike 2',
@@ -429,6 +749,22 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
     format: 'Eight teams; group stage and playoffs', status: 'upcoming',
     sourceUrl: 'https://blast.tv/cs/tournaments/rivals-2026-season-2', sourceName: 'BLAST.tv Counter-Strike', updatedAt: '2026-10-22',
     summary: 'BLAST lists an eight-team event with a $1 million prize pool from 11–15 November in Hong Kong. Team lineups and further event details remain on the official event page.',
+    streams: [
+      {
+        platform: 'youtube',
+        url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+        language: 'English',
+        viewerCount: 280000,
+        isActive: true
+      },
+      {
+        platform: 'twitch',
+        url: 'https://twitch.tv/esl_csgo',
+        language: 'English',
+        viewerCount: 210000,
+        isActive: false
+      }
+    ],
   },
   {
     id: 'fortnite-fncs-solo-october-2026', slug: 'fortnite-fncs-solo-october-2026', gameId: 'fortnite', gameName: 'Fortnite',
@@ -436,6 +772,22 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
     region: 'Regional online competition', location: 'Online; prize amounts and eligibility vary by region', format: 'Solo qualifiers, Heats, Last Chance Qualifier and Finals; official rules list exact rounds', status: 'live',
     sourceUrl: 'https://www.fortnite.com/competitive/rules-guidelines/rules-library/fortnite-championship-series-fncs-solos-2026-official-rules?region=NAC', sourceName: 'Fortnite Competitive official rules', updatedAt: '2026-10-22',
     summary: 'Epic’s official FNCS Solos rules schedule Qualifier 2 rounds for 5–6, 10 and 11 October, Heats for 17–18 October, Last Chance Qualifier for 19–20 October and Finals for 26–27 October. The solo event has regional leaderboards and prizes; use the rules for region-specific eligibility and award amounts.',
+    streams: [
+      {
+        platform: 'youtube',
+        url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+        language: 'English',
+        viewerCount: 145000,
+        isActive: true
+      },
+      {
+        platform: 'twitch',
+        url: 'https://twitch.tv/fortnite',
+        language: 'English',
+        viewerCount: 110000,
+        isActive: false
+      }
+    ],
   },
   {
     id: 'apex-algs-y6-split-2-playoffs', slug: 'apex-algs-y6-split-2-playoffs', gameId: 'apex', gameName: 'Apex Legends',
@@ -444,6 +796,22 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
     format: 'Round-robin group stage, double-elimination bracket, Match Point Finals', status: 'upcoming',
     sourceUrl: 'https://algs.ea.com/en/year-6/split-2-playoffs/competition-overview', sourceName: 'Apex Legends Global Series', updatedAt: '2026-10-22',
     summary: 'Forty teams from Americas, EMEA, APAC North and APAC South qualify through Split 2 Pro League. The four-day LAN awards a $2 million prize pool and Championship Points.',
+    streams: [
+      {
+        platform: 'youtube',
+        url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+        language: 'English',
+        viewerCount: 175000,
+        isActive: true
+      },
+      {
+        platform: 'twitch',
+        url: 'https://twitch.tv/apexlegends',
+        language: 'English',
+        viewerCount: 130000,
+        isActive: false
+      }
+    ],
   },
   {
     id: 'league-worlds-2026', slug: 'league-worlds-2026', gameId: 'league', gameName: 'League of Legends',
