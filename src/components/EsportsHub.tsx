@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { ArrowLeft, CalendarDays, ExternalLink, Gamepad2, Globe2, Newspaper, Radio, Search, ShieldCheck, Trophy } from 'lucide-react';
+import { ArrowLeft, CalendarDays, ExternalLink, Gamepad2, Globe2, Newspaper, Radio, Search, ShieldCheck, Trophy, Download } from 'lucide-react';
 import { POPULAR_GAMES } from '../data/games';
 import { SITE_DISPLAY_NAME, SITE_NAME, SITE_SUFFIX } from '../data/game-seo';
 import { GAME_NEWS_PAGES, OFFICIAL_TOURNAMENT_SOURCES, type GameNewsPage, type TournamentEvent, type TournamentNews, type TournamentStatus } from '../data/tournament-data';
@@ -80,14 +80,18 @@ function StatusBadge({ status }: { status: TournamentStatus }) {
   return <span className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.12em] ${statusClass(status)}`}><span className={`h-1.5 w-1.5 rounded-full ${status === 'live' ? 'animate-pulse bg-red-400' : 'bg-current'}`} />{STATUS_LABELS[status]}</span>;
 }
 
-const EventCard: React.FC<{ event: TournamentEvent }> = ({ event }) => {
+const EventCard: React.FC<{ event: TournamentEvent; isFavorite?: boolean; onToggleFavorite?: (id: string) => void }> = ({ event, isFavorite = false, onToggleFavorite }) => {
+  const handleCalendarExport = () => {
+    window.open(`/api/calendar?slug=${event.slug}`, '_blank');
+  };
+
   return (
     <article className="flex h-full flex-col rounded-2xl border border-slate-800 bg-[#080d1a]/95 p-5 transition hover:-translate-y-0.5 hover:border-amber-400/45 hover:shadow-xl hover:shadow-amber-950/20">
       <div className="flex items-start justify-between gap-3"><StatusBadge status={event.status} /><span className="text-[10px] font-bold uppercase tracking-[0.14em] text-slate-500">{event.gameName}</span></div>
       <h2 className="mt-4 font-gaming text-base font-bold leading-snug text-white">{event.name}</h2>
       <p className="mt-2 text-xs leading-6 text-slate-400">{event.summary}</p>
       <dl className="mt-4 grid gap-2 border-t border-slate-800 pt-4 text-xs text-slate-300"><div className="flex items-center gap-2"><CalendarDays className="h-3.5 w-3.5 text-amber-300" /><span>{event.dateLabel}</span></div><div className="flex items-center gap-2"><Globe2 className="h-3.5 w-3.5 text-cyan-300" /><span>{event.region} · {event.location}</span></div>{(event.prizePool || event.teams) && <div className="flex items-center gap-2"><Trophy className="h-3.5 w-3.5 text-emerald-300" /><span>{[event.prizePool, event.teams ? `${event.teams} teams` : undefined].filter(Boolean).join(' · ')}</span></div>}</dl>
-      <div className="mt-auto flex flex-wrap items-center gap-3 pt-5"><span className="w-full text-[10px] text-slate-500">Schedule source checked {sourceCheckDate(event.gameId)}</span><a href={`/tournaments/${event.slug}`} className="rounded-lg bg-amber-500 px-3 py-2 text-xs font-black text-slate-950 transition hover:bg-amber-300">View event</a><a href={event.sourceUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-400 hover:text-white">Official source <ExternalLink className="h-3 w-3" /></a></div>
+      <div className="mt-auto flex flex-wrap items-center gap-3 pt-5"><span className="w-full text-[10px] text-slate-500">Schedule source checked {sourceCheckDate(event.gameId)}</span><a href={`/tournaments/${event.slug}`} className="rounded-lg bg-amber-500 px-3 py-2 text-xs font-black text-slate-950 transition hover:bg-amber-300">View event</a><button onClick={handleCalendarExport} className="rounded-lg border border-slate-700 px-3 py-2 text-xs font-bold text-slate-300 transition hover:border-cyan-400/60 hover:text-white flex items-center gap-1.5"><Download className="h-3 w-3" />Calendar</button>{onToggleFavorite && <button onClick={() => onToggleFavorite(event.id)} className={`rounded-lg border px-3 py-2 text-xs font-bold transition flex items-center gap-1.5 ${isFavorite ? 'border-amber-400/50 bg-amber-500/10 text-amber-300' : 'border-slate-700 text-slate-300 hover:border-cyan-400/60 hover:text-white'}`}>{isFavorite ? '★ Saved' : '☆ Save'}</button>}<a href={event.sourceUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-400 hover:text-white">Official source <ExternalLink className="h-3 w-3" /></a></div>
     </article>
   );
 };
@@ -132,6 +136,13 @@ export function EsportsHub({ mode, slug }: EsportsHubProps) {
   const [gameId, setGameId] = useState('all');
   const [status, setStatus] = useState<TournamentStatus | 'all'>('all');
   const [events, setEvents] = useState<TournamentEvent[]>(getTournamentEvents());
+  const [favorites, setFavorites] = useState<string[]>(() => {
+    try {
+      return JSON.parse(localStorage.getItem('tournament-favorites') || '[]');
+    } catch {
+      return [];
+    }
+  });
 
   useEffect(() => {
     if (mode !== 'tournaments') return;
@@ -154,13 +165,39 @@ export function EsportsHub({ mode, slug }: EsportsHubProps) {
     document.title = article ? `${article.title} | ${SITE_DISPLAY_NAME}` : event ? `${event.name} | ${SITE_DISPLAY_NAME}` : mode === 'news' ? `Esports Tournament News | ${SITE_DISPLAY_NAME}` : `Game Tournament Schedule | ${SITE_DISPLAY_NAME}`;
   }, [mode, slug]);
 
+  useEffect(() => {
+    try {
+      localStorage.setItem('tournament-favorites', JSON.stringify(favorites));
+    } catch {
+      // Ignore storage errors
+    }
+  }, [favorites]);
+
+  const toggleFavorite = (tournamentId: string) => {
+    setFavorites(prev => {
+      if (prev.includes(tournamentId)) {
+        return prev.filter(id => id !== tournamentId);
+      } else {
+        return [...prev, tournamentId];
+      }
+    });
+  };
+
   const latestGameUpdates = useMemo(() => GAME_NEWS_PAGES.filter((page) => {
     if (!POPULAR_GAMES.some((game) => game.id === page.gameId)) return false;
     if (gameId !== 'all' && page.gameId !== gameId) return false;
     if (query && !`${page.heading} ${page.updateHeading} ${page.intro} ${page.update.join(' ')}`.toLowerCase().includes(query.trim().toLowerCase())) return false;
     return true;
   }), [gameId, query]);
-  const filteredEvents = useMemo(() => filterTournamentEvents({ gameId: gameId === 'all' ? undefined : gameId, status: status === 'all' ? undefined : status, query }).filter((item) => events.some((candidate) => candidate.id === item.id)), [events, gameId, query, status]);
+  const filteredEvents = useMemo(() => {
+    let eventsToFilter = filterTournamentEvents({ gameId: gameId === 'all' || gameId === 'favorites' ? undefined : gameId, status: status === 'all' ? undefined : status, query });
+    
+    if (gameId === 'favorites') {
+      eventsToFilter = eventsToFilter.filter(event => favorites.includes(event.id));
+    }
+    
+    return eventsToFilter.filter((item) => events.some((candidate) => candidate.id === item.id));
+  }, [events, gameId, query, status, favorites]);
   const selectedArticle = undefined;
   const selectedEvent = mode === 'tournaments' && slug ? events.find((event) => event.slug === slug) || getTournamentEventBySlug(slug) : undefined;
   const isDetail = Boolean(slug) && !(mode === 'news' && getTournamentNewsBySlug(slug));
@@ -177,7 +214,7 @@ export function EsportsHub({ mode, slug }: EsportsHubProps) {
       <main className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8"><ContentLanguagePicker />
         {!isDetail ? <>
           <section className="overflow-hidden rounded-3xl border border-slate-800 bg-[#080d1a]/95 px-6 py-9 shadow-2xl shadow-black/30 sm:px-10 sm:py-12"><div className="max-w-4xl"><div className="mb-4 inline-flex items-center gap-2 rounded-full border border-cyan-400/25 bg-cyan-500/10 px-3 py-1 text-[10px] font-black uppercase tracking-[0.16em] text-cyan-300"><Newspaper className="h-3.5 w-3.5" /> Tradivex esports desk</div><h1 className="font-gaming text-2xl font-black leading-tight text-white sm:text-5xl">{mode === 'news' ? 'Latest game news and updates' : 'Upcoming and completed game tournaments'}</h1><p className="mt-4 max-w-3xl text-sm leading-7 text-slate-300 sm:text-base">{mode === 'news' ? 'Current updates for the games listed on Tradivex. Each game appears once; open its page for full details and publisher sources.' : 'Filter official tournament information by game, status and region. Dates and results are summaries; the linked organizer remains the source of truth.'}</p></div>{mode === 'tournaments' && <div className="mt-7 grid gap-3 sm:grid-cols-3"><div className="rounded-2xl border border-slate-800 bg-slate-950/50 p-4"><Radio className="h-4 w-4 text-red-300" /><p className="mt-3 text-sm font-bold text-white">Live and upcoming</p><p className="mt-1 text-xs leading-5 text-slate-500">Clear status labels instead of fake live scores.</p></div><div className="rounded-2xl border border-slate-800 bg-slate-950/50 p-4"><ShieldCheck className="h-4 w-4 text-emerald-300" /><p className="mt-3 text-sm font-bold text-white">Official source links</p><p className="mt-1 text-xs leading-5 text-slate-500">Every update points to the organizer or publisher.</p></div><div className="rounded-2xl border border-slate-800 bg-slate-950/50 p-4"><Gamepad2 className="h-4 w-4 text-amber-300" /><p className="mt-3 text-sm font-bold text-white">Connected to names</p><p className="mt-1 text-xs leading-5 text-slate-500">Jump from tournament news to a game name generator.</p></div></div>}</section>
-          <section className="mt-8 flex flex-col gap-3 rounded-2xl border border-slate-800 bg-[#080d1a]/95 p-4 sm:flex-row sm:items-center"><label className="relative min-w-0 flex-1"><Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-500" /><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder={mode === 'news' ? 'Search games or current updates' : 'Search tournaments, games or teams'} className="h-11 w-full rounded-xl border border-slate-800 bg-slate-950/70 pl-10 pr-3 text-sm text-white outline-none focus:border-cyan-400/60" /></label><select value={gameId} onChange={(event) => setGameId(event.target.value)} className="h-11 rounded-xl border border-slate-800 bg-slate-950/70 px-3 text-sm text-slate-200 outline-none focus:border-cyan-400/60"><option value="all">All games</option>{availableGames.map(([id, name]) => <option key={id} value={id}>{name}</option>)}</select>{mode === 'tournaments' && <select value={status} onChange={(event) => setStatus(event.target.value as TournamentStatus | 'all')} className="h-11 rounded-xl border border-slate-800 bg-slate-950/70 px-3 text-sm text-slate-200 outline-none focus:border-cyan-400/60"><option value="all">All statuses</option><option value="live">Live / ongoing</option><option value="upcoming">Upcoming</option><option value="completed">Completed</option></select>}</section>
+          <section className="mt-8 flex flex-col gap-3 rounded-2xl border border-slate-800 bg-[#080d1a]/95 p-4 sm:flex-row sm:items-center"><label className="relative min-w-0 flex-1"><Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-500" /><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder={mode === 'news' ? 'Search games or current updates' : 'Search tournaments, games or teams'} className="h-11 w-full rounded-xl border border-slate-800 bg-slate-950/70 pl-10 pr-3 text-sm text-white outline-none focus:border-cyan-400/60" /></label><select value={gameId} onChange={(event) => setGameId(event.target.value)} className="h-11 rounded-xl border border-slate-800 bg-slate-950/70 px-3 text-sm text-slate-200 outline-none focus:border-cyan-400/60"><option value="all">All games</option>{mode === 'tournaments' && <option value="favorites">★ Favorites ({favorites.length})</option>}{availableGames.map(([id, name]) => <option key={id} value={id}>{name}</option>)}</select>{mode === 'tournaments' && <select value={status} onChange={(event) => setStatus(event.target.value as TournamentStatus | 'all')} className="h-11 rounded-xl border border-slate-800 bg-slate-950/70 px-3 text-sm text-slate-200 outline-none focus:border-cyan-400/60"><option value="all">All statuses</option><option value="live">Live / ongoing</option><option value="upcoming">Upcoming</option><option value="completed">Completed</option></select>}</section>
           {mode === 'news' ? <section className="mt-8"><div className="mb-4"><p className="text-[10px] font-black uppercase tracking-[0.16em] text-cyan-300">Latest game news</p><h2 className="mt-1 font-gaming text-xl font-black text-white">{latestGameUpdates.length} game update pages</h2></div>{latestGameUpdates.length ? <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">{latestGameUpdates.map((page) => <LatestGameNewsCard key={page.gameId} page={page} />)}</div> : <div className="rounded-2xl border border-dashed border-slate-700 p-8 text-center text-sm text-slate-400">No current game updates match this search.</div>}</section> : <><section className="mt-8"><div className="mb-4 flex items-end justify-between gap-4"><div><p className="text-[10px] font-black uppercase tracking-[0.16em] text-cyan-300">Event calendar</p><h2 className="mt-1 font-gaming text-xl font-black text-white">{filteredEvents.length} listed events</h2></div><a href="/esports-news" className="text-xs font-bold text-amber-300 hover:text-white">Read game news →</a></div><div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">{filteredEvents.map((event) => <EventCard key={event.id} event={event} />)}</div>{filteredEvents.length === 0 && <div className="rounded-2xl border border-dashed border-slate-700 p-8 text-center text-sm text-slate-400">No updates match these filters yet.</div>}</section>
           <section className="mt-10 rounded-2xl border border-slate-800 bg-[#080d1a]/95 p-6"><div className="flex items-start gap-3"><ShieldCheck className="mt-0.5 h-5 w-5 shrink-0 text-emerald-300" /><div><h2 className="font-gaming text-base font-bold text-white">How Tradivex keeps tournament news reliable</h2><p className="mt-2 max-w-3xl text-sm leading-7 text-slate-400">Updates are built from official organizer or publisher sources. Automated Gemini drafts are designed to summarize supplied source text; they should never invent match results, registration links or prize pools. Always open the official source for the latest change.</p></div></div></section>
           <section className="mt-6 rounded-2xl border border-slate-800 bg-[#080d1a]/95 p-6"><div className="mb-4 flex items-end justify-between gap-4"><div><p className="text-[10px] font-black uppercase tracking-[0.16em] text-amber-300">Official source directory</p><h2 className="mt-1 font-gaming text-xl font-black text-white">Follow tournaments by game and platform</h2></div><span className="text-xs text-slate-500">{OFFICIAL_TOURNAMENT_SOURCES.length} official sources · latest checked {formatDate(LATEST_SOURCE_CHECK)}</span></div><p className="mb-4 max-w-4xl text-xs leading-6 text-slate-400">The directory links publisher, league and organizer calendars. Regional leagues have separate dates and qualification paths; platform pages are marked as references. An empty tournament calendar means no dated event has been verified here, not that community competitions do not exist.</p><div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">{OFFICIAL_TOURNAMENT_SOURCES.map((source) => <a key={source.gameId} href={source.url} target="_blank" rel="noreferrer" className="group rounded-xl border border-slate-800 bg-slate-950/45 p-4 transition hover:border-amber-400/45 hover:bg-slate-900/60"><div className="flex items-start justify-between gap-3"><span className="text-sm font-bold text-slate-200 group-hover:text-white">{source.gameName}</span><ExternalLink className="h-3.5 w-3.5 shrink-0 text-slate-600 group-hover:text-amber-300" /></div><p className="mt-2 text-xs font-semibold text-slate-400">{source.sourceName}</p><p className="mt-1 text-xs leading-5 text-slate-500">{source.note}</p></a>)}</div></section></>}

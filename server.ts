@@ -201,6 +201,7 @@ app.get('/sitemap.xml', (_req, res) => {
     'esports-news',
     'tournaments',
     'game-news',
+    'rss.xml',
     ...GAME_NEWS_INDEX.map((game) => `game-news/${game.id}`),
     ...allTournamentNews.map((article) => `esports-news/${article.slug}`),
     ...TOURNAMENT_EVENTS.map((event) => `tournaments/${event.slug}`),
@@ -231,6 +232,18 @@ app.get("/api/news", (req, res) => {
   const status = asString(req.query.status) as any;
   const query = asString(req.query.q);
   res.json({ items: filterTournamentNews({ gameId: gameId || undefined, status: status || undefined, query: query || undefined }), updatedAt: new Date().toISOString() });
+});
+
+// RSS Feed endpoint
+app.get("/rss.xml", (req, res) => {
+  const rssHandler = require('./api/rss').default;
+  rssHandler(req, res);
+});
+
+// Calendar Export endpoint
+app.get("/api/calendar", (req, res) => {
+  const calendarHandler = require('./api/calendar').default;
+  calendarHandler(req, res);
 });
 
 app.post("/api/sync-tournament-news", async (req, res) => {
