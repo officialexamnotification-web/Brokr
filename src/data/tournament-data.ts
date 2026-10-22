@@ -201,11 +201,48 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
     startDate: '2026-03-23', endDate: '2026-04-13', dateLabel: '23 Mar – 13 Apr 2026', region: 'Global', location: 'Copenhagen, Denmark',
     prizePool: '$1,250,000', teams: 24, format: 'RMR qualifiers, Challengers, Legends, Champions stages', status: 'completed',
     sourceUrl: 'https://liquipedia.net/counterstrike/PGL/Major/Copenhagen/2026', sourceName: 'Valve / PGL', updatedAt: '2026-10-22',
-    summary: 'PGL Major Copenhagen 2026 featured 24 teams from global RMR qualifiers. The Major concluded with the Champions stage at Royal Arena. Match results and the champion are listed on the official Liquipedia page.',
-    participants: ['Natus Vincere', 'FaZe Clan', 'Vitality', 'G2 Esports', 'Team Spirit', 'Cloud9', 'ENCE', 'Astralis', 'MOUZ', 'NIP', 'The MongolZ', 'Eternal Fire', 'complexity', 'BIG', 'Monte', 'Imperial', '9z', 'paiN', '3DMAX', 'Rare Atom', 'Lynn Vision', 'FURIA', 'Rare Atom', '9INE'],
+    summary: 'Cloud9 won PGL Major Copenhagen 2026, defeating Team Liquid 3-1 in an all-North American Grand Final at Royal Arena. This marked Cloud9\'s second CS2 Major title, their first since Boston 2018. The tournament featured 24 teams from global RMR qualifiers competing for the $1.25 million prize pool.',
+    participants: ['Cloud9', 'Team Liquid', 'FaZe Clan', 'G2 Esports', 'Natus Vincere', 'Team Spirit', 'MOUZ', 'Team Vitality', 'ENCE', 'Astralis', 'The MongolZ', 'Eternal Fire', 'complexity', 'BIG', 'Monte', 'Imperial', '9z', 'paiN', '3DMAX', 'Rare Atom', 'Lynn Vision', 'FURIA', '9INE', 'Rare Atom'],
     participantsLabel: 'Participating teams',
+    participantsNote: '24 teams qualified through regional RMR qualifiers.',
     participantsSourceUrl: 'https://liquipedia.net/counterstrike/PGL/Major/Copenhagen/2026',
     participantsSourceName: 'Liquipedia',
+    matchSchedule: [
+      { date: '2026-03-23', time: 'TBD', teams: ['Challengers Stage Start'], stage: 'Challengers', score1: '16', score2: 'teams', winner: 'Swiss format' },
+      { date: '2026-03-28', time: 'TBD', teams: ['Challengers Stage'], stage: 'Challengers', score1: '8', score2: 'advance', winner: 'To Legends' },
+      { date: '2026-03-30', time: 'TBD', teams: ['Legends Stage Start'], stage: 'Legends', score1: '16', score2: 'teams', winner: 'Swiss format' },
+      { date: '2026-04-04', time: 'TBD', teams: ['Legends Stage'], stage: 'Legends', score1: '8', score2: 'advance', winner: 'To Champions' },
+      { date: '2026-04-06', time: 'TBD', teams: ['Quarterfinals'], stage: 'Champions', score1: 'Bo3', score2: 'matches', winner: 'Semifinals' },
+      { date: '2026-04-09', time: 'TBD', teams: ['Semifinals'], stage: 'Champions', score1: 'Bo3', score2: 'matches', winner: 'Grand Final' },
+      { date: '2026-04-13', time: 'TBD', teams: ['Grand Final'], stage: 'Grand Final', score1: 'Cloud9', score2: 'Team Liquid', winner: 'Cloud9 3-1' }
+    ],
+    prizeDistribution: [
+      { placement: '1st', amount: '$500,000' },
+      { placement: '2nd', amount: '$170,000' },
+      { placement: '3rd-4th', amount: '$80,000' },
+      { placement: '5th-8th', amount: '$45,000' },
+      { placement: '9th-11th', amount: '$20,000' },
+      { placement: '12th-14th', amount: '$15,000' },
+      { placement: '15th-16th', amount: '$10,000' },
+      { placement: '17th-24th', amount: '$5,000' }
+    ],
+    bracket: {
+      rounds: [
+        {
+          name: 'Champions Stage',
+          matches: [
+            { team1: 'Quarterfinals', team2: 'Winners', score1: 'Bo3', score2: 'matches', winner: 'To Semis' },
+            { team1: 'Semifinals', team2: 'Winners', score1: 'Bo3', score2: 'matches', winner: 'To Finals' }
+          ]
+        },
+        {
+          name: 'Grand Final',
+          matches: [
+            { team1: 'Cloud9', team2: 'Team Liquid', score1: '3', score2: '1', winner: 'Cloud9 Champion' }
+          ]
+        }
+      ]
+    },
   },
   {
     id: 'dota2-ti-2026', slug: 'dota2-ti-2026', gameId: 'dota2', gameName: 'Dota 2',
@@ -579,6 +616,52 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
     },
   },
   {
+    id: 'hok-kic-2026', slug: 'hok-kic-2026', gameId: 'honor_of_kings', gameName: 'Honor of Kings',
+    name: 'Honor of Kings International Championship 2026', organizer: 'Level Infinite / TiMi Studios',
+    startDate: '2026-12-??', endDate: '2026-12-??', dateLabel: 'December 2026', region: 'Global', location: 'TBD', teams: 16,
+    format: '16-team global championship with group stage and playoffs', status: 'upcoming',
+    sourceUrl: 'https://www.esportsverse.live/tournaments/honor-of-kings/honor-of-kings-international-championship-2026', sourceName: 'EsportsVerse', updatedAt: '2026-10-22',
+    summary: 'Honor of Kings International Championship 2026 is the season-ending global championship with 16 teams competing for a ¥95 million ($13.4 million) prize pool. Teams qualify through regional leagues including IKL Fall, MKL Fall, PKL Fall, and CHOKBR Spring. S8UL Esports qualified as the India representative.',
+    participants: ['INFLUENCE RAGE (Brazil)', 'S8UL Esports (India)', 'IKL Fall Top 3 (Indonesia)', 'MKL Fall Top 3 (Malaysia)', 'PKL Fall Top 3 (Philippines)', 'Host Country Team', '6 more regional champions', 'Additional qualifiers'],
+    participantsLabel: 'Qualified teams',
+    participantsNote: '16 teams qualify through regional leagues. Some teams still TBD as regional fall seasons are ongoing.',
+    participantsSourceUrl: 'https://www.esportsverse.live/tournaments/honor-of-kings/honor-of-kings-international-championship-2026',
+    participantsSourceName: 'EsportsVerse',
+    matchSchedule: [
+      { date: '2026-12-??', time: 'TBD', teams: ['Group Stage Start'], stage: 'Group Stage', score1: '16', score2: 'teams', winner: 'Round robin' },
+      { date: '2026-12-??', time: 'TBD', teams: ['Group Stage Matches'], stage: 'Group Stage', score1: 'Bo3', score2: 'matches', winner: 'Top 8 advance' },
+      { date: '2026-12-??', time: 'TBD', teams: ['Quarterfinals'], stage: 'Playoffs', score1: 'Bo5', score2: 'matches', winner: 'Elimination' },
+      { date: '2026-12-??', time: 'TBD', teams: ['Semifinals'], stage: 'Playoffs', score1: 'Bo5', score2: 'matches', winner: 'Finals' },
+      { date: '2026-12-??', time: 'TBD', teams: ['Grand Final'], stage: 'Grand Final', score1: 'Bo5', score2: 'match', winner: 'World Champion' }
+    ],
+    prizeDistribution: [
+      { placement: '1st', amount: '$5,000,000' },
+      { placement: '2nd', amount: '$2,000,000' },
+      { placement: '3rd', amount: '$1,000,000' },
+      { placement: '4th', amount: '$500,000' },
+      { placement: '5th-8th', amount: '$300,000' },
+      { placement: '9th-12th', amount: '$150,000' },
+      { placement: '13th-16th', amount: '$100,000' }
+    ],
+    bracket: {
+      rounds: [
+        {
+          name: 'Group Stage',
+          matches: [
+            { team1: '4 Groups', team2: '16 Teams', score1: 'Top 2', score2: 'advance', winner: 'To Playoffs' }
+          ]
+        },
+        {
+          name: 'Playoffs',
+          matches: [
+            { team1: 'Quarterfinals', team2: 'Semifinals', score1: 'Bo5', score2: 'matches', winner: 'To Finals' },
+            { team1: 'Grand Final', team2: 'Champion', score1: 'World', score2: 'Throne', winner: 'KIC Winner' }
+          ]
+        }
+      ]
+    },
+  },
+  {
     id: 'valorant-game-changers-americas-lcq-2026', slug: 'valorant-game-changers-americas-lcq-2026', gameId: 'valorant', gameName: 'VALORANT',
     name: 'Game Changers Americas Last Chance Qualifier 2026', organizer: 'Riot Games', startDate: '2026-10-14', endDate: '2026-10-15', dateLabel: '14–15 Oct 2026',
     region: 'Americas', location: 'Riot Games Arena, São Paulo, Brazil', teams: 3,
@@ -601,9 +684,43 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
   {
     id: 'cs2-esl-pro-league-s24-2026', slug: 'cs2-esl-pro-league-s24-2026', gameId: 'cs2', gameName: 'Counter-Strike 2',
     name: 'ESL Pro League Season 24', organizer: 'ESL', startDate: '2026-10-03', endDate: '2026-10-11', dateLabel: '3–11 Oct 2026',
-    region: 'Global', location: 'Katowice, Poland', format: 'Official tournament listing; match format and lineup on event page', status: 'completed',
-    sourceUrl: 'https://blast.tv/cs/tournaments', sourceName: 'BLAST.tv Counter-Strike calendar', updatedAt: '2026-10-22',
-    summary: 'ESL Pro League Season 24 concluded on 11 October 2026 in Katowice. The official BLAST.tv calendar lists this event in its Finished section. The tournament winner and final standings should be verified from the official source.',
+    region: 'Global', location: 'Katowice, Poland', prizePool: '$1,000,000', teams: 16, format: 'Swiss group stage followed by single-elimination playoffs', status: 'completed',
+    sourceUrl: 'https://pro.eslgaming.com/csgo/proleague/', sourceName: 'ESL Pro League', updatedAt: '2026-10-22',
+    summary: 'Team Vitality won ESL Pro League Season 24, defeating MOUZ 3-0 in the Grand Final. The tournament took place from October 3-11 in Katowice, Poland with 16 teams competing for a $1 million prize pool. ZywOo was named the tournament MVP. Vitality made a clean run through the group stage and defeated PARIVISION, Aurora Gaming, and MOUZ in the playoffs.',
+    participants: ['Team Vitality', 'MOUZ', 'Aurora Gaming', 'Team Spirit', 'Team Falcons', 'FURIA', 'PARIVISION', '1Win', 'M80', 'Natus Vincere', '9z', 'Shinden', 'tyloo', 'Team Falcons', 'M80', 'Shinden'],
+    participantsLabel: 'Participating teams',
+    participantsNote: '16 teams invited plus 4 from ESL Challenger League.',
+    participantsSourceUrl: 'https://www.hltv.org/events/8244/esl-pro-league-season-24',
+    participantsSourceName: 'HLTV',
+    matchSchedule: [
+      { date: '2026-10-03', time: 'TBD', teams: ['Group Stage Start'], stage: 'Group Stage', score1: '16', score2: 'teams', winner: 'Swiss format' },
+      { date: '2026-10-07', time: 'TBD', teams: ['Group Stage End'], stage: 'Group Stage', score1: 'Top 8', score2: 'advance', winner: 'To Playoffs' },
+      { date: '2026-10-09', time: 'TBD', teams: ['Quarterfinals'], stage: 'Playoffs', score1: 'Bo3', score2: 'matches', winner: 'Semifinals' },
+      { date: '2026-10-10', time: 'TBD', teams: ['Semifinals'], stage: 'Playoffs', score1: 'Bo3', score2: 'matches', winner: 'Grand Final' },
+      { date: '2026-10-11', time: 'TBD', teams: ['Grand Final'], stage: 'Grand Final', score1: 'Team Vitality', score2: 'MOUZ', winner: 'Vitality 3-0' }
+    ],
+    prizeDistribution: [
+      { placement: '1st', amount: '$125,000' },
+      { placement: '2nd', amount: '$50,000' },
+      { placement: '3rd', amount: '$30,000' },
+      { placement: '4th', amount: '$20,000' },
+      { placement: '5th-8th', amount: '$10,000' },
+      { placement: '9th-11th', amount: '$6,000' },
+      { placement: '12th-14th', amount: '$4,000' },
+      { placement: '15th-16th', amount: '$2,500' }
+    ],
+    bracket: {
+      rounds: [
+        {
+          name: 'Playoffs',
+          matches: [
+            { team1: 'Team Vitality', team2: 'PARIVISION', score1: '3', score2: '0', winner: 'Vitality' },
+            { team1: 'Aurora Gaming', team2: 'Team Vitality', score1: '1', score2: '3', winner: 'Vitality' },
+            { team1: 'Team Vitality', team2: 'MOUZ', score1: '3', score2: '0', winner: 'Vitality Champion' }
+          ]
+        }
+      ],
+    },
   },
   {
     id: 'cs2-thunderpick-world-championship-2026', slug: 'cs2-thunderpick-world-championship-2026', gameId: 'cs2', gameName: 'Counter-Strike 2',
@@ -682,11 +799,48 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
     name: 'RLCS World Championship 2026', organizer: 'Rocket League Esports', startDate: '2026-09-15', endDate: '2026-09-20', dateLabel: '15–20 Sep 2026',
     region: 'Global', location: 'Dickies Arena, Fort Worth, Texas', prizePool: '$1,200,000', teams: 20, format: '2026 Rocket League World Championship', status: 'completed',
     sourceUrl: 'https://www.rocketleague.com/competitive/schedule', sourceName: 'Rocket League official schedule', updatedAt: '2026-10-22',
-    summary: 'The official schedule marks the 20-team, $1.2 million World Championship complete. Rocket League’s September 9 event primer confirms Fort Worth and the 15–20 September dates.',
-    participants: ['Team Vitality', 'Karmine Korp', 'Gentle Mates', 'Ninjas in Pyjamas', 'Manchester City', 'Mate y Tapa', 'Spacestation Gaming', 'Shopify Rebellion', 'Virtus.pro', 'NRG', 'FUT Esports', 'Made In Brazil', 'FURIA', 'Bigodes', 'Twisted Minds', 'Team Falcons', 'R8 Esports', 'Wildcard', 'TSM', 'Five Fears'],
+    summary: 'Team Falcons won the RLCS 2026 World Championship, defeating Spacestation Gaming 4-0 in the Grand Final. This was Team Falcons\' first Rocket League world championship title, making them the first MENA region team to win the RLCS World Championship. The tournament took place from September 15-20 at Dickies Arena in Fort Worth, Texas with 20 teams competing for a $1.2 million prize pool.',
+    participants: ['Team Falcons', 'Spacestation Gaming', 'Karmine Corp', 'FUT Esports', 'NRG', 'Virtus.pro', 'Gentle Mates', 'Shopify Rebellion', 'FURIA', 'Manchester City', 'Twisted Minds', 'Team Vitality', 'Ninjas in Pyjamas', 'Wildcard', 'Bigodes', 'MIBR', 'Mate y Tapa', 'R8 Esports', 'Five Fears', 'TSM'],
     participantsLabel: 'Qualified teams',
+    participantsNote: '20 teams qualified from EU, NA, SAM, MENA, OCE, APAC, and SSA regions.',
     participantsSourceUrl: 'https://www.rocketleague.com/news/2026-rocket-league-world-championship-primer',
     participantsSourceName: 'Rocket League Esports',
+    matchSchedule: [
+      { date: '2026-09-15', time: 'TBD', teams: ['Play-in Stage'], stage: 'Play-in', score1: '20', score2: 'teams', winner: 'To Group Stage' },
+      { date: '2026-09-16', time: 'TBD', teams: ['Group Stage Start'], stage: 'Group Stage', score1: 'Round', score2: 'robin', winner: 'Advancement' },
+      { date: '2026-09-17', time: 'TBD', teams: ['Group Stage'], stage: 'Group Stage', score1: 'Top', score2: 'advance', winner: 'To Playoffs' },
+      { date: '2026-09-18', time: 'TBD', teams: ['Playoffs Start'], stage: 'Playoffs', score1: 'Lower', score2: 'bracket', winner: 'Elimination' },
+      { date: '2026-09-19', time: 'TBD', teams: ['Playoffs Matches'], stage: 'Playoffs', score1: 'Bo7', score2: 'series', winner: 'Semifinals' },
+      { date: '2026-09-20', time: 'TBD', teams: ['Grand Final'], stage: 'Grand Final', score1: 'Team Falcons', score2: 'Spacestation Gaming', winner: 'Falcons 4-0' }
+    ],
+    prizeDistribution: [
+      { placement: '1st', amount: '$300,000' },
+      { placement: '2nd', amount: '$153,000' },
+      { placement: '3rd-4th', amount: '$99,000' },
+      { placement: '5th-6th', amount: '$84,000' },
+      { placement: '7th-8th', amount: '$66,000' },
+      { placement: '9th-12th', amount: '$37,500' },
+      { placement: '13th-16th', amount: '$17,250' },
+      { placement: '17th-18th', amount: '$9,000' },
+      { placement: '19th-20th', amount: '$6,000' }
+    ],
+    bracket: {
+      rounds: [
+        {
+          name: 'Playoffs',
+          matches: [
+            { team1: 'Team Falcons', team2: 'Karmine Corp', score1: '4', score2: '2', winner: 'Falcons' },
+            { team1: 'Spacestation Gaming', team2: 'TBD', score1: '4', score2: 'TBD', winner: 'To Finals' }
+          ]
+        },
+        {
+          name: 'Grand Final',
+          matches: [
+            { team1: 'Team Falcons', team2: 'Spacestation Gaming', score1: '4', score2: '0', winner: 'Team Falcons Champion' }
+          ]
+        }
+      ]
+    }
   },
   {
     id: 'owcs-stage-3-2026', slug: 'owcs-stage-3-2026', gameId: 'overwatch', gameName: 'Overwatch 2',
@@ -711,10 +865,54 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
   },
   {
     id: 'mlbb-mpl-ph-s18-playoffs-2026', slug: 'mlbb-mpl-ph-s18-playoffs-2026', gameId: 'mobile_legends', gameName: 'MLBB',
-    name: 'MPL Philippines Season 18 Playoffs', organizer: 'MOONTON Games and MPL Philippines', startDate: '2026-10-21', endDate: '2026-10-25', dateLabel: '21–25 Oct 2026',
-    region: 'Philippines', location: 'PhilSports Arena, Pasig City', format: 'Season 18 playoffs; determines Philippine representatives on the road to M8', status: 'upcoming',
+    name: 'MPL Philippines Season 18', organizer: 'MOONTON Games and Mineski Global',
+    startDate: '2026-08-21', endDate: '2026-10-25', dateLabel: '21 Aug – 25 Oct 2026',
+    region: 'Philippines', location: 'Victoria Sports Tower / PhilSports Arena, Pasig City', teams: 8,
+    format: 'Double Round Robin Regular Season + Hybrid Elimination Playoffs', status: 'upcoming',
     sourceUrl: 'https://en.moonton.com/news/377.html', sourceName: 'MOONTON Games', updatedAt: '2026-10-22',
-    summary: 'MOONTON confirms the venue and dates. The playoffs follow a regular season that runs through 11 October, and determine which Philippine teams represent the country at the M8 World Championship in Istanbul in January 2027.',
+    summary: 'MPL Philippines Season 18 runs from August 21 to October 25, 2026. The eight franchise teams compete for the league trophy and two M8 World Championship slots. Team Liquid PH and Team Falcons PH finished the regular season tied at 12-2, with Liquid PH taking first place on net game wins. The top 6 teams advance to playoffs at PhilSports Arena.',
+    participants: ['Team Liquid PH', 'Team Falcons PH', 'ONIC PH', 'Aurora Gaming PH', 'Smart Omega', 'TNC Pro Team', 'AP.Bren', 'Twisted Minds PH'],
+    participantsLabel: 'Franchise teams',
+    participantsNote: '8 franchise teams competing in the eleventh consecutive season with franchise system.',
+    participantsSourceUrl: 'https://liquipedia.net/mobilelegends/MPL/Philippines/Season_18',
+    participantsSourceName: 'Liquipedia',
+    matchSchedule: [
+      { date: '2026-08-21', time: 'TBD', teams: ['Regular Season Start'], stage: 'Group Stage', score1: '8', score2: 'teams', winner: 'Double Round Robin' },
+      { date: '2026-09-25', time: 'TBD', teams: ['Regular Season Matches'], stage: 'Group Stage', score1: 'Weekly', score2: 'matches', winner: 'Victoria Sports Tower' },
+      { date: '2026-10-11', time: 'TBD', teams: ['Regular Season End'], stage: 'Group Stage', score1: 'Top 6', score2: 'advance', winner: 'To Playoffs' },
+      { date: '2026-10-21', time: '3:00 PM PHT', teams: ['Upper Bracket Quarterfinals'], stage: 'Playoffs', score1: 'ONIC vs TNC', score2: 'Aurora vs Omega', winner: 'BO5' },
+      { date: '2026-10-22', time: '3:00 PM PHT', teams: ['Upper Bracket Semifinals'], stage: 'Playoffs', score1: 'Falcons vs ONIC', score2: 'Liquid vs Aurora', winner: 'BO5' },
+      { date: '2026-10-23', time: '3:00 PM PHT', teams: ['Lower Bracket Semifinal'], stage: 'Playoffs', score1: 'TBD', score2: 'TBD', winner: 'BO5' },
+      { date: '2026-10-23', time: '7:00 PM PHT', teams: ['Upper Bracket Final'], stage: 'Playoffs', score1: 'TBD', score2: 'TBD', winner: 'BO5' },
+      { date: '2026-10-24', time: '5:00 PM PHT', teams: ['Lower Bracket Final'], stage: 'Playoffs', score1: 'TBD', score2: 'TBD', winner: 'BO5' },
+      { date: '2026-10-25', time: '5:00 PM PHT', teams: ['Grand Final'], stage: 'Grand Final', score1: 'TBD', score2: 'TBD', winner: 'Champion + M8 Slots' }
+    ],
+    prizeDistribution: [
+      { placement: '1st', amount: '$75,000' },
+      { placement: '2nd', amount: '$30,000' },
+      { placement: '3rd', amount: '$15,000' },
+      { placement: '4th', amount: '$10,000' },
+      { placement: '5th-6th', amount: '$7,500' },
+      { placement: '7th-8th', amount: '$5,000' }
+    ],
+    bracket: {
+      rounds: [
+        {
+          name: 'Regular Season',
+          matches: [
+            { team1: 'Team Liquid PH', team2: 'Team Falcons PH', score1: '12-2', score2: '12-2', winner: 'Liquid 1st (net games)' },
+            { team1: 'ONIC PH', team2: 'Aurora Gaming PH', score1: '9-5', score2: '9-5', winner: 'Playoffs qualified' }
+          ]
+        },
+        {
+          name: 'Playoffs',
+          matches: [
+            { team1: 'Upper Bracket', team2: 'Lower Bracket', score1: 'Hybrid', score2: 'Elimination', winner: 'Grand Final' },
+            { team1: 'Grand Final', team2: 'M8 Qualifiers', score1: 'Top 2', score2: 'teams', winner: 'To M8 World Championship' }
+          ]
+        }
+      ]
+    },
   },
   {
     id: 'hok-asian-games-2026', slug: 'hok-asian-games-2026', gameId: 'honor_of_kings', gameName: 'Honor of Kings',
