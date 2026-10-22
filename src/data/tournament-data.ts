@@ -181,13 +181,6 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
         language: 'English',
         viewerCount: 450000,
         isActive: true
-      },
-      {
-        platform: 'twitch',
-        url: 'https://twitch.tv/esl_csgo',
-        language: 'English',
-        viewerCount: 320000,
-        isActive: false
       }
     ],
     popularMatches: [
@@ -229,13 +222,6 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
         language: 'English',
         viewerCount: 280000,
         isActive: false
-      },
-      {
-        platform: 'twitch',
-        url: 'https://twitch.tv/pgl_mcs',
-        language: 'English',
-        viewerCount: 180000,
-        isActive: false
       }
     ],
   },
@@ -256,13 +242,6 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
         url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
         language: 'English',
         viewerCount: 520000,
-        isActive: false
-      },
-      {
-        platform: 'twitch',
-        url: 'https://twitch.tv/dota2ti',
-        language: 'English',
-        viewerCount: 340000,
         isActive: false
       }
     ],
@@ -285,13 +264,6 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
         language: 'English',
         viewerCount: 180000,
         isActive: false
-      },
-      {
-        platform: 'twitch',
-        url: 'https://twitch.tv/esl_dota2',
-        language: 'English',
-        viewerCount: 120000,
-        isActive: false
       }
     ],
   },
@@ -313,13 +285,6 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
         language: 'English',
         viewerCount: 850000,
         isActive: true
-      },
-      {
-        platform: 'twitch',
-        url: 'https://twitch.tv/riotgames',
-        language: 'English',
-        viewerCount: 620000,
-        isActive: false
       }
     ],
   },
@@ -340,13 +305,6 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
         url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
         language: 'English',
         viewerCount: 320000,
-        isActive: false
-      },
-      {
-        platform: 'twitch',
-        url: 'https://twitch.tv/riotgames',
-        language: 'English',
-        viewerCount: 240000,
         isActive: false
       }
     ],
@@ -427,13 +385,6 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
         language: 'Korean',
         viewerCount: 95000,
         isActive: false
-      },
-      {
-        platform: 'twitch',
-        url: 'https://twitch.tv/pubgm_korea',
-        language: 'Korean',
-        viewerCount: 65000,
-        isActive: false
       }
     ],
   },
@@ -456,13 +407,6 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
         language: 'English',
         viewerCount: 420000,
         isActive: false
-      },
-      {
-        platform: 'twitch',
-        url: 'https://twitch.tv/pubgm_esports',
-        language: 'English',
-        viewerCount: 280000,
-        isActive: false
       }
     ],
   },
@@ -480,13 +424,6 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
         language: 'English',
         viewerCount: 380000,
         isActive: true
-      },
-      {
-        platform: 'twitch',
-        url: 'https://twitch.tv/pubgm_esports',
-        language: 'English',
-        viewerCount: 250000,
-        isActive: false
       }
     ],
   },
@@ -503,13 +440,6 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
         url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
         language: 'English',
         viewerCount: 75000,
-        isActive: false
-      },
-      {
-        platform: 'twitch',
-        url: 'https://twitch.tv/pubg',
-        language: 'English',
-        viewerCount: 45000,
         isActive: false
       }
     ],
@@ -556,13 +486,6 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
         language: 'English',
         viewerCount: 680000,
         isActive: false
-      },
-      {
-        platform: 'twitch',
-        url: 'https://twitch.tv/valorant_esports',
-        language: 'English',
-        viewerCount: 520000,
-        isActive: false
       }
     ],
   },
@@ -584,13 +507,6 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
         language: 'English',
         viewerCount: 125000,
         isActive: false
-      },
-      {
-        platform: 'twitch',
-        url: 'https://twitch.tv/valorant_esports',
-        language: 'English',
-        viewerCount: 95000,
-        isActive: false
       }
     ],
   },
@@ -608,13 +524,6 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
         language: 'English',
         viewerCount: 220000,
         isActive: true
-      },
-      {
-        platform: 'twitch',
-        url: 'https://twitch.tv/valorant_esports',
-        language: 'English',
-        viewerCount: 165000,
-        isActive: false
       }
     ],
   },
@@ -630,13 +539,6 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
         url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
         language: 'English',
         viewerCount: 380000,
-        isActive: false
-      },
-      {
-        platform: 'twitch',
-        url: 'https://twitch.tv/esl_csgo',
-        language: 'English',
-        viewerCount: 290000,
         isActive: false
       }
     ],
@@ -656,13 +558,6 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
         url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
         language: 'English',
         viewerCount: 340000,
-        isActive: false
-      },
-      {
-        platform: 'twitch',
-        url: 'https://twitch.tv/esl_csgo',
-        language: 'English',
-        viewerCount: 260000,
         isActive: false
       }
     ],
@@ -685,13 +580,6 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
         language: 'English',
         viewerCount: 320000,
         isActive: true
-      },
-      {
-        platform: 'twitch',
-        url: 'https://twitch.tv/esl_csgo',
-        language: 'English',
-        viewerCount: 240000,
-        isActive: false
       }
     ],
   },
@@ -708,13 +596,6 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
         language: 'English',
         viewerCount: 450000,
         isActive: true
-      },
-      {
-        platform: 'twitch',
-        url: 'https://twitch.tv/esl_csgo',
-        language: 'English',
-        viewerCount: 340000,
-        isActive: false
       }
     ],
   },
@@ -732,13 +613,6 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
         language: 'English',
         viewerCount: 360000,
         isActive: true
-      },
-      {
-        platform: 'twitch',
-        url: 'https://twitch.tv/esl_csgo',
-        language: 'English',
-        viewerCount: 270000,
-        isActive: false
       }
     ],
   },
@@ -756,13 +630,6 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
         language: 'English',
         viewerCount: 280000,
         isActive: true
-      },
-      {
-        platform: 'twitch',
-        url: 'https://twitch.tv/esl_csgo',
-        language: 'English',
-        viewerCount: 210000,
-        isActive: false
       }
     ],
   },
@@ -779,13 +646,6 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
         language: 'English',
         viewerCount: 145000,
         isActive: true
-      },
-      {
-        platform: 'twitch',
-        url: 'https://twitch.tv/fortnite',
-        language: 'English',
-        viewerCount: 110000,
-        isActive: false
       }
     ],
   },
@@ -803,13 +663,6 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
         language: 'English',
         viewerCount: 175000,
         isActive: true
-      },
-      {
-        platform: 'twitch',
-        url: 'https://twitch.tv/apexlegends',
-        language: 'English',
-        viewerCount: 130000,
-        isActive: false
       }
     ],
   },
