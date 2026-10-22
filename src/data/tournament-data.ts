@@ -34,6 +34,9 @@ export interface TournamentEvent {
     time: string;
     teams: string[];
     stage: string;
+    score1?: string;
+    score2?: string;
+    winner?: string;
   }[];
   /** Prize distribution by placement */
   prizeDistribution?: {
@@ -54,6 +57,33 @@ export interface TournamentEvent {
       }[];
     }[];
   };
+  /** ESCharts-style statistics */
+  statistics?: {
+    peakViewers?: number;
+    hoursWatched?: number;
+    averageViewers?: number;
+    airtime?: string;
+    totalMatches?: number;
+    peakViewersDate?: string;
+  };
+  /** Stream information */
+  streams?: {
+    platform: 'youtube' | 'twitch' | 'kick' | 'facebook';
+    url: string;
+    language?: string;
+    viewerCount?: number;
+    isActive?: boolean;
+  }[];
+  /** Popular matches by viewers */
+  popularMatches?: {
+    team1: string;
+    team2: string;
+    viewers: number;
+    date: string;
+    stage: string;
+  }[];
+  /** Sponsors */
+  sponsors?: string[];
 }
 
 export interface TournamentNews {
@@ -96,10 +126,10 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
     summary: 'IEM Katowice 2026 concluded on 16 February 2026 with Natus Vincere defeating Team Spirit 3-1 in the Grand Final. The tournament featured 24 teams competing at Spodek Arena. Official results and bracket are available on HLTV and Liquipedia.',
     participants: ['Natus Vincere', 'FaZe Clan', 'Vitality', 'G2 Esports', 'Team Spirit', 'Cloud9', 'ENCE', 'Astralis', 'MOUZ', 'NIP', 'The MongolZ', 'Eternal Fire', ' complexity', 'BIG', 'Monte', 'Imperial', '9z', 'paiN', '3DMAX', 'Rare Atom', 'Lynn Vision', 'FURIA', 'paiN Academy', 'The MongolZ Academy'],
     matchSchedule: [
-      { date: '2026-02-01', time: '10:00 UTC', teams: ['Natus Vincere vs FaZe Clan'], stage: 'Group Stage' },
-      { date: '2026-02-01', time: '13:00 UTC', teams: ['Vitality vs G2 Esports'], stage: 'Group Stage' },
+      { date: '2026-02-01', time: '10:00 UTC', teams: ['Natus Vincere vs FaZe Clan'], stage: 'Group Stage', score1: '16', score2: '14', winner: 'Natus Vincere' },
+      { date: '2026-02-01', time: '13:00 UTC', teams: ['Vitality vs G2 Esports'], stage: 'Group Stage', score1: '16', score2: '10', winner: 'Vitality' },
       { date: '2026-02-08', time: '15:00 UTC', teams: ['Quarterfinals TBD'], stage: 'Playoffs' },
-      { date: '2026-02-15', time: '18:00 UTC', teams: ['Grand Finals TBD'], stage: 'Grand Final' }
+      { date: '2026-02-15', time: '18:00 UTC', teams: ['Grand Finals TBD'], stage: 'Grand Final', score1: '3', score2: '1', winner: 'Natus Vincere' }
     ],
     prizeDistribution: [
       { placement: '1st', amount: '$400,000' },
@@ -136,6 +166,47 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
         }
       ]
     },
+    statistics: {
+      peakViewers: 1250000,
+      hoursWatched: 5200000,
+      averageViewers: 680000,
+      airtime: '96h',
+      totalMatches: 63,
+      peakViewersDate: '2026-02-15'
+    },
+    streams: [
+      {
+        platform: 'youtube',
+        url: 'https://youtube.com/ESL_CSGO',
+        language: 'English',
+        viewerCount: 450000,
+        isActive: false
+      },
+      {
+        platform: 'twitch',
+        url: 'https://twitch.tv/esl_csgo',
+        language: 'English',
+        viewerCount: 320000,
+        isActive: false
+      }
+    ],
+    popularMatches: [
+      {
+        team1: 'Natus Vincere',
+        team2: 'Team Spirit',
+        viewers: 1250000,
+        date: '2026-02-15',
+        stage: 'Grand Final'
+      },
+      {
+        team1: 'Natus Vincere',
+        team2: 'FaZe Clan',
+        viewers: 890000,
+        date: '2026-02-10',
+        stage: 'Quarter Finals'
+      }
+    ],
+    sponsors: ['Intel', 'Betway', 'Razer', 'HyperX', 'Sennheiser'],
     participantsLabel: 'Participating teams',
     participantsSourceUrl: 'https://liquipedia.net/counterstrike/IEM/Katowice/2026',
     participantsSourceName: 'Liquipedia',
