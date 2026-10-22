@@ -676,10 +676,52 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
   {
     id: 'valorant-game-changers-championship-2026', slug: 'valorant-game-changers-championship-2026', gameId: 'valorant', gameName: 'VALORANT',
     name: 'VALORANT Game Changers Championship 2026', organizer: 'Riot Games', startDate: '2026-10-22', endDate: '2026-11-01', dateLabel: '22 Oct – 1 Nov 2026',
-    region: 'Global', location: 'São Paulo, Brazil',
-    format: 'Global championship; field and full match schedule are on Riot’s official event pages', status: 'live',
+    region: 'Global', location: 'São Paulo, Brazil', prizePool: '$500,000', teams: 10,
+    format: '10-team double-elimination bracket; Bo3 matches, Bo5 for Lower Final and Grand Final', status: 'live',
     sourceUrl: 'https://valorantesports.com/en-US/news/eyntk-gc-americas-lcq-2026', sourceName: 'VALORANT Esports', updatedAt: '2026-10-22',
-    summary: 'The VALORANT Game Changers Championship 2026 begins today in São Paulo, Brazil. FlyQuest RED qualified as the Americas representative after winning the LCQ. The tournament runs through 1 November with the global field competing for the championship title.',
+    summary: 'The final standalone Game Changers Championship brings 10 teams from 6 regions to São Paulo, Brazil from October 22 - November 1, 2026. Team Liquid Brazil returns as defending champions. Prize pool is $500,000 with winner taking $180,000. This is the fifth and final standalone Game Changers Championship.',
+    participants: ['Team Liquid Brazil', 'MIBR GC', 'G2 Gozen', 'Gentle Mates GC', 'SK Nebula', 'Gen.G GC', 'FENNEL GC', 'Nova Esports GC', 'KRÜ Blaze', 'Shopify Rebellion Gold'],
+    participantsLabel: 'Qualified teams',
+    participantsNote: '10 teams from EMEA (3), Pacific (2), China (1), Brazil (1), LATAM (1), NA (1), Americas LCQ (1).',
+    participantsSourceUrl: 'https://www.strafe.com/news/read/valorant-game-changers-championship-2026-teams-format-schedule/',
+    participantsSourceName: 'Strafe',
+    matchSchedule: [
+      { date: '2026-10-22', time: 'TBD', teams: ['FENNEL GC vs MIBR GC'], stage: 'Upper Round 1', score1: 'Bo3', score2: 'match', winner: 'To Quarterfinals' },
+      { date: '2026-10-22', time: 'TBD', teams: ['SK Nebula vs Nova Esports GC'], stage: 'Upper Round 1', score1: 'Bo3', score2: 'match', winner: 'To Quarterfinals' },
+      { date: '2026-10-23', time: 'TBD', teams: ['Upper Quarterfinals'], stage: 'Quarterfinals', score1: 'Bo3', score2: 'matches', winner: 'To Semifinals' },
+      { date: '2026-10-24', time: 'TBD', teams: ['Upper Quarterfinals'], stage: 'Quarterfinals', score1: 'Bo3', score2: 'matches', winner: 'To Semifinals' },
+      { date: '2026-10-27', time: 'TBD', teams: ['Upper Semifinals'], stage: 'Semifinals', score1: 'Bo3', score2: 'matches', winner: 'To Upper Final' },
+      { date: '2026-10-28', time: 'TBD', teams: ['Lower Quarterfinals'], stage: 'Lower Bracket', score1: 'Bo3', score2: 'matches', winner: 'To Lower Final' },
+      { date: '2026-10-30', time: 'TBD', teams: ['Upper Final'], stage: 'Upper Final', score1: 'Bo3', score2: 'match', winner: 'To Grand Final' },
+      { date: '2026-10-31', time: 'TBD', teams: ['Lower Final'], stage: 'Lower Final', score1: 'Bo5', score2: 'match', winner: 'To Grand Final' },
+      { date: '2026-11-01', time: 'TBD', teams: ['Grand Final'], stage: 'Grand Final', score1: 'Bo5', score2: 'match', winner: 'Champion' }
+    ],
+    prizeDistribution: [
+      { placement: '1st', amount: '$180,000' },
+      { placement: '2nd', amount: '$100,000' },
+      { placement: '3rd', amount: '$70,000' },
+      { placement: '4th', amount: '$50,000' },
+      { placement: '5th-6th', amount: '$35,000' },
+      { placement: '7th-8th', amount: '$20,000' },
+      { placement: '9th-10th', amount: '$10,000' }
+    ],
+    bracket: {
+      rounds: [
+        {
+          name: 'Upper Bracket',
+          matches: [
+            { team1: 'FENNEL GC', team2: 'MIBR GC', score1: 'Bo3', score2: 'match', winner: 'Upper Round 1' },
+            { team1: 'SK Nebula', team2: 'Nova Esports GC', score1: 'Bo3', score2: 'match', winner: 'Upper Round 1' }
+          ]
+        },
+        {
+          name: 'Finals',
+          matches: [
+            { team1: 'Grand Final', team2: 'Champion', score1: 'Bo5', score2: 'match', winner: 'GCC Winner' }
+          ]
+        }
+      ]
+    },
   },
   {
     id: 'cs2-esl-pro-league-s24-2026', slug: 'cs2-esl-pro-league-s24-2026', gameId: 'cs2', gameName: 'Counter-Strike 2',
@@ -770,9 +812,52 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
   {
     id: 'fortnite-fncs-solo-october-2026', slug: 'fortnite-fncs-solo-october-2026', gameId: 'fortnite', gameName: 'Fortnite',
     name: 'FNCS Solo Tournament (October 2026)', organizer: 'Epic Games', startDate: '2026-10-05', endDate: '2026-10-27', dateLabel: '5–27 Oct 2026',
-    region: 'Regional online competition', location: 'Online; prize amounts and eligibility vary by region', format: 'Solo qualifiers, Heats, Last Chance Qualifier and Finals; official rules list exact rounds', status: 'live',
+    region: 'Regional online competition', location: 'Online (7 regions)', prizePool: 'Regional prize pools vary by region', teams: 'Regional qualifiers',
+    format: 'Solo qualifiers, Heats, Last Chance Qualifier and Finals; official rules list exact rounds', status: 'live',
     sourceUrl: 'https://www.fortnite.com/competitive/rules-guidelines/rules-library/fortnite-championship-series-fncs-solos-2026-official-rules?region=NAC', sourceName: 'Fortnite Competitive official rules', updatedAt: '2026-10-22',
-    summary: 'Epic’s official FNCS Solos rules schedule Qualifier 2 rounds for 5–6, 10 and 11 October, Heats for 17–18 October, Last Chance Qualifier for 19–20 October and Finals for 26–27 October. The solo event has regional leaderboards and prizes; use the rules for region-specific eligibility and award amounts.',
+    summary: 'FNCS Solos 2026 Finals are on October 26-27 with regional prizes: Europe ($60K 1st), NA Central ($50K 1st), Brazil ($15K 1st), NA West ($12.5K 1st), Middle East/Oceania/Asia ($7K 1st each). Qualifiers ran Oct 5-11, Heats Oct 17-18, LCQ Oct 19-20. Solo event with 7 regions competing in Battle Royale.',
+    participants: ['Regional qualifiers', 'NA Central players', 'NA West players', 'Europe players', 'Brazil players', 'Middle East players', 'Oceania players', 'Asia players'],
+    participantsLabel: 'Regional participants',
+    participantsNote: 'Solo event played separately in 7 regions with regional prize pools.',
+    participantsSourceUrl: 'https://pogwire.com/esports/fncs-solos-2026-finals',
+    participantsSourceName: 'PogWire',
+    matchSchedule: [
+      { date: '2026-10-05', time: 'TBD', teams: ['Qualifier 2 Round 1'], stage: 'Qualifiers', score1: 'Regional', score2: 'players', winner: 'To Heats' },
+      { date: '2026-10-06', time: 'TBD', teams: ['Qualifier 2 Round 2'], stage: 'Qualifiers', score1: 'Regional', score2: 'players', winner: 'To Heats' },
+      { date: '2026-10-10', time: 'TBD', teams: ['Qualifier 2 Round 3'], stage: 'Qualifiers', score1: 'Regional', score2: 'players', winner: 'To Heats' },
+      { date: '2026-10-11', time: 'TBD', teams: ['Qualifier 2 Round 4'], stage: 'Qualifiers', score1: 'Regional', score2: 'players', winner: 'To Heats' },
+      { date: '2026-10-17', time: 'TBD', teams: ['Heats'], stage: 'Heats', score1: 'Regional', score2: 'matches', winner: 'To LCQ' },
+      { date: '2026-10-18', time: 'TBD', teams: ['Heats'], stage: 'Heats', score1: 'Regional', score2: 'matches', winner: 'To LCQ' },
+      { date: '2026-10-19', time: 'TBD', teams: ['Last Chance Qualifier'], stage: 'LCQ', score1: 'Regional', score2: 'players', winner: 'To Finals' },
+      { date: '2026-10-20', time: 'TBD', teams: ['Last Chance Qualifier'], stage: 'LCQ', score1: 'Regional', score2: 'players', winner: 'To Finals' },
+      { date: '2026-10-26', time: '6 PM local', teams: ['Finals Day 1'], stage: 'Finals', score1: 'Up to 6', score2: 'matches', winner: 'Day 1' },
+      { date: '2026-10-27', time: '6 PM local', teams: ['Finals Day 2'], stage: 'Finals', score1: 'Up to 6', score2: 'matches', winner: 'Champions' }
+    ],
+    prizeDistribution: [
+      { placement: 'Europe 1st', amount: '$60,000' },
+      { placement: 'NA Central 1st', amount: '$50,000' },
+      { placement: 'Brazil 1st', amount: '$15,000' },
+      { placement: 'NA West 1st', amount: '$12,500' },
+      { placement: 'Middle East 1st', amount: '$7,000' },
+      { placement: 'Oceania 1st', amount: '$7,000' },
+      { placement: 'Asia 1st', amount: '$7,000' }
+    ],
+    bracket: {
+      rounds: [
+        {
+          name: 'Qualifiers',
+          matches: [
+            { team1: 'Regional', team2: 'Players', score1: '4', score2: 'rounds', winner: 'To Heats' }
+          ]
+        },
+        {
+          name: 'Finals',
+          matches: [
+            { team1: 'Regional Champions', team2: 'Top 100', score1: 'Prize', score2: 'money', winner: 'Regional Finals' }
+          ]
+        }
+      ]
+    },
   },
   {
     id: 'apex-algs-y6-split-2-playoffs', slug: 'apex-algs-y6-split-2-playoffs', gameId: 'apex', gameName: 'Apex Legends',
@@ -780,7 +865,64 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
     region: 'Global', location: 'Orleans Arena, Las Vegas, United States', prizePool: '$2,000,000', teams: 40,
     format: 'Round-robin group stage, double-elimination bracket, Match Point Finals', status: 'upcoming',
     sourceUrl: 'https://algs.ea.com/en/year-6/split-2-playoffs/competition-overview', sourceName: 'Apex Legends Global Series', updatedAt: '2026-10-22',
-    summary: 'Forty teams from Americas, EMEA, APAC North and APAC South qualify through Split 2 Pro League. The four-day LAN awards a $2 million prize pool and Championship Points.',
+    summary: 'ALGS Year 6 Split 2 Playoffs brings 40 teams from Americas, EMEA, APAC North and APAC South to Las Vegas from October 29 - November 1, 2026. The tournament features a $2 million prize pool with Championship Points for the ALGS Championship. Top teams include Team Falcons, Sentinels, ZETA DIVISION, Wolves Esports, Ninjas in Pyjamas, and Alliance.',
+    participants: ['Team Falcons', 'Sentinels', 'TSM', 'Spacestation Gaming', 'NRG', 'Cloud9', 'Luminosity', 'Alliance', 'Ninjas in Pyjamas', 'Aurora Gaming', 'Fnatic', 'Natus Vincere', 'ZETA DIVISION', 'Fnatic JP', 'RIDDLE ORDER', 'REJECT Winnity', 'Wolves Esports', 'VK Gaming', 'DreamFire', 'Guild', 'Legends Gaming', 'Team Burger', 'MKers', 'Moist Esports', 'Shopify Rebellion', 'Crazy Thieves', 'Aurora', 'Gen.G', 'Team Vision', 'Exo Clan', 'GoNext Esports', 'Moist Esports', 'Team Falcons', 'TSM', 'Spacestation Gaming', 'NRG', 'Cloud9', 'Luminosity'],
+    participantsLabel: 'Qualified teams',
+    participantsNote: '40 teams qualify through Split 2 Pro League: Americas (15), EMEA (7), APAC North (10), APAC South (8).',
+    participantsSourceUrl: 'https://esportport.com/algs-split-2-playoffs-2026-las-vegas-qualified-teams-groups-rosters-schedule/',
+    participantsSourceName: 'EsportPort',
+    matchSchedule: [
+      { date: '2026-10-29', time: 'TBD', teams: ['Group Stage Start'], stage: 'Group Stage', score1: '40', score2: 'teams', winner: '4 groups of 10' },
+      { date: '2026-10-30', time: 'TBD', teams: ['Group Stage'], stage: 'Group Stage', score1: 'Round', score2: 'robin', winner: 'Top 20 advance' },
+      { date: '2026-10-31', time: 'TBD', teams: ['Winners Bracket'], stage: 'Playoffs', score1: 'Top 10', score2: 'to Finals', winner: 'Match series' },
+      { date: '2026-10-31', time: 'TBD', teams: ['Losers Bracket R1'], stage: 'Playoffs', score1: 'Bottom 10', score2: 'eliminated', winner: '10 advance' },
+      { date: '2026-10-31', time: 'TBD', teams: ['Losers Bracket R2'], stage: 'Playoffs', score1: 'Top 10', score2: 'to Finals', winner: '10 advance' },
+      { date: '2026-11-01', time: 'TBD', teams: ['Match Point Finals'], stage: 'Finals', score1: '50', score2: 'points', winner: 'Champion' }
+    ],
+    prizeDistribution: [
+      { placement: '1st', amount: '$600,000' },
+      { placement: '2nd', amount: '$300,000' },
+      { placement: '3rd', amount: '$200,000' },
+      { placement: '4th', amount: '$150,000' },
+      { placement: '5th', amount: '$125,000' },
+      { placement: '6th', amount: '$100,000' },
+      { placement: '7th', amount: '$80,000' },
+      { placement: '8th', amount: '$60,000' },
+      { placement: '9th', amount: '$50,000' },
+      { placement: '10th', amount: '$40,000' },
+      { placement: '11th', amount: '$30,000' },
+      { placement: '12th', amount: '$27,000' },
+      { placement: '13th', amount: '$24,000' },
+      { placement: '14th', amount: '$22,000' },
+      { placement: '15th', amount: '$20,000' },
+      { placement: '16th', amount: '$18,000' },
+      { placement: '17th', amount: '$16,000' },
+      { placement: '18th', amount: '$14,000' },
+      { placement: '19th', amount: '$12,000' },
+      { placement: '20th', amount: '$10,000' }
+    ],
+    bracket: {
+      rounds: [
+        {
+          name: 'Group Stage',
+          matches: [
+            { team1: 'Group A-D', team2: '40 Teams', score1: 'Round', score2: 'robin', winner: 'Top 20 advance' }
+          ]
+        },
+        {
+          name: 'Playoffs',
+          matches: [
+            { team1: 'Winners Bracket', team2: 'Losers Bracket', score1: 'Double', score2: 'elimination', winner: 'Finals' }
+          ]
+        },
+        {
+          name: 'Match Point Finals',
+          matches: [
+            { team1: '20 Teams', team2: '50 Points', score1: 'Match', score2: 'Point', winner: 'Champion' }
+          ]
+        }
+      ]
+    },
   },
   {
     id: 'league-worlds-2026', slug: 'league-worlds-2026', gameId: 'league', gameName: 'League of Legends',
