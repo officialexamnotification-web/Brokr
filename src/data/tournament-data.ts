@@ -234,14 +234,63 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
   {
     id: 'lol-worlds-2026', slug: 'lol-worlds-2026', gameId: 'league', gameName: 'League of Legends',
     name: 'World Championship 2026', organizer: 'Riot Games',
-    startDate: '2026-09-25', endDate: '2026-11-05', dateLabel: '25 Sep – 5 Nov 2026', region: 'Global', location: 'London, UK',
-    prizePool: '$2,500,000', teams: 24, format: 'Play-In, Swiss Stage, Knockout Stage', status: 'live',
+    startDate: '2026-10-15', endDate: '2026-11-14', dateLabel: '15 Oct – 14 Nov 2026', region: 'Global', location: 'Los Angeles / Allen, Texas / Brooklyn, NY',
+    prizePool: '$5,000,000', teams: 19, format: 'Play-In (4 teams), Swiss Stage (16 teams), Knockout Stage (8 teams)', status: 'live',
     sourceUrl: 'https://lolesports.com/en-US', sourceName: 'Riot Games LoL Esports', updatedAt: '2026-10-22',
-    summary: 'Worlds 2026 is currently in the Knockout Stage phase. The tournament began on 25 September with 24 teams from all major regions. The Grand Final is scheduled for 5 November at the O2 Arena in London. Check the official Riot Games page for current bracket and match results.',
-    participants: ['T1', 'Gen.G', 'JD Gaming', 'Bilibili Gaming', 'LNG Esports', 'Royal Never Give Up', 'WBG', 'FunPlus Phoenix', 'Edward Gaming', 'Weibo Gaming', 'G2 Esports', 'Fnatic', 'MAD Lions KOI', 'Team Vitality', '100 Thieves', 'Cloud9', 'Team Liquid', 'NRG', 'LOUD', 'paiN Gaming', 'KaBuM! Esports', 'Movistar R7', 'Vietnam Esports', 'GAM Esports'],
-    participantsLabel: 'Participating teams',
-    participantsSourceUrl: 'https://lolesports.com/en-US',
+    summary: 'Worlds 2026 is currently in the Knockout Stage. The tournament began on 15 October with 19 teams from all major regions. Play-Ins were in Los Angeles, Swiss Stage in Allen, Texas, and the Grand Final is scheduled for 14 November at Barclays Center in Brooklyn.',
+    participants: ['Gen.G', 'Hanwha Life Esports', 'T1', 'Dplus Kia', 'G2 Esports', 'Movistar KOI', 'Karmine Corp', 'Team Liquid', 'LYON', 'Cloud9', 'Anyone\'s Legend', 'Bilibili Gaming', 'TOP Esports', 'Shanghai Invictus Gaming', 'Team Secret Whales', 'CTBC Flying Oyster', 'MVK Esports', 'LOS', 'FURIA'],
+    participantsLabel: 'Qualified teams',
+    participantsNote: '19 teams qualified from regional leagues and MSI 2026.',
+    participantsSourceUrl: 'https://lolesports.com/en-US/news/worlds-2026-primer',
     participantsSourceName: 'Riot Games LoL Esports',
+    matchSchedule: [
+      { date: '2026-10-15', time: 'TBD', teams: ['Play-In Stage Start'], stage: 'Play-In', score1: '4', score2: 'teams', winner: 'Double-elimination Bo5' },
+      { date: '2026-10-18', time: 'TBD', teams: ['Swiss Stage Start'], stage: 'Swiss Stage', score1: '16', score2: 'teams', winner: '5 rounds, Bo1/Bo3' },
+      { date: '2026-10-23', time: '12:00 PM CDT', teams: ['Swiss Round 1'], stage: 'Swiss Stage', score1: '8', score2: 'matches', winner: 'Adv/elim matches' },
+      { date: '2026-10-24', time: '12:00 PM CDT', teams: ['Swiss Round 2'], stage: 'Swiss Stage', score1: '8', score2: 'matches', winner: '3 wins advance' },
+      { date: '2026-10-25', time: '12:00 PM CDT', teams: ['Swiss Round 3'], stage: 'Swiss Stage', score1: '8', score2: 'matches', winner: '3 losses out' },
+      { date: '2026-10-26', time: '12:00 PM CDT', teams: ['Swiss Round 4'], stage: 'Swiss Stage', score1: '8', score2: 'matches', winner: 'Final rounds' },
+      { date: '2026-10-31', time: '12:00 PM CDT', teams: ['Swiss Round 5'], stage: 'Swiss Stage', score1: '8', score2: 'matches', winner: 'Swiss complete' },
+      { date: '2026-11-03', time: '4:00 PM CST', teams: ['Quarterfinals'], stage: 'Knockout', score1: 'Bo5', score2: 'matches', winner: 'Allen, Texas' },
+      { date: '2026-11-04', time: '4:00 PM CST', teams: ['Quarterfinals'], stage: 'Knockout', score1: 'Bo5', score2: 'matches', winner: 'Allen, Texas' },
+      { date: '2026-11-05', time: '4:00 PM CST', teams: ['Quarterfinals'], stage: 'Knockout', score1: 'Bo5', score2: 'matches', winner: 'Allen, Texas' },
+      { date: '2026-11-06', time: '4:00 PM CST', teams: ['Quarterfinals'], stage: 'Knockout', score1: 'Bo5', score2: 'matches', winner: 'Allen, Texas' },
+      { date: '2026-11-07', time: '4:00 PM CST', teams: ['Semifinals'], stage: 'Knockout', score1: 'Bo5', score2: 'matches', winner: 'Allen, Texas' },
+      { date: '2026-11-08', time: '4:00 PM CST', teams: ['Semifinals'], stage: 'Knockout', score1: 'Bo5', score2: 'matches', winner: 'Allen, Texas' },
+      { date: '2026-11-14', time: '2:00 PM EST', teams: ['Grand Final'], stage: 'Knockout', score1: 'Bo5', score2: 'match', winner: 'Barclays Center, Brooklyn' }
+    ],
+    prizeDistribution: [
+      { placement: '1st', amount: '$2,225,000' },
+      { placement: '2nd', amount: '$600,000' },
+      { placement: '3rd-4th', amount: '$300,000' },
+      { placement: '5th-8th', amount: '$200,000' },
+      { placement: '9th-14th', amount: '$100,000' },
+      { placement: '15th-18th', amount: '$50,000' },
+      { placement: '19th', amount: '$25,000' }
+    ],
+    bracket: {
+      rounds: [
+        {
+          name: 'Play-In Stage',
+          matches: [
+            { team1: 'Karmine Corp', team2: 'Cloud9', score1: 'TBD', score2: 'TBD', winner: 'Advances to Swiss' },
+            { team1: 'MVK Esports', team2: 'Winner', score1: 'TBD', score2: 'TBD', winner: 'Double-elimination' }
+          ]
+        },
+        {
+          name: 'Swiss Stage',
+          matches: [
+            { team1: '8 Teams Advance', team2: '8 Teams Eliminated', score1: '3W-0L/3W-1L/3W-2L', score2: '3L', winner: 'To Knockout' }
+          ]
+        },
+        {
+          name: 'Knockout Stage',
+          matches: [
+            { team1: 'Quarterfinal Winners', team2: 'Semifinal Winners', score1: 'Bo5', score2: 'Bo5', winner: 'Grand Final' }
+          ]
+        }
+      ]
+    },
   },
   {
     id: 'lol-msi-2026', slug: 'lol-msi-2026', gameId: 'league', gameName: 'League of Legends',
@@ -259,16 +308,60 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
     id: 'bgmi-bmsd-2026', slug: 'bgmi-bmsd-2026', gameId: 'bgmi', gameName: 'BGMI',
     name: 'Battlegrounds Mobile India Showdown 2026 (BMSD)', organizer: 'KRAFTON India',
     startDate: '2026-09-22', endDate: '2026-10-18', dateLabel: '22 Sep – 18 Oct 2026',
-    region: 'India', location: 'India; LAN Grand Finals in Hyderabad', teams: 48,
-    format: 'Invite-only multi-stage tournament; 16 teams reach the LAN Grand Finals', status: 'completed',
+    region: 'India', location: 'Savaaya Convention, Hyderabad', teams: 16,
+    format: '18 matches over 3 days; highest-scoring team wins', status: 'completed',
     sourceUrl: 'https://www.linkedin.com/posts/kraftoninc-india_kraftonforindia-gamingforindia-bgmi-activity-7485252349389643776-GtHg',
     sourceName: 'KRAFTON India', updatedAt: '2026-10-22',
-    summary: 'BMSD 2026 completed its Hyderabad LAN Grand Finals on 16–18 October. KRAFTON India says 48 teams qualified through the KIE leaderboard, BGIS and BMPS; the cited organizer post does not publish a final standings table or prize pool.',
-    participants: ['Meta Ninza', 'Team 8Bit', 'Revenant XSpark', 'Blitz Epigrotive Gaming', 'Team Apex Gaming', 'Nebula Esports', 'Team Soul', 'K9 Esports', 'Blue Army', 'GodLike Esports', 'Team Outrage', 'Gladiators Esports', 'MYTH Official', 'Welt Esports', 'Genesis Esports', 'Wyld Fangs'],
+    summary: 'Team SouL won BMSD 2026 with 155 points and 2 chicken dinners after 18 matches. Gladiators Esports finished second with 141 points, and iQOO 8Bit third with 140 points. The top 6 teams qualified for BMIC 2026, and the champion earned a PMGC 2026 spot.',
+    participants: ['Team SouL', 'Gladiators Esports', 'iQOO 8Bit', 'K9 Esports', 'Blitz Epigrotive Gaming', 'Team Outrage', 'Version1 x Blue Army', 'WELT ESPORTS', 'META NINZA', 'Team Apex Gaming', 'Revenant Xspark', 'MYTH OFFICIAL', 'Wyld Fangs', 'Nebula Esports', 'Godlike Esports', 'Genesis Esports'],
     participantsLabel: 'Grand Finals teams',
-    participantsNote: 'These are the 16 teams reported as qualified for the LAN Grand Finals from the 48-team event field.',
+    participantsNote: '16 teams competed in the LAN Grand Finals from 16-18 October.',
     participantsSourceUrl: 'https://www.talkesport.com/news/bmsd-2026-grand-finals-semi-finals-and-survival-stage-teams-confirmed/',
-    participantsSourceName: 'TalkEsport; roster names cross-checked against tournament coverage',
+    participantsSourceName: 'TalkEsport',
+    matchSchedule: [
+      { date: '2026-10-16', time: '13:45 IST', teams: ['Match 1 - All Teams'], stage: 'Day 1', score1: '6', score2: 'matches', winner: 'SouL: 34 pts (9th)' },
+      { date: '2026-10-16', time: '14:25 IST', teams: ['Match 2 - All Teams'], stage: 'Day 1', score1: '6', score2: 'matches', winner: '3 days total' },
+      { date: '2026-10-16', time: '15:10 IST', teams: ['Match 3 - All Teams'], stage: 'Day 1', score1: '6', score2: 'matches', winner: '18 matches' },
+      { date: '2026-10-16', time: '15:50 IST', teams: ['Match 4 - All Teams'], stage: 'Day 1', score1: '6', score2: 'matches', winner: 'Smash Point: 126' },
+      { date: '2026-10-16', time: '16:40 IST', teams: ['Match 5 - All Teams'], stage: 'Day 1', score1: '6', score2: 'matches', winner: '16 teams' },
+      { date: '2026-10-16', time: '17:20 IST', teams: ['Match 6 - All Teams'], stage: 'Day 1', score1: '6', score2: 'matches', winner: '8Bit led Day 2' },
+      { date: '2026-10-17', time: '13:45 IST', teams: ['Match 7 - All Teams'], stage: 'Day 2', score1: '6', score2: 'matches', winner: '8Bit: 116 pts (1st)' },
+      { date: '2026-10-17', time: '14:25 IST', teams: ['Match 8 - All Teams'], stage: 'Day 2', score1: '6', score2: 'matches', winner: 'Blitz: 100 pts (2nd)' },
+      { date: '2026-10-17', time: '15:10 IST', teams: ['Match 9 - All Teams'], stage: 'Day 2', score1: '6', score2: 'matches', winner: 'K9: 99 pts (3rd)' },
+      { date: '2026-10-17', time: '15:50 IST', teams: ['Match 10 - All Teams'], stage: 'Day 2', score1: '6', score2: 'matches', winner: 'Welt: 88 pts (4th)' },
+      { date: '2026-10-17', time: '16:40 IST', teams: ['Match 11 - All Teams'], stage: 'Day 2', score1: '6', score2: 'matches', winner: 'Outrage: 85 pts (5th)' },
+      { date: '2026-10-17', time: '17:20 IST', teams: ['Match 12 - All Teams'], stage: 'Day 2', score1: '6', score2: 'matches', winner: 'SouL: 88 pts (4th)' },
+      { date: '2026-10-18', time: '13:45 IST', teams: ['Match 13 - All Teams'], stage: 'Day 3', score1: '6', score2: 'matches', winner: 'SouL won Day 3' },
+      { date: '2026-10-18', time: '14:25 IST', teams: ['Match 14 - All Teams'], stage: 'Day 3', score1: '6', score2: 'matches', winner: 'SouL WWCD Match 14' },
+      { date: '2026-10-18', time: '15:10 IST', teams: ['Match 15 - All Teams'], stage: 'Day 3', score1: '6', score2: 'matches', winner: 'Final standings' },
+      { date: '2026-10-18', time: '15:50 IST', teams: ['Match 16 - All Teams'], stage: 'Day 3', score1: '6', score2: 'matches', winner: 'Gladiators: 141 pts (2nd)' },
+      { date: '2026-10-18', time: '16:40 IST', teams: ['Match 17 - All Teams'], stage: 'Day 3', score1: '6', score2: 'matches', winner: '8Bit: 140 pts (3rd)' },
+      { date: '2026-10-18', time: '17:20 IST', teams: ['Match 18 - All Teams'], stage: 'Day 3', score1: '6', score2: 'matches', winner: 'SouL Champion 155 pts' }
+    ],
+    prizeDistribution: [
+      { placement: '1st', amount: '₹30,00,000' },
+      { placement: '2nd', amount: '₹15,00,000' },
+      { placement: '3rd', amount: '₹10,00,000' },
+      { placement: '4th', amount: '₹7,50,000' },
+      { placement: '5th', amount: '₹6,25,000' },
+      { placement: '6th', amount: '₹4,50,000' },
+      { placement: '7th-8th', amount: '₹3,75,000' },
+      { placement: '9th-10th', amount: '₹2,50,000' },
+      { placement: '11th-12th', amount: '₹2,00,000' },
+      { placement: '13th-14th', amount: '₹1,50,000' },
+      { placement: '15th-16th', amount: '₹1,25,000' }
+    ],
+    bracket: {
+      rounds: [
+        {
+          name: 'Final Standings',
+          matches: [
+            { team1: 'Team SouL', team2: 'Gladiators Esports', score1: '155', score2: '141', winner: 'Team SouL' },
+            { team1: 'iQOO 8Bit', team2: 'K9 Esports', score1: '140', score2: 'N/A', winner: '3rd place' }
+          ]
+        }
+      ]
+    },
   },
   {
     id: 'bgmi-bmic-2026', slug: 'bgmi-bmic-2026', gameId: 'bgmi', gameName: 'BGMI',
