@@ -1,5 +1,7 @@
 import { OFFICIAL_TOURNAMENT_SOURCES, type TournamentNews, type TournamentStatus } from '../src/data/tournament-data.js';
 
+// NOTE: AI sync is disabled. Tournament data is manually curated in src/data/tournament-data.ts
+// This file is kept for potential future use if AI sync is re-enabled
 const GEMINI_ENDPOINT = 'https://generativelanguage.googleapis.com/v1beta/models';
 
 function stripHtml(input: string): string {
