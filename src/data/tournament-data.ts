@@ -775,10 +775,55 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
   {
     id: 'pubg-pgc-2026', slug: 'pubg-pgc-2026', gameId: 'pubg_battlegrounds', gameName: 'PUBG: BATTLEGROUNDS',
     name: 'PUBG Global Championship 2026', organizer: 'KRAFTON / PUBG Esports',
-    startDate: '2026-12-01', endDate: '2026-12-13', dateLabel: '1–13 Dec 2026', region: 'Global', location: 'Istanbul, Türkiye',
-    prizePool: '$1,500,000+ with crowdfunding', teams: 32, format: 'Qualifying Stage, Survival Stage and 16-team Grand Finals', status: 'upcoming',
+    startDate: '2026-11-??', endDate: '2026-12-??', dateLabel: 'Nov – Dec 2026', region: 'Global', location: 'Istanbul, Türkiye',
+    prizePool: '$3,000,000', teams: 39, format: 'The Gauntlet, Group Stages, Last Chance, Grand Finals', status: 'upcoming',
     sourceUrl: 'https://pubgesports.com/en/news/11230', sourceName: 'PUBG Esports', updatedAt: '2026-10-22',
-    summary: 'The 32-team global championship runs in Istanbul, with a $1.5 million base prize pool plus crowdfunding and Grand Finals on 11–13 December. PUBG Esports announced on 13 October that S2G Esports received the host-nation wildcard directly into the Grand Finals; remaining places are still being decided through PGS and regional results.',
+    summary: 'PMGC 2026 is the year-ending PUBG Mobile championship scheduled for November–December 2026 in Istanbul, Türkiye. The tournament features 39 teams from all regions competing for a $3 million prize pool. Teams qualify through PMGC Points accumulated across PMGO S1, PMWC, and PMGO S2 events. The format includes The Gauntlet, Group Stages, Last Chance Qualifier, and Grand Finals.',
+    participants: ['Southeast Asia (5 teams)', 'South Asia (3 teams)', 'EECA (4 teams)', 'MENA (6 teams)', 'Turkey (5 teams)', 'Western Europe (2 teams)', 'Americas (4 teams)', 'Africa (1 team)', 'China (3 teams)', 'South Korea (1 team)', 'Japan (1 team)', 'India (1 team)', 'BMIC 2026 Top 2', 'Host Nation Invite'],
+    participantsLabel: 'Regional slots distribution',
+    participantsNote: '39 teams qualify through PMGC Points and regional events. One host nation wildcard slot.',
+    participantsSourceUrl: 'https://www.sportskeeda.com/esports/pmgc-2026-slots-distribution-announced',
+    participantsSourceName: 'Sportskeeda',
+    matchSchedule: [
+      { date: '2026-11-??', time: 'TBD', teams: ['The Gauntlet'], stage: 'Opening Stage', score1: '39', score2: 'teams', winner: 'Elimination stage' },
+      { date: '2026-11-??', time: 'TBD', teams: ['Group Stage'], stage: 'Group Stage', score1: 'Survival', score2: 'matches', winner: 'Point-based advancement' },
+      { date: '2026-12-??', time: 'TBD', teams: ['Last Chance Qualifier'], stage: 'LCQ', score1: 'TBD', score2: 'teams', winner: 'Final qualifiers' },
+      { date: '2026-12-??', time: 'TBD', teams: ['Grand Finals'], stage: 'Grand Finals', score1: '16', score2: 'teams', winner: 'Squad TPP mode' }
+    ],
+    prizeDistribution: [
+      { placement: '1st', amount: '$1,000,000' },
+      { placement: '2nd', amount: '$400,000' },
+      { placement: '3rd', amount: '$250,000' },
+      { placement: '4th', amount: '$130,000' },
+      { placement: '5th-6th', amount: '$85,000' },
+      { placement: '7th-8th', amount: '$50,000' },
+      { placement: '9th-12th', amount: '$30,000' },
+      { placement: '13th-16th', amount: '$20,000' },
+      { placement: '17th-20th', amount: '$15,000' },
+      { placement: '21st-24th', amount: '$10,000' },
+      { placement: '25th-28th', amount: '$7,500' },
+      { placement: '29th-32nd', amount: '$5,000' },
+      { placement: '33rd-36th', amount: '$3,000' },
+      { placement: '37th-39th', amount: '$2,000' }
+    ],
+    bracket: {
+      rounds: [
+        {
+          name: 'Qualification',
+          matches: [
+            { team1: 'PMGO S1', team2: 'PMWC', score1: 'Points', score2: 'System', winner: 'To PMGC' },
+            { team1: 'Regional Finals', team2: 'PMGO S2', score1: 'Points', score2: 'System', winner: 'Qualification' }
+          ]
+        },
+        {
+          name: 'Main Event',
+          matches: [
+            { team1: 'The Gauntlet', team2: 'Group Stage', score1: '39', score2: 'teams', winner: 'Survival mode' },
+            { team1: 'Last Chance', team2: 'Grand Finals', score1: '16', score2: 'teams', winner: 'Finals' }
+          ]
+        }
+      ]
+    },
   },
   {
     id: 'apex-algs-y6-lcq', slug: 'apex-algs-y6-lcq', gameId: 'apex', gameName: 'Apex Legends',
