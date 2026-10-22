@@ -210,14 +210,57 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
   {
     id: 'dota2-ti-2026', slug: 'dota2-ti-2026', gameId: 'dota2', gameName: 'Dota 2',
     name: 'The International 2026', organizer: 'Valve',
-    startDate: '2026-08-15', endDate: '2026-09-01', dateLabel: '15 Aug – 1 Sep 2026', region: 'Global', location: 'Seattle, USA',
-    prizePool: '$40,000,000', teams: 20, format: 'Group stage followed by double-elimination playoffs', status: 'completed',
-    sourceUrl: 'https://liquipedia.net/dota2/The/International/2026', sourceName: 'Valve / Liquipedia', updatedAt: '2026-10-22',
-    summary: 'The International 2026 featured 20 teams from regional qualifiers. The tournament concluded at Climate Pledge Arena. Prize distribution and match results are available on the official Liquipedia page.',
-    participants: ['Team Spirit', 'Team Liquid', 'PSG.LGD', 'OG', 'Secret', 'Tundra Esports', 'Talon Esports', 'TSM', 'beastcoast', 'Evil Geniuses', 'Thunder Predator', 'Entity', 'Aster', 'Virtus.pro', 'Alliance', 'NaVi', 'Team Aster', 'RNG', 'Undying', 'Soniqs'],
-    participantsLabel: 'Participating teams',
-    participantsSourceUrl: 'https://liquipedia.net/dota2/The/International/2026',
-    participantsSourceName: 'Liquipedia',
+    startDate: '2026-08-13', endDate: '2026-08-23', dateLabel: '13–23 Aug 2026', region: 'Global', location: 'Shanghai, China',
+    prizePool: '$3,906,263', teams: 16, format: 'Modified-Swiss group stage followed by eight-team double-elimination main event', status: 'completed',
+    sourceUrl: 'https://www.dota2.com/international/prelims/results/', sourceName: 'Dota 2 / Valve', updatedAt: '2026-10-22',
+    summary: 'Team Spirit won The International 2026, defeating TEAM VISION 3-2 in the Grand Final. The tournament took place in Shanghai from August 13-23, 2026. Team Spirit earned their third Aegis of Champions with a first-place prize of $1,660,200. The peak viewership exceeded 3 million during the Grand Final.',
+    participants: ['Team Spirit', 'TEAM VISION', 'Team Yandex', 'BoomBoys', 'Team Liquid', 'Nigma Galaxy', 'Team Falcons', 'Iron Wing', 'Aurora Gaming', 'GamerLegion', 'LGD Gaming', 'Team Resilience', 'Vici Gaming', 'OG', 'Xtreme Gaming', 'HULIGANI'],
+    participantsLabel: 'Main Event teams',
+    participantsNote: '16 teams qualified through regional qualifiers to the main event in Shanghai.',
+    participantsSourceUrl: 'https://dota2freaks.com/tournaments/the-international-2026/',
+    participantsSourceName: 'Dota2Freaks',
+    matchSchedule: [
+      { date: '2026-08-13', time: 'TBD', teams: ['Group Stage Start'], stage: 'Group Stage', score1: '16', score2: 'teams', winner: 'Modified-Swiss format' },
+      { date: '2026-08-15', time: 'TBD', teams: ['Group Stage Rounds'], stage: 'Group Stage', score1: '4', score2: 'rounds', winner: 'Top 8 advance' },
+      { date: '2026-08-17', time: 'TBD', teams: ['Group Stage Rounds'], stage: 'Group Stage', score1: '4', score2: 'rounds', winner: 'Elimination stage' },
+      { date: '2026-08-20', time: 'TBD', teams: ['Main Event Start'], stage: 'Playoffs', score1: '8', score2: 'teams', winner: 'Double-elimination' },
+      { date: '2026-08-21', time: 'TBD', teams: ['Lower Bracket Finals'], stage: 'Playoffs', score1: 'Team Spirit', score2: 'Team Yandex', winner: 'Spirit 2-0' },
+      { date: '2026-08-22', time: 'TBD', teams: ['Upper Bracket Finals'], stage: 'Playoffs', score1: 'TEAM VISION', score2: 'Team Yandex', winner: 'Vision advanced' },
+      { date: '2026-08-23', time: 'TBD', teams: ['Grand Final'], stage: 'Grand Final', score1: 'Team Spirit', score2: 'TEAM VISION', winner: 'Spirit 3-2' }
+    ],
+    prizeDistribution: [
+      { placement: '1st', amount: '$1,660,200' },
+      { placement: '2nd', amount: '$507,800' },
+      { placement: '3rd', amount: '$351,600' },
+      { placement: '4th', amount: '$234,400' },
+      { placement: '5th-6th', amount: '$195,300' },
+      { placement: '7th-8th', amount: '$156,300' },
+      { placement: '9th-13th', amount: '$70,300' },
+      { placement: '14th-15th', amount: '$39,100' },
+      { placement: '16th', amount: '$19,500' }
+    ],
+    bracket: {
+      rounds: [
+        {
+          name: 'Lower Bracket Finals',
+          matches: [
+            { team1: 'Team Spirit', team2: 'Team Yandex', score1: '2', score2: '0', winner: 'Team Spirit' }
+          ]
+        },
+        {
+          name: 'Upper Bracket Finals',
+          matches: [
+            { team1: 'TEAM VISION', team2: 'Team Yandex', score1: 'TBD', score2: 'TBD', winner: 'TEAM VISION' }
+          ]
+        },
+        {
+          name: 'Grand Final',
+          matches: [
+            { team1: 'Team Spirit', team2: 'TEAM VISION', score1: '3', score2: '2', winner: 'Team Spirit' }
+          ]
+        }
+      ]
+    },
   },
   {
     id: 'dota2-riyadh-2026', slug: 'dota2-riyadh-2026', gameId: 'dota2', gameName: 'Dota 2',
@@ -429,11 +472,66 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
     startDate: '2026-09-24', endDate: '2026-10-18', dateLabel: '24 Sep – 18 Oct 2026', region: 'Global', location: 'Shanghai, China', teams: 16,
     format: 'Four-group stage followed by double-elimination playoffs; best-of-three except best-of-five finals', status: 'completed',
     sourceUrl: 'https://valorantesports.com/en-US/news/champions-shanghai-everything-you-need-to-know', sourceName: 'VALORANT Esports', updatedAt: '2026-10-22',
-    summary: 'VALORANT Champions Shanghai 2026 concluded on 18 October 2026. LOUD defeated Team Vitality 3-1 in the Grand Final at Shanghai Mercedes-Benz Arena to win the world championship. The tournament featured 16 teams from four regions competing over 25 days.',
-    participants: ['NRG', 'G2 Esports', 'LOUD', '100 Thieves', 'Team Vitality', 'FUT Esports', 'Team Liquid', 'Karmine Corp', 'Paper Rex', 'Nongshim RedForce', 'Global Esports', 'T1', 'JD Gaming', 'XLG Esports', 'TYLOO', 'EDward Gaming'],
+    summary: 'LOUD defeated Team Vitality 3-1 in the Grand Final on 18 October 2026 at Shanghai Mercedes-Benz Arena to win their second VALORANT Champions title. LOUD became the first organization to win Champions twice. The tournament featured 16 teams from Americas, EMEA, Pacific, and China competing for a $2.25 million prize pool.',
+    participants: ['LOUD', 'Team Vitality', '100 Thieves', 'G2 Esports', 'NRG', 'T1', 'Nongshim RedForce', 'Paper Rex', 'Team Liquid', 'Karmine Corp', 'Global Esports', 'FUT Esports', 'JD Gaming', 'Edward Gaming', 'TYLOO', 'Xi Lai Gaming'],
     participantsLabel: 'Qualified teams',
-    participantsSourceUrl: 'https://valorantesports.com/en-GB/tournament/115576361459045501/overview',
-    participantsSourceName: 'Riot Games VALORANT Esports',
+    participantsNote: '16 teams qualified from VCT Americas, EMEA, Pacific, and China leagues.',
+    participantsSourceUrl: 'https://vlr.gg/event/2766/valorant-champions-2026',
+    participantsSourceName: 'VLR.gg',
+    matchSchedule: [
+      { date: '2026-09-24', time: 'TBD', teams: ['Group Stage Start'], stage: 'Group Stage', score1: '16', score2: 'teams', winner: '4 groups' },
+      { date: '2026-09-25', time: 'TBD', teams: ['Group A Matches'], stage: 'Group Stage', score1: 'Bo3', score2: 'matches', winner: '100T 1st Group A' },
+      { date: '2026-09-26', time: 'TBD', teams: ['Group B Matches'], stage: 'Group Stage', score1: 'Bo3', score2: 'matches', winner: 'Team Vitality 1st Group B' },
+      { date: '2026-09-27', time: 'TBD', teams: ['Group C Matches'], stage: 'Group Stage', score1: 'Bo3', score2: 'matches', winner: 'LOUD 1st Group C' },
+      { date: '2026-09-28', time: 'TBD', teams: ['Group D Matches'], stage: 'Group Stage', score1: 'Bo3', score2: 'matches', winner: 'NRG 1st Group D' },
+      { date: '2026-10-04', time: 'TBD', teams: ['Group Stage Complete'], stage: 'Group Stage', score1: '8', score2: 'advance', winner: 'To Playoffs' },
+      { date: '2026-10-07', time: 'TBD', teams: ['Upper Quarterfinals'], stage: 'Playoffs', score1: 'Bo3', score2: 'matches', winner: 'NRG, LOUD, VIT advance' },
+      { date: '2026-10-08', time: 'TBD', teams: ['Upper Quarterfinals'], stage: 'Playoffs', score1: 'Bo3', score2: 'matches', winner: '100T, G2 advance' },
+      { date: '2026-10-09', time: 'TBD', teams: ['Lower Round 1'], stage: 'Playoffs', score1: 'Bo3', score2: 'matches', winner: 'Elimination matches' },
+      { date: '2026-10-10', time: 'TBD', teams: ['Lower Rounds'], stage: 'Playoffs', score1: 'Bo3', score2: 'matches', winner: 'Teams eliminated' },
+      { date: '2026-10-11', time: 'TBD', teams: ['Upper Semifinals'], stage: 'Playoffs', score1: 'Bo3', score2: 'matches', winner: 'LOUD, VIT advance' },
+      { date: '2026-10-12', time: 'TBD', teams: ['Lower Semifinals'], stage: 'Playoffs', score1: 'Bo3', score2: 'matches', winner: '100T advances' },
+      { date: '2026-10-13', time: 'TBD', teams: ['Lower Semifinals'], stage: 'Playoffs', score1: 'Bo3', score2: 'matches', winner: 'G2 advances' },
+      { date: '2026-10-14', time: 'TBD', teams: ['Lower Finals'], stage: 'Playoffs', score1: 'Bo3', score2: 'matches', winner: '100T vs G2' },
+      { date: '2026-10-15', time: 'TBD', teams: ['Upper Finals'], stage: 'Playoffs', score1: 'Bo3', score2: 'matches', winner: 'LOUD advances to GF' },
+      { date: '2026-10-16', time: 'TBD', teams: ['Lower Finals'], stage: 'Playoffs', score1: 'Bo3', score2: 'matches', winner: 'Team Vitality advances' },
+      { date: '2026-10-17', time: 'TBD', teams: ['Lower Bracket Finals'], stage: 'Playoffs', score1: 'Bo3', score2: 'matches', winner: 'VIT 2-0' },
+      { date: '2026-10-18', time: '14:00 UTC+8', teams: ['Grand Final'], stage: 'Grand Final', score1: 'LOUD', score2: 'Team Vitality', winner: 'LOUD 3-1' }
+    ],
+    prizeDistribution: [
+      { placement: '1st', amount: '$1,000,000' },
+      { placement: '2nd', amount: '$400,000' },
+      { placement: '3rd', amount: '$250,000' },
+      { placement: '4th', amount: '$130,000' },
+      { placement: '5th-6th', amount: '$85,000' },
+      { placement: '7th-8th', amount: '$50,000' },
+      { placement: '9th-12th', amount: '$30,000' },
+      { placement: '13th-16th', amount: '$20,000' }
+    ],
+    bracket: {
+      rounds: [
+        {
+          name: 'Group Stage',
+          matches: [
+            { team1: 'Group A Winner', team2: 'Group B Winner', score1: '100T', score2: 'Team Vitality', winner: 'Advanced' },
+            { team1: 'Group C Winner', team2: 'Group D Winner', score1: 'LOUD', score2: 'NRG', winner: 'Advanced' }
+          ]
+        },
+        {
+          name: 'Playoffs',
+          matches: [
+            { team1: 'Upper Semifinals', team2: 'Winners', score1: 'LOUD', score2: 'Team Vitality', winner: 'To Upper Final' },
+            { team1: 'Lower Bracket', team2: 'Winners', score1: '100T', score2: 'G2', winner: 'To Lower Final' }
+          ]
+        },
+        {
+          name: 'Grand Final',
+          matches: [
+            { team1: 'LOUD', team2: 'Team Vitality', score1: '3', score2: '1', winner: 'LOUD Champion' }
+          ]
+        }
+      ]
+    },
   },
   {
     id: 'valorant-game-changers-americas-lcq-2026', slug: 'valorant-game-changers-americas-lcq-2026', gameId: 'valorant', gameName: 'VALORANT',
