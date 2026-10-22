@@ -1,6 +1,7 @@
 import React from 'react';
 import { Eye, Clock, Users, Calendar, Trophy, ExternalLink, Youtube, Facebook, Video, Play, Pause } from 'lucide-react';
 import { TournamentEvent } from '../data/tournament-data';
+import { StreamPlayer } from './StreamPlayer';
 
 interface TournamentDashboardProps {
   event: TournamentEvent;
@@ -47,23 +48,39 @@ export function TournamentDashboard({ event }: TournamentDashboardProps) {
     }
   }
 
-  const getPlatformIcon = (platform: string) => {
-    switch (platform) {
-      case 'youtube':
-        return <Youtube className="h-4 w-4" />;
-      case 'twitch':
-        return <Video className="h-4 w-4" />;
-      case 'facebook':
-        return <Facebook className="h-4 w-4" />;
-      case 'kick':
-        return <Play className="h-4 w-4" />;
-      default:
-        return <Video className="h-4 w-4" />;
-    }
-  };
-
   return (
     <div className="space-y-6">
+      {/* Featured Stream Section */}
+      {event.streams && event.streams.length > 0 && event.streams.some(s => s.isActive) && (
+        <section className="rounded-2xl border border-slate-800 bg-[#080d1a]/95 overflow-hidden">
+          <div className="p-4 border-b border-slate-800">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="flex items-center gap-1 rounded-full bg-red-500/20 px-3 py-1">
+                  <div className="h-2 w-2 rounded-full bg-red-500 animate-pulse" />
+                  <span className="text-xs font-bold text-red-300">LIVE</span>
+                </div>
+                <h2 className="font-gaming text-lg font-bold text-white">Featured Stream</h2>
+              </div>
+              <a
+                href={event.streams.find(s => s.isActive)?.url}
+                target="_blank"
+                rel="noreferrer"
+                className="text-xs font-bold text-cyan-300 hover:text-white"
+              >
+                Channel stats <ExternalLink className="h-3 w-3 inline" />
+              </a>
+            </div>
+          </div>
+          <StreamPlayer
+            platform={event.streams.find(s => s.isActive)?.platform || 'youtube'}
+            url={event.streams.find(s => s.isActive)?.url || ''}
+            title={event.name}
+            isActive={true}
+          />
+        </section>
+      )}
+
       {/* Statistics Section */}
       <section className="rounded-2xl border border-slate-800 bg-[#080d1a]/95 p-6">
         <h2 className="mb-4 font-gaming text-lg font-bold text-white">Tournament Statistics</h2>
@@ -128,42 +145,15 @@ export function TournamentDashboard({ event }: TournamentDashboardProps) {
       {event.streams && event.streams.length > 0 && (
         <section className="rounded-2xl border border-slate-800 bg-[#080d1a]/95 p-6">
           <h2 className="mb-4 font-gaming text-lg font-bold text-white">Official Streams</h2>
-          <div className="grid gap-3 sm:grid-cols-2">
+          <div className="grid gap-4">
             {event.streams.map((stream, index) => (
-              <a
+              <StreamPlayer
                 key={index}
-                href={stream.url}
-                target="_blank"
-                rel="noreferrer"
-                className="flex items-center justify-between rounded-xl border border-slate-800 bg-slate-950/50 p-4 transition hover:border-cyan-400/45 hover:bg-slate-900/60"
-              >
-                <div className="flex items-center gap-3">
-                  <div className="rounded-lg bg-slate-900 p-2 text-cyan-300">
-                    {getPlatformIcon(stream.platform)}
-                  </div>
-                  <div>
-                    <div className="text-sm font-semibold text-white capitalize">{stream.platform}</div>
-                    {stream.language && (
-                      <div className="text-xs text-slate-400">{stream.language}</div>
-                    )}
-                  </div>
-                </div>
-                <div className="flex items-center gap-3">
-                  {stream.viewerCount && (
-                    <div className="text-right">
-                      <div className="text-sm font-bold text-white">{stream.viewerCount.toLocaleString()}</div>
-                      <div className="text-xs text-slate-500">viewers</div>
-                    </div>
-                  )}
-                  {stream.isActive && (
-                    <div className="flex items-center gap-1 rounded-full bg-red-500/20 px-2 py-1">
-                      <div className="h-2 w-2 rounded-full bg-red-500 animate-pulse" />
-                      <span className="text-xs font-bold text-red-300">LIVE</span>
-                    </div>
-                  )}
-                  <ExternalLink className="h-4 w-4 text-slate-500" />
-                </div>
-              </a>
+                platform={stream.platform}
+                url={stream.url}
+                title={`${event.name} - ${stream.language || 'Stream'}`}
+                isActive={stream.isActive}
+              />
             ))}
           </div>
         </section>
