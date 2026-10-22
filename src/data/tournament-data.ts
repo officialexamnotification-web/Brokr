@@ -177,10 +177,10 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
     streams: [
       {
         platform: 'youtube',
-        url: 'https://youtube.com/ESL_CSGO',
+        url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
         language: 'English',
         viewerCount: 450000,
-        isActive: false
+        isActive: true
       },
       {
         platform: 'twitch',
