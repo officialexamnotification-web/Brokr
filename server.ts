@@ -325,6 +325,13 @@ async function startServer() {
       appType: "spa",
     });
     app.use(vite.middlewares);
+    
+    // Archive route for development
+    app.get("/archive", (req, res) => {
+      vite.transformIndexHtml(req.url, fs.readFileSync(path.join(process.cwd(), "index.html"), 'utf8')).then(html => {
+        res.type('html').send(html);
+      });
+    });
   } else {
     const distPath = path.join(process.cwd(), "dist");
     const indexPath = path.join(distPath, "index.html");
@@ -335,6 +342,10 @@ async function startServer() {
     app.use(express.static(distPath));
     app.use("/api", (_req, res) => {
       res.status(404).json({ error: "API route not found" });
+    });
+    app.get("/archive", (req, res) => {
+      const indexHtml = fs.readFileSync(indexPath, 'utf8');
+      res.type('html').send(injectSeo(indexHtml, req));
     });
     app.get("*", (req, res) => {
       const requestedPath = req.path.replace(/^\/+|\/+$/g, '');

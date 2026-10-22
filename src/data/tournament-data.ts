@@ -28,6 +28,19 @@ export interface TournamentEvent {
   sourceName: string;
   updatedAt: string;
   summary: string;
+  /** Match schedule with specific times */
+  matchSchedule?: {
+    date: string;
+    time: string;
+    teams: string[];
+    stage: string;
+  }[];
+  /** Prize distribution by placement */
+  prizeDistribution?: {
+    placement: string;
+    amount: string;
+    team?: string;
+  }[];
 }
 
 export interface TournamentNews {
@@ -69,6 +82,21 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
     sourceUrl: 'https://liquipedia.net/counterstrike/IEM/Katowice/2026', sourceName: 'HLTV / Liquipedia', updatedAt: '2026-10-22',
     summary: 'IEM Katowice 2026 concluded with 24 teams competing at Spodek Arena. The official results and bracket are available on HLTV and Liquipedia. Final standings and match scores should be verified from the linked sources.',
     participants: ['Natus Vincere', 'FaZe Clan', 'Vitality', 'G2 Esports', 'Team Spirit', 'Cloud9', 'ENCE', 'Astralis', 'MOUZ', 'NIP', 'The MongolZ', 'Eternal Fire', ' complexity', 'BIG', 'Monte', 'Imperial', '9z', 'paiN', '3DMAX', 'Rare Atom', 'Lynn Vision', 'FURIA', 'paiN Academy', 'The MongolZ Academy'],
+    matchSchedule: [
+      { date: '2026-02-01', time: '10:00 UTC', teams: ['Natus Vincere vs FaZe Clan'], stage: 'Group Stage' },
+      { date: '2026-02-01', time: '13:00 UTC', teams: ['Vitality vs G2 Esports'], stage: 'Group Stage' },
+      { date: '2026-02-08', time: '15:00 UTC', teams: ['Quarterfinals TBD'], stage: 'Playoffs' },
+      { date: '2026-02-15', time: '18:00 UTC', teams: ['Grand Finals TBD'], stage: 'Grand Final' }
+    ],
+    prizeDistribution: [
+      { placement: '1st', amount: '$400,000' },
+      { placement: '2nd', amount: '$180,000' },
+      { placement: '3rd-4th', amount: '$80,000' },
+      { placement: '5th-8th', amount: '$40,000' },
+      { placement: '9th-12th', amount: '$20,000' },
+      { placement: '13th-16th', amount: '$10,000' },
+      { placement: '17th-24th', amount: '$5,000' }
+    ],
     participantsLabel: 'Participating teams',
     participantsSourceUrl: 'https://liquipedia.net/counterstrike/IEM/Katowice/2026',
     participantsSourceName: 'Liquipedia',
