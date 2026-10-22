@@ -100,6 +100,14 @@ const RULES: Record<string, GameRule> = {
     sourceStatus: "needs-testing",
     note: "Steam profile names are not the same as a game rename card. Check the current Steam/client behavior before calling a symbol supported.",
   },
+  dota2: {
+    id: "dota2",
+    name: "Dota 2",
+    limit: null,
+    symbolStatus: "unknown",
+    sourceStatus: "needs-testing",
+    note: "Steam profile names are not the same as a game rename card. Check the current Steam/client behavior before calling a symbol supported.",
+  },
   fortnite: {
     id: "fortnite",
     name: "Fortnite",
