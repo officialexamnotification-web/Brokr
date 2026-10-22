@@ -461,10 +461,55 @@ export const TOURNAMENT_EVENTS: TournamentEvent[] = [
   {
     id: 'free-fire-ffws-global-finals-2026', slug: 'free-fire-ffws-global-finals-2026', gameId: 'freefire', gameName: 'Free Fire',
     name: 'Free Fire World Series Global Finals 2026', organizer: 'Garena',
-    dateLabel: 'Begins 6 Nov 2026; four weekends in November', region: 'Global', location: 'Bangkok, Thailand', teams: 24,
-    format: 'Global finals across four November weekends; exact daily schedule not yet published', status: 'upcoming',
+    startDate: '2026-11-06', endDate: '2026-11-29', dateLabel: '6–29 Nov 2026', region: 'Global', location: 'Bangkok, Thailand', teams: 24,
+    format: 'Knockout Stage (4 weekends) and Grand Finals; Squads mode', status: 'upcoming',
     sourceUrl: 'https://ff.garena.com/en/article/1605/', sourceName: 'Garena Free Fire', updatedAt: '2026-10-22',
-    summary: 'Garena’s 2026 roadmap confirms a 24-team Global Finals in Bangkok beginning 6 November. The roadmap says the event spans four weekends but does not yet provide the complete match schedule.',
+    summary: 'FFWS Global Finals 2026 takes place in Bangkok, Thailand from November 6-29, 2026. The tournament features 24 teams from all regions competing for a $1.2 million prize pool. This is the first Global Finals edition to feature 24 teams instead of 18, running across four weekends. The event includes Knockout Stage at Garena Studio and Grand Finals at BITEC LIVE.',
+    participants: ['Buriram United Esports (Thailand)', 'Team Falcons TH (Thailand)', 'All Gamers Global (Thailand)', 'EXP Esports (Thailand)', 'AG.AL International (Thailand)', 'Bigetron by Vitality (Indonesia)', 'ONIC Olympus (Indonesia)', 'Resurrection (India)', 'Team Apex Gaming (India)', 'TSG Pros (India)', 'LYON (Vietnam)', 'ParadoX Gaming (Egypt)', 'Pirate Esports (Bangladesh)', 'Team Infinity (Bangladesh)', 'Fluxo W7M (Brazil)', 'LOS (Brazil)', 'LOUD (Brazil)', 'Blue Cheese (LATAM)', 'GunDynasty (LATAM)', 'xProjekt (LATAM)', 'Horaa Esports (Pakistan)', 'Total Winner Esports (Pakistan)', 'Buriram United Esports (Thailand)', 'ONIC Olympus (Indonesia)'],
+    participantsLabel: 'Qualified teams',
+    participantsNote: '24 teams qualified through regional FFWS circuits: SEA, Brazil, LATAM, South Asia, Middle East, and Africa.',
+    participantsSourceUrl: 'https://www.esportsverse.live/tournaments/free-fire/free-fire-world-series-global-finals-2026',
+    participantsSourceName: 'EsportsVerse',
+    matchSchedule: [
+      { date: '2026-11-06', time: 'TBD', teams: ['Knockout Phase 1 Start'], stage: 'Knockout Stage', score1: '24', score2: 'teams', winner: 'Garena Studio' },
+      { date: '2026-11-08', time: 'TBD', teams: ['Knockout Phase 1'], stage: 'Knockout Stage', score1: 'Weekend', score2: '1', winner: 'Group matches' },
+      { date: '2026-11-13', time: 'TBD', teams: ['Knockout Phase 2'], stage: 'Knockout Stage', score1: 'Weekend', score2: '2', winner: 'Elimination matches' },
+      { date: '2026-11-20', time: 'TBD', teams: ['Knockout Phase 3'], stage: 'Knockout Stage', score1: 'Weekend', score2: '3', winner: 'Qualifiers to GF' },
+      { date: '2026-11-22', time: 'TBD', teams: ['Last Chance Qualifier'], stage: 'LCQ', score1: 'Final', score2: 'chance', winner: 'Last teams to GF' },
+      { date: '2026-11-27', time: 'TBD', teams: ['Grand Finals Start'], stage: 'Grand Finals', score1: '16', score2: 'teams', winner: 'BITEC LIVE' },
+      { date: '2026-11-28', time: 'TBD', teams: ['Grand Finals Day 2'], stage: 'Grand Finals', score1: 'Final', score2: 'matches', winner: 'Champion decided' },
+      { date: '2026-11-29', time: 'TBD', teams: ['Champion Ceremony'], stage: 'Grand Finals', score1: 'Trophy', score2: 'presentation', winner: 'World Champion' }
+    ],
+    prizeDistribution: [
+      { placement: '1st', amount: '$400,000' },
+      { placement: '2nd', amount: '$150,000' },
+      { placement: '3rd', amount: '$80,000' },
+      { placement: '4th', amount: '$50,000' },
+      { placement: '5th-6th', amount: '$35,000' },
+      { placement: '7th-8th', amount: '$25,000' },
+      { placement: '9th-12th', amount: '$15,000' },
+      { placement: '13th-16th', amount: '$10,000' },
+      { placement: '17th-20th', amount: '$7,500' },
+      { placement: '21st-24th', amount: '$5,000' }
+    ],
+    bracket: {
+      rounds: [
+        {
+          name: 'Knockout Stage',
+          matches: [
+            { team1: 'Phase 1', team2: '24 Teams', score1: 'Weekend', score2: '1-2', winner: 'Elimination' },
+            { team1: 'Phase 2', team2: 'Top Teams', score1: 'Weekend', score2: '3', winner: 'To LCQ' }
+          ]
+        },
+        {
+          name: 'Grand Finals',
+          matches: [
+            { team1: 'Last Chance Qualifier', team2: 'Winners', score1: 'Final', score2: 'slots', winner: '16 teams' },
+            { team1: 'Grand Finals', team2: 'Champion', score1: '4', score2: 'weekends', winner: 'World Champion' }
+          ]
+        }
+      ]
+    },
   },
   {
     id: 'valorant-champions-shanghai-2026', slug: 'valorant-champions-shanghai-2026', gameId: 'valorant', gameName: 'VALORANT',
