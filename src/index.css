@@ -95,4 +95,27 @@ body { top: 0 !important; }
   animation: pulseGlow 3s ease-in-out infinite;
 }
 
+/* Print-friendly styles */
+@media print {
+  .no-print { display: none !important; }
+  .print-only { display: block !important; }
+  body { 
+    background: white !important; 
+    color: black !important; 
+  }
+  .bg-[#050811], .bg-[#080d1a], .bg-[#060914] {
+    background: white !important;
+  }
+  .text-slate-100, .text-white {
+    color: black !important;
+  }
+  .border-slate-800 {
+    border-color: #ccc !important;
+  }
+  a[href]:after {
+    content: " (" attr(href) ")";
+    font-size: 0.8em;
+    color: #666;
+  }
+}
 
