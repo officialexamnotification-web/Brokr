@@ -156,3 +156,72 @@ export function applyGameNewsSeo(page: GameNewsPage, game: GameProfile) {
   });
   document.head.appendChild(script);
 }
+
+export function applyTournamentSeo(tournament: any) {
+  if (typeof document === 'undefined') return;
+  const canonical = `${canonicalOrigin()}/tournaments/${tournament.slug}`;
+  document.title = `${tournament.name} | ${tournament.gameName} Tournament | Tradivex`;
+  const description = `${tournament.summary} Participating teams: ${tournament.teams || 'TBD'}. Prize pool: ${tournament.prizePool || 'TBD'}. Format: ${tournament.format || 'TBD'}. Status: ${tournament.status || 'TBD'}. Location: ${tournament.location || 'TBD'}. Check official sources for latest updates.`;
+  upsertMeta('description', description);
+  upsertMeta('og:title', `${tournament.name} | ${tournament.gameName} Tournament`, true);
+  upsertMeta('og:description', description, true);
+  upsertMeta('og:type', 'SportsEvent', true);
+  upsertMeta('og:url', canonical, true);
+  upsertMeta('twitter:title', `${tournament.name} | ${tournament.gameName} Tournament`);
+  upsertMeta('twitter:description', description);
+  upsertLink('canonical', canonical);
+  document.getElementById('gamingnamehub-seo-jsonld')?.remove();
+  const script = document.createElement('script');
+  script.id = 'gamingnamehub-seo-jsonld';
+  script.type = 'application/ld+json';
+  script.textContent = JSON.stringify({
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'SportsEvent',
+        name: tournament.name,
+        description: tournament.summary,
+        startDate: tournament.startDate,
+        endDate: tournament.endDate,
+        location: {
+          '@type': 'Place',
+          name: tournament.location || 'TBD',
+          address: {
+            '@type': 'PostalAddress',
+            addressLocality: tournament.location?.split(',').pop()?.trim() || 'TBD'
+          }
+        },
+        sport: { '@type': 'Thing', name: tournament.gameName },
+        organizer: { '@type': 'Organization', name: tournament.organizer },
+        ...(tournament.prizePool && { prize: tournament.prizePool }),
+        ...(tournament.status && { eventStatus: tournament.status === 'completed' ? 'https://schema.org/EventCompleted' : tournament.status === 'live' ? 'https://schema.org/EventLive' : 'https://schema.org/EventScheduled' }),
+        url: canonical,
+        mainEntityOfPage: canonical
+      },
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Home', item: `${canonicalOrigin()}/` },
+          { '@type': 'ListItem', position: 2, name: 'Tournaments', item: `${canonicalOrigin()}/tournaments` },
+          { '@type': 'ListItem', position: 3, name: tournament.name, item: canonical },
+        ]
+      },
+      ...(tournament.participants && tournament.participants.length > 0 ? [{
+        '@type': 'FAQPage',
+        mainEntity: [
+          {
+            '@type': 'Question',
+            name: `How many teams are participating in ${tournament.name}?`,
+            acceptedAnswer: { '@type': 'Answer', text: `${tournament.participants.length} teams are participating in ${tournament.name}.` }
+          },
+          {
+            '@type': 'Question',
+            name: `What is the prize pool for ${tournament.name}?`,
+            acceptedAnswer: { '@type': 'Answer', text: `The prize pool for ${tournament.name} is ${tournament.prizePool || 'TBD'}.` }
+          }
+        ]
+      }] : [])
+    ],
+  });
+  document.head.appendChild(script);
+}

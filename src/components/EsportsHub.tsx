@@ -7,6 +7,7 @@ import { POPULAR_GAMES } from '../data/games';
 import { SITE_DISPLAY_NAME, SITE_NAME, SITE_SUFFIX } from '../data/game-seo';
 import { GAME_NEWS_PAGES, OFFICIAL_TOURNAMENT_SOURCES, type GameNewsPage, type TournamentEvent, type TournamentNews, type TournamentStatus } from '../data/tournament-data';
 import { filterTournamentEvents, getTournamentEventBySlug, getTournamentEvents, getTournamentNewsBySlug } from '../lib/tournament-feed';
+import { applyTournamentSeo } from '../lib/seo';
 import { ContentLanguagePicker } from './ContentLanguagePicker';
 
 interface EsportsHubProps {
@@ -196,6 +197,9 @@ export function EsportsHub({ mode, slug }: EsportsHubProps) {
     const article = slug ? getTournamentNewsBySlug(slug) : undefined;
     const event = slug ? getTournamentEventBySlug(slug) : undefined;
     document.title = article ? `${article.title} | ${SITE_DISPLAY_NAME}` : event ? `${event.name} | ${SITE_DISPLAY_NAME}` : mode === 'news' ? `Esports Tournament News | ${SITE_DISPLAY_NAME}` : `Game Tournament Schedule | ${SITE_DISPLAY_NAME}`;
+    if (event) {
+      applyTournamentSeo(event);
+    }
   }, [mode, slug]);
 
   useEffect(() => {
