@@ -1,4 +1,4 @@
-import { TOURNAMENT_EVENTS, getTournamentNews } from '../src/data/tournament-data.js';
+import { TOURNAMENT_EVENTS, TOURNAMENT_NEWS } from '../src/data/tournament-data.js';
 import { SITE_DISPLAY_NAME, SITE_URL } from '../src/data/game-seo.js';
 
 interface RSSItem {
@@ -68,9 +68,9 @@ export default function handler(req: any, res: any) {
         category: event.gameName
       }));
 
-    const newsItems: RSSItem[] = getTournamentNews()
+    const newsItems: RSSItem[] = TOURNAMENT_NEWS
       .slice(0, 20)
-     .map(article => ({
+      .map((article: any) => ({
         title: article.title,
         link: `${SITE_URL}/esports-news/${article.slug}`,
         description: article.excerpt,
