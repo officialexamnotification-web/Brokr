@@ -138,14 +138,15 @@ export function applyGameNewsSeo(page: GameNewsPage, game: GameProfile) {
   upsertMeta('twitter:description', page.description);
   upsertLink('canonical', canonical);
   document.getElementById('gamingnamehub-seo-jsonld')?.remove();
-  const articleDate = new Date(`${page.updateDate} UTC`).toISOString().slice(0, 10);
+  const articleDate = page.publishedDate ? new Date(`${page.publishedDate} UTC`).toISOString().slice(0, 10) : undefined;
+  const modifiedDate = new Date(`${page.updateDate} UTC`).toISOString().slice(0, 10);
   const script = document.createElement('script');
   script.id = 'gamingnamehub-seo-jsonld';
   script.type = 'application/ld+json';
   script.textContent = JSON.stringify({
     '@context': 'https://schema.org',
     '@graph': [
-      { '@type': 'NewsArticle', headline: page.heading, description: page.description, datePublished: articleDate, dateModified: articleDate, articleSection: 'Game News', keywords: [game.shortName, `${game.name} news`, `${game.name} update`, page.updateHeading, page.competitionHeading], author: { '@type': 'Organization', name: SITE_DISPLAY_NAME, url: `${canonicalOrigin()}/about` }, publisher: { '@type': 'Organization', name: SITE_DISPLAY_NAME, url: canonicalOrigin() }, about: { '@type': 'Thing', name: game.name }, mainEntityOfPage: canonical, isBasedOn: page.sources.map((source) => source.url) },
+      { '@type': 'NewsArticle', headline: page.heading, description: page.description, ...(articleDate ? { datePublished: articleDate } : {}), dateModified: modifiedDate, articleSection: 'Game News', keywords: [game.shortName, `${game.name} news`, `${game.name} update`, page.updateHeading, page.competitionHeading], author: { '@type': 'Organization', name: SITE_DISPLAY_NAME, url: `${canonicalOrigin()}/about` }, publisher: { '@type': 'Organization', name: SITE_DISPLAY_NAME, url: canonicalOrigin() }, about: { '@type': 'Thing', name: game.name }, mainEntityOfPage: canonical, isBasedOn: page.sources.map((source) => source.url) },
       { '@type': 'BreadcrumbList', itemListElement: [
         { '@type': 'ListItem', position: 1, name: 'Home', item: `${canonicalOrigin()}/` },
         { '@type': 'ListItem', position: 2, name: 'Game News', item: `${canonicalOrigin()}/game-news` },

@@ -1,5 +1,6 @@
 import { GameProfile } from '../types';
 import { BackendName, GenerateNamesResponse } from './api';
+import { countCharacters, truncateCharacters } from './character-count';
 
 const WORDS: Record<string, string[]> = {
   global: ['Shadow', 'Nova', 'Ghost', 'Rogue', 'Storm', 'Titan', 'Blaze', 'Echo', 'Orbit'],
@@ -32,25 +33,31 @@ const LANGUAGE_ROLES: Record<string, string[]> = {
 const NATIVE_OUTPUT_LANGUAGES = new Set(['hindi', 'spanish', 'portuguese', 'indonesian', 'french', 'arabic', 'bengali']);
 const DECORATIONS: Record<string, { template: string; risky: boolean }> = {
   none: { template: '{name}', risky: false },
-  dot: { template: '•{name}•', risky: false },
-  crosshair: { template: '×͜×{name}', risky: false },
-  crown: { template: '♛{name}♛', risky: false },
+  dot: { template: '• {name} •', risky: false },
+  crosshair: { template: '×͜× {name}', risky: false },
+  crown: { template: '♛ {name} ♛', risky: false },
   shield: { template: '『{name}』', risky: false },
-  warrior: { template: '༒{name}༒', risky: false },
-  wings: { template: '𓆩{name}𓆪', risky: true },
-  royal: { template: '꧁{name}꧂', risky: true },
-  ornate: { template: '꧁༺{name}༻꧂', risky: true },
-  flame: { template: 'ঔৣ{name}ঔৣ', risky: true },
+  warrior: { template: '༒☬ {name} ☬༒', risky: false },
+  wings: { template: '𓆩 {name} 𓆪', risky: true },
+  royal: { template: '꧁♕ {name} ♕꧂', risky: true },
+  ornate: { template: '꧁༺ {name} ༻꧂', risky: true },
+  flame: { template: '꧁ঔৣ {name} ঔৣ꧂', risky: true },
+  aesthetic: { template: '⋆｡°✩ {name} ✩°｡⋆', risky: true },
+  blade: { template: '⚔ {name} ⚔', risky: false },
 };
 
-function count(value: string) { return Array.from(value).length; }
+function count(value: string) { return countCharacters(value); }
 
 function decorate(name: string, id: string, limit: number | null) {
   const preset = DECORATIONS[id] || DECORATIONS.none;
   const decorated = preset.template.replace('{name}', name);
   if (limit === null || count(decorated) <= limit) return decorated;
-  const available = Math.max(3, limit - count(preset.template.replace('{name}', '')));
-  return preset.risky || count(decorated) > limit ? name.slice(0, limit) : preset.template.replace('{name}', name.slice(0, available));
+  const available = limit - count(preset.template.replace('{name}', ''));
+  if (!preset.risky && available >= 3) {
+    const fitted = preset.template.replace('{name}', truncateCharacters(name, available));
+    if (count(fitted) <= limit) return fitted;
+  }
+  return truncateCharacters(name, limit);
 }
 
 export function generateLocalNames(options: { keyword: string; game: GameProfile; language: string; style: string; decorationId: string; conservative: boolean; count?: number }): GenerateNamesResponse {

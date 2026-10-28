@@ -15,7 +15,7 @@ import { HOME_SEO, SITE_DISPLAY_NAME, SITE_NAME, SITE_URL, getGameBySlug, getGam
 import { POPULAR_GAMES } from "./src/data/games";
 import { SITE_PAGES, getSitePageBySlug } from "./src/data/site-pages";
 import { GAME_NEWS_INDEX, TOURNAMENT_EVENTS } from "./src/data/tournament-data";
-import { filterTournamentEvents, filterTournamentNews, getTournamentNews } from "./src/lib/tournament-feed";
+import { filterTournamentEvents, filterTournamentNews, getTournamentEvents, getTournamentNews } from "./src/lib/tournament-feed";
 import { getTeamBySlug } from "./src/data/teams";
 import { syncTournamentNews } from "./server/tournament-sync";
 
@@ -195,6 +195,7 @@ app.get('/robots.txt', (req, res) => {
 
 app.get('/sitemap.xml', (_req, res) => {
   const allTournamentNews = getTournamentNews();
+  const allTournamentEvents = getTournamentEvents();
   const slugs = [
     '',
     ...POPULAR_GAMES.map((game) => game.slug),
@@ -202,14 +203,21 @@ app.get('/sitemap.xml', (_req, res) => {
     'esports-news',
     'tournaments',
     'game-news',
-    'rss.xml',
     ...GAME_NEWS_INDEX.map((game) => `game-news/${game.id}`),
     ...allTournamentNews.map((article) => `esports-news/${article.slug}`),
     ...TOURNAMENT_EVENTS.map((event) => `tournaments/${event.slug}`),
   ];
+  const lastmod = new Map<string, string>();
+  for (const article of allTournamentNews) {
+    if (/^\d{4}-\d{2}-\d{2}$/.test(article.updatedAt)) lastmod.set(`esports-news/${article.slug}`, article.updatedAt);
+  }
+  for (const event of allTournamentEvents) {
+    if (/^\d{4}-\d{2}-\d{2}$/.test(event.updatedAt)) lastmod.set(`tournaments/${event.slug}`, event.updatedAt);
+  }
   const urls = slugs.map((slug) => {
     const location = `${SITE_URL}/${slug}`.replace(/\/$/, slug ? '' : '/');
-    return `  <url><loc>${escapeXml(location)}</loc></url>`;
+    const modified = lastmod.get(slug);
+    return `  <url><loc>${escapeXml(location)}</loc>${modified ? `<lastmod>${modified}</lastmod>` : ''}</url>`;
   }).join('\n');
   res.type('application/xml').send(`<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>`);
 });
