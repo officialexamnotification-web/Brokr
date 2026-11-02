@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { ArrowLeft, CalendarDays, ExternalLink, Gamepad2, Globe2, Newspaper, Radio, Search, Trophy, Download, Share2, X, Facebook } from 'lucide-react';
+import { ArrowLeft, CalendarDays, ExternalLink, Gamepad2, Globe2, Newspaper, Radio, Search, ShieldCheck, Trophy, Download, Share2, X, Facebook } from 'lucide-react';
 import { BracketView } from './BracketView';
 import { ThemeToggle } from './ThemeToggle';
 import { TournamentDashboard } from './TournamentDashboard';
