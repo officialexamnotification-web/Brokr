@@ -2,10 +2,10 @@ import { SITE_DISPLAY_NAME } from './game-seo';
 import type { TournamentEvent, TournamentNews } from './tournament-data';
 
 export const TOURNAMENT_NEWS_SEO = {
-  title: `Esports Tournament News | ${SITE_DISPLAY_NAME}`,
-  description: 'Verified esports tournament news, schedules, qualifiers, results and official source links for popular games.',
-  heading: 'Tournament news for the games you play',
-  intro: 'Find verified updates about ongoing events, upcoming schedules, qualifiers, teams and results across popular games.',
+  title: `Game News and Updates by Title | ${SITE_DISPLAY_NAME}`,
+  description: 'Read game updates, patches, seasons and publisher announcements across supported games, with links to their sources.',
+  heading: 'Latest game news and updates',
+  intro: 'Current updates for the games listed on Tradivex. Each game appears once; open its page for full details and publisher sources.',
 };
 
 export const TOURNAMENTS_SEO = {
