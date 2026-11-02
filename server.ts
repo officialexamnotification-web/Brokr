@@ -249,12 +249,6 @@ app.get("/rss.xml", (req, res) => {
   rssHandler(req, res);
 });
 
-// Calendar Export endpoint
-app.get("/api/calendar", (req, res) => {
-  const calendarHandler = require('./api/calendar').default;
-  calendarHandler(req, res);
-});
-
 app.post("/api/sync-tournament-news", async (req, res) => {
   res.setHeader('Cache-Control', 'no-store');
   const expected = process.env.TOURNAMENT_SYNC_SECRET || '';
