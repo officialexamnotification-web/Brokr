@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { ArrowLeft, CalendarDays, ExternalLink, Gamepad2, Globe2, Newspaper, Radio, Search, ShieldCheck, Trophy, Download, Share2, X, Facebook } from 'lucide-react';
+import { ArrowLeft, CalendarDays, ExternalLink, Gamepad2, Globe2, Newspaper, Radio, Search, ShieldCheck, Trophy, Share2, X, Facebook } from 'lucide-react';
 import { BracketView } from './BracketView';
 import { ThemeToggle } from './ThemeToggle';
 import { TournamentDashboard } from './TournamentDashboard';
@@ -89,10 +89,6 @@ function StatusBadge({ status }: { status: TournamentStatus }) {
 }
 
 const EventCard: React.FC<{ event: TournamentEvent; isFavorite?: boolean; onToggleFavorite?: (id: string) => void }> = ({ event, isFavorite = false, onToggleFavorite }) => {
-  const handleCalendarExport = () => {
-    window.open(`/api/calendar?slug=${event.slug}`, '_blank');
-  };
-
   const handleShare = () => {
     const url = `${window.location.origin}/tournaments/${event.slug}`;
     const text = `Check out ${event.name} tournament`;
@@ -115,7 +111,7 @@ const EventCard: React.FC<{ event: TournamentEvent; isFavorite?: boolean; onTogg
       <h2 className="mt-4 font-gaming text-base font-bold leading-snug text-white">{event.name}</h2>
       <p className="mt-2 text-xs leading-6 text-slate-400">{event.summary}</p>
       <dl className="mt-4 grid gap-2 border-t border-slate-800 pt-4 text-xs text-slate-300"><div className="flex items-center gap-2"><CalendarDays className="h-3.5 w-3.5 text-amber-300" /><span>{event.dateLabel}</span></div><div className="flex items-center gap-2"><Globe2 className="h-3.5 w-3.5 text-cyan-300" /><span>{event.region} · {event.location}</span></div>{(event.prizePool || event.teams) && <div className="flex items-center gap-2"><Trophy className="h-3.5 w-3.5 text-emerald-300" /><span>{[event.prizePool, event.teams ? `${event.teams} teams` : undefined].filter(Boolean).join(' · ')}</span></div>}</dl>
-      <div className="mt-auto flex flex-wrap items-center gap-3 pt-5"><span className="w-full text-[10px] text-slate-500">Tournament data reviewed {sourceCheckDate(event.gameId)}</span><a href={`/tournaments/${event.slug}`} className="rounded-lg bg-amber-500 px-3 py-2 text-xs font-black text-slate-950 transition hover:bg-amber-300">View event</a><button onClick={handleCalendarExport} className="rounded-lg border border-slate-700 px-3 py-2 text-xs font-bold text-slate-300 transition hover:border-cyan-400/60 hover:text-white flex items-center gap-1.5"><Download className="h-3 w-3" />Calendar</button><button onClick={handleShare} className="rounded-lg border border-slate-700 px-3 py-2 text-xs font-bold text-slate-300 transition hover:border-cyan-400/60 hover:text-white flex items-center gap-1.5"><Share2 className="h-3 w-3" />Share</button>{onToggleFavorite && <button onClick={() => onToggleFavorite(event.id)} className={`rounded-lg border px-3 py-2 text-xs font-bold transition flex items-center gap-1.5 ${isFavorite ? 'border-amber-400/50 bg-amber-500/10 text-amber-300' : 'border-slate-700 text-slate-300 hover:border-cyan-400/60 hover:text-white'}`}>{isFavorite ? '★ Saved' : '☆ Save'}</button>}<a href={event.sourceUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-400 hover:text-white">Official source <ExternalLink className="h-3 w-3" /></a></div>
+      <div className="mt-auto flex flex-wrap items-center gap-3 pt-5"><span className="w-full text-[10px] text-slate-500">Tournament data reviewed {sourceCheckDate(event.gameId)}</span><a href={`/tournaments/${event.slug}`} className="rounded-lg bg-amber-500 px-3 py-2 text-xs font-black text-slate-950 transition hover:bg-amber-300">View event</a><button onClick={handleShare} className="rounded-lg border border-slate-700 px-3 py-2 text-xs font-bold text-slate-300 transition hover:border-cyan-400/60 hover:text-white flex items-center gap-1.5"><Share2 className="h-3 w-3" />Share</button>{onToggleFavorite && <button onClick={() => onToggleFavorite(event.id)} className={`rounded-lg border px-3 py-2 text-xs font-bold transition flex items-center gap-1.5 ${isFavorite ? 'border-amber-400/50 bg-amber-500/10 text-amber-300' : 'border-slate-700 text-slate-300 hover:border-cyan-400/60 hover:text-white'}`}>{isFavorite ? '★ Saved' : '☆ Save'}</button>}<a href={event.sourceUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-400 hover:text-white">Official source <ExternalLink className="h-3 w-3" /></a></div>
     </article>
   );
 };
