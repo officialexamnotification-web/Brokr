@@ -1,7 +1,7 @@
 import { GameProfile } from '../types';
 import { GameSeoContent, SITE_DISPLAY_NAME, SITE_NAME, SITE_URL } from '../data/game-seo';
 import { SitePageContent } from '../data/site-pages';
-import type { GameNewsPage } from '../data/tournament-data';
+import type { GameNewsPage, TournamentEvent } from '../data/tournament-data';
 
 function upsertMeta(name: string, content: string, property = false) {
   const selector = property ? `meta[property="${name}"]` : `meta[name="${name}"]`;
@@ -158,17 +158,19 @@ export function applyGameNewsSeo(page: GameNewsPage, game: GameProfile) {
   document.head.appendChild(script);
 }
 
-export function applyTournamentSeo(tournament: any) {
+export function applyTournamentSeo(tournament: TournamentEvent) {
   if (typeof document === 'undefined') return;
   const canonical = `${canonicalOrigin()}/tournaments/${tournament.slug}`;
-  document.title = `${tournament.name} | ${tournament.gameName} Tournament | Tradivex`;
-  const description = `${tournament.summary} Participating teams: ${tournament.teams || 'TBD'}. Prize pool: ${tournament.prizePool || 'TBD'}. Format: ${tournament.format || 'TBD'}. Status: ${tournament.status || 'TBD'}. Location: ${tournament.location || 'TBD'}. Check official sources for latest updates.`;
+  document.title = `${tournament.name} | ${SITE_DISPLAY_NAME}`;
+  const summary = tournament.summary.replace(/\s+/g, ' ').trim();
+  const excerpt = summary.length > 160 ? `${summary.slice(0, 157).replace(/\s+\S*$/, '')}…` : summary;
+  const description = excerpt || `Tournament details for ${tournament.gameName}. Check the official organizer source for current schedules and results.`;
   upsertMeta('description', description);
-  upsertMeta('og:title', `${tournament.name} | ${tournament.gameName} Tournament`, true);
+  upsertMeta('og:title', document.title, true);
   upsertMeta('og:description', description, true);
-  upsertMeta('og:type', 'SportsEvent', true);
+  upsertMeta('og:type', 'article', true);
   upsertMeta('og:url', canonical, true);
-  upsertMeta('twitter:title', `${tournament.name} | ${tournament.gameName} Tournament`);
+  upsertMeta('twitter:title', document.title);
   upsertMeta('twitter:description', description);
   upsertLink('canonical', canonical);
   document.getElementById('gamingnamehub-seo-jsonld')?.remove();
@@ -179,25 +181,12 @@ export function applyTournamentSeo(tournament: any) {
     '@context': 'https://schema.org',
     '@graph': [
       {
-        '@type': 'SportsEvent',
+        '@type': 'WebPage',
         name: tournament.name,
-        description: tournament.summary,
-        startDate: tournament.startDate,
-        endDate: tournament.endDate,
-        location: {
-          '@type': 'Place',
-          name: tournament.location || 'TBD',
-          address: {
-            '@type': 'PostalAddress',
-            addressLocality: tournament.location?.split(',').pop()?.trim() || 'TBD'
-          }
-        },
-        sport: { '@type': 'Thing', name: tournament.gameName },
-        organizer: { '@type': 'Organization', name: tournament.organizer },
-        ...(tournament.prizePool && { prize: tournament.prizePool }),
-        ...(tournament.status && { eventStatus: tournament.status === 'completed' ? 'https://schema.org/EventCompleted' : tournament.status === 'live' ? 'https://schema.org/EventLive' : 'https://schema.org/EventScheduled' }),
+        description,
         url: canonical,
-        mainEntityOfPage: canonical
+        inLanguage: document.documentElement.lang || 'en-US',
+        isPartOf: { '@type': 'WebSite', name: SITE_DISPLAY_NAME, alternateName: SITE_NAME, url: canonicalOrigin() },
       },
       {
         '@type': 'BreadcrumbList',
@@ -206,22 +195,7 @@ export function applyTournamentSeo(tournament: any) {
           { '@type': 'ListItem', position: 2, name: 'Tournaments', item: `${canonicalOrigin()}/tournaments` },
           { '@type': 'ListItem', position: 3, name: tournament.name, item: canonical },
         ]
-      },
-      ...(tournament.participants && tournament.participants.length > 0 ? [{
-        '@type': 'FAQPage',
-        mainEntity: [
-          {
-            '@type': 'Question',
-            name: `How many teams are participating in ${tournament.name}?`,
-            acceptedAnswer: { '@type': 'Answer', text: `${tournament.participants.length} teams are participating in ${tournament.name}.` }
-          },
-          {
-            '@type': 'Question',
-            name: `What is the prize pool for ${tournament.name}?`,
-            acceptedAnswer: { '@type': 'Answer', text: `The prize pool for ${tournament.name} is ${tournament.prizePool || 'TBD'}.` }
-          }
-        ]
-      }] : [])
+      }
     ],
   });
   document.head.appendChild(script);
