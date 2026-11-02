@@ -1743,7 +1743,6 @@ export const OFFICIAL_TOURNAMENT_SOURCES: TournamentSource[] = [
 // This date records the local dataset review, not a fresh verification of every linked source.
 OFFICIAL_TOURNAMENT_SOURCES.forEach((source) => {
   source.reviewedAt = '2026-11-02';
-  source.note = `Site data reviewed 2 November 2026. Current event results and unverified details remain pending; last source verification: ${source.checkedAt || 'unknown'}. ${source.note}`;
 });
 
 export function getTournamentGameName(gameId: string): string {
